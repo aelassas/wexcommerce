@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import UserService from '../services/UserService';
-import SubscriptionService from '../services/SubscriptionService';
 import Header from '../components/Header';
 import {
   Input,
@@ -225,8 +224,8 @@ export async function getServerSideProps(context) {
               __user = await UserService.getUser(context, userId);
 
               if (__user) {
-                const language = UserService.getLanguage(context);
-                _subscriptions = await SubscriptionService.getSubscriptions(language);
+                // const language = UserService.getLanguage(context);
+                // _subscriptions = await SubscriptionService.getSubscriptions(language);
               } else {
                 _noMatch = true;
               }
