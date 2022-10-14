@@ -1,0 +1,232 @@
+@media only screen and (max-width: 960px) {
+    .content {
+        position: absolute;
+        top: 55px;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+
+    .subscribeForm .signIn,
+    .subscribeForm .box,
+    .subscribeForm .payment,
+    .subscribeForm .buttons {
+        width: 100%;
+    }
+
+    .subscribeForm .signIn {
+        flex-direction: column !important;
+
+    }
+}
+
+@media only screen and (min-width: 550px) {
+
+    .subscribeForm .signIn,
+    .subscribeForm .box,
+    .subscribeForm .payment,
+    .subscribeForm .buttons {
+        width: 550px;
+    }
+}
+
+@media only screen and (min-width: 960px) {
+    .content {
+        position: absolute;
+        top: 65px;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.subscribeForm {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subscribeForm .signIn {
+    background: #fbfbfb;
+    border: 1px solid #d9d8d9;
+    padding: 25px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.subscribeForm .signIn p {
+    margin-right: 10px;
+}
+
+.subscribeForm .box {
+    background: #fbfbfb;
+    border: 1px solid #d9d8d9;
+    padding: 25px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+}
+
+.subscribeForm .boxInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.subscribeForm .boxInfo label {
+    margin-left: 5px;
+}
+
+.subscribeForm .boxForm {
+    margin-top: 5px;
+}
+
+.subscribeForm .box .subscription {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
+.subscribeForm .box .subscription .subscriptionName {
+    font-size: 16px;
+    font-weight: 500;
+
+}
+
+.subscribeForm .box .subscription .subscriptionDescription {
+    color: #777;
+    font-size: 15px;
+}
+
+.subscribeForm .payment {
+    margin-top: 35px;
+    margin-bottom: 15px;
+    padding: 25px;
+    background-color: #e5efe5;
+    border: 1px solid #d9d8d9;
+}
+
+.subscribeForm .payment .cost {
+    color: #1c8901;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #1c8901;
+    border-radius: 3px;
+    margin-top: -45px;
+    margin-bottom: 15px;
+}
+
+.subscribeForm .payment .cost .securePaymentLabel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.subscribeForm .payment .cost .securePaymentLabel label {
+    margin-left: 5px;
+}
+
+.subscribeForm .payment .cost .securePaymentLabel .securePaymentLock {
+    height: 16px;
+}
+
+.subscribeForm .payment .cost .securePaymentCost {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.subscribeForm .payment .cost .securePaymentCost .costTitle,
+.subscribeForm .payment .cost .securePaymentCost .costValue {
+    display: table-cell;
+    padding: 5px;
+}
+
+.subscribeForm .payment .cost .securePaymentCost .costValue:after {
+    content: '*';
+    vertical-align: super;
+    font-size: 13px;
+}
+
+.subscribeForm .payment .securePaymentLogo {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.subscribeForm .payment .paymentInfo,
+.subscribeForm .payment .securePaymentInfo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 13px;
+    margin-top: 5px;
+    color: #1c8901;
+}
+
+.subscribeForm .payment .paymentInfo .paymentInfoLabel {
+    font-weight: bold;
+    width: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.subscribeForm .payment .paymentInfo .paymentIcon,
+.subscribeForm .payment .securePaymentInfo .paymentIcon {
+    height: 16px;
+}
+
+.subscribeForm .buttons {
+    display: inline-block;
+}
+
+.subscribeForm .buttons button,
+.subscribeForm .buttons a {
+    float: right;
+}
+
+.subscribeForm .buttons .btnSubscribe,
+.subscribeForm .buttons .btnCancel {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+    border: 0;
+    border-radius: 5px;
+    color: #fff;
+    height: 42px;
+    min-width: 75px;
+    margin: 0;
+    white-space: nowrap;
+    padding: 5px 32px;
+    margin-left: 7px;
+}
+
+.subscribeForm .buttons .btnSubscribe {
+    background: #1d1d1b;
+}
+
+.subscribeForm .buttons .btnCancel {
+    background: #999;
+}

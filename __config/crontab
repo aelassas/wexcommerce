@@ -1,0 +1,2 @@
+* * * * * /opt/shopping-cart/__scripts/noip.sh >> /var/log/noip.log 2>&1
+@reboot /opt/shopping-cart/__scripts/noip.sh >> /var/log/noip.log 2>&1

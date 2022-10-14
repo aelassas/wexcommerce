@@ -1,0 +1,30 @@
+settings {
+  logfile = "/var/log/lsyncd/lsyncd.log",
+  statusFile = "/var/log/lsyncd/lsyncd.status",
+  statusInterval = 20,
+  nodaemon   = false
+}
+
+sync {
+  default.rsync,
+  source = "/opt/shopping-cart",
+  target = "/mnt/sdb/shopping-cart"
+}
+
+sync {
+  default.rsync,
+  source = "/home/aelassas/shopping-cart",
+  target = "/mnt/sdb/__shopping-cart__"
+ }
+ 
+sync {
+  default.rsync,
+  source = "/opt/bookcars",
+  target = "/mnt/sdb/bookcars"
+}
+
+sync {
+ default.rsync,
+ source = "/home/aelassas/bookcars",
+ target = "/mnt/sdb/__bookcars__"
+}

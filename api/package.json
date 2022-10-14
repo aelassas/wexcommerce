@@ -1,0 +1,32 @@
+{
+  "name": "api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "ShoppingCart API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node -r dotenv/config app.js",
+    "dev": "nodemon -r dotenv/config app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "escape-string-regexp": "^5.0.0",
+    "expo-server-sdk": "^3.6.0",
+    "express": "^4.18.1",
+    "fs": "^0.0.2",
+    "helmet": "^6.0.0",
+    "https": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "localized-strings": "^0.2.4",
+    "mongoose": "^6.6.4",
+    "multer": "^1.4.4",
+    "nocache": "^3.0.4",
+    "nodemailer": "^6.8.0",
+    "uuid": "^9.0.0",
+    "validator": "^13.7.0"
+  }
+}

@@ -1,0 +1,45 @@
+import LocalizedStrings from 'react-localization';
+
+export const strings = new LocalizedStrings({
+    fr: {
+        USER_DETAILS: 'Informations utilisateur',
+        SIGN_IN: 'Se connecter',
+        EMAIL_INFO: "Vous recevrez un lien d'activation à cette adresse.",
+        PAYMENT: 'Paiement sécurisé',
+        SECURE_PAYMENT_INFO: 'Vos données sont protégées par le paiement sécurisé SSL.',
+        COST: 'Total',
+        CARD_NUMBER: 'Numéro de la carte',
+        CARD_MONTH: 'Mois (MM)',
+        CARD_MONTH_NOT_VALID: 'Mois non valide',
+        CARD_YEAR: 'Année (AA)',
+        CARD_YEAR_NOT_VALID: 'Année non valide',
+        CARD_NUMBER_NOT_VALID: 'Numéro de carte non valide',
+        CVV: 'Code de sécurité',
+        CVV_NOT_VALID: 'Code de sécurité non valide',
+        CARD_DATE_ERROR: 'Date de carte non valide.',
+        PURCHASE: "Acheter",
+        SUCCESS: "Votre paiement a été effectué avec succès. Nous vous avons envoyé un e-mail pour activer votre compte.",
+        SIGN_IN: 'Vous êtes déjà inscrit ?',
+    },
+    en: {
+        USER_DETAILS: 'User information',
+        SIGN_IN: 'Sign in',
+        EMAIL_INFO: 'You will receive an activation link at this address.',
+        PAYMENT: 'Secure payment',
+        SECURE_PAYMENT_INFO: 'Your data is protected by SSL secure payment.',
+        COST: 'Cost',
+        CARD_NUMBER: 'Card number',
+        CARD_MONTH: 'Month (MM)',
+        CARD_MONTH_NOT_VALID: 'Invalid month',
+        CARD_YEAR: 'Year (YY)',
+        CARD_YEAR_NOT_VALID: 'Invalid year',
+        CARD_NUMBER_NOT_VALID: 'Invalid card number',
+        CVV: 'Card Validation Code',
+        CVV_NOT_VALID: 'Invalid Card Validation Code',
+        CARD_DATE_ERROR: 'Invalid card date.',
+        PURCHASE: 'Purchase',
+        SUCCESS: 'Your payment was successfully done. We sent you an email to activate your account.',
+        SIGN_IN: 'You already have an account?',
+    }
+});
+

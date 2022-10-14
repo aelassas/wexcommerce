@@ -1,0 +1,17 @@
+[Unit]
+Description=ShoppingCart API
+Wants=mongod.service
+After=mongod.service
+
+[Service]
+ExecStart=/usr/bin/node -r dotenv/config app.js
+WorkingDirectory=/opt/shopping-cart/api
+Type=simple
+Restart=always
+StandardOutput=append:/var/log/shopping-cart.log
+StandardError=append:/var/log/shopping-cart.log
+User=aelassas
+Group=aelassas
+
+[Install]
+WantedBy=multi-user.target

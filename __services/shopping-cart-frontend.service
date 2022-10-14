@@ -1,0 +1,17 @@
+[Unit]
+Description=ShoppingCart Frontend
+Wants=mongod.service
+After=mongod.service
+
+[Service]
+ExecStart=/usr/bin/npm run start
+WorkingDirectory=/opt/shopping-cart/frontend
+Type=simple
+Restart=always
+StandardOutput=append:/var/log/shopping-cart-frontend.log
+StandardError=append:/var/log/shopping-cart-frontend.log
+User=aelassas
+Group=aelassas
+
+[Install]
+WantedBy=multi-user.target
