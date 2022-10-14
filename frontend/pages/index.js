@@ -156,7 +156,7 @@ export default function Home({
                     >
                       {
                         _products.map((product) => (
-                          <article>
+                          <article key={product._id}>
                             {/* TODO */}
                             {product._id}
                           </article>

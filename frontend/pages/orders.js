@@ -119,7 +119,7 @@ export default function Orders({
                                         >
                                             {
                                                 _orders.map((order) => (
-                                                    <article>
+                                                    <article key={order._id}>
                                                         {/* TODO */}
                                                         {order._id}
                                                     </article>
