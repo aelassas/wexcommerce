@@ -157,12 +157,12 @@ export const confirmEmail = (req, res) => {
     Token.findOne({ token: req.params.token }, (err, token) => {
         User.findOne({ email: req.params.email }, (err, user) => {
             strings.setLanguage(user.language);
-            // token is not found into database i.e. token may have expired 
+            // token is not found into database i.e. token may have expired
             if (!token) {
                 console.error(strings.ACCOUNT_ACTIVATION_LINK_EXPIRED, req.params);
                 return res.status(400).send(getStatusMessage(user.language, strings.ACCOUNT_ACTIVATION_LINK_EXPIRED));
             }
-            // if token is found then check valid user 
+            // if token is found then check valid user
             else {
                 // not valid user
                 if (!user) {
@@ -665,9 +665,8 @@ export const getUsers = async (req, res) => {
         //         type: Env.USER_TYPE.USER,
         //         verified: true,
         //         active: true,
-        //         password: '$2b$10$PxPHk5cpAAizJWZ7vab9kOKiibnFVf.KxDV8X8tUyBP8N8qIvulrC',
+        //         password: '$2b$10$dJz8zswefPu79UDobWzmkOyfm5KGjzuKByq0GDR11xqHJprhcoalW',
         //         language: 'fr',
-        //         subscription: '62f03f15fee670c92b250bf7'
         //     }).save();
         // }
 

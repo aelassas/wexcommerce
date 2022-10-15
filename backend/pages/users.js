@@ -15,7 +15,7 @@ import {
   IconButton
 } from '@mui/material';
 import {
-  Edit as EditIcon,
+  Inventory as OrdersIcon,
   ArrowBackIos as PreviousPageIcon,
   ArrowForwardIos as NextPageIcon
 } from '@mui/icons-material';
@@ -92,7 +92,7 @@ export default function Home({
   return (
     !loading && _user &&
     <>
-      <Header user={_user} hideSearch />
+      <Header user={_user} />
       {
         _user.verified &&
         <div className='content'>
@@ -100,13 +100,6 @@ export default function Home({
           {_noMatch && <NoMatch />}
 
           {!_noMatch &&
-            <>
-              <div className={styles.leftPanel}>
-                <Search className={styles.search} onSubmit={(keyword) => {
-                  router.replace((keyword && `/users?k=${encodeURIComponent(keyword)}`) || '/users');
-                }} />
-              </div>
-
               <div className={styles.users}>
                 {
                   _totalRecords === 0 &&
@@ -134,21 +127,17 @@ export default function Home({
                                 <span>{user.email}</span>
                               </div>
                               <div className={styles.userInfo}>
-                                <span className={styles.userLabel}>{commonStrings.SUBSCRIPTION}</span>
-                                <span>{(user.subscription && user.subscription.name) || commonStrings.NO_SUBSCRIPTION}</span>
-                              </div>
-                              <div className={styles.userInfo}>
                                 <span className={styles.userLabel}>{strings.SUBSCRIBED_AT}</span>
                                 <span>{Helper.capitalize(format(new Date(user.createdAt), _format, { locale: _locale }))}</span>
                               </div>
                             </div>
                             <div className={styles.userActions}>
-                              <Tooltip title={commonStrings.UPDATE}>
+                              <Tooltip title={strings.ORDERS}>
                                 <IconButton onClick={() => {
-                                  router.replace(`/update-user?u=${user._id}`);
+                                  router.replace(`/?u=${user._id}`);
                                 }}
                                 >
-                                  <EditIcon />
+                                  <OrdersIcon />
                                 </IconButton>
                               </Tooltip>
                             </div>
@@ -157,7 +146,9 @@ export default function Home({
                       }
                     </div>
 
-                    <div className={styles.footer}>
+                    {
+                      (_page > 1 || _rowCount < _totalRecords) &&
+                      <div className={styles.footer}>
 
                       <div className={styles.pager}>
                         <div className={styles.rowCount}>
@@ -181,10 +172,10 @@ export default function Home({
                       </div>
 
                     </div>
+                    }
                   </>
                 }
               </div>
-            </>
           }
         </div>
       }
@@ -228,7 +219,7 @@ export async function getServerSideProps(context) {
           if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
 
           if (_page >= 1) {
-            if (typeof context.query.k !== 'undefined') _keyword = context.query.k;
+            if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
             const data = await UserService.getUsers(context, _keyword, _page, Env.PAGE_SIZE);
             const _data = data[0];
             _users = _data.resultData;

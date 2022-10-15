@@ -54,10 +54,8 @@ SC_FRONTEND_HOST = http://localhost:5000/
 NEXT_PUBLIC_SC_API_HOST = http://localhost:4004
 NEXT_PUBLIC_SC_DEFAULT_LANGUAGE = fr
 NEXT_PUBLIC_SC_PAGE_SIZE = 30
-NEXT_PUBLIC_SC_CDN_VIDEOS = http://localhost/cdn/shopping-cart/videos
-NEXT_PUBLIC_SC_CDN_TEMP_VIDEOS = http://localhost/cdn/shopping-cart/temp/videos
-NEXT_PUBLIC_SC_CDN_IMAGES = http://localhost/cdn/shopping-cart/images
-NEXT_PUBLIC_SC_CDN_TEMP_IMAGES = http://localhost/cdn/shopping-cart/temp/images
+NEXT_PUBLIC_SC_CDN_PRODUCTS = http://localhost/cdn/shopping-cart/products
+NEXT_PUBLIC_SC_CDN_TEMP_PRODUCTS = http://localhost/cdn/shopping-cart/temp/products
 NEXT_PUBLIC_SC_APP_TYPE = backend
 ```
 
@@ -67,9 +65,7 @@ NEXT_PUBLIC_SC_APP_TYPE = backend
 NEXT_PUBLIC_SC_API_HOST = http://localhost:4004
 NEXT_PUBLIC_SC_DEFAULT_LANGUAGE = fr
 NEXT_PUBLIC_SC_PAGE_SIZE = 30
-NEXT_PUBLIC_SC_CDN_VIDEOS = http://localhost/cdn/shopping-cart/videos
-NEXT_PUBLIC_SC_CDN_TEMP_VIDEOS = http://localhost/cdn/shopping-cart/temp/videos
-NEXT_PUBLIC_SC_CDN_IMAGES = http://localhost/cdn/shopping-cart/images
-NEXT_PUBLIC_SC_CDN_TEMP_IMAGES = http://localhost/cdn/shopping-cart/temp/images
+NEXT_PUBLIC_SC_CDN_PRODUCTS = http://localhost/cdn/shopping-cart/products
+NEXT_PUBLIC_SC_CDN_TEMP_PRODUCTS = http://localhost/cdn/shopping-cart/temp/products
 NEXT_PUBLIC_SC_APP_TYPE = frontend
 ```

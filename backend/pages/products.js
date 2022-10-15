@@ -15,7 +15,7 @@ import {
   Typography
 } from '@mui/material';
 import {
-  Subscriptions as CategoryIcon,
+  ShoppingBag as CategoryIcon,
   Home as HomeIcon,
   ArrowBackIos as PreviousPageIcon,
   ArrowForwardIos as NextPageIcon
@@ -98,24 +98,24 @@ export default function Products({
           {_noMatch && <NoMatch />}
 
           {!_noMatch &&
-            <>
+            <div className={styles.main}>
               <div
                 ref={el => setLeftPanelRef(el)}
                 className={styles.leftPanel}
               >
                 <ul className={styles.categories}>
                   <li>
-                    <Link href='/'>
+                    <Link href='/products'>
                       <a className={!_categoryId ? styles.selected : ''}>
                         <HomeIcon className={styles.categoryIcon} />
-                        <span>{strings.HOME}</span>
+                        <span>{strings.ALL}</span>
                       </a>
                     </Link>
                   </li>
                   {
                     _categories.map((category) => (
                       <li key={category._id}>
-                        <Link href={`/?c=${category._id}`}>
+                        <Link href={`/products?c=${category._id}`}>
                           <a className={_categoryId === category._id ? styles.selected : ''} title={category.name}>
                             <CategoryIcon className={styles.categoryIcon} />
                             <span>{category.name}</span>
@@ -145,57 +145,68 @@ export default function Products({
                     >
                       {
                         _products.map((product) => (
-                          <article key={product._id}>
-                            {/* TODO */}
-                            {product._id}
+                          <article key={product._id} className={styles.product}>
+                            <Link href={`/update-product?p=${product._id}`} title={product.name}>
+                              <a>
+                                <div
+                                  className={styles.thumbnail}
+                                  style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
+                                >
+                                </div>
+                                <span className={styles.name}>{product.name}</span>
+                              </a>
+                            </Link>
                           </article>
                         ))
                       }
                     </div>
 
-                    <div className={styles.footer}>
+                    {
+                      (_page > 1 || _rowCount < _totalRecords) &&
+                      <div className={styles.footer}>
 
-                      <span
-                        className={styles.categoriesAction}
-                        onClick={() => {
-                          if (leftPanelRef) {
-                            if (leftPanelRef.style.display === 'none') {
-                              leftPanelRef.style.display = 'block';
-                            } else {
-                              leftPanelRef.style.display = 'none';
+                        {/* <span
+                          className={styles.categoriesAction}
+                          onClick={() => {
+                            if (leftPanelRef) {
+                              if (leftPanelRef.style.display === 'none') {
+                                leftPanelRef.style.display = 'block';
+                              } else {
+                                leftPanelRef.style.display = 'none';
+                              }
                             }
-                          }
-                        }}
-                      >
-                        {headerStrings.CATEGORIES}
-                      </span>
+                          }}
+                        >
+                          {headerStrings.CATEGORIES}
+                        </span> */}
 
-                      <div className={styles.pager}>
-                        <div className={styles.rowCount}>
-                          {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
+                        <div className={styles.pager}>
+                          <div className={styles.rowCount}>
+                            {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
+                          </div>
+
+                          <div className={styles.actions}>
+
+                            <Link href={`/products?${`p=${_page - 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                              <a className={_page === 1 ? styles.disabled : ''}>
+                                <PreviousPageIcon className={styles.icon} />
+                              </a>
+                            </Link>
+
+                            <Link href={`/products?${`p=${_page + 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                              <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
+                                <NextPageIcon className={styles.icon} />
+                              </a>
+                            </Link>
+                          </div>
                         </div>
 
-                        <div className={styles.actions}>
-
-                          <Link href={`/?${`p=${_page - 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
-                            <a className={_page === 1 ? styles.disabled : ''}>
-                              <PreviousPageIcon className={styles.icon} />
-                            </a>
-                          </Link>
-
-                          <Link href={`/?${`p=${_page + 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
-                            <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
-                              <NextPageIcon className={styles.icon} />
-                            </a>
-                          </Link>
-                        </div>
                       </div>
-
-                    </div>
+                    }
                   </>
                 }
               </div>
-            </>
+            </div>
           }
         </div>
       }

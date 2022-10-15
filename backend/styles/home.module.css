@@ -17,6 +17,10 @@
     }
 }
 
+.orders {
+    flex: 1;
+}
+
 .emptyList {
     margin-top: 15px;
     text-align: center;

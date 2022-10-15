@@ -115,7 +115,13 @@ export default function Header(props) {
         const keyword = e.currentTarget.value;
 
         if (e.key === 'Enter') {
-            router.replace(keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
+          const url = router.pathname.includes('/products') ?
+                        (keyword ? '/products?s=' + encodeURIComponent(keyword) : '/products')
+                        : router.pathname.includes('/users') ?
+                          (keyword ? '/users?s=' + encodeURIComponent(keyword) : '/users')
+                          :  (keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
+
+          router.replace(url);
         } else {
             setSearchKeyword(keyword);
         }
@@ -372,7 +378,13 @@ export default function Header(props) {
                                 <div className={`${styles.searchInput}${(showMobileSearch && ` ${styles.mobileSearchInput}`) || ''}`}>
                                     {showPlaceholder && !searchKeyword && (
                                         <div className={styles.searchPlaceholder}>
-                                            <span>{strings.SEARCH_PLACEHOLDER}</span>
+                                            <span>{
+                                              router.pathname.includes('/products') ?
+                                                strings.SEARCH_PRODUCTS_PLACEHOLDER
+                                                  : router.pathname.includes('/users') ?
+                                                    strings.SEARCH_USERS_PLACEHOLDER
+                                                    : strings.SEARCH_ORDERS_PLACEHOLDER
+                                            }</span>
                                         </div>
                                     )}
                                     <InputBase
@@ -391,10 +403,19 @@ export default function Header(props) {
                                     />
                                 </div>
                                 {
-                                    searchKeyword && showMobileSearch &&
+                                    searchKeyword && // showMobileSearch &&
                                     <div className={styles.clearIcon}
                                         onClick={() => {
                                             setSearchKeyword('');
+
+                                            let input;
+                                            if(searchRef.current){
+                                              input = searchRef.current.querySelector('input');
+                                            }
+
+                                            if(input){
+                                              input.focus();
+                                            }
                                         }}>
                                         <ClearIcon />
                                     </div>
@@ -406,7 +427,14 @@ export default function Header(props) {
                                         }
 
                                         setShowMobileSearch(false);
-                                        router.replace(searchKeyword ? '/?s=' + encodeURIComponent(searchKeyword) : '/');
+
+                                        const url = router.pathname.includes('/products') ?
+                                                      (searchKeyword ? '/products?s=' + encodeURIComponent(searchKeyword) : '/products')
+                                                      : router.pathname.includes('/users') ?
+                                                        (searchKeyword ? '/users?s=' + encodeURIComponent(searchKeyword) : '/users')
+                                                        :  (searchKeyword ? '/?s=' + encodeURIComponent(searchKeyword) : '/');
+
+                                        router.replace(url);
                                     }}>
                                     <SearchIcon />
                                 </div>

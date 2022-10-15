@@ -1,81 +1,205 @@
-@media only screen and (min-width: 960px) {
-
-    .footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-    }
+@media only screen and (max-width: 1200px) {
+  .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (min-width: 1200px) {
 
+  div.main {
+    max-width: 1184px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-bottom: 30px;
+  }
 
-    .footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+  article.product {
+    flex: 1 0 21%;
+    max-width: calc(25% - 12px);
+    height: 250px;
+    margin: 6px;
+  }
+
+  div.leftPanel {
+    width: 275px;
+  }
+
+  div.products {
+    width: 100%;
+    margin-left: 15px;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+div.main {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  margin-top: 15px;
+}
+
+div.leftPanel {
+  background-color: #fff;
+}
+
+div.products{
+  background-color: #fff;
+  height: fit-content;
+}
+
+div.productList {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div.productList a {
+  color: #030303;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+div.productList a:hover {
+  text-decoration: underline;
+}
+
+article.product div.thumbnail {
+  width: 100%;
+  height: calc(100% - 80px);
+  z-index: -1;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+}
+
+article.product span.name {
+  overflow: hidden;
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+ul.categories {
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+  padding-top: 10px;
+  padding-right: 25px;
+  height: 100%;
+}
+
+ul.categories:hover {
+  box-sizing: border-box;
+  padding-right: 0;
+}
+
+ul.categories li a {
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 48px;
+  padding-left: 24px;
+}
+
+ul.categories li a:hover {
+  background-color: #f2f2f2;
+}
+
+ul.categories li a.selected {
+  background-color: #e2e2e2;
+}
+
+ul.categories li a.selected:hover {
+  background-color: #d2d2d2;
+}
+
+ul.categories li a span,
+ul.categories li a.selected span {
+  font-weight: 400;
+  color: #030303;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+ul.categories li a.selected span {
+  font-weight: 500;
+}
+
+ul.categories li a .categoryIcon {
+  color: #030303;
+  font-size: 24px;
+  margin-right: 24px;
 }
 
 .emptyList {
-    margin-top: 15px;
-    text-align: center;
-    width: 250px;
-    margin-left: calc(50% - 125px);
+  text-align: center;
+  width: 250px;
+  margin-left: calc(50% - 125px);
+  border: 0 !important;
 }
 
 .footer {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 54px;
-    border-top: 1px solid #ddd;
-    padding: 5px 10px 5px 0;
+  height: 54px;
+  border-top: 2px solid #fafafa;
+  padding: 5px 10px 5px 0;
 }
 
 .footer .pager {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .footer .pager .rowCount {
-    font-size: 14px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 7px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 7px;
 }
 
 .footer .pager .actions {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .footer .pager .actions a {
-    text-decoration: none;
-    color: #030303;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5px;
+  text-decoration: none;
+  color: #030303;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
 }
 
 .footer .pager .actions a:hover {
-    color: #131313 !important;
+  color: #131313 !important;
 }
 
 .footer .pager .actions {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 a.disabled,
 a.disabled:hover {
-    pointer-events: none;
-    cursor: default;
-    color: #939393 !important;
+  pointer-events: none;
+  cursor: default;
+  color: #939393 !important;
 }

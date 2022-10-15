@@ -1,32 +1,11 @@
-.leftPanel {
-    background-color: #fff;
-    overflow: hidden;
-}
-
 @media only screen and (min-width: 960px) {
-    .leftPanel {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 300px;
-    }
-
     .users {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 300px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
     }
 
     .userList {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 54px;
-        left: 0;
-        overflow-y: auto;
         padding-top: 20px;
     }
 
@@ -38,18 +17,6 @@
 }
 
 @media only screen and (max-width: 960px) {
-    .leftPanel {
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-        height: 55px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-    }
-
     .users {
         position: absolute;
         top: 55px;
@@ -80,10 +47,6 @@
     text-align: center;
     width: 250px;
     margin-left: calc(50% - 125px);
-}
-
-.search {
-    margin: 10px 0 0 15px;
 }
 
 .userList {
@@ -138,10 +101,6 @@
 }
 
 .footer {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
     height: 54px;
     border-top: 1px solid #ddd;
     padding: 5px 10px 5px 0;

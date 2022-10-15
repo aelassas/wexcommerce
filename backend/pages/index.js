@@ -188,7 +188,7 @@ export default function Home({
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _page = 1, _keyword = '', _totalRecords = 0, _rowCount = 0, _orders = [], _noMatch = false;
+  let _user = null, __user = null, _signout = false, _page = 1, _keyword = '', _totalRecords = 0, _rowCount = 0, _orders = [], _noMatch = false;
   const _language = UserService.getLanguage(context);
 
   try {
@@ -208,11 +208,12 @@ export async function getServerSideProps(context) {
         if (_user) {
 
           if (_user.verified) {
+            if (typeof context.query.u !== 'undefined') __user = context.query.u;
             if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
             if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
 
             if (_page >= 1) {
-              const data = await OrderService.getOrders(context, _user._id, _page, Env.PAGE_SIZE, _keyword);
+              const data = await OrderService.getOrders(context, __user ? __user : _user._id, _page, Env.PAGE_SIZE, _keyword);
               const _data = data[0];
               _orders = _data.resultData;
               _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _orders.length;

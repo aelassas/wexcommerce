@@ -160,6 +160,21 @@ export const getProduct = async (req, res) => {
 };
 export const getBackendProducts = async (req, res) => {
     try {
+        // cat 1 634a9cf7d21ed77c797b7846
+        // cat 10 634a9cf7d21ed77c797b787c
+        // cat 11 634a9cf7d21ed77c797b7882
+
+        // for (let i = 36; i <= 71; i++) {
+        //     await new Product({
+        //         name: `Product ${i}`,
+        //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        //         categories: ['634a9cf7d21ed77c797b7882'],
+        //         image: '81iD7QhS30L._AC_SL1500_.jpg',
+        //         price: i * 1000,
+        //         quantity: 1,
+        //     }).save();
+        // }
+
         const { user: userId } = req.params;
 
         const user = await User.find({ _id: userId, type: Env.USER_TYPE.ADMIN });
@@ -204,7 +219,8 @@ export const getBackendProducts = async (req, res) => {
             },
             {
                 $project: {
-                    categories: 0
+                    categories: 0,
+                    description: 0
                 }
             },
             {
@@ -297,7 +313,8 @@ export const getFrontendProducts = async (req, res) => {
             },
             {
                 $project: {
-                    categories: 0
+                    categories: 0,
+                    description: 0
                 }
             },
             {
