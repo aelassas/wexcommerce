@@ -1,6 +1,14 @@
-@media only screen and (min-width: 960px) {}
+@media only screen and (min-width: 960px) {
+}
 
-@media only screen and (max-width: 960px) {}
+@media only screen and (max-width: 960px) {
+}
+
+.users {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
 
 .emptyList {
     margin-top: 15px;
@@ -65,8 +73,8 @@
     border-top: 1px solid #ddd;
     padding: 5px 10px 5px 0;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+        flex-direction: row;
+        justify-content: flex-end;
 }
 
 .footer .pager {
