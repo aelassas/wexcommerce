@@ -71,6 +71,10 @@ div.productList a:hover {
   text-decoration: underline;
 }
 
+article.product{
+  border-radius: 5px;
+}
+
 article.product div.thumbnail {
   width: 100%;
   height: calc(100% - 80px);
@@ -156,8 +160,9 @@ ul.categories li a .categoryIcon {
 .footer {
   height: 54px;
   padding: 5px 10px 5px 0;
-  margin: 0 3px;
+  margin: 3px 3px 0 3px;
   background-color: #fff;
+  border-radius: 5px;
 }
 
 .footer .pager {
