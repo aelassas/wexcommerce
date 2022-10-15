@@ -12,8 +12,9 @@ export const strings = new LocalizedStrings({
         SETTINGS: 'Paramètres',
         SIGN_IN: 'Se connecter',
         SIGN_OUT: 'Déconnexion',
-        SEARCH_ORDERS_PLACEHOLDER: 'Rechercher des commandes...',
+        SEARCH_CATEGORIES_PLACEHOLDER: 'Rechercher des catégories...',
         SEARCH_PRODUCTS_PLACEHOLDER: 'Rechercher des produits...',
+        SEARCH_ORDERS_PLACEHOLDER: 'Rechercher des commandes...',
         SEARCH_USERS_PLACEHOLDER: 'Rechercher des utilisateurs...',
     },
     en: {
@@ -27,8 +28,9 @@ export const strings = new LocalizedStrings({
         SETTINGS: 'Settings',
         SIGN_IN: 'Sign in',
         SIGN_OUT: 'Sign out',
-        SEARCH_ORDERS_PLACEHOLDER: 'Search orders...',
+        SEARCH_CATEGORIES_PLACEHOLDER: 'Search categories...',
         SEARCH_PRODUCTS_PLACEHOLDER: 'Search products...',
+        SEARCH_ORDERS_PLACEHOLDER: 'Search orders...',
         SEARCH_USERS_PLACEHOLDER: 'Search users...',
     }
 });

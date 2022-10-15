@@ -18,7 +18,8 @@ import {
   ShoppingBag as CategoryIcon,
   Home as HomeIcon,
   ArrowBackIos as PreviousPageIcon,
-  ArrowForwardIos as NextPageIcon
+  ArrowForwardIos as NextPageIcon,
+  Clear as CloseIcon
 } from '@mui/icons-material';
 import Env from '../config/env.config';
 import Link from 'next/link';
@@ -42,7 +43,8 @@ export default function Products({
 }) {
   const [loading, setLoading] = useState(true);
   const [leftPanelRef, setLeftPanelRef] = useState();
-  const [productListRef, setProductListRef] = useState();
+  const [closeIconRef, setCloseIconRef] = useState();
+  const [productsRef, setProductsRef] = useState();
 
   useEffect(() => {
     Helper.setLanguage(strings);
@@ -64,8 +66,8 @@ export default function Products({
   }, [_signout]);
 
   useEffect(() => {
-    if (productListRef) productListRef.scrollTo(0, 0);
-  }, [_products, productListRef]);
+    if (productsRef) productsRef.scrollTo(0, 0);
+  }, [_products, productsRef]);
 
   const handleResend = async (e) => {
     try {
@@ -98,115 +100,142 @@ export default function Products({
           {_noMatch && <NoMatch />}
 
           {!_noMatch &&
-            <div className={styles.main}>
-              <div
-                ref={el => setLeftPanelRef(el)}
-                className={styles.leftPanel}
-              >
-                <ul className={styles.categories}>
-                  <li>
-                    <Link href='/products'>
-                      <a className={!_categoryId ? styles.selected : ''}>
-                        <HomeIcon className={styles.categoryIcon} />
-                        <span>{strings.ALL}</span>
-                      </a>
-                    </Link>
-                  </li>
-                  {
-                    _categories.map((category) => (
-                      <li key={category._id}>
-                        <Link href={`/products?c=${category._id}`}>
-                          <a className={_categoryId === category._id ? styles.selected : ''} title={category.name}>
-                            <CategoryIcon className={styles.categoryIcon} />
-                            <span>{category.name}</span>
-                          </a>
-                        </Link>
-                      </li>
-                    ))
-                  }
-                </ul>
-              </div>
-              <div className={styles.products}>
-                {
-                  _totalRecords === 0 &&
-                  <Card variant="outlined" className={styles.emptyList}>
-                    <CardContent>
-                      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-                    </CardContent>
-                  </Card>
-                }
-
-                {
-                  _totalRecords > 0 &&
-                  <>
-                    <div
-                      ref={el => setProductListRef(el)}
-                      className={styles.productList}
-                    >
-                      {
-                        _products.map((product) => (
-                          <article key={product._id} className={styles.product}>
-                            <Link href={`/update-product?p=${product._id}`} title={product.name}>
-                              <a>
-                                <div
-                                  className={styles.thumbnail}
-                                  style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
-                                >
-                                </div>
-                                <span className={styles.name}>{product.name}</span>
-                              </a>
-                            </Link>
-                          </article>
-                        ))
+            <>
+              {
+                Env.isMobile() &&
+                <div
+                  className={styles.categoriesAction}
+                  onClick={() => {
+                    if (leftPanelRef) {
+                      if (leftPanelRef.style.display === 'none') {
+                        leftPanelRef.style.display = 'block';
+                        if (productsRef) {
+                          productsRef.style.display = 'none';
+                        }
+                        if (closeIconRef) {
+                          closeIconRef.style.visibility = 'visible';
+                        }
+                      } else {
+                        leftPanelRef.style.display = 'none';
+                        if (productsRef) {
+                          productsRef.style.display = 'block';
+                        }
+                        if (closeIconRef) {
+                          closeIconRef.style.visibility = 'hidden';
+                        }
                       }
-                    </div>
-
-                    {
-                      (_page > 1 || _rowCount < _totalRecords) &&
-                      <div className={styles.footer}>
-
-                        {/* <span
-                          className={styles.categoriesAction}
-                          onClick={() => {
-                            if (leftPanelRef) {
-                              if (leftPanelRef.style.display === 'none') {
-                                leftPanelRef.style.display = 'block';
-                              } else {
-                                leftPanelRef.style.display = 'none';
-                              }
-                            }
-                          }}
-                        >
-                          {headerStrings.CATEGORIES}
-                        </span> */}
-
-                        <div className={styles.pager}>
-                          <div className={styles.rowCount}>
-                            {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
-                          </div>
-
-                          <div className={styles.actions}>
-
-                            <Link href={`/products?${`p=${_page - 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
-                              <a className={_page === 1 ? styles.disabled : ''}>
-                                <PreviousPageIcon className={styles.icon} />
-                              </a>
-                            </Link>
-
-                            <Link href={`/products?${`p=${_page + 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
-                              <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
-                                <NextPageIcon className={styles.icon} />
-                              </a>
-                            </Link>
-                          </div>
-                        </div>
-
-                      </div>
                     }
-                  </>
-                }
+                  }}
+                >
+                  <div className={styles.categoriesText} >
+                    <CategoryIcon className={styles.categoriesIcon} />
+                    <span>{headerStrings.CATEGORIES}</span>
+                  </div>
+                  <CloseIcon
+                    className={styles.closeIcon}
+                    ref={el => setCloseIconRef(el)}
+                  />
+                </div>
+              }
+
+              <div className={styles.main}>
+                <div
+                  ref={el => setLeftPanelRef(el)}
+                  className={styles.leftPanel}
+                >
+                  <ul className={styles.categories}>
+                    <li>
+                      <Link href='/products'>
+                        <a className={!_categoryId ? styles.selected : ''}>
+                          <HomeIcon className={styles.categoryIcon} />
+                          <span>{strings.ALL}</span>
+                        </a>
+                      </Link>
+                    </li>
+                    {
+                      _categories.map((category) => (
+                        <li key={category._id}>
+                          <Link href={`/products?c=${category._id}`}>
+                            <a className={_categoryId === category._id ? styles.selected : ''} title={category.name}>
+                              <CategoryIcon className={styles.categoryIcon} />
+                              <span>{category.name}</span>
+                            </a>
+                          </Link>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+
+                <div
+                  className={styles.products}
+                  ref={el => setProductsRef(el)}
+                >
+
+                  {
+                    _totalRecords === 0 &&
+                    <Card variant="outlined" className={styles.emptyList}>
+                      <CardContent>
+                        <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
+                      </CardContent>
+                    </Card>
+                  }
+
+                  {
+                    _totalRecords > 0 &&
+                    <>
+                      <div className={styles.productList}>
+                        {
+                          _products.map((product) => (
+                            <article key={product._id} className={styles.product}>
+                              <Link href={`/update-product?p=${product._id}`} title={product.name}>
+                                <a>
+                                  <div
+                                    className={styles.thumbnail}
+                                    style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
+                                  >
+                                  </div>
+                                  <span className={styles.name}>{product.name}</span>
+                                </a>
+                              </Link>
+                            </article>
+                          ))
+                        }
+                      </div>
+
+                      {
+                        (_page > 1 || _rowCount < _totalRecords) &&
+                        <div className={styles.footer}>
+
+                          <div className={styles.pager}>
+                            <div className={styles.rowCount}>
+                              {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
+                            </div>
+
+                            <div className={styles.actions}>
+
+                              <Link href={`/products?${`p=${_page - 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                                <a className={_page === 1 ? styles.disabled : ''}>
+                                  <PreviousPageIcon className={styles.icon} />
+                                </a>
+                              </Link>
+
+                              <Link href={`/products?${`p=${_page + 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                                <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
+                                  <NextPageIcon className={styles.icon} />
+                                </a>
+                              </Link>
+                            </div>
+                          </div>
+
+                        </div>
+                      }
+                    </>
+                  }
+                </div>
               </div>
-            </div>
+
+            </>
           }
         </div>
       }

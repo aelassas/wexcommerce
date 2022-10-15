@@ -234,7 +234,7 @@ export default function Categories({ _user, _signout, _categories }) {
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _categories = null;
+  let _user = null, _signout = false, _keyword = '', _categories = null;
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -252,7 +252,9 @@ export async function getServerSideProps(context) {
         _user = await UserService.getUser(context, currentUser.id);
 
         if (_user) {
-          _categories = await CategoryService.getCategories(language);
+          if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
+
+          _categories = await CategoryService.searchCategories(context, language, _keyword);
         } else {
           _signout = true;
         }
@@ -272,6 +274,7 @@ export async function getServerSideProps(context) {
     props: {
       _user,
       _signout,
+      _keyword,
       _categories
     }
   };

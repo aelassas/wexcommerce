@@ -115,13 +115,15 @@ export default function Header(props) {
         const keyword = e.currentTarget.value;
 
         if (e.key === 'Enter') {
-          const url = router.pathname.includes('/products') ?
-                        (keyword ? '/products?s=' + encodeURIComponent(keyword) : '/products')
-                        : router.pathname.includes('/users') ?
-                          (keyword ? '/users?s=' + encodeURIComponent(keyword) : '/users')
-                          :  (keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
+            const url = router.pathname.includes('/categories') ?
+                (keyword ? '/categories?s=' + encodeURIComponent(keyword) : '/categories')
+                : router.pathname.includes('/products') ?
+                    (keyword ? '/products?s=' + encodeURIComponent(keyword) : '/products')
+                    : router.pathname.includes('/users') ?
+                        (keyword ? '/users?s=' + encodeURIComponent(keyword) : '/users')
+                        : (keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
 
-          router.replace(url);
+            router.replace(url);
         } else {
             setSearchKeyword(keyword);
         }
@@ -379,11 +381,13 @@ export default function Header(props) {
                                     {showPlaceholder && !searchKeyword && (
                                         <div className={styles.searchPlaceholder}>
                                             <span>{
-                                              router.pathname.includes('/products') ?
-                                                strings.SEARCH_PRODUCTS_PLACEHOLDER
-                                                  : router.pathname.includes('/users') ?
-                                                    strings.SEARCH_USERS_PLACEHOLDER
-                                                    : strings.SEARCH_ORDERS_PLACEHOLDER
+                                                router.pathname.includes('/categories') ?
+                                                    strings.SEARCH_CATEGORIES_PLACEHOLDER
+                                                    : router.pathname.includes('/products') ?
+                                                        strings.SEARCH_PRODUCTS_PLACEHOLDER
+                                                        : router.pathname.includes('/users') ?
+                                                            strings.SEARCH_USERS_PLACEHOLDER
+                                                            : strings.SEARCH_ORDERS_PLACEHOLDER
                                             }</span>
                                         </div>
                                     )}
@@ -409,12 +413,12 @@ export default function Header(props) {
                                             setSearchKeyword('');
 
                                             let input;
-                                            if(searchRef.current){
-                                              input = searchRef.current.querySelector('input');
+                                            if (searchRef.current) {
+                                                input = searchRef.current.querySelector('input');
                                             }
 
-                                            if(input){
-                                              input.focus();
+                                            if (input) {
+                                                input.focus();
                                             }
                                         }}>
                                         <ClearIcon />
@@ -428,11 +432,13 @@ export default function Header(props) {
 
                                         setShowMobileSearch(false);
 
-                                        const url = router.pathname.includes('/products') ?
-                                                      (searchKeyword ? '/products?s=' + encodeURIComponent(searchKeyword) : '/products')
-                                                      : router.pathname.includes('/users') ?
-                                                        (searchKeyword ? '/users?s=' + encodeURIComponent(searchKeyword) : '/users')
-                                                        :  (searchKeyword ? '/?s=' + encodeURIComponent(searchKeyword) : '/');
+                                        const url = router.pathname.includes('/categories') ?
+                                            (searchKeyword ? '/categories?s=' + encodeURIComponent(searchKeyword) : '/categories')
+                                            : router.pathname.includes('/products') ?
+                                                (searchKeyword ? '/products?s=' + encodeURIComponent(searchKeyword) : '/products')
+                                                : router.pathname.includes('/users') ?
+                                                    (searchKeyword ? '/users?s=' + encodeURIComponent(searchKeyword) : '/users')
+                                                    : (searchKeyword ? '/?s=' + encodeURIComponent(searchKeyword) : '/');
 
                                         router.replace(url);
                                     }}>

@@ -1,23 +1,8 @@
 @media only screen and (max-width: 960px) {
-    .leftColumn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-    }
 
     .newCategory {
         width: calc(100% - 20px);
         margin: 10px !important;
-    }
-
-    .categories {
-        position: absolute;
-        top: 50px;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        overflow-y: auto;
     }
 
     .categoryList {
