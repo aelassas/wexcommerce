@@ -17,9 +17,11 @@
 
   article.product {
     flex: 1 0 21%;
-    max-width: calc(25% - 12px);
+    max-width: calc(25% - 6px);
     height: 250px;
-    margin: 6px;
+    margin: 3px;
+    background-color: #fff;
+    padding: 6px;
   }
 
   div.leftPanel {
@@ -49,8 +51,7 @@ div.leftPanel {
   background-color: #fff;
 }
 
-div.products{
-  background-color: #fff;
+div.products {
   height: fit-content;
 }
 
@@ -154,8 +155,9 @@ ul.categories li a .categoryIcon {
 
 .footer {
   height: 54px;
-  border-top: 2px solid #fafafa;
   padding: 5px 10px 5px 0;
+  margin: 0 3px;
+  background-color: #fff;
 }
 
 .footer .pager {
