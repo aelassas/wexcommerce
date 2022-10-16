@@ -1,5 +1,6 @@
 import strings from '../config/app.config.js';
 import Product from '../models/Product.js';
+import OrderItem from '../models/OrderItem.js';
 import Cart from '../models/Cart.js';
 import User from '../models/User.js';
 import mongoose from 'mongoose';
@@ -120,6 +121,23 @@ export const update = async (req, res) => {
     }
 };
 
+export const checkProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const count = await OrderItem.find({ product: id }).limit(1).count();
+
+        if (count === 1) {
+            return res.sendStatus(200);
+        }
+        return res.sendStatus(204);
+
+    } catch (err) {
+        console.error(`[product.checkProduct]  ${strings.DB_ERROR} ${id}`, err);
+        return res.status(400).send(strings.DB_ERROR + err);
+    }
+};
+
 export const deleteProduct = async (req, res) => {
     try {
         const product = await Product.findByIdAndDelete(req.params.id);
@@ -129,11 +147,10 @@ export const deleteProduct = async (req, res) => {
             if (fs.existsSync(_image)) {
                 fs.unlinkSync(_image);
             }
+            return res.sendStatus(200);
         } else {
             return res.sendStatus(204);
         }
-
-        return res.sendStatus(200);
     } catch (err) {
         console.error(strings.ERROR, err);
         return res.status(400).send(strings.ERROR + err);

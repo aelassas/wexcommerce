@@ -6,10 +6,13 @@ import {
   InputLabel,
   FormControl,
   FormControlLabel,
-  FormHelperText,
   Button,
   Paper,
-  Switch
+  Switch,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import { PhotoCamera as ImageIcon } from '@mui/icons-material';
 import { strings } from '../lang/update-product';
@@ -37,6 +40,8 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
   const [soldOut, setSoldOut] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [tempImage, setTempImage] = useState('');
+  const [openInfoDialog, setOpenInfoDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const upload = useRef(null);
 
@@ -117,7 +122,6 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
     e.preventDefault();
 
     try {
-      // TODO
       const _categories = categories.map(c => c._id);
       const _price = parseFloat(price);
       const _quantity = parseInt(quantity);
@@ -139,11 +143,12 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
         _product.image = res.data.image;
         Helper.info(strings.PRODUCT_UPDATED);
       } else {
+        // UserService.signout();
         Helper.error();
       }
     }
     catch (err) {
-      UserService.signout();
+      Helper.error();
     }
   };
 
@@ -274,6 +279,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                 </FormControl>
 
                 <div className="buttons">
+
                   <Button
                     type="submit"
                     variant="contained"
@@ -282,6 +288,32 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                   >
                     {commonStrings.SAVE}
                   </Button>
+
+                  <Button
+                    variant="contained"
+                    className='btn-margin-bottom'
+                    color='error'
+                    size="small"
+                    onClick={async () => {
+                      try {
+                        const status = await ProductService.checkProduct(_product._id);
+
+                        if (status === 204) {
+                          setOpenDeleteDialog(true);
+                        } else if (status === 200) {
+                          setOpenInfoDialog(true);
+                        } else {
+                          Helper.error();
+                        }
+                      } catch (err) {
+                        // UserService.signout();
+                        Helper.error();
+                      }
+                    }}
+                  >
+                    {commonStrings.DELETE}
+                  </Button>
+
                   <Button
                     variant="contained"
                     className='btn-secondary btn-margin-bottom'
@@ -303,6 +335,45 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                 </div>
               </form>
 
+              <Dialog
+                disableEscapeKeyDown
+                maxWidth="xs"
+                open={openInfoDialog}
+              >
+                <DialogTitle className='dialog-header'>{commonStrings.INFO}</DialogTitle>
+                <DialogContent>{strings.CANNOT_DELETE_PRODUCT}</DialogContent>
+                <DialogActions className='dialog-actions'>
+                  <Button onClick={() => setOpenInfoDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
+                </DialogActions>
+              </Dialog>
+
+              <Dialog
+                disableEscapeKeyDown
+                maxWidth="xs"
+                open={openDeleteDialog}
+              >
+                <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+                <DialogContent>{strings.DELETE_PRODUCT}</DialogContent>
+                <DialogActions className='dialog-actions'>
+                  <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+                  <Button onClick={async () => {
+                    try {
+                      const status = await ProductService.deleteProduct(_product._id);
+
+                      if (status === 200) {
+                        setOpenDeleteDialog(false);
+                        router.replace('/products');
+                      } else {
+                        Helper.error();
+                        setOpenDeleteDialog(false);
+                      }
+                    } catch (err) {
+                      // UserService.signout();
+                      Helper.error();
+                    }
+                  }} variant='contained' color='error'>{commonStrings.DELETE}</Button>
+                </DialogActions>
+              </Dialog>
             </Paper>
           }
 

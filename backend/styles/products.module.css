@@ -4,6 +4,11 @@
     margin-top: 5px;
   }
 
+  .newProduct {
+    width: calc(100% - 20px);
+    margin: 10px !important;
+  }
+
   div.categoriesAction {
     display: flex;
     flex: 1;
@@ -15,18 +20,18 @@
     color: #030303;
   }
 
-  div.categoriesAction div.categoriesText{
+  div.categoriesAction div.categoriesText {
     display: flex;
     flex: 1;
     flex-direction: row;
     align-items: center;
   }
 
-  div.categoriesAction .categoriesIcon{
+  div.categoriesAction .categoriesIcon {
     margin-right: 5px;
   }
 
-  div.categoriesAction .closeIcon{
+  div.categoriesAction .closeIcon {
     visibility: hidden;
   }
 
@@ -71,6 +76,10 @@
 
   div.leftPanel {
     width: 275px;
+  }
+
+  div.leftPanel .newProduct {
+    width: 100%;
   }
 
   ul.categories {

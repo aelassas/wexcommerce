@@ -25,6 +25,7 @@ import Env from '../config/env.config';
 import Link from 'next/link';
 import { fr, enUS } from "date-fns/locale";
 import NoMatch from '../components/NoMatch';
+import { useRouter } from 'next/router';
 
 import styles from '../styles/products.module.css';
 
@@ -41,6 +42,8 @@ export default function Products({
   _products,
   _noMatch
 }) {
+  const router = useRouter();
+  
   const [loading, setLoading] = useState(true);
   const [leftPanelRef, setLeftPanelRef] = useState();
   const [closeIconRef, setCloseIconRef] = useState();
@@ -103,39 +106,52 @@ export default function Products({
             <>
               {
                 Env.isMobile() &&
-                <div
-                  className={styles.categoriesAction}
-                  onClick={() => {
-                    if (leftPanelRef) {
-                      if (leftPanelRef.style.display === 'none') {
-                        leftPanelRef.style.display = 'block';
-                        if (productsRef) {
-                          productsRef.style.display = 'none';
-                        }
-                        if (closeIconRef) {
-                          closeIconRef.style.visibility = 'visible';
-                        }
-                      } else {
-                        leftPanelRef.style.display = 'none';
-                        if (productsRef) {
-                          productsRef.style.display = 'block';
-                        }
-                        if (closeIconRef) {
-                          closeIconRef.style.visibility = 'hidden';
+                <>
+                  <Button
+                    variant="contained"
+                    className={`btn-primary ${styles.newProduct}`}
+                    size="small"
+                    onClick={() => {
+                      router.replace('/create-product');
+                    }}
+                  >
+                    {strings.NEW_PRODUCT}
+                  </Button>
+
+                  <div
+                    className={styles.categoriesAction}
+                    onClick={() => {
+                      if (leftPanelRef) {
+                        if (leftPanelRef.style.display === 'none') {
+                          leftPanelRef.style.display = 'block';
+                          if (productsRef) {
+                            productsRef.style.display = 'none';
+                          }
+                          if (closeIconRef) {
+                            closeIconRef.style.visibility = 'visible';
+                          }
+                        } else {
+                          leftPanelRef.style.display = 'none';
+                          if (productsRef) {
+                            productsRef.style.display = 'block';
+                          }
+                          if (closeIconRef) {
+                            closeIconRef.style.visibility = 'hidden';
+                          }
                         }
                       }
-                    }
-                  }}
-                >
-                  <div className={styles.categoriesText} >
-                    <CategoryIcon className={styles.categoriesIcon} />
-                    <span>{headerStrings.CATEGORIES}</span>
+                    }}
+                  >
+                    <div className={styles.categoriesText} >
+                      <CategoryIcon className={styles.categoriesIcon} />
+                      <span>{headerStrings.CATEGORIES}</span>
+                    </div>
+                    <CloseIcon
+                      className={styles.closeIcon}
+                      ref={el => setCloseIconRef(el)}
+                    />
                   </div>
-                  <CloseIcon
-                    className={styles.closeIcon}
-                    ref={el => setCloseIconRef(el)}
-                  />
-                </div>
+                </>
               }
 
               <div className={styles.main}>
@@ -143,6 +159,19 @@ export default function Products({
                   ref={el => setLeftPanelRef(el)}
                   className={styles.leftPanel}
                 >
+                  {
+                    !Env.isMobile() &&
+                    <Button
+                      variant="contained"
+                      className={`btn-primary ${styles.newProduct}`}
+                      size="small"
+                      onClick={() => {
+                        router.replace('/create-product');
+                      }}
+                    >
+                      {strings.NEW_PRODUCT}
+                    </Button>
+                  }
                   <ul className={styles.categories}>
                     <li>
                       <Link href='/products'>
