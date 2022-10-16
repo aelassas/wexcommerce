@@ -144,7 +144,7 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category })
       <Header user={_user} />
       {
         _user.verified &&
-        <div className={styles.content}>
+        <div className={'content'}>
           {_category &&
             <Paper className={styles.form} elevation={10}>
               <h1 className={styles.formTitle}> {strings.UPDATE_CATEGORY_HEADING} </h1>

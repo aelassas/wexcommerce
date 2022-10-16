@@ -22,15 +22,15 @@ export default class ProductService {
     }
 
     static updateProduct(data) {
-        return axios.put(`${Env.API_HOST}/api/update-product`, data, { headers: UserService.authHeader() }).then(res => res.status);
+        return axios.put(`${Env.API_HOST}/api/update-product`, data, { headers: UserService.authHeader() }).then(res => ({ status: res.status, data: res.data }));
     }
 
     static deleteProduct(id) {
         return axios.delete(`${Env.API_HOST}/api/delete-product/${id}`, { headers: UserService.authHeader() }).then(res => res.status);
     }
 
-    static getProduct(id) {
-        return axios.get(`${Env.API_HOST}/api/product/${id}`).then(res => res.data);
+    static getProduct(id, language) {
+        return axios.get(`${Env.API_HOST}/api/product/${id}/${language}`).then(res => res.data);
     }
 
     static getProducts(context, userId, keyword, page, size, categoryId) {

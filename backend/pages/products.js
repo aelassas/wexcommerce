@@ -196,6 +196,7 @@ export default function Products({
                                   >
                                   </div>
                                   <span className={styles.name}>{product.name}</span>
+                                  <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
                                 </a>
                               </Link>
                             </article>

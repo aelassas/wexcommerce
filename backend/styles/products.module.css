@@ -92,7 +92,7 @@
     height: calc(100% - 80px);
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: 100% auto;
+    background-size: 80% auto;
   }
 
   div.products {
@@ -125,12 +125,11 @@ div.productList {
 
 div.productList a {
   color: #030303;
-  font-weight: bold;
   text-decoration: none;
 }
 
 div.productList a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 article.product {
@@ -149,6 +148,14 @@ article.product span.name {
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;
   white-space: normal;
+  text-align: center;
+  font-weight: 300;
+}
+
+article.product span.price {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
 }
 
 ul.categories {

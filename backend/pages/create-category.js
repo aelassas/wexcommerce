@@ -102,7 +102,7 @@ export default function CreateCategory({ _user, _signout }) {
       <Header user={_user} />
       {
         _user.verified &&
-        <div className={styles.content}>
+        <div className={'content'}>
           <Paper className={styles.form} elevation={10}>
             <h1 className={styles.formTitle}> {strings.NEW_CATEGORY_HEADING} </h1>
             <form onSubmit={handleSubmit}>

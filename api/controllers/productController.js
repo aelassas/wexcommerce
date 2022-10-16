@@ -142,14 +142,53 @@ export const deleteProduct = async (req, res) => {
 
 export const getProduct = async (req, res) => {
     try {
-        const id = mongoose.Types.ObjectId(req.params.id);
+        const _id = mongoose.Types.ObjectId(req.params.id);
+        const language = req.params.language;
 
-        const product = await Product.findById(id)
-            .populate('categories')
-            .lean();
+        const products = await Product.aggregate([
+            {
+                $match: {
+                    $expr: { $eq: ['$_id', _id] }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'Category',
+                    let: { categories: '$categories' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ['$_id', '$$categories'] }
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: 'Value',
+                                let: { values: '$values' },
+                                pipeline: [
+                                    {
+                                        $match: {
+                                            $and: [
+                                                { $expr: { $in: ['$_id', '$$values'] } },
+                                                { $expr: { $eq: ['$language', language] } },
+                                            ]
+                                        }
+                                    }
+                                ],
+                                as: 'value'
+                            }
+                        },
+                        { $unwind: { path: '$value', preserveNullAndEmptyArrays: false } },
+                        { $addFields: { name: '$value.value' } },
+                        { $project: { value: 0, values: 0 } },
+                    ],
+                    as: 'categories'
+                }
+            }
+        ]);
 
-        if (product) {
-            return res.json(product);
+        if (products.length > 0) {
+            return res.json(products[0]);
         } else {
             return res.sendStatus(204);
         }

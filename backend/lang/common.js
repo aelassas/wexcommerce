@@ -36,7 +36,6 @@ export const strings = new LocalizedStrings({
         OF: 'sur',
         RESET_PASSWORD_EMAIL_SENT: 'E-mail de réinitialisation envoyé.',
         INFO: 'Information',
-        CURRENCY_PER_MONTH: 'DH/mois',
         SUBSCRIPTION: 'Abonnement',
         NO_SUBSCRIPTION: 'Aucun abonnement'
     },
@@ -75,7 +74,6 @@ export const strings = new LocalizedStrings({
         OF: 'of',
         RESET_PASSWORD_EMAIL_SENT: 'password reset email sent.',
         INFO: 'Information',
-        CURRENCY_PER_MONTH: 'DH/month',
         SUBSCRIPTION: 'Subscription',
         NO_SUBSCRIPTION: 'No subscription',
     }
