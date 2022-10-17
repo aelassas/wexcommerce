@@ -12,14 +12,17 @@ import {
   Button,
   Card,
   CardContent,
-  Typography
+  Typography,
+  Tooltip
 } from '@mui/material';
 import {
   ShoppingBag as CategoryIcon,
   Home as HomeIcon,
   ArrowBackIos as PreviousPageIcon,
   ArrowForwardIos as NextPageIcon,
-  Clear as CloseIcon
+  Clear as CloseIcon,
+  Block as SoldOutIcon,
+  VisibilityOff as HiddenIcon
 } from '@mui/icons-material';
 import Env from '../config/env.config';
 import Link from 'next/link';
@@ -43,7 +46,7 @@ export default function Products({
   _noMatch
 }) {
   const router = useRouter();
-  
+
   const [loading, setLoading] = useState(true);
   const [leftPanelRef, setLeftPanelRef] = useState();
   const [closeIconRef, setCloseIconRef] = useState();
@@ -224,6 +227,24 @@ export default function Products({
                                     style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
                                   >
                                   </div>
+                                  {
+                                    product.soldOut &&
+                                    <Tooltip title={commonStrings.SOLD_OUT_INFO}>
+                                      <div className={`${styles.label} ${styles.soldOut}`}>
+                                        <SoldOutIcon className={styles.labelIcon} />
+                                        <span>{commonStrings.SOLD_OUT}</span>
+                                      </div>
+                                    </Tooltip>
+                                  }
+                                  {
+                                    product.hidden &&
+                                    <Tooltip title={commonStrings.HIDDEN_INFO}>
+                                      <div className={`${styles.label} ${styles.hidden}`}>
+                                        <HiddenIcon className={styles.labelIcon} />
+                                        <span>{commonStrings.HIDDEN}</span>
+                                      </div>
+                                    </Tooltip>
+                                  }
                                   <span className={styles.name}>{product.name}</span>
                                   <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
                                 </a>

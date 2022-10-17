@@ -261,7 +261,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                         }}
                         color="primary" />
                     }
-                    label={cpStrings.SOLD_OUT}
+                    label={commonStrings.SOLD_OUT}
                   />
                 </FormControl>
 
@@ -274,7 +274,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                         }}
                         color="primary" />
                     }
-                    label={cpStrings.HIDDEN}
+                    label={commonStrings.HIDDEN}
                   />
                 </FormControl>
 

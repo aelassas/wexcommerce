@@ -52,7 +52,7 @@
 
   article.product div.thumbnail {
     width: 100%;
-    height: calc(100% - 80px);
+    height: calc(100% - 140px);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: auto 100%;
@@ -89,16 +89,15 @@
   article.product {
     flex: 1 0 21%;
     max-width: calc(25% - 6px);
-    height: 250px;
+    height: 300px;
     margin: 3px;
     background-color: #fff;
     padding: 6px;
   }
 
   article.product div.thumbnail {
-    z-index: -1;
     width: 100%;
-    height: calc(100% - 80px);
+    height: calc(100% - 130px);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 80% auto;
@@ -145,10 +144,6 @@ article.product {
   border-radius: 5px;
 }
 
-article.product div.thumbnail {
-  z-index: -1;
-}
-
 article.product span.name {
   overflow: hidden;
   display: block;
@@ -165,6 +160,35 @@ article.product span.price {
   display: flex;
   justify-content: center;
   font-weight: bold;
+}
+
+article.product div.label {
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 2px;
+  margin: 2px 0;
+  max-width: 390px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+article.product div.label .labelIcon {
+  font-size: 15px;
+  margin-right: 5px;
+}
+
+article.product div.soldOut {
+  background-color: #e33b2f;
+}
+
+article.product div.hidden {
+  background-color: #c2c2c2;
 }
 
 ul.categories {

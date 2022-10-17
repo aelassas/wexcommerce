@@ -255,7 +255,7 @@ export default function CreateProduct({ _user, _signout }) {
                       }}
                       color="primary" />
                   }
-                  label={strings.SOLD_OUT}
+                  label={commonStrings.SOLD_OUT}
                 />
               </FormControl>
 
@@ -268,7 +268,7 @@ export default function CreateProduct({ _user, _signout }) {
                       }}
                       color="primary" />
                   }
-                  label={strings.HIDDEN}
+                  label={commonStrings.HIDDEN}
                 />
               </FormControl>
 

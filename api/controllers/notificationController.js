@@ -131,9 +131,9 @@ export const getNotifications = async (req, res) => {
         // await Notification.deleteMany();
         // await NotificationCounter.deleteMany();
         // for (let i = 1; i <= 45; i++) {
-        //     // 62f6b439b624a89972c27623 (poweredge-840@hotmail.com) John doe a souscrit à l'abonnement ${i}.
-        //     // 62f6b98e8bf0f05576a81091 (elassas@hotmail.com) L'abonnement ${i} a été mis à jour.
-        //     await new Notification({ user: '62f6b98e8bf0f05576a81091', message: `L'abonnement ${i} a été mis à jour.` }).save();
+        //     // 63493d057ade381e52c01b5c (poweredge-840@hotmail.com) Nouvelle commande ${i} effectuée.
+        //     // 63497dc164b5af0b1d9971cb (akram.elassas@gmail.com) commande ${i} a été mis à jour.
+        //     await new Notification({ user: '63493d057ade381e52c01b5c', message: `Nouvelle commande ${i} effectuée.` }).save();
         // }
 
         const notifications = await Notification.aggregate([
