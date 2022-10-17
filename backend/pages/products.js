@@ -245,7 +245,9 @@ export default function Products({
                                       </div>
                                     </Tooltip>
                                   }
-                                  <span className={styles.name}>{product.name}</span>
+                                  <Tooltip title={product.name}>
+                                    <span className={styles.name}>{product.name}</span>
+                                  </Tooltip>
                                   <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
                                 </a>
                               </Link>
