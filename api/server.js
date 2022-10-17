@@ -11,6 +11,7 @@ import productRoutes from './routes/productRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import paymentTypeRoutes from './routes/paymentTypeRoutes.js';
 
 const DB_HOST = process.env.SC_DB_HOST;
 const DB_PORT = process.env.SC_DB_PORT;
@@ -72,6 +73,7 @@ app.use('/', productRoutes);
 app.use('/', cartRoutes);
 app.use('/', orderRoutes);
 app.use('/', notificationRoutes);
+app.use('/', paymentTypeRoutes);
 
 strings.setLanguage(process.env.SC_DEFAULT_LANGUAGE);
 

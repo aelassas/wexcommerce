@@ -499,6 +499,8 @@ export const getUser = (req, res) => {
     User.findById(req.params.id, {
         email: 1,
         fullName: 1,
+        phone: 1,
+        address: 1,
         verified: 1,
         language: 1,
         type: 1,
@@ -526,19 +528,11 @@ export const update = (req, res) => {
                 console.error('[user.update] User not found:', req.body.email);
                 return res.sendStatus(204);
             } else {
-                const { fullName, subscription } = req.body;
+                const { fullName, phone, address } = req.body;
 
-                if (fullName) {
-                    user.fullName = fullName;
-                }
-
-                if (typeof subscription !== 'undefined') {
-                    if (subscription) {
-                        user.subscription = subscription;
-                    } else {
-                        user.subscription = null;
-                    }
-                }
+                user.fullName = fullName;
+                user.phone = phone;
+                user.address = address;
 
                 user.save()
                     .then(() => {
@@ -652,7 +646,7 @@ export const changePassword = (req, res) => {
 export const getUsers = async (req, res) => {
 
     try {
-        const keyword = escapeStringRegexp(req.query.s || '');
+        let keyword = req.query.s || '';
         const options = 'i';
         const page = parseInt(req.params.page);
         const size = parseInt(req.params.size);
@@ -670,9 +664,24 @@ export const getUsers = async (req, res) => {
         //     }).save();
         // }
 
-        const users = await User.aggregate([
-            {
-                $match: {
+        let $match;
+        if (keyword) {
+            const isObjectId = mongoose.isValidObjectId(keyword);
+            if (isObjectId) {
+                $match = {
+                    $and: [
+                        {
+                            type: Env.USER_TYPE.USER
+                        },
+                        {
+                            _id: { $eq: mongoose.Types.ObjectId(keyword) }
+                        }
+                    ]
+                };
+            } else {
+                keyword = escapeStringRegexp(keyword);
+
+                $match = {
                     $and: [
                         {
                             type: Env.USER_TYPE.USER
@@ -681,7 +690,15 @@ export const getUsers = async (req, res) => {
                             $or: [{ fullName: { $regex: keyword, $options: options } }, { email: { $regex: keyword, $options: options } }]
                         }
                     ]
-                }
+                };
+            }
+        } else {
+            $match = { type: Env.USER_TYPE.USER };
+        }
+
+        const users = await User.aggregate([
+            {
+                $match
             },
             {
                 $lookup: {
@@ -740,6 +757,8 @@ export const getUsers = async (req, res) => {
                 $project: {
                     email: 1,
                     fullName: 1,
+                    phone: 1,
+                    address: 1,
                     verified: 1,
                     language: 1,
                     type: 1,

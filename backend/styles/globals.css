@@ -272,7 +272,8 @@ a {
   }
 
   .buttons {
-    float: right;
+    display: flex;
+    justify-content: flex-end;
     margin-top: 15px;
     margin-bottom: 5px;
   }

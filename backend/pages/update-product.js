@@ -143,8 +143,8 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
         _product.image = res.data.image;
         Helper.info(strings.PRODUCT_UPDATED);
       } else {
-        // UserService.signout();
-        Helper.error();
+        UserService.signout();
+        // Helper.error();
       }
     }
     catch (err) {
@@ -306,8 +306,8 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                           Helper.error();
                         }
                       } catch (err) {
-                        // UserService.signout();
-                        Helper.error();
+                        UserService.signout();
+                        // Helper.error();
                       }
                     }}
                   >
@@ -368,8 +368,8 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                         setOpenDeleteDialog(false);
                       }
                     } catch (err) {
-                      // UserService.signout();
-                      Helper.error();
+                      UserService.signout();
+                      // Helper.error();
                     }
                   }} variant='contained' color='error'>{commonStrings.DELETE}</Button>
                 </DialogActions>

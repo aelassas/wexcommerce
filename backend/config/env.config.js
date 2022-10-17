@@ -24,6 +24,11 @@ const Env = {
     USER_TYPE: {
         ADMIN: 'admin',
         USER: 'user'
+    },
+    PAYMENT_TYPE: {
+        CREDIT_CARD: 'creditCard',
+        COD: 'cod',
+        WIRE_TRANSFER: 'wireTransfer'
     }
 };
 

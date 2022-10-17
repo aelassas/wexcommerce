@@ -86,6 +86,9 @@ export default function Header(props) {
                         setNotificationCount(notificationCounter.count);
                         setIsLoading(false);
                         setIsLoaded(true);
+                    })
+                    .catch((err) => {
+                        UserService.signout(false, true);
                     });
             } else {
                 setIsLoading(false);

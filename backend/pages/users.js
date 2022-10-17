@@ -100,55 +100,63 @@ export default function Home({
           {_noMatch && <NoMatch />}
 
           {!_noMatch &&
-              <div className={styles.users}>
-                {
-                  _totalRecords === 0 &&
-                  <Card variant="outlined" className={styles.emptyList}>
-                    <CardContent>
-                      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-                    </CardContent>
-                  </Card>
-                }
+            <div className={styles.users}>
+              {
+                _totalRecords === 0 &&
+                <Card variant="outlined" className={styles.emptyList}>
+                  <CardContent>
+                    <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
+                  </CardContent>
+                </Card>
+              }
 
-                {
-                  _totalRecords > 0 &&
-                  <>
-                    <div ref={userListRef} className={styles.userList}>
-                      {
-                        _users.map((user) => (
-                          <article key={user._id} className={styles.user}>
-                            <div className={styles.userContent}>
-                              <div className={styles.userInfo}>
-                                <span className={styles.userLabel}>{commonStrings.FULL_NAME}</span>
-                                <span>{user.fullName}</span>
-                              </div>
-                              <div className={styles.userInfo}>
-                                <span className={styles.userLabel}>{commonStrings.EMAIL}</span>
-                                <span>{user.email}</span>
-                              </div>
-                              <div className={styles.userInfo}>
-                                <span className={styles.userLabel}>{strings.SUBSCRIBED_AT}</span>
-                                <span>{Helper.capitalize(format(new Date(user.createdAt), _format, { locale: _locale }))}</span>
-                              </div>
-                            </div>
-                            <div className={styles.userActions}>
-                              <Tooltip title={strings.ORDERS}>
-                                <IconButton onClick={() => {
-                                  router.replace(`/?u=${user._id}`);
-                                }}
-                                >
-                                  <OrdersIcon />
-                                </IconButton>
-                              </Tooltip>
-                            </div>
-                          </article>
-                        ))
-                      }
-                    </div>
-
+              {
+                _totalRecords > 0 &&
+                <>
+                  <div ref={userListRef} className={styles.userList}>
                     {
-                      (_page > 1 || _rowCount < _totalRecords) &&
-                      <div className={styles.footer}>
+                      _users.map((user) => (
+                        <article key={user._id} className={styles.user}>
+                          <div className={styles.userContent}>
+                            <div className={styles.userInfo}>
+                              <span className={styles.userLabel}>{commonStrings.FULL_NAME}</span>
+                              <span>{user.fullName}</span>
+                            </div>
+                            <div className={styles.userInfo}>
+                              <span className={styles.userLabel}>{commonStrings.EMAIL}</span>
+                              <span>{user.email}</span>
+                            </div>
+                            <div className={styles.userInfo}>
+                              <span className={styles.userLabel}>{commonStrings.PHONE}</span>
+                              <span>{user.phone || '-'}</span>
+                            </div>
+                            <div className={styles.userInfo}>
+                              <span className={styles.userLabel}>{commonStrings.ADDRESS}</span>
+                              <pre>{user.address || '-'}</pre>
+                            </div>
+                            <div className={styles.userInfo}>
+                              <span className={styles.userLabel}>{strings.SUBSCRIBED_AT}</span>
+                              <span>{Helper.capitalize(format(new Date(user.createdAt), _format, { locale: _locale }))}</span>
+                            </div>
+                          </div>
+                          <div className={styles.userActions}>
+                            <Tooltip title={strings.ORDERS}>
+                              <IconButton onClick={() => {
+                                router.replace(`/?u=${user._id}`);
+                              }}
+                              >
+                                <OrdersIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        </article>
+                      ))
+                    }
+                  </div>
+
+                  {
+                    (_page > 1 || _rowCount < _totalRecords) &&
+                    <div className={styles.footer}>
 
                       <div className={styles.pager}>
                         <div className={styles.rowCount}>
@@ -172,10 +180,10 @@ export default function Home({
                       </div>
 
                     </div>
-                    }
-                  </>
-                }
-              </div>
+                  }
+                </>
+              }
+            </div>
           }
         </div>
       }

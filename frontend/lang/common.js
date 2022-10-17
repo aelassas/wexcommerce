@@ -36,7 +36,9 @@ export const strings = new LocalizedStrings({
         ACTIVATION_EMAIL_SENT: "E-mail d'activation envoyé.",
         RESET_PASSWORD_EMAIL_SENT: 'E-mail de réinitialisation envoyé.',
         INFO: 'Information',
-        SUBSCRIPTION: 'Abonnement',
+        PHONE: 'Téléphone',
+        PHONE_NOT_VALID: 'Numéro de téléphone non valide',
+        ADDRESS: 'Adresse',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -73,6 +75,8 @@ export const strings = new LocalizedStrings({
         ACTIVATION_EMAIL_SENT: 'Activation email sent.',
         RESET_PASSWORD_EMAIL_SENT: 'password reset email sent.',
         INFO: 'Information',
-        SUBSCRIPTION: 'Subscription'
+        PHONE: 'Phone',
+        PHONE_NOT_VALID: 'Invalid phone number',
+        ADDRESS: 'Address',
     }
 });

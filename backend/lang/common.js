@@ -36,8 +36,14 @@ export const strings = new LocalizedStrings({
         OF: 'sur',
         RESET_PASSWORD_EMAIL_SENT: 'E-mail de réinitialisation envoyé.',
         INFO: 'Information',
-        SUBSCRIPTION: 'Abonnement',
-        NO_SUBSCRIPTION: 'Aucun abonnement'
+        PHONE: 'Téléphone',
+        PHONE_NOT_VALID: 'Numéro de téléphone non valide',
+        ADDRESS: 'Adresse',
+        PAYMENT_TYPES: 'Types de paiement',
+
+        CREDIT_CARD: 'Carte bancaire',
+        COD: 'Cash à la livraison',
+        WIRE_TRANSFER: 'Virement bancaire',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -74,7 +80,13 @@ export const strings = new LocalizedStrings({
         OF: 'of',
         RESET_PASSWORD_EMAIL_SENT: 'password reset email sent.',
         INFO: 'Information',
-        SUBSCRIPTION: 'Subscription',
-        NO_SUBSCRIPTION: 'No subscription',
+        PHONE: 'Phone',
+        PHONE_NOT_VALID: 'Invalid phone number',
+        ADDRESS: 'Address',
+        PAYMENT_TYPES: 'Payment types',
+
+        CREDIT_CARD: 'Credit card',
+        COD: 'Cash on delivery',
+        WIRE_TRANSFER: 'Wire transfer',
     }
 });

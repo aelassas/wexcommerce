@@ -20,6 +20,27 @@ const userSchema = new Schema({
         index: true,
         trim: true
     },
+    phone: {
+        type: String,
+        validate: {
+            validator: (value) => {
+
+                // Check if value is empty then return true.
+                if (!value) {
+                    return true;
+                }
+
+                // If value is empty will not validate for mobile phone.
+                return validator.isMobilePhone(value);
+            },
+            message: '{VALUE} is not valid'
+        },
+        trim: true
+    },
+    address: {
+        type: String,
+        trim: true
+    },
     password: {
         type: String,
         minlength: 6

@@ -141,8 +141,8 @@ export default function CreateProduct({ _user, _signout }) {
       }
     }
     catch (err) {
-      // UserService.signout();
-      Helper.error();
+      UserService.signout();
+      // Helper.error();
     }
   };
 
