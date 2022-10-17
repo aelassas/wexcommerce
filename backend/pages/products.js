@@ -13,7 +13,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Tooltip
 } from '@mui/material';
 import {
   ShoppingBag as CategoryIcon,
@@ -229,25 +228,19 @@ export default function Products({
                                   </div>
                                   {
                                     product.soldOut &&
-                                    <Tooltip title={commonStrings.SOLD_OUT_INFO}>
-                                      <div className={`${styles.label} ${styles.soldOut}`}>
+                                      <div className={`${styles.label} ${styles.soldOut}`} title={commonStrings.SOLD_OUT_INFO}>
                                         <SoldOutIcon className={styles.labelIcon} />
                                         <span>{commonStrings.SOLD_OUT}</span>
                                       </div>
-                                    </Tooltip>
                                   }
                                   {
                                     product.hidden &&
-                                    <Tooltip title={commonStrings.HIDDEN_INFO}>
-                                      <div className={`${styles.label} ${styles.hidden}`}>
+                                      <div className={`${styles.label} ${styles.hidden}`} title={commonStrings.HIDDEN_INFO}>
                                         <HiddenIcon className={styles.labelIcon} />
                                         <span>{commonStrings.HIDDEN}</span>
                                       </div>
-                                    </Tooltip>
                                   }
-                                  <Tooltip title={product.name}>
-                                    <span className={styles.name}>{product.name}</span>
-                                  </Tooltip>
+                                    <span className={styles.name} title={product.name}>{product.name}</span>
                                   <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
                                 </a>
                               </Link>
