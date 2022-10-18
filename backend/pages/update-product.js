@@ -240,7 +240,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                 </FormControl>
 
                 <FormControl fullWidth margin="dense">
-                  <InputLabel className='required'>{cpStrings.QUANTITY}</InputLabel>
+                  <InputLabel className='required'>{commonStrings.QUANTITY}</InputLabel>
                   <Input
                     type="number"
                     inputProps={{ min: 0, step: 1 }}

@@ -47,6 +47,8 @@ export const strings = new LocalizedStrings({
         SOLD_OUT_INFO: 'Ce produit est en rupture de stock.',
         HIDDEN: 'Caché',
         HIDDEN_INFO: "Ce produit n'est pas visible par les clients.",
+
+        QUANTITY: 'Quantité',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -94,5 +96,7 @@ export const strings = new LocalizedStrings({
         SOLD_OUT_INFO: 'This product is sold out.',
         HIDDEN: 'Hidden',
         HIDDEN_INFO: 'This product is not visible to customers.',
+
+        QUANTITY: 'Quantity',
     }
 });

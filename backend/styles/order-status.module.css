@@ -1,0 +1,39 @@
+span.pending,
+span.paid,
+span.confirmed,
+span.inProgress,
+span.shipped,
+span.cancelled {
+    padding: 2px 4px 2px 4px;
+    color: #fff;
+    font-size: 11px;
+    width: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 4px;
+}
+
+span.pending {
+    background-color: #bc2143;
+}
+
+span.paid {
+    background-color: #77bc23;
+}
+
+span.confirmed {
+    background-color: #188ace;
+}
+
+span.inProgress {
+    background-color: #e98003;
+}
+
+span.shipped {
+    background-color: #22bba7;
+}
+
+span.cancelled {
+    background-color: #999;
+}

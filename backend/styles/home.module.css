@@ -1,14 +1,7 @@
-@media only screen and (min-width: 960px) {
-
-    .footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-    }
-}
-
 @media only screen and (max-width: 960px) {
-
+    div.main {
+        margin-top: 5px;
+    }
 
     .footer {
         display: flex;
@@ -17,7 +10,35 @@
     }
 }
 
-.orders {
+@media only screen and (min-width: 960px) {
+
+    div.main {
+        max-width: 1184px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-bottom: 30px;
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    div.leftPanel {
+        width: 275px;
+    }
+
+    div.orders {
+        margin-left: 15px;
+    }
+
+    .footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}
+
+div.main {
+    display: flex;
+    flex-direction: row;
     flex: 1;
 }
 
@@ -28,14 +49,129 @@
     margin-left: calc(50% - 125px);
 }
 
+div.leftPanel {
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+div.orders {
+    flex: 1;
+    height: fit-content;
+}
+
+div.orderList {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+div.orderList article {
+    position: relative;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #333;
+    font-size: 12px;
+    padding: 25px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: calc(100% - 20px);
+    max-width: 650px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+div.orderList article div.orderContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+div.orderList article div.orderContent div.orderInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 7px;
+}
+
+div.orderList article div.orderContent div.orderInfo span.orderLabel {
+    font-weight: bold;
+    margin-right: 15px;
+    min-width: 100px;
+}
+
+div.orderList article div.orderContent div.orderItems {
+    background-color: #fafafa;
+    border-top: #eaeaea 1px solid;
+    border-right: #eaeaea 1px solid;
+    border-left: #eaeaea 1px solid;
+    flex: 1;
+}
+
+div.orderList article div.orderContent div.orderItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: #eaeaea 1px solid;
+    padding: 0 7px 7px 7px;
+}
+
+div.orderList article div.orderContent div.orderItem div.orderItemInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 7px;
+}
+
+div.orderList article div.orderContent div.orderItem div.orderItemInfo span.orderItemLabel {
+    font-weight: bold;
+    margin-right: 10px;
+    min-width: 50px;
+}
+
+div.orderList article div.orderContent div.orderItem div.orderItemInfo .orderItemText {
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+div.orderList article div.orderActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+}
+
+div.orderList article div.orderActions .orderAction {
+    width: 40px;
+    height: 40px;
+    color: #707070;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+div.orderList article div.orderActions .orderAction:hover {
+    background-color: #f5f5f5;
+}
+
 .footer {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
     height: 54px;
-    border-top: 1px solid #ddd;
     padding: 5px 10px 5px 0;
+    margin: 3px 0 0 0;
+    background-color: #fff;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
 .footer .pager {

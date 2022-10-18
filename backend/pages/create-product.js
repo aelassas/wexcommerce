@@ -234,7 +234,7 @@ export default function CreateProduct({ _user, _signout }) {
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <InputLabel className='required'>{strings.QUANTITY}</InputLabel>
+                <InputLabel className='required'>{commonStrings.QUANTITY}</InputLabel>
                 <Input
                   type="number"
                   inputProps={{ min: 0, step: 1 }}

@@ -29,7 +29,15 @@ const Env = {
         CREDIT_CARD: 'creditCard',
         COD: 'cod',
         WIRE_TRANSFER: 'wireTransfer'
-    }
+    },
+    ORDER_STATUS: {
+        PENDING: 'pending',
+        PAID: 'paid',
+        CONFIRMED: 'confirmed',
+        IN_PROGRESS: 'inProgress',
+        SHIPPED: 'shipped',
+        CANCELLED: 'cancelled'
+    },
 };
 
 export default Env;

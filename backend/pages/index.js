@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { strings } from '../lang/home';
+import { strings as cpStrings } from '../lang/create-product';
 import { strings as masterStrings } from '../lang/master';
 import { strings as commonStrings } from '../lang/common';
 import { strings as headerStrings } from '../lang/header';
@@ -11,16 +12,21 @@ import {
   Button,
   Card,
   CardContent,
-  Typography
+  Typography,
+  Tooltip
 } from '@mui/material';
 import {
   ArrowBackIos as PreviousPageIcon,
-  ArrowForwardIos as NextPageIcon
+  ArrowForwardIos as NextPageIcon,
+  Edit as EditIcon
 } from '@mui/icons-material';
 import Env from '../config/env.config';
 import Link from 'next/link';
 import { fr, enUS } from "date-fns/locale";
 import NoMatch from '../components/NoMatch';
+import { format } from 'date-fns';
+import PaymentType from '../components/PaymentType';
+import OrderStatus from '../components/OrderStatus';
 
 import styles from '../styles/home.module.css';
 
@@ -39,6 +45,10 @@ export default function Home({
   const [leftPanelRef, setLeftPanelRef] = useState();
   const [orderListRef, setOrderListRef] = useState();
 
+  const _fr = _language === 'fr';
+  const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm';
+  const _locale = _fr ? fr : enUS;
+
   useEffect(() => {
     Helper.setLanguage(strings);
     Helper.setLanguage(commonStrings);
@@ -54,7 +64,8 @@ export default function Home({
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      // TODO uncomment
+      // UserService.signout();
     }
   }, [_signout]);
 
@@ -80,8 +91,6 @@ export default function Home({
     }
   };
 
-  const _locale = _language === 'fr' ? fr : enUS;
-
   return (
     !loading && _user &&
     <>
@@ -93,13 +102,14 @@ export default function Home({
           {_noMatch && <NoMatch />}
 
           {!_noMatch &&
-            <>
+            <div className={styles.main}>
               <div
                 ref={el => setLeftPanelRef(el)}
                 className={styles.leftPanel}
               >
-
+                {'TODO'}
               </div>
+
               <div className={styles.orders}>
                 {
                   _totalRecords === 0 &&
@@ -110,17 +120,6 @@ export default function Home({
                   </Card>
                 }
 
-                {/* {
-                  _totalRecords === 0 &&
-                  Array.from(Array(50).keys()).map(i => (
-                    <Card key={i} variant="outlined" className={styles.emptyList}>
-                      <CardContent>
-                        <Typography color="textSecondary">{strings.EMPTY_LIST + ' ' + i}</Typography>
-                      </CardContent>
-                    </Card>
-                  ))
-                } */}
-
                 {
                   _totalRecords > 0 &&
                   <>
@@ -130,42 +129,112 @@ export default function Home({
                     >
                       {
                         _orders.map((order) => (
-                          <article key={order._id}>
-                            {/* TODO */}
-                            {order._id}
+                          <article key={order._id} className={styles.order}>
+                            <div className={styles.orderContent}>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.ID}</span>
+                                <span>{order._id}</span>
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.STATUS}</span>
+                                <span><OrderStatus value={order.status} /></span>
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
+                                <span><PaymentType value={order.paymentType} /></span>
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.CLIENT}</span>
+                                <Link href={`/users?s=${order.user._id}`}>
+                                  <a>
+                                    <span>{order.user.fullName}</span>
+                                  </a>
+                                </Link>
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
+                                <div className={styles.orderItems}>
+                                  {
+                                    order.orderItems.map((orderItem) => (
+                                      <div key={orderItem._id} className={styles.orderItem}>
+                                        <div className={styles.orderItemInfo}>
+                                          <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
+                                          <span>
+                                            <Link href={`/update-product?p=${orderItem.product._id}`}>
+                                              <a className={styles.orderItemText} title={orderItem.product.name}>
+                                                {orderItem.product.name}
+                                              </a>
+                                            </Link>
+                                          </span>
+                                        </div>
+                                        <div className={styles.orderItemInfo}>
+                                          <span className={styles.orderItemLabel}>{cpStrings.PRICE}</span>
+                                          <span>{`${orderItem.product.price} ${commonStrings.CURRENCY}`}</span>
+                                        </div>
+                                        <div className={styles.orderItemInfo}>
+                                          <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
+                                          <span>{orderItem.quantity}</span>
+                                        </div>
+                                      </div>
+                                    ))
+                                  }
+                                </div>
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.ORDERED_AT}</span>
+                                <span>{Helper.capitalize(format(new Date(order.createdAt), _format, { locale: _locale }))}</span>
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.TOTAL}</span>
+                                <span>{`${order.total} ${commonStrings.CURRENCY}`}</span>
+                              </div>
+                            </div>
+
+                            <div className={styles.orderActions}>
+                              <Link href={`/update-order?o=${order._id}`}>
+                                <a>
+                                  <Tooltip title={commonStrings.UPDATE}>
+                                    <EditIcon className={styles.orderAction} />
+                                  </Tooltip>
+                                </a>
+                              </Link>
+                            </div>
                           </article>
                         ))
                       }
                     </div>
 
-                    <div className={styles.footer}>
+                    {
+                      (_page > 1 || _rowCount < _totalRecords) &&
+                      <div className={styles.footer}>
 
-                      <div className={styles.pager}>
-                        <div className={styles.rowCount}>
-                          {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
+                        <div className={styles.pager}>
+                          <div className={styles.rowCount}>
+                            {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
+                          </div>
+
+                          <div className={styles.actions}>
+
+                            <Link href={`/?${`p=${_page - 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                              <a className={_page === 1 ? styles.disabled : ''}>
+                                <PreviousPageIcon className={styles.icon} />
+                              </a>
+                            </Link>
+
+                            <Link href={`/?${`p=${_page + 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                              <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
+                                <NextPageIcon className={styles.icon} />
+                              </a>
+                            </Link>
+                          </div>
                         </div>
 
-                        <div className={styles.actions}>
-
-                          <Link href={`/?${`p=${_page - 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
-                            <a className={_page === 1 ? styles.disabled : ''}>
-                              <PreviousPageIcon className={styles.icon} />
-                            </a>
-                          </Link>
-
-                          <Link href={`/?${`p=${_page + 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
-                            <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
-                              <NextPageIcon className={styles.icon} />
-                            </a>
-                          </Link>
-                        </div>
                       </div>
-
-                    </div>
+                    }
                   </>
                 }
               </div>
-            </>
+            </div>
           }
         </div>
       }

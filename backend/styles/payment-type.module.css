@@ -1,0 +1,24 @@
+span.creditCard,
+span.cod,
+span.wireTransfert {
+    padding: 2px 4px 2px 4px;
+    color: #fff;
+    font-size: 11px;
+    width: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 4px;
+}
+
+span.creditCard {
+    background-color: #77bc23;
+}
+
+span.cod {
+    background-color: #e98003;
+}
+
+span.wireTransfert {
+    background-color: #188ace;
+}

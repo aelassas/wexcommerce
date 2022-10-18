@@ -5,6 +5,7 @@ import OrderItem from '../models/OrderItem.js';
 import User from '../models/User.js';
 import { v1 as uuid } from 'uuid';
 import escapeStringRegexp from 'escape-string-regexp';
+import mongoose from 'mongoose';
 
 const SMTP_HOST = process.env.SC_SMTP_HOST;
 const SMTP_PORT = process.env.SC_SMTP_PORT;
@@ -266,9 +267,41 @@ export const getOrder = async (req, res) => {
 export const getOrders = async (req, res) => {
     // TODO after (search by keyword, _id, status, paymentType)
     try {
+
+        // const orderItem1 = new OrderItem({ product: '634ae2f223d738415ba21643', quantity: 1 });
+        // await orderItem1.save();
+
+        // const orderItem2 = new OrderItem({ product: '634ae2f223d738415ba21641', quantity: 1 });
+        // await orderItem2.save();
+
+        // for (let i = 1; i <= 30; i++) {
+        //     // const orderItems = i % 2 === 0 ? [orderItem1._id, orderItem2._id] : [orderItem1._id];
+        //     const orderItems = i % 2 === 0 ? ['634e7032a709bf94cbb449ca', '634e7032a709bf94cbb449cc'] : ['634e7032a709bf94cbb449ca'];
+        //     const order = new Order({
+        //         user: '63497dc164b5af0b1d9971cb',
+        //         paymentType: i % 2 === 0 ? Env.PAYMENT_TYPE.CREDIT_CARD : Env.PAYMENT_TYPE.COD,
+        //         total: i % 2 === 0 ? 69000 : 68000,
+        //         status: i % 2 === 0 ? Env.ORDER_STATUS.PAID : Env.ORDER_STATUS.PENDING,
+        //         orderItems
+        //     });
+        //     await order.save();
+        // }
+
+        // for (let i = 1; i <= 5; i++) {
+        //     const orderItems = i % 2 === 0 ? ['634e7032a709bf94cbb449ca', '634e7032a709bf94cbb449cc'] : ['634e7032a709bf94cbb449ca'];
+        //     const order = new Order({
+        //         user: '634c3dd6b948c634fdf109de',
+        //         paymentType: i % 2 === 0 ? Env.PAYMENT_TYPE.CREDIT_CARD : Env.PAYMENT_TYPE.COD,
+        //         total: i % 2 === 0 ? 69000 : 68000,
+        //         status: i % 2 === 0 ? Env.ORDER_STATUS.PAID : Env.ORDER_STATUS.PENDING,
+        //         orderItems
+        //     });
+        //     await order.save();
+        // }
+
         const { user: userId } = req.params;
 
-        const user = await User.find({ _id: userId });
+        const user = await User.findOne({ _id: userId });
 
         if (!user) {
             const err = `[order.getOrders] user ${userId} not found.`;
@@ -283,14 +316,13 @@ export const getOrders = async (req, res) => {
 
         let $match;
         if (user.type === Env.USER_TYPE.USER) {
-            $match = { user: userId };
+            $match = { 'user._id': { $eq: mongoose.Types.ObjectId(userId) } };
         } else if (user.type === Env.USER_TYPE.ADMIN) {
-            // $match = {};
+            // $match = { 'orderItems': { $not: { $size: 0 } } };
         }
 
         // page search (aggregate)
         const data = await Order.aggregate([
-            $match ? { $match } : { $match: {} },
             {
                 $lookup: {
                     from: 'User',
@@ -306,6 +338,7 @@ export const getOrders = async (req, res) => {
                 }
             },
             { $unwind: { path: '$user', preserveNullAndEmptyArrays: false } },
+            $match ? { $match } : { $match: {} },
             {
                 $lookup: {
                     from: 'OrderItem',
@@ -323,16 +356,23 @@ export const getOrders = async (req, res) => {
                                 pipeline: [
                                     {
                                         $match: {
-                                            $expr: { $eq: ['$_id', '$$productId'] }
+                                            $and: [
+                                                { $expr: { $eq: ['$_id', '$$productId'] } },
+                                                { $expr: { $regexMatch: { input: '$name', regex: keyword, options } } }
+                                            ]
                                         }
                                     }
                                 ],
                                 as: 'product'
                             }
-                        }
+                        },
+                        { $unwind: { path: '$product', preserveNullAndEmptyArrays: false } },
                     ],
                     as: 'orderItems'
                 }
+            },
+            {
+                $match: { 'orderItems': { $not: { $size: 0 } } }
             },
             {
                 $facet: {

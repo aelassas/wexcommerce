@@ -12,9 +12,9 @@ const orderSchema = new Schema({
     paymentType: {
         type: String,
         enum: [
-            Env.ORDER_STATUS.CREDIT_CARD,
-            Env.ORDER_STATUS.COD,
-            Env.ORDER_STATUS.WIRE_TRANSFER
+            Env.PAYMENT_TYPE.CREDIT_CARD,
+            Env.PAYMENT_TYPE.COD,
+            Env.PAYMENT_TYPE.WIRE_TRANSFER
         ],
         required: [true, "can't be blank"],
     },

@@ -9,12 +9,12 @@ const Env = {
         FRONTEND: 'frontend'
     },
     ORDER_STATUS: {
+        PENDING: 'pending',
         PAID: 'paid',
         CONFIRMED: 'confirmed',
         IN_PROGRESS: 'inProgress',
-        CANCELLED: 'cancelled',
-        PENDING: 'pending',
-        SHIPPED: 'shipped'
+        SHIPPED: 'shipped',
+        CANCELLED: 'cancelled'
     },
     PAYMENT_TYPE: {
         CREDIT_CARD: 'creditCard',
