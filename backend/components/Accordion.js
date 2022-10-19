@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import styles from '../styles/accordion.module.css';
 
-export default function ({ title, collapse, children, className, offsetHeight }) {
+export default function Accordion({ title, collapse, children, className, offsetHeight }) {
 
     const accordionRef = useRef();
 
