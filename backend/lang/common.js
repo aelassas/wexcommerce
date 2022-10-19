@@ -51,6 +51,7 @@ export const strings = new LocalizedStrings({
         QUANTITY: 'Quantité',
         UNCHECK_ALL: 'Décocher tout',
         CHECK_ALL: 'Cocher tout',
+        STATUS: 'Statut',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -102,5 +103,6 @@ export const strings = new LocalizedStrings({
         QUANTITY: 'Quantity',
         UNCHECK_ALL: 'Uncheck all',
         CHECK_ALL: 'Check all',
+        STATUS: 'Status',
     }
 });

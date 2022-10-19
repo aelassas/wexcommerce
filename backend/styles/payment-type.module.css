@@ -1,14 +1,15 @@
 span.creditCard,
 span.cod,
 span.wireTransfert {
-    padding: 2px 4px 2px 4px;
     color: #fff;
     font-size: 11px;
-    width: 100px;
-    display: inline-block;
-    vertical-align: middle;
-    text-align: center;
     border-radius: 4px;
+    width: 100px;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 span.creditCard {

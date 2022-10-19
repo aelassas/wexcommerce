@@ -81,13 +81,19 @@ div.orderList article {
     font-size: 12px;
     padding: 25px;
     margin-bottom: 15px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     width: calc(100% - 20px);
     max-width: 650px;
     margin-right: auto;
     margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+div.orderList article div.order{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 div.orderList article div.orderContent {

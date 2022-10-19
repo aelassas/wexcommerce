@@ -78,7 +78,11 @@ export default function SignIn() {
             const res = await UserService.signin(data);
 
             if (res.status === 200) {
-                router.replace('/');
+                if (router.query.o) {
+                    router.replace(`/?o=${router.query.o}`);
+                } else {
+                    router.replace('/');
+                }
             } else {
                 setError(true);
             }

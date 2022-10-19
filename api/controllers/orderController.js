@@ -7,6 +7,7 @@ import { v1 as uuid } from 'uuid';
 import escapeStringRegexp from 'escape-string-regexp';
 import mongoose from 'mongoose';
 import Helper from '../common/Helper.js';
+import nodemailer from 'nodemailer';
 
 const SMTP_HOST = process.env.SC_SMTP_HOST;
 const SMTP_PORT = process.env.SC_SMTP_PORT;
@@ -180,12 +181,12 @@ export const update = async (req, res) => {
                 from: SMTP_FROM,
                 to: _user.email,
                 subject: strings.ORDER_UPDATED_PART_1 + order._id + strings.ORDER_UPDATED_PART_2,
-                html: '<p>' + strings.HELLO + user.fullName + ',<br><br>'
+                html: '<p>' + strings.HELLO + _user.fullName + ',<br><br>'
                     + strings.ORDER_UPDATED_PART_1 + order._id + strings.ORDER_UPDATED_PART_2 + '<br><br>'
                     + strings.ORDER_CONFIRMED_PART_3 + '<br><br>'
 
                     + Helper.joinURL(FRONTEND_HOST, 'order')
-                    + '/?o=' + encodeURIComponent(order._id)
+                    + '?o=' + encodeURIComponent(order._id)
                     + '<br><br>'
 
                     + strings.REGARDS + '<br>'
@@ -266,7 +267,7 @@ export const getOrder = async (req, res) => {
 };
 
 export const getOrders = async (req, res) => {
-    // TODO after (search by paymentType, status, _id, date)
+    // TODO search by date
     try {
 
         // const orderItem1 = new OrderItem({ product: '634ae2f223d738415ba21643', quantity: 1 });
@@ -316,8 +317,6 @@ export const getOrders = async (req, res) => {
         const options = 'i';
 
         const { paymentTypes, statuses } = req.body;
-        console.log('------------', paymentTypes)
-        console.log('------------', statuses)
         let $match;
         if (user.type === Env.USER_TYPE.USER) {
             $match = {
@@ -334,6 +333,15 @@ export const getOrders = async (req, res) => {
                     { status: { $in: statuses } }
                 ]
             };
+        }
+
+        let isObjectId = false;
+        if (keyword) {
+            isObjectId = mongoose.isValidObjectId(keyword);
+
+            if (isObjectId) {
+                $match.$and.push({ _id: { $eq: mongoose.Types.ObjectId(keyword) } });
+            }
         }
 
         // page search (aggregate)
@@ -373,7 +381,7 @@ export const getOrders = async (req, res) => {
                                         $match: {
                                             $and: [
                                                 { $expr: { $eq: ['$_id', '$$productId'] } },
-                                                { $expr: { $regexMatch: { input: '$name', regex: keyword, options } } }
+                                                isObjectId ? {} : { $expr: { $regexMatch: { input: '$name', regex: keyword, options } } }
                                             ]
                                         }
                                     }

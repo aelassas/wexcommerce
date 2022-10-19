@@ -43,7 +43,14 @@ export default class UserService {
         deleteCookie('sc-be-user');
 
         if (redirect) {
-            window.location.href = '/sign-in';
+            const url = new URL(window.location.href);
+
+            if (url.searchParams.has('o')) {
+                window.location.href = `/sign-in?o=${url.searchParams.get('o')}`;
+            } else {
+                window.location.href = '/sign-in';
+            }
+
         }
     }
 

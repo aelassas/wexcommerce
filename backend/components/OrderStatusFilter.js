@@ -92,7 +92,7 @@ export default function OrderStatusFilter({ selectedOptions, onChange, className
 
     return (
         <Accordion
-            title={commonStrings.PAYMENT_TYPES}
+            title={commonStrings.STATUS}
             collapse={!Env.isMobile()}
             className={className}
         >

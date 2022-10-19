@@ -39,6 +39,8 @@ export const getPaymentTypes = () => {
 };
 
 export const getPaymentType = (paymentType) => {
+    setLanguage(commonStrings);
+
     return paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? commonStrings.CREDIT_CARD
         : paymentType === Env.PAYMENT_TYPE.COD ? commonStrings.COD
             : paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? commonStrings.WIRE_TRANSFER
@@ -58,6 +60,8 @@ export const getOrderStatuses = () => {
 
 
 export const getOrderStatus = (orderStatus) => {
+    setLanguage(osStrings);
+
     return orderStatus === Env.ORDER_STATUS.PENDING ? osStrings.PENDING
         : orderStatus === Env.ORDER_STATUS.PAID ? osStrings.PAID
             : orderStatus === Env.ORDER_STATUS.CONFIRMED ? osStrings.CONFIRMED

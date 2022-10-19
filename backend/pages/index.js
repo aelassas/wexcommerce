@@ -13,7 +13,12 @@ import {
   Card,
   CardContent,
   Typography,
-  Tooltip
+  Tooltip,
+  IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material';
 import {
   ArrowBackIos as PreviousPageIcon,
@@ -50,6 +55,9 @@ export default function Home({
   const [loading, setLoading] = useState(true);
   const [leftPanelRef, setLeftPanelRef] = useState();
   const [orderListRef, setOrderListRef] = useState();
+  const [edit, setEdit] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+  const [previousStatuses, setPreviousStatuses] = useState([]);
 
   const _fr = _language === 'fr';
   const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm';
@@ -70,14 +78,21 @@ export default function Home({
 
   useEffect(() => {
     if (_signout) {
-      // TODO uncomment
-      // UserService.signout();
+      UserService.signout();
     }
   }, [_signout]);
 
   useEffect(() => {
     if (orderListRef) orderListRef.scrollTo(0, 0);
   }, [_orders, orderListRef]);
+
+  useEffect(() => {
+    if (_orders) {
+      setEdit(_orders.map(() => false));
+      setStatuses(_orders.map((order) => order.status));
+      setPreviousStatuses(_orders.map((order) => order.status));
+    }
+  }, [_orders]);
 
   const handleResend = async (e) => {
     try {
@@ -154,77 +169,150 @@ export default function Home({
                       className={styles.orderList}
                     >
                       {
-                        _orders.map((order) => (
-                          <article key={order._id} className={styles.order}>
-                            <div className={styles.orderContent}>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.ID}</span>
-                                <span>{order._id}</span>
-                              </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.STATUS}</span>
-                                <span><OrderStatus value={order.status} /></span>
-                              </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
-                                <span><PaymentType value={order.paymentType} /></span>
-                              </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.CLIENT}</span>
-                                <Link href={`/users?s=${order.user._id}`}>
-                                  <a>
-                                    <span>{order.user.fullName}</span>
-                                  </a>
-                                </Link>
-                              </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
-                                <div className={styles.orderItems}>
-                                  {
-                                    order.orderItems.map((orderItem) => (
-                                      <div key={orderItem._id} className={styles.orderItem}>
-                                        <div className={styles.orderItemInfo}>
-                                          <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
-                                          <span>
-                                            <Link href={`/update-product?p=${orderItem.product._id}`}>
-                                              <a className={styles.orderItemText} title={orderItem.product.name}>
-                                                {orderItem.product.name}
-                                              </a>
-                                            </Link>
-                                          </span>
+                        _orders.map((order, index) => (
+                          <article key={order._id}>
+                            <div className={styles.order}>
+                              <div className={styles.orderContent}>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.ID}</span>
+                                  <span>{order._id}</span>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.STATUS}</span>
+                                  <span>
+                                    {edit[index] ?
+                                      <Select
+                                        variant="standard"
+                                        value={statuses[index]}
+                                        SelectDisplayProps={{ style: { paddingTop: 0, paddingRight: 24, paddingBottom: 4, paddingLeft: 0 } }}
+                                        onChange={(e) => {
+                                          const __statuses = Helper.clone(statuses);
+                                          const __previousStatuses = Helper.clone(previousStatuses);
+                                          __previousStatuses[index] = __statuses[index];
+                                          __statuses[index] = e.target.value;
+                                          setStatuses(__statuses);
+                                        }}
+                                      >
+                                        {Helper.getOrderStatuses().map((status) => (
+                                          <MenuItem key={status} value={status} ><OrderStatus value={status} /></MenuItem>
+                                        ))}
+                                      </Select>
+                                      : <OrderStatus value={statuses[index]} />
+                                    }
+                                  </span>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
+                                  <span><PaymentType value={order.paymentType} /></span>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.CLIENT}</span>
+                                  <Link href={`/users?s=${order.user._id}`}>
+                                    <a>
+                                      <span>{order.user.fullName}</span>
+                                    </a>
+                                  </Link>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
+                                  <div className={styles.orderItems}>
+                                    {
+                                      order.orderItems.map((orderItem) => (
+                                        <div key={orderItem._id} className={styles.orderItem}>
+                                          <div className={styles.orderItemInfo}>
+                                            <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
+                                            <span>
+                                              <Link href={`/update-product?p=${orderItem.product._id}`}>
+                                                <a className={styles.orderItemText} title={orderItem.product.name}>
+                                                  {orderItem.product.name}
+                                                </a>
+                                              </Link>
+                                            </span>
+                                          </div>
+                                          <div className={styles.orderItemInfo}>
+                                            <span className={styles.orderItemLabel}>{cpStrings.PRICE}</span>
+                                            <span>{`${orderItem.product.price} ${commonStrings.CURRENCY}`}</span>
+                                          </div>
+                                          <div className={styles.orderItemInfo}>
+                                            <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
+                                            <span>{orderItem.quantity}</span>
+                                          </div>
                                         </div>
-                                        <div className={styles.orderItemInfo}>
-                                          <span className={styles.orderItemLabel}>{cpStrings.PRICE}</span>
-                                          <span>{`${orderItem.product.price} ${commonStrings.CURRENCY}`}</span>
-                                        </div>
-                                        <div className={styles.orderItemInfo}>
-                                          <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
-                                          <span>{orderItem.quantity}</span>
-                                        </div>
-                                      </div>
-                                    ))
-                                  }
+                                      ))
+                                    }
+                                  </div>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.ORDERED_AT}</span>
+                                  <span>{Helper.capitalize(format(new Date(order.createdAt), _format, { locale: _locale }))}</span>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.TOTAL}</span>
+                                  <span>{`${order.total} ${commonStrings.CURRENCY}`}</span>
                                 </div>
                               </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.ORDERED_AT}</span>
-                                <span>{Helper.capitalize(format(new Date(order.createdAt), _format, { locale: _locale }))}</span>
-                              </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.TOTAL}</span>
-                                <span>{`${order.total} ${commonStrings.CURRENCY}`}</span>
-                              </div>
-                            </div>
 
-                            <div className={styles.orderActions}>
-                              <Link href={`/update-order?o=${order._id}`}>
-                                <a>
-                                  <Tooltip title={commonStrings.UPDATE}>
-                                    <EditIcon className={styles.orderAction} />
-                                  </Tooltip>
-                                </a>
-                              </Link>
+                              <div className={styles.orderActions}>
+                                <IconButton
+                                  style={{ visibility: edit[index] ? 'hidden' : 'visible' }}
+                                  onClick={(e) => {
+                                    const _edit = Helper.clone(edit);
+                                    _edit[index] = true;
+                                    setEdit(_edit);
+                                  }}>
+                                  <EditIcon />
+                                </IconButton>
+                              </div>
                             </div>
+                            {
+                              edit[index] &&
+                              <div className="buttons">
+
+                                <Button
+                                  variant="contained"
+                                  className='btn-primary btn-margin-bottom'
+                                  size="small"
+                                  onClick={async (e) => {
+                                    try {
+                                      const _status = statuses[index];
+                                      const status = await OrderService.updateOrder(_user._id, order._id, _status);
+
+                                      if (status === 200) {
+                                        const _edit = Helper.clone(edit);
+                                        _edit[index] = false;
+                                        setEdit(_edit);
+                                        Helper.info(commonStrings.UPDATED);
+                                      } else {
+                                        Helper.error();
+                                      }
+
+                                    } catch (err) {
+                                      console.log(err);
+                                      Helper.error();
+                                    }
+                                  }}
+                                >
+                                  {commonStrings.SAVE}
+                                </Button>
+
+                                <Button
+                                  variant="contained"
+                                  className='btn-secondary btn-margin-bottom'
+                                  size="small"
+                                  onClick={async () => {
+                                    const _edit = Helper.clone(edit);
+                                    _edit[index] = false;
+                                    setEdit(_edit);
+
+                                    const __statuses = Helper.clone(statuses);
+                                    __statuses[index] = previousStatuses[index];
+                                    setStatuses(__statuses);
+                                  }}
+                                >
+                                  {commonStrings.CANCEL}
+                                </Button>
+                              </div>
+                            }
                           </article>
                         ))
                       }
@@ -307,6 +395,7 @@ export async function getServerSideProps(context) {
             if (typeof context.query.u !== 'undefined') __user = context.query.u;
             if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
             if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
+            if (typeof context.query.o !== 'undefined') _keyword = context.query.o;
 
             if (typeof context.query.pt !== 'undefined') {
               const allPaymentTypes = Helper.getPaymentTypes();
