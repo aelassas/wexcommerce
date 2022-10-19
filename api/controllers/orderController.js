@@ -6,6 +6,7 @@ import User from '../models/User.js';
 import { v1 as uuid } from 'uuid';
 import escapeStringRegexp from 'escape-string-regexp';
 import mongoose from 'mongoose';
+import Helper from '../common/Helper.js';
 
 const SMTP_HOST = process.env.SC_SMTP_HOST;
 const SMTP_PORT = process.env.SC_SMTP_PORT;
@@ -265,7 +266,7 @@ export const getOrder = async (req, res) => {
 };
 
 export const getOrders = async (req, res) => {
-    // TODO after (search by keyword, _id, status, paymentType)
+    // TODO after (search by paymentType, status, _id, date)
     try {
 
         // const orderItem1 = new OrderItem({ product: '634ae2f223d738415ba21643', quantity: 1 });
@@ -314,11 +315,25 @@ export const getOrders = async (req, res) => {
         const keyword = escapeStringRegexp(req.query.s || '');
         const options = 'i';
 
+        const { paymentTypes, statuses } = req.body;
+        console.log('------------', paymentTypes)
+        console.log('------------', statuses)
         let $match;
         if (user.type === Env.USER_TYPE.USER) {
-            $match = { 'user._id': { $eq: mongoose.Types.ObjectId(userId) } };
+            $match = {
+                $and: [
+                    { 'user._id': { $eq: mongoose.Types.ObjectId(userId) } },
+                    { paymentType: { $in: paymentTypes } },
+                    { status: { $in: statuses } }
+                ]
+            };
         } else if (user.type === Env.USER_TYPE.ADMIN) {
-            // $match = { 'orderItems': { $not: { $size: 0 } } };
+            $match = {
+                $and: [
+                    { paymentType: { $in: paymentTypes } },
+                    { status: { $in: statuses } }
+                ]
+            };
         }
 
         // page search (aggregate)
@@ -338,7 +353,7 @@ export const getOrders = async (req, res) => {
                 }
             },
             { $unwind: { path: '$user', preserveNullAndEmptyArrays: false } },
-            $match ? { $match } : { $match: {} },
+            { $match },
             {
                 $lookup: {
                     from: 'OrderItem',
