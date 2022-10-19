@@ -7,7 +7,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/payment-type-filter.module.css';
 
-export default function ({ selectedOptions, onChange, className }) {
+export default function PaymentTypeFilter({ selectedOptions, onChange, className }) {
     const paymentTypes = Helper.getPaymentTypes();
     const [checkedPaymentTypes, setCheckedPaymentTypes] = useState(paymentTypes);
     const [allChecked, setAllChecked] = useState(true);

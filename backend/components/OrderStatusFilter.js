@@ -7,7 +7,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/order-status-filter.module.css';
 
-export default function ({ selectedOptions, onChange, className }) {
+export default function OrderStatusFilter({ selectedOptions, onChange, className }) {
     const statuses = Helper.getOrderStatuses();
     const [checkedStatuses, setCheckedStatuses] = useState(statuses);
     const [allChecked, setAllChecked] = useState(true);

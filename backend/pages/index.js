@@ -132,6 +132,7 @@ export default function Home({
                     router.replace(url);
                   }}
                   selectedOptions={_statuses}
+                  className={styles.statusFilter}
                 />
               </div>
 

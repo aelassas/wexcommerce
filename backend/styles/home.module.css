@@ -1,6 +1,18 @@
 @media only screen and (max-width: 960px) {
     div.main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
         margin-top: 5px;
+    }
+
+    div.leftPanel {
+        margin: 0 10px;
+    }
+
+    div.leftPanel .paymentTypeFilter,
+    div.leftPanel .statusFilter {
+        margin-bottom: 10px;
     }
 
     .footer {
@@ -18,11 +30,17 @@
         margin-left: auto;
         padding-bottom: 30px;
         margin-top: 15px;
-        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex: 1;
     }
 
     div.leftPanel {
         width: 275px;
+    }
+
+    div.leftPanel .paymentTypeFilter {
+        margin-bottom: 20px;
     }
 
     div.orders {
@@ -36,21 +54,11 @@
     }
 }
 
-div.main {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-}
-
 .emptyList {
     margin-top: 15px;
     text-align: center;
     width: 250px;
     margin-left: calc(50% - 125px);
-}
-
-div.leftPanel .paymentTypeFilter {
-    margin-bottom: 20px;
 }
 
 div.orders {
