@@ -14,6 +14,8 @@ export default function PaymentTypeFilter({ selectedOptions, onChange, className
     const refs = useRef([]);
 
     useEffect(() => {
+        const paymentTypes = Helper.getPaymentTypes();
+
         if (selectedOptions) {
             refs.current.forEach(checkbox => {
                 const paymentType = checkbox.getAttribute('data-value');

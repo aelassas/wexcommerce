@@ -14,6 +14,8 @@ export default function OrderStatusFilter({ selectedOptions, onChange, className
     const refs = useRef([]);
 
     useEffect(() => {
+        const statuses = Helper.getOrderStatuses();
+
         if (selectedOptions) {
             refs.current.forEach(checkbox => {
                 const status = checkbox.getAttribute('data-value');
