@@ -49,9 +49,8 @@ div.main {
     margin-left: calc(50% - 125px);
 }
 
-div.leftPanel {
-    background-color: #fff;
-    border-radius: 5px;
+div.leftPanel .paymentTypeFilter {
+    margin-bottom: 20px;
 }
 
 div.orders {

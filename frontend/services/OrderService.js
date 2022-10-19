@@ -15,7 +15,8 @@ export default class OrderService {
     }
 
     static getOrders(context, userId, page, size) {
-        return axios.get(`${Env.API_HOST}/api/orders/${userId}/${page}/${size}`, { headers: UserService.authHeader(context) }).then(res => res.data);
+        const data = {};
+        return axios.post(`${Env.API_HOST}/api/orders/${userId}/${page}/${size}`, data, { headers: UserService.authHeader(context) }).then(res => res.data);
     }
 
 }

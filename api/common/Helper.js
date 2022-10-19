@@ -1,3 +1,5 @@
+import Env from "../config/env.config.js";
+
 export default class Helper {
 
     static joinURL(part1, part2) {

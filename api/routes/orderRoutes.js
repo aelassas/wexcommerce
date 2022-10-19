@@ -9,6 +9,6 @@ routes.route(routeNames.create).post(orderController.create);
 routes.route(routeNames.update).put(authJwt.verifyToken, orderController.update);
 routes.route(routeNames.delete).delete(authJwt.verifyToken, orderController.deleteOrder);
 routes.route(routeNames.getOrder).get(authJwt.verifyToken, orderController.getOrder);
-routes.route(routeNames.getOrders).get(authJwt.verifyToken, orderController.getOrders);
+routes.route(routeNames.getOrders).post(authJwt.verifyToken, orderController.getOrders);
 
 export default routes;

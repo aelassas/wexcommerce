@@ -49,6 +49,8 @@ export const strings = new LocalizedStrings({
         HIDDEN_INFO: "Ce produit n'est pas visible par les clients.",
 
         QUANTITY: 'Quantité',
+        UNCHECK_ALL: 'Décocher tout',
+        CHECK_ALL: 'Cocher tout',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -98,5 +100,7 @@ export const strings = new LocalizedStrings({
         HIDDEN_INFO: 'This product is not visible to customers.',
 
         QUANTITY: 'Quantity',
+        UNCHECK_ALL: 'Uncheck all',
+        CHECK_ALL: 'Check all',
     }
 });

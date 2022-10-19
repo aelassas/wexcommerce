@@ -1,22 +1,23 @@
 import React from 'react';
 import Env from '../config/env.config';
-import { strings as commonStrings } from '../lang/common';
+import * as Helper from '../common/Helper';
 
 import styles from '../styles/payment-type.module.css';
 
-export default function PaymentType({ value }) {
+export default function PaymentType({ value, className, onClick }) {
     return (
-        <span className={
-            value === Env.PAYMENT_TYPE.CREDIT_CARD ? styles.creditCard
-                : value === Env.PAYMENT_TYPE.COD ? styles.cod
-                    : value === Env.PAYMENT_TYPE.WIRE_TRANSFER ? styles.wireTransfert
-                        : ''}
+        <span
+            className={(className ? className + ' ' : '') +
+                (value === Env.PAYMENT_TYPE.CREDIT_CARD ? styles.creditCard
+                    : value === Env.PAYMENT_TYPE.COD ? styles.cod
+                        : value === Env.PAYMENT_TYPE.WIRE_TRANSFER ? styles.wireTransfert
+                            : '')}
+            onClick={(e) => {
+                if (onClick) onClick(e);
+            }}
         >
             {
-                value === Env.PAYMENT_TYPE.CREDIT_CARD ? commonStrings.CREDIT_CARD
-                    : value === Env.PAYMENT_TYPE.COD ? commonStrings.COD
-                        : value === Env.PAYMENT_TYPE.WIRE_TRANSFER ? commonStrings.WIRE_TRANSFER
-                            : ''
+                Helper.getPaymentType(value)
             }
         </span>
     );

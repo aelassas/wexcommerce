@@ -27,6 +27,9 @@ import NoMatch from '../components/NoMatch';
 import { format } from 'date-fns';
 import PaymentType from '../components/PaymentType';
 import OrderStatus from '../components/OrderStatus';
+import PaymentTypeFilter from '../components/PaymentTypeFilter';
+import OrderStatusFilter from '../components/OrderStatusFilter';
+import { useRouter } from 'next/router';
 
 import styles from '../styles/home.module.css';
 
@@ -39,8 +42,11 @@ export default function Home({
   _rowCount,
   _totalRecords,
   _orders,
-  _noMatch
+  _noMatch,
+  _paymentTypes,
+  _statuses
 }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [leftPanelRef, setLeftPanelRef] = useState();
   const [orderListRef, setOrderListRef] = useState();
@@ -107,7 +113,26 @@ export default function Home({
                 ref={el => setLeftPanelRef(el)}
                 className={styles.leftPanel}
               >
-                {'TODO'}
+                <PaymentTypeFilter
+                  onChange={(paymentTypes) => {
+                    const pt = paymentTypes.join(',');
+                    const os = _statuses.join(',');
+                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    router.replace(url);
+                  }}
+                  selectedOptions={_paymentTypes}
+                  className={styles.paymentTypeFilter}
+                />
+
+                <OrderStatusFilter
+                  onChange={(statuses) => {
+                    const pt = _paymentTypes.join(',');
+                    const os = statuses.join(',');
+                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    router.replace(url);
+                  }}
+                  selectedOptions={_statuses}
+                />
               </div>
 
               <div className={styles.orders}>
@@ -215,13 +240,13 @@ export default function Home({
 
                           <div className={styles.actions}>
 
-                            <Link href={`/?${`p=${_page - 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                            <Link href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page - 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
                               <a className={_page === 1 ? styles.disabled : ''}>
                                 <PreviousPageIcon className={styles.icon} />
                               </a>
                             </Link>
 
-                            <Link href={`/?${`p=${_page + 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                            <Link href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page + 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
                               <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
                                 <NextPageIcon className={styles.icon} />
                               </a>
@@ -257,7 +282,8 @@ export default function Home({
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, __user = null, _signout = false, _page = 1, _keyword = '', _totalRecords = 0, _rowCount = 0, _orders = [], _noMatch = false;
+  let _user = null, __user = null, _signout = false, _page = 1, _keyword = '',
+    _totalRecords = 0, _rowCount = 0, _orders = [], _noMatch = false, _paymentTypes = [], _statuses = [];
   const _language = UserService.getLanguage(context);
 
   try {
@@ -281,8 +307,38 @@ export async function getServerSideProps(context) {
             if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
             if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
 
+            if (typeof context.query.pt !== 'undefined') {
+              const allPaymentTypes = Helper.getPaymentTypes();
+              _paymentTypes = [];
+              const pts = context.query.pt.split(',');
+
+              for (const pt of pts) {
+                if (allPaymentTypes.includes(pt)) _paymentTypes.push(pt);
+              }
+            } else {
+              _paymentTypes = Helper.getPaymentTypes();
+            }
+
+            if (typeof context.query.os !== 'undefined') {
+              const allStatuses = Helper.getOrderStatuses();
+              _statuses = [];
+              const oss = context.query.os.split(',');
+
+              for (const os of oss) {
+                if (allStatuses.includes(os)) _statuses.push(os);
+              }
+            } else {
+              _statuses = Helper.getOrderStatuses();
+            }
+
             if (_page >= 1) {
-              const data = await OrderService.getOrders(context, __user ? __user : _user._id, _page, Env.PAGE_SIZE, _keyword);
+              const data = await OrderService.getOrders(context,
+                __user ? __user : _user._id,
+                _page,
+                Env.PAGE_SIZE,
+                _keyword,
+                _paymentTypes,
+                _statuses);
               const _data = data[0];
               _orders = _data.resultData;
               _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _orders.length;
@@ -320,7 +376,9 @@ export async function getServerSideProps(context) {
       _rowCount,
       _totalRecords,
       _orders,
-      _noMatch
+      _noMatch,
+      _paymentTypes,
+      _statuses
     }
   };
 }

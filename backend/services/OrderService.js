@@ -18,9 +18,12 @@ export default class OrderService {
         return axios.get(`${Env.API_HOST}/api/order/${orderId}`, { headers: UserService.authHeader(context) }).then(res => res.data);
     }
 
-    static getOrders(context, userId, page, size, keyword) {
-        return axios.get(
+    static getOrders(context, userId, page, size, keyword, paymentTypes, statuses) {
+        const data = { paymentTypes, statuses };
+
+        return axios.post(
             `${Env.API_HOST}/api/orders/${userId}/${page}/${size}${(keyword !== '' && `/?s=${encodeURIComponent(keyword)}` || '')}`
+            , data
             , { headers: UserService.authHeader(context) }).then(res => res.data);
     }
 
