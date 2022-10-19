@@ -344,6 +344,15 @@ export const getOrders = async (req, res) => {
             }
         }
 
+        const { from, to } = req.body;
+
+        if (from) {
+            $match.$and.push({ createdAt: { $gt: new Date(from) } });
+        }
+        if (to) {
+            $match.$and.push({ createdAt: { $lt: new Date(to) } });
+        }
+
         // page search (aggregate)
         const data = await Order.aggregate([
             {

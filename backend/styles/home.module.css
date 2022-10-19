@@ -8,11 +8,17 @@
 
     div.leftPanel {
         margin: 0 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     div.leftPanel .paymentTypeFilter,
-    div.leftPanel .statusFilter {
+    div.leftPanel .statusFilter,
+    div.leftPanel .dateFilter {
         margin-bottom: 10px;
+        max-width: 650px;
+        width: 100%;
     }
 
     .footer {
@@ -39,7 +45,8 @@
         width: 275px;
     }
 
-    div.leftPanel .paymentTypeFilter {
+    div.leftPanel .paymentTypeFilter,
+    div.leftPanel .statusFilter {
         margin-bottom: 20px;
     }
 
@@ -117,10 +124,10 @@ div.orderList article div.orderContent div.orderInfo span.orderLabel {
 }
 
 div.orderList article div.orderContent div.orderItems {
-    background-color: #fafafa;
+    /* background-color: #fafafa;
     border-top: #eaeaea 1px solid;
     border-right: #eaeaea 1px solid;
-    border-left: #eaeaea 1px solid;
+    border-left: #eaeaea 1px solid; */
     flex: 1;
 }
 
@@ -128,8 +135,8 @@ div.orderList article div.orderContent div.orderItem {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-bottom: #eaeaea 1px solid;
-    padding: 0 7px 7px 7px;
+    /* border-bottom: #eaeaea 1px solid; */
+    padding: 7px 0;
 }
 
 div.orderList article div.orderContent div.orderItem div.orderItemInfo {

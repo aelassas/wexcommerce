@@ -37,6 +37,7 @@ import OrderStatusFilter from '../components/OrderStatusFilter';
 import { useRouter } from 'next/router';
 
 import styles from '../styles/home.module.css';
+import OrderDateFilter from '../components/OrderDateFilter';
 
 export default function Home({
   _user,
@@ -49,7 +50,9 @@ export default function Home({
   _orders,
   _noMatch,
   _paymentTypes,
-  _statuses
+  _statuses,
+  _from,
+  _to
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -58,6 +61,8 @@ export default function Home({
   const [edit, setEdit] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [previousStatuses, setPreviousStatuses] = useState([]);
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
 
   const _fr = _language === 'fr';
   const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm';
@@ -78,7 +83,7 @@ export default function Home({
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      // UserService.signout();
     }
   }, [_signout]);
 
@@ -93,6 +98,22 @@ export default function Home({
       setPreviousStatuses(_orders.map((order) => order.status));
     }
   }, [_orders]);
+
+  useEffect(() => {
+    if (_from) {
+      setFrom(new Date(_from));
+    } else {
+      setFrom(null);
+    }
+  }, [_from]);
+
+  useEffect(() => {
+    if (_to) {
+      setTo(new Date(_to));
+    } else {
+      setTo(null);
+    }
+  }, [_to]);
 
   const handleResend = async (e) => {
     try {
@@ -132,7 +153,7 @@ export default function Home({
                   onChange={(paymentTypes) => {
                     const pt = paymentTypes.join(',');
                     const os = _statuses.join(',');
-                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
                     router.replace(url);
                   }}
                   selectedOptions={_paymentTypes}
@@ -143,11 +164,26 @@ export default function Home({
                   onChange={(statuses) => {
                     const pt = _paymentTypes.join(',');
                     const os = statuses.join(',');
-                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
                     router.replace(url);
                   }}
                   selectedOptions={_statuses}
                   className={styles.statusFilter}
+                />
+
+                <OrderDateFilter
+                  language={_language}
+                  from={from}
+                  to={to}
+                  onSubmit={(filter) => {
+                    const { from, to } = filter;
+
+                    const pt = _paymentTypes.join(',');
+                    const os = _statuses.join(',');
+                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    router.replace(url);
+                  }}
+                  className={styles.dateFilter}
                 />
               </div>
 
@@ -329,13 +365,13 @@ export default function Home({
 
                           <div className={styles.actions}>
 
-                            <Link href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page - 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                            <Link href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page - 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
                               <a className={_page === 1 ? styles.disabled : ''}>
                                 <PreviousPageIcon className={styles.icon} />
                               </a>
                             </Link>
 
-                            <Link href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page + 1}`}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
+                            <Link href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page + 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
                               <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
                                 <NextPageIcon className={styles.icon} />
                               </a>
@@ -372,7 +408,7 @@ export default function Home({
 
 export async function getServerSideProps(context) {
   let _user = null, __user = null, _signout = false, _page = 1, _keyword = '',
-    _totalRecords = 0, _rowCount = 0, _orders = [], _noMatch = false, _paymentTypes = [], _statuses = [];
+    _totalRecords = 0, _rowCount = 0, _orders = [], _noMatch = false, _paymentTypes = [], _statuses = [], _from = null, _to = null;
   const _language = UserService.getLanguage(context);
 
   try {
@@ -396,6 +432,8 @@ export async function getServerSideProps(context) {
             if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
             if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
             if (typeof context.query.o !== 'undefined') _keyword = context.query.o;
+            if (typeof context.query.from !== 'undefined') _from = parseInt(context.query.from);
+            if (typeof context.query.to !== 'undefined') _to = parseInt(context.query.to);
 
             if (typeof context.query.pt !== 'undefined') {
               const allPaymentTypes = Helper.getPaymentTypes();
@@ -428,7 +466,9 @@ export async function getServerSideProps(context) {
                 Env.PAGE_SIZE,
                 _keyword,
                 _paymentTypes,
-                _statuses);
+                _statuses,
+                _from,
+                _to);
               const _data = data[0];
               _orders = _data.resultData;
               _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _orders.length;
@@ -468,7 +508,9 @@ export async function getServerSideProps(context) {
       _orders,
       _noMatch,
       _paymentTypes,
-      _statuses
+      _statuses,
+      _from,
+      _to
     }
   };
 }
