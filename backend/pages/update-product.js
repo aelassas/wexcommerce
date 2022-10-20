@@ -25,10 +25,22 @@ import NoMatch from '../components/NoMatch';
 import CategorySelectList from '../components/CategorySelectList';
 import { useRouter } from 'next/router';
 import Env from '../config/env.config';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+// import htmlToDraft from 'html-to-draftjs';
+// import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import styles from '../styles/update-product.module.css';
 
-export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
+let htmlToDraft = null;
+let Editor = null;
+if (typeof window === 'object') {
+  htmlToDraft = require('html-to-draftjs').default;
+  Editor = require('react-draft-wysiwyg').Editor;
+}
+
+export default function UpdateProduct({ _user, _signout, _noMatch, _product, _language }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -42,8 +54,11 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
   const [tempImage, setTempImage] = useState('');
   const [openInfoDialog, setOpenInfoDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [editorState, setEditorState] = useState();
+  const [descriptionRequired, setDescriptionRequired] = useState(false);
 
   const upload = useRef(null);
+  // const editorState = useRef(null);
 
   useEffect(() => {
     if (_user) {
@@ -73,6 +88,11 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
       setQuantity(_product.quantity.toString());
       setSoldOut(_product.soldOut);
       setHidden(_product.hidden);
+
+      const contentBlock = htmlToDraft(_product.description);
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+      const editorState = EditorState.createWithContent(contentState);
+      setEditorState(editorState);
     }
   }, [_product]);
 
@@ -117,14 +137,24 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
     reader.readAsDataURL(file);
   };
 
+  const onEditorStateChange = (state) => {
+    setEditorState(state);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+      console.log('description',description);
+      if(description.trim().toLowerCase() === '<p></p>'){
+        return setDescriptionRequired(true);
+      }
+
       const _categories = categories.map(c => c._id);
       const _price = parseFloat(price);
       const _quantity = parseInt(quantity);
+     
       const data = {
         _id: _product._id,
         name,
@@ -200,8 +230,9 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                 </FormControl>
 
                 <FormControl fullWidth margin="dense">
-                  <InputLabel className='required'>{cpStrings.DESCRIPTION}</InputLabel>
-                  <Input
+                  {/* <InputLabel className='required'>{cpStrings.DESCRIPTION}</InputLabel> */}
+                  <span className={`${styles.label} required`}>{cpStrings.DESCRIPTION}</span>
+                  {/* <Input
                     type="text"
                     value={description}
                     required
@@ -211,6 +242,20 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                       setDescription(e.target.value);
                     }}
                     autoComplete="off"
+                  /> */}
+                  <Editor
+                    // editorState={state => setEditorState(state)}
+                    editorState={editorState}
+                    toolbarClassName="toolbarClassName"
+                    wrapperClassName="wrapperClassName"
+                    editorClassName={styles.editor}
+                    onEditorStateChange={onEditorStateChange}
+                    toolbar={{
+                      options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'image', 'remove', 'history'],
+                    }}
+                    localization={{
+                      locale: _language
+                    }}
                   />
                 </FormControl>
 
@@ -374,6 +419,19 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
                   }} variant='contained' color='error'>{commonStrings.DELETE}</Button>
                 </DialogActions>
               </Dialog>
+
+              
+              <Dialog
+                disableEscapeKeyDown
+                maxWidth="xs"
+                open={descriptionRequired}
+              >
+                <DialogTitle className='dialog-header'>{commonStrings.INFO}</DialogTitle>
+                <DialogContent>{strings.DESCRIPTION_REQUIRED}</DialogContent>
+                <DialogActions className='dialog-actions'>
+                  <Button onClick={() => setDescriptionRequired(false)} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
+                </DialogActions>
+              </Dialog>
             </Paper>
           }
 
@@ -400,6 +458,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product }) {
 
 export async function getServerSideProps(context) {
   let _user = null, _signout = false, _noMatch = false, _product = null;
+  const _language = UserService.getLanguage(context);
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -452,7 +511,8 @@ export async function getServerSideProps(context) {
       _user,
       _signout,
       _noMatch,
-      _product
+      _product,
+      _language
     }
   };
 }

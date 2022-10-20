@@ -170,19 +170,6 @@ div.orderList article div.orderActions {
     margin: 0 5px;
 }
 
-div.orderList article div.orderActions .orderAction {
-    width: 40px;
-    height: 40px;
-    color: #707070;
-    padding: 8px;
-    border-radius: 50%;
-    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-}
-
-div.orderList article div.orderActions .orderAction:hover {
-    background-color: #f5f5f5;
-}
-
 .footer {
     height: 54px;
     padding: 5px 10px 5px 0;

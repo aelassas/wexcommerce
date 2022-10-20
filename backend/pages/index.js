@@ -314,6 +314,10 @@ export default function Home({
                                       const status = await OrderService.updateOrder(_user._id, order._id, _status);
 
                                       if (status === 200) {
+                                        const _previousStatuses = Helper.clone(previousStatuses);
+                                        _previousStatuses[index] = _status;
+                                        setPreviousStatuses(_previousStatuses);
+
                                         const _edit = Helper.clone(edit);
                                         _edit[index] = false;
                                         setEdit(_edit);

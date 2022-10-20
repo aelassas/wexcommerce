@@ -8,7 +8,6 @@
     }
 }
 
-
 @media only screen and (min-width: 960px) {
     .form {
         margin-top: 45px !important;
@@ -55,4 +54,19 @@
     margin-right: 5px;
     font-size: 26px;
     color: #030303;
+}
+
+.form .label{
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 400;
+    font-size: 12px;
+    display: block;
+    width: fit-content;
+    margin: 0 0 12px 12px;
+}
+
+.form .editor{
+    border: 1px solid #F1F1F1;
+    height: 500px;
+    overflow: auto;
 }

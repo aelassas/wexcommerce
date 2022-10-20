@@ -136,17 +136,6 @@ export default function Home({
                   </Card>
                 }
 
-                {/* {
-                  _totalRecords === 0 &&
-                  Array.from(Array(50).keys()).map(i => (
-                    <Card key={i} variant="outlined" className={styles.emptyList}>
-                      <CardContent>
-                        <Typography color="textSecondary">{strings.EMPTY_LIST + ' ' + i}</Typography>
-                      </CardContent>
-                    </Card>
-                  ))
-                } */}
-
                 {
                   _totalRecords > 0 &&
                   <>
