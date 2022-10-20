@@ -32,7 +32,7 @@ export default function Product({ _user, _signout, _noMatch, _product }) {
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      UserService.signout(false);
     }
   }, [_signout]);
 
@@ -110,33 +110,32 @@ export async function getServerSideProps(context) {
 
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
-
-        if (_user) {
-          const { p: productId } = context.query;
-          if (productId) {
-            try {
-              _product = await ProductService.getProduct(productId);
-
-              if (!_product) {
-                _noMatch = true;
-              }
-            } catch (err) {
-              console.log(err);
-              _noMatch = true;
-            }
-          } else {
-            _noMatch = true;
-          }
-        } else {
-          _signout = true;
-        }
       } else {
         _signout = true;
       }
-
     } else {
       _signout = true;
     }
+
+    if (!_user || (_user && _user.verified)) {
+      const { p: productId } = context.query;
+
+      if (productId) {
+        try {
+          _product = await ProductService.getProduct(productId);
+
+          if (!_product) {
+            _noMatch = true;
+          }
+        } catch (err) {
+          console.log(err);
+          _noMatch = true;
+        }
+      } else {
+        _noMatch = true;
+      }
+    }
+
   } catch (err) {
     console.log(err);
     _signout = true;

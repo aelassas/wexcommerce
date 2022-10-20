@@ -118,7 +118,11 @@ export default function Header(props) {
 
         if (e.key === 'Enter') {
             setShowMobileSearch(false);
-            router.replace(keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
+            const url = router.pathname.includes('/orders') ?
+                (keyword ? '/orders?s=' + encodeURIComponent(keyword) : '/orders')
+                : (keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
+
+            router.replace(url);
         } else {
             setSearchKeyword(keyword);
         }
@@ -375,7 +379,11 @@ export default function Header(props) {
                                 <div className={`${styles.searchInput}${(showMobileSearch && ` ${styles.mobileSearchInput}`) || ''}`}>
                                     {showPlaceholder && !searchKeyword && (
                                         <div className={styles.searchPlaceholder}>
-                                            <span>{strings.SEARCH_PLACEHOLDER}</span>
+                                            <span>{
+                                                router.pathname.includes('/orders') ?
+                                                    strings.SEARCH_ORDERS_PLACEHOLDER
+                                                    : strings.SEARCH_PRODUCTS_PLACEHOLDER
+                                            }</span>
                                         </div>
                                     )}
                                     <InputBase
@@ -394,10 +402,19 @@ export default function Header(props) {
                                     />
                                 </div>
                                 {
-                                    searchKeyword && showMobileSearch &&
+                                    searchKeyword && // showMobileSearch &&
                                     <div className={styles.clearIcon}
                                         onClick={() => {
                                             setSearchKeyword('');
+
+                                            let input;
+                                            if (searchRef.current) {
+                                                input = searchRef.current.querySelector('input');
+                                            }
+
+                                            if (input) {
+                                                input.focus();
+                                            }
                                         }}>
                                         <ClearIcon />
                                     </div>

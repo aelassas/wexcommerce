@@ -5,7 +5,7 @@ export default {
     update: '/api/update-product',
     checkProduct: '/api/check-product/:id',
     delete: '/api/delete-product/:id',
-    getProduct: '/api/product/:id/:language',
+    getProduct: '/api/product/:id',
     getBackendProducts: '/api/backend-products/:user/:page/:size/:category?',
     getFrontendProducts: '/api/frontend-products/:page/:size/:category?',
 };

@@ -39,6 +39,17 @@ export const strings = new LocalizedStrings({
         PHONE: 'Téléphone',
         PHONE_NOT_VALID: 'Numéro de téléphone non valide',
         ADDRESS: 'Adresse',
+
+        PAYMENT_TYPES: 'Types de paiement',
+        CREDIT_CARD: 'Carte bancaire',
+        COD: 'Cash à la livraison',
+        WIRE_TRANSFER: 'Virement bancaire',
+        SOLD_OUT: 'En rupture de stock',
+        SOLD_OUT_INFO: 'Ce produit est en rupture de stock.',
+        QUANTITY: 'Quantité',
+        UNCHECK_ALL: 'Décocher tout',
+        CHECK_ALL: 'Cocher tout',
+        STATUS: 'Statut',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -78,5 +89,16 @@ export const strings = new LocalizedStrings({
         PHONE: 'Phone',
         PHONE_NOT_VALID: 'Invalid phone number',
         ADDRESS: 'Address',
+
+        PAYMENT_TYPES: 'Payment types',
+        CREDIT_CARD: 'Credit card',
+        COD: 'Cash on delivery',
+        WIRE_TRANSFER: 'Wire transfer',
+        SOLD_OUT: 'Sold out',
+        SOLD_OUT_INFO: 'This product is sold out.',
+        QUANTITY: 'Quantity',
+        UNCHECK_ALL: 'Uncheck all',
+        CHECK_ALL: 'Check all',
+        STATUS: 'Status',
     }
 });

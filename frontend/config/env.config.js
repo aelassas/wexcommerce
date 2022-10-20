@@ -19,14 +19,25 @@ const Env = {
     ],
     DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_SC_DEFAULT_LANGUAGE || 'fr',
     PAGE_SIZE: parseInt(process.env.NEXT_PUBLIC_SC_PAGE_SIZE || 30),
-    CDN_VIDEOS: process.env.NEXT_PUBLIC_SC_CDN_VIDEOS,
-    CDN_TEMP_VIDEOS: process.env.NEXT_PUBLIC_SC_CDN_TEMP_VIDEOS,
-    CDN_IMAGES: process.env.NEXT_PUBLIC_SC_CDN_IMAGES,
-    CDN_TEMP_IMAGES: process.env.NEXT_PUBLIC_SC_CDN_TEMP_IMAGES,
+    CDN_PRODUCTS: process.env.NEXT_PUBLIC_SC_CDN_PRODUCTS,
+    CDN_TEMP_PRODUCTS: process.env.NEXT_PUBLIC_SC_CDN_TEMP_PRODUCTS,
     USER_TYPE: {
         ADMIN: 'admin',
         USER: 'user'
-    }
+    },
+    PAYMENT_TYPE: {
+        CREDIT_CARD: 'creditCard',
+        COD: 'cod',
+        WIRE_TRANSFER: 'wireTransfer'
+    },
+    ORDER_STATUS: {
+        PENDING: 'pending',
+        PAID: 'paid',
+        CONFIRMED: 'confirmed',
+        IN_PROGRESS: 'inProgress',
+        SHIPPED: 'shipped',
+        CANCELLED: 'cancelled'
+    },
 };
 
 export default Env;

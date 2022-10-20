@@ -118,6 +118,7 @@ div.main {
 div.leftPanel {
   background-color: #fff;
   border-radius: 5px;
+  min-height: 100vh;
 }
 
 div.products {
@@ -250,7 +251,6 @@ ul.categories li a .categoryIcon {
   text-align: center;
   width: 250px;
   margin-left: calc(50% - 125px);
-  border: 0 !important;
 }
 
 .footer {

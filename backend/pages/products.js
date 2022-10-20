@@ -92,8 +92,6 @@ export default function Products({
     }
   };
 
-  const _locale = _language === 'fr' ? fr : enUS;
-
   return (
     !loading && _user &&
     <>
@@ -280,7 +278,6 @@ export default function Products({
                   }
                 </div>
               </div>
-
             </>
           }
         </div>
