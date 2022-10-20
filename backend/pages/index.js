@@ -222,8 +222,8 @@ export default function Home({
                                         value={statuses[index]}
                                         SelectDisplayProps={{ style: { paddingTop: 0, paddingRight: 24, paddingBottom: 4, paddingLeft: 0 } }}
                                         onChange={(e) => {
-                                          const __statuses = Helper.clone(statuses);
-                                          const __previousStatuses = Helper.clone(previousStatuses);
+                                          const __statuses = Helper.cloneArray(statuses);
+                                          const __previousStatuses = Helper.cloneArray(previousStatuses);
                                           __previousStatuses[index] = __statuses[index];
                                           __statuses[index] = e.target.value;
                                           setStatuses(__statuses);
@@ -292,7 +292,7 @@ export default function Home({
                                 <IconButton
                                   style={{ visibility: edit[index] ? 'hidden' : 'visible' }}
                                   onClick={(e) => {
-                                    const _edit = Helper.clone(edit);
+                                    const _edit = Helper.cloneArray(edit);
                                     _edit[index] = true;
                                     setEdit(_edit);
                                   }}>
@@ -314,11 +314,11 @@ export default function Home({
                                       const status = await OrderService.updateOrder(_user._id, order._id, _status);
 
                                       if (status === 200) {
-                                        const _previousStatuses = Helper.clone(previousStatuses);
+                                        const _previousStatuses = Helper.cloneArray(previousStatuses);
                                         _previousStatuses[index] = _status;
                                         setPreviousStatuses(_previousStatuses);
 
-                                        const _edit = Helper.clone(edit);
+                                        const _edit = Helper.cloneArray(edit);
                                         _edit[index] = false;
                                         setEdit(_edit);
                                         Helper.info(commonStrings.UPDATED);
@@ -340,11 +340,11 @@ export default function Home({
                                   className='btn-secondary btn-margin-bottom'
                                   size="small"
                                   onClick={async () => {
-                                    const _edit = Helper.clone(edit);
+                                    const _edit = Helper.cloneArray(edit);
                                     _edit[index] = false;
                                     setEdit(_edit);
 
-                                    const __statuses = Helper.clone(statuses);
+                                    const __statuses = Helper.cloneArray(statuses);
                                     __statuses[index] = previousStatuses[index];
                                     setStatuses(__statuses);
                                   }}
