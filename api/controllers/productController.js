@@ -2,6 +2,7 @@ import strings from '../config/app.config.js';
 import Product from '../models/Product.js';
 import OrderItem from '../models/OrderItem.js';
 import Cart from '../models/Cart.js';
+import CartItem from '../models/CartItem.js';
 import User from '../models/User.js';
 import mongoose from 'mongoose';
 import Env from '../config/env.config.js';
@@ -304,6 +305,18 @@ export const getBackendProducts = async (req, res) => {
 
 export const getFrontendProducts = async (req, res) => {
     try {
+        // const cartItem1 = new CartItem({ product: '634ae2f223d738415ba21641', quantity: 1 });
+        // const cartItem2 = new CartItem({ product: '634ae2f223d738415ba2163f', quantity: 2 });
+        // const cartItem3 = new CartItem({ product: '634ae2f223d738415ba2163d', quantity: 3 });
+
+        // await cartItem1.save();
+        // await cartItem2.save();
+        // await cartItem3.save();
+
+        // const cart1 = new Cart({ cartItems: [cartItem1, cartItem2, cartItem3] });
+        // await cart1.save();
+        // console.log('----cartId----', cart1._id);
+
         const page = parseInt(req.params.page);
         const size = parseInt(req.params.size);
         const keyword = escapeStringRegexp(req.query.s || '');

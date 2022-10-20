@@ -39,7 +39,6 @@ export const strings = new LocalizedStrings({
         PHONE: 'Téléphone',
         PHONE_NOT_VALID: 'Numéro de téléphone non valide',
         ADDRESS: 'Adresse',
-
         PAYMENT_TYPES: 'Types de paiement',
         CREDIT_CARD: 'Carte bancaire',
         COD: 'Cash à la livraison',
@@ -50,6 +49,8 @@ export const strings = new LocalizedStrings({
         UNCHECK_ALL: 'Décocher tout',
         CHECK_ALL: 'Cocher tout',
         STATUS: 'Statut',
+        ADD_TO_CART: 'Ajouter au panier',
+        REMOVE_FROM_CART: 'Retirer du panier'
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -89,7 +90,6 @@ export const strings = new LocalizedStrings({
         PHONE: 'Phone',
         PHONE_NOT_VALID: 'Invalid phone number',
         ADDRESS: 'Address',
-
         PAYMENT_TYPES: 'Payment types',
         CREDIT_CARD: 'Credit card',
         COD: 'Cash on delivery',
@@ -100,5 +100,7 @@ export const strings = new LocalizedStrings({
         UNCHECK_ALL: 'Uncheck all',
         CHECK_ALL: 'Check all',
         STATUS: 'Status',
+        ADD_TO_CART: 'Add to cart',
+        REMOVE_FROM_CART: 'Remove from cart'
     }
 });

@@ -4,6 +4,7 @@ import { strings as commonStrings } from '../lang/common';
 import { strings } from '../lang/header';
 import UserService from '../services/UserService';
 import NotificationService from '../services/NotificationService';
+import CartService from '../services/CartService';
 import * as Helper from '../common/Helper';
 import { Avatar } from './Avatar';
 import {
@@ -30,7 +31,8 @@ import {
     Login as LoginIcon,
     Search as SearchIcon,
     ArrowBack as ArrowBackIcon,
-    Clear as ClearIcon
+    Clear as ClearIcon,
+    ShoppingCart as CartIcon
 } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -53,6 +55,7 @@ export default function Header(props) {
     const [searchKeyword, setSearchKeyword] = useState('');
     const [showPlaceholder, setShowPlaceholder] = useState(true);
     const [showMobileSearch, setShowMobileSearch] = useState(false);
+    const [cartCount, setCartCount] = useState(0);
     const showPlacehoder = () => setShowPlaceholder(true);
     const hidePlaceholder = () => setShowPlaceholder(false);
     const searchRef = useRef();
@@ -112,6 +115,22 @@ export default function Header(props) {
             searchRef.current.firstChild.focus();
         }
     }, [showMobileSearch, searchRef]);
+
+    useEffect(() => {
+        (async function () {
+            // CartService.setCartId('63518b6742cb8993c1dab202');
+            const cartId = CartService.getCartId();
+            
+            if (cartId) {
+                const cartCount = await CartService.getCartCount(cartId);
+                setCartCount(cartCount);
+            }
+        })();
+    }, []);
+
+    useEffect(() => {
+        setCartCount(props.cartCount);
+    }, [props.cartCount]);
 
     const handleSearch = (e) => {
         const keyword = e.currentTarget.value;
@@ -473,7 +492,18 @@ export default function Header(props) {
 
                     <div
                         className={styles.headerDesktop}
-                        style={{ minWidth: isSignedIn ? 240 : props.hideSignIn ? 122 : 240 }}>
+                        style={{ minWidth: isSignedIn ? 280 : props.hideSignIn ? 142 : 280 }}>
+                        <IconButton
+                            onClick={(e) => {
+
+                            }}
+                            className={styles.iconButton}
+                        // style={{ width: 52 }}
+                        >
+                            <Badge badgeContent={cartCount > 0 ? cartCount : null} color="error">
+                                <CartIcon />
+                            </Badge>
+                        </IconButton>
                         {isSignedIn &&
                             <IconButton
                                 onClick={handleNotificationsClick}

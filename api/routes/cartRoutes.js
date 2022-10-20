@@ -9,6 +9,7 @@ routes.route(routeNames.addItem).post(cartController.addItem);
 routes.route(routeNames.updateItem).put(cartController.updateItem);
 routes.route(routeNames.deleteItem).delete(cartController.deleteItem);
 routes.route(routeNames.delete).delete(authJwt.verifyToken, cartController.deleteCart);
-routes.route(routeNames.getCart).get(authJwt.verifyToken, cartController.getCart);
+routes.route(routeNames.getCart).get(cartController.getCart);
+routes.route(routeNames.getCartCount).get(cartController.getCartCount);
 
 export default routes;

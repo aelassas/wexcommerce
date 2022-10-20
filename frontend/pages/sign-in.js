@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { strings as commonStrings } from '../lang/common';
 import { strings } from '../lang/sign-in';
 import UserService from '../services/UserService';
+import CartService from '../services/CartService';
 import Header from '../components/Header';
 import Error from '../components/Error';
 import {
@@ -79,6 +80,19 @@ export default function SignIn() {
             const res = await UserService.signin(data);
 
             if (res.status === 200) {
+                const cartId = CartService.getCartId();
+                if (cartId) {
+                    // TODO getUserCartId
+                    // TODO if userCartId null updateCart(cartId, userId)
+                    // TODO if cartId!==cart._id deleteCart & updateCart(cartId, userId)
+                    // TODO add item to cart
+                    // TODO remove item from cart
+                    // TODO cart page
+                    // TODO product page
+                    // TODO purshase page
+                    // TODO orders page
+                    CartService.setCartId(cartId);
+                }
                 router.replace('/');
             } else {
                 setError(true);

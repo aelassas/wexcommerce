@@ -226,6 +226,47 @@ export default function Home({
                                   <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
                                 </a>
                               </Link>
+                              {
+                                !product.soldOut &&
+                                <div className={styles.actions}>
+                                  {
+                                    product.inCart ?
+                                      <Button
+                                        variant="contained"
+                                        className={styles.removeButton}
+                                        color='error'
+                                        onClick={async (e) => {
+                                          try {
+
+
+                                          } catch (err) {
+                                            console.log(err);
+                                            Helper.error();
+                                          }
+                                        }}
+                                      >
+                                        {commonStrings.REMOVE_FROM_CART}
+                                      </Button>
+                                      :
+                                      <Button
+                                        variant="contained"
+                                        className={`${styles.button} btn-primary`}
+                                        size="small"
+                                        onClick={async (e) => {
+                                          try {
+
+
+                                          } catch (err) {
+                                            console.log(err);
+                                            Helper.error();
+                                          }
+                                        }}
+                                      >
+                                        {commonStrings.ADD_TO_CART}
+                                      </Button>
+                                  }
+
+                                </div>}
                             </article>
                           ))
                         }

@@ -3,5 +3,6 @@ export default {
     updateItem: '/api/update-cart-item/:id',
     deleteItem: '/api/delete-cart-item/:id',
     delete: '/api/delete-cart/:id',
-    getCart: '/api/cart/:id'
+    getCart: '/api/cart/:id',
+    getCartCount: '/api/cart-count/:id'
 };

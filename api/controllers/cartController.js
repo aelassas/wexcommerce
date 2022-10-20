@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import strings from '../config/app.config.js';
 import Cart from '../models/Cart.js';
 import CartItem from '../models/CartItem.js';
@@ -126,6 +127,45 @@ export const getCart = async (req, res) => {
         }
     } catch (err) {
         console.error(`[cart.getCart]  ${strings.DB_ERROR} ${req.params.id}`, err);
+        return res.status(400).send(strings.DB_ERROR + err);
+    }
+};
+
+export const getCartCount = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const data = await Cart.aggregate([
+            { $match: { _id: { $eq: mongoose.Types.ObjectId(id) } } },
+            {
+                $lookup: {
+                    from: 'CartItem',
+                    let: { cartItems: '$cartItems' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ['$_id', '$$cartItems'] }
+                            }
+                        }
+                    ],
+                    as: 'cartItems'
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    cartCount: { $sum: '$cartItems.quantity' }
+                }
+            }
+        ]);
+
+        if (data.length > 0) {
+            return res.json(data[0].cartCount);
+        }
+        return res.json(0);
+
+    } catch (err) {
+        console.error(`[cart.getCartCount]  ${strings.DB_ERROR} ${req.params.id}`, err);
         return res.status(400).send(strings.DB_ERROR + err);
     }
 };

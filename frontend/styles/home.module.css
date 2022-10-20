@@ -1,151 +1,183 @@
 @media only screen and (max-width: 960px) {
 
     div.main {
-      margin-top: 5px;
+        margin-top: 5px;
     }
-  
+
     .newProduct {
-      width: calc(100% - 20px);
-      margin: 10px !important;
+        width: calc(100% - 20px);
+        margin: 10px !important;
     }
-  
+
     div.categoriesAction {
-      display: flex;
-      flex: 1;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 15px 10px 15px;
-      font-weight: 600;
-      color: #030303;
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 15px 10px 15px;
+        font-weight: 600;
+        color: #030303;
     }
-  
+
     div.categoriesAction div.categoriesText {
-      display: flex;
-      flex: 1;
-      flex-direction: row;
-      align-items: center;
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        align-items: center;
     }
-  
+
     div.categoriesAction .categoriesIcon {
-      margin-right: 5px;
+        margin-right: 5px;
     }
-  
+
     div.categoriesAction .closeIcon {
-      visibility: hidden;
+        visibility: hidden;
     }
-  
+
     div.leftPanel {
-      display: none;
-      width: 100%;
-      margin: 0 5px;
+        display: none;
+        width: 100%;
+        margin: 0 5px;
     }
-  
+
+    div.productList {
+        flex-direction: column;
+        align-items: center;
+    }
+
     article.product {
-      flex: 1 0 100%;
-      max-width: calc(100% - 12px);
-      height: 300px;
-      margin: 3px 6px 3px 6px;
-      background-color: #fff;
-      padding: 6px;
+        flex: 1 0 100%;
+        width: 100%;
+        max-width: 390px;
+        height: 320px;
+        margin: 3px 6px 3px 6px;
+        background-color: #fff;
+        padding: 6px;
     }
-  
+
     article.product div.thumbnail {
-      width: 100%;
-      height: calc(100% - 130px);
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: auto 100%;
+        width: 100%;
+        /* height: calc(100% - 130px); */
+        height: 160px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: auto 100%;
     }
-  
+
     article.product span.name {
-      text-align: center;
-      padding: 5px;
+        text-align: center;
+        padding: 5px;
     }
-  }
-  
-  @media only screen and (min-width: 960px) {
-  
+}
+
+@media only screen and (min-width: 960px) {
+
     div.main {
-      max-width: 1184px;
-      margin-right: auto;
-      margin-left: auto;
-      padding-bottom: 30px;
-      margin-top: 15px;
+        max-width: 1184px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-bottom: 30px;
+        margin-top: 15px;
     }
-  
+
     div.leftPanel {
-      width: 275px;
+        width: 275px;
     }
-  
+
     div.leftPanel .newProduct {
-      width: 100%;
+        width: 100%;
     }
-  
+
     ul.categories {
-      padding-right: 25px;
+        padding-right: 25px;
     }
-  
-    article.product {
-      flex: 1 0 21%;
-      max-width: calc(25% - 6px);
-      height: 300px;
-      margin: 3px;
-      background-color: #fff;
-      padding: 6px;
-    }
-  
-    article.product div.thumbnail {
-      width: 100%;
-      height: calc(100% - 130px);
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: 80% auto;
-    }
-  
+
     div.products {
-      width: 100%;
-      margin-left: 15px;
+        width: 100%;
+        margin-left: 15px;
     }
-  }
-  
-  div.main {
+
+    article.product {
+        flex: 1 0 21%;
+        max-width: calc(25% - 6px);
+        height: 320px;
+        margin: 3px;
+        background-color: #fff;
+        padding: 6px;
+    }
+
+    article.product div.thumbnail {
+        width: 100%;
+        /* height: calc(100% - 140px); */
+        height: 160px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 80% auto;
+    }
+
+    article.product div.actions .button {
+        display: none;
+    }
+
+    article.product:hover div.actions .button {
+        display: block;
+    }
+}
+
+ article.product div.actions .button,
+ article.product div.actions .removeButton {
+        height: 38px;
+    }
+
+div.main {
     display: flex;
     flex-direction: row;
     width: 100%;
-  }
-  
-  div.leftPanel {
+}
+
+div.leftPanel {
     background-color: #fff;
     border-radius: 5px;
     min-height: 100vh;
-  }
-  
-  div.products {
+}
+
+div.products {
     flex: 1;
     height: fit-content;
-  }
-  
-  div.productList {
+}
+
+div.productList {
     flex: 1;
     display: flex;
     flex-wrap: wrap;
-  }
-  
-  div.productList a {
+}
+
+div.productList a {
     color: #030303;
     text-decoration: none;
-  }
-  
-  div.productList a:hover {
+}
+
+div.productList a:hover {
     text-decoration: none;
-  }
-  
-  article.product {
+}
+
+article.product {
     border-radius: 5px;
-  }
-  
-  article.product span.name {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+article.product div.actions {
+    margin-top: 5px;
+}
+
+article.product div.actions button {
+    width: 100%;
+}
+
+article.product span.name {
     overflow: hidden;
     display: block;
     display: -webkit-box;
@@ -155,15 +187,15 @@
     white-space: normal;
     text-align: center;
     font-weight: 300;
-  }
-  
-  article.product span.price {
+}
+
+article.product span.price {
     display: flex;
     justify-content: center;
     font-weight: bold;
-  }
-  
-  article.product div.label {
+}
+
+article.product div.label {
     color: #fff;
     display: flex;
     flex-direction: row;
@@ -177,22 +209,18 @@
     max-width: 390px;
     margin-right: auto;
     margin-left: auto;
-  }
-  
-  article.product div.label .labelIcon {
+}
+
+article.product div.label .labelIcon {
     font-size: 15px;
     margin-right: 5px;
-  }
-  
-  article.product div.soldOut {
+}
+
+article.product div.soldOut {
     background-color: #e33b2f;
-  }
-  
-  article.product div.hidden {
-    background-color: #c2c2c2;
-  }
-  
-  ul.categories {
+}
+
+ul.categories {
     list-style: none;
     width: 100%;
     margin: 0;
@@ -200,60 +228,60 @@
     box-sizing: content-box;
     padding-top: 10px;
     height: 100%;
-  }
-  
-  ul.categories:hover {
+}
+
+ul.categories:hover {
     box-sizing: border-box;
     padding-right: 0;
-  }
-  
-  ul.categories li a {
+}
+
+ul.categories li a {
     text-decoration: none;
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 48px;
     padding-left: 24px;
-  }
-  
-  ul.categories li a:hover {
+}
+
+ul.categories li a:hover {
     background-color: #f2f2f2;
-  }
-  
-  ul.categories li a.selected {
+}
+
+ul.categories li a.selected {
     background-color: #e2e2e2;
-  }
-  
-  ul.categories li a.selected:hover {
+}
+
+ul.categories li a.selected:hover {
     background-color: #d2d2d2;
-  }
-  
-  ul.categories li a span,
-  ul.categories li a.selected span {
+}
+
+ul.categories li a span,
+ul.categories li a.selected span {
     font-weight: 400;
     color: #030303;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  }
-  
-  ul.categories li a.selected span {
+}
+
+ul.categories li a.selected span {
     font-weight: 500;
-  }
-  
-  ul.categories li a .categoryIcon {
+}
+
+ul.categories li a .categoryIcon {
     color: #030303;
     font-size: 24px;
     margin-right: 24px;
-  }
-  
-  .emptyList {
+}
+
+.emptyList {
     text-align: center;
     width: 250px;
     margin-left: calc(50% - 125px);
-  }
-  
-  .footer {
+}
+
+.footer {
     height: 54px;
     padding: 5px 10px 5px 0;
     margin: 3px 3px 0 3px;
@@ -262,29 +290,29 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-  }
-  
-  .footer .pager {
+}
+
+.footer .pager {
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
-  
-  .footer .pager .rowCount {
+}
+
+.footer .pager .rowCount {
     font-size: 14px;
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-right: 7px;
-  }
-  
-  .footer .pager .actions {
+}
+
+.footer .pager .actions {
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
-  
-  .footer .pager .actions a {
+}
+
+.footer .pager .actions a {
     text-decoration: none;
     color: #030303;
     width: 100%;
@@ -293,19 +321,19 @@
     flex-direction: column;
     justify-content: center;
     padding: 5px;
-  }
-  
-  .footer .pager .actions a:hover {
+}
+
+.footer .pager .actions a:hover {
     color: #131313 !important;
-  }
-  
-  .footer .pager .actions {
+}
+
+.footer .pager .actions {
     font-size: 18px;
-  }
-  
-  a.disabled,
-  a.disabled:hover {
+}
+
+a.disabled,
+a.disabled:hover {
     pointer-events: none;
     cursor: default;
     color: #939393 !important;
-  }
+}

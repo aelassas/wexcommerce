@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Env from '../config/env.config';
 import { hasCookie, getCookie, setCookie, deleteCookie } from 'cookies-next';
+import UserService from './UserService';
 
 const MAX_AGE = 100 * 365 * 24 * 60 * 60;
 
@@ -30,13 +31,28 @@ export default class CartService {
         return axios.get(`${Env.API_HOST}/api/cart/${cartId}`).then(res => res.data);
     }
 
+    static getCartCount(cartId) {
+        return axios.get(`${Env.API_HOST}/api/cart-count/${cartId}`).then(res => res.data);
+    }
+
     static setCartId(id) {
-        setCookie('sc-fe-cart', id, { maxAge: MAX_AGE });
+        const user = UserService.getCurrentUser();
+        let key = 'sc-fe-cart';
+        if (user) {
+            key += user.id;
+        }
+        setCookie(key, id, { maxAge: MAX_AGE });
     }
 
     static getCartId(context) {
         const _context = context ? { req: context.req, res: context.res } : {};
-        if (hasCookie('sc-fe-cart', _context)) return getCookie('sc-fe-cart', _context);
+        const user = UserService.getCurrentUser(_context);
+        let key = 'sc-fe-cart';
+        if (user) {
+            key += user.id;
+        }
+
+        if (hasCookie(key, _context)) return getCookie(key, _context);
         return '';
     }
 }
