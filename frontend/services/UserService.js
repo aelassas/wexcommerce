@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Env from '../config/env.config';
 import { hasCookie, getCookie, setCookie, deleteCookie } from 'cookies-next';
+import CartService from './CartService';
 
 const MAX_AGE = 100 * 365 * 24 * 60 * 60;
 
@@ -40,6 +41,22 @@ export default class UserService {
     }
 
     static signout(redirect = true, redirectSignIn = false) {
+
+        const cartId = CartService.getCartId();
+
+        if (cartId) {
+            const user = UserService.getCurrentUser();
+            let key = 'sc-fe-cart';
+            if (user) {
+                key += '-';
+                key += user.id;
+            }
+
+            if (hasCookie(key)) deleteCookie(key);
+
+            setCookie('sc-fe-cart', cartId);
+        }
+
         deleteCookie('sc-fe-user');
 
         if (redirect) {

@@ -77,20 +77,31 @@ export default function SignIn() {
 
             const data = { email, password, stayConnected };
 
+            const cartId = CartService.getCartId();
+
             const res = await UserService.signin(data);
 
             if (res.status === 200) {
-                const cartId = CartService.getCartId();
                 if (cartId) {
-                    // TODO getUserCartId
-                    // TODO if userCartId null updateCart(cartId, userId)
-                    // TODO if cartId!==cart._id deleteCart & updateCart(cartId, userId)
-                    // TODO add item to cart
-                    // TODO remove item from cart
-                    // TODO cart page
-                    // TODO product page
-                    // TODO purshase page
-                    // TODO orders page
+                    const userId = res.data.id;
+                    const userCartId = await CartService.getUserCartId(userId);
+                    
+                    if (!userCartId) {
+                        const status = await CartService.updateCart(cartId, userId);
+                        if (status !== 200) {
+                            Helper.error();
+                        }
+                    } else if (userCartId !== cartId) {
+                        let status = await CartService.clearCart(userCartId);
+                        if (status !== 200) {
+                            Helper.error();
+                        }
+                        status = await CartService.updateCart(cartId, userId);
+                        if (status !== 200) {
+                            Helper.error();
+                        }
+                    }
+
                     CartService.setCartId(cartId);
                 }
                 router.replace('/');
@@ -105,7 +116,7 @@ export default function SignIn() {
 
     return (
         <div>
-            <Header hideSearch hideSignIn />
+            <Header hideSearch hideSignIn hideCart />
             {visible &&
                 <div className={styles.signin}>
                     <Paper className={styles.signinForm} elevation={10}>

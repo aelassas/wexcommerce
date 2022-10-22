@@ -169,3 +169,40 @@ export const getCartCount = async (req, res) => {
         return res.status(400).send(strings.DB_ERROR + err);
     }
 };
+
+export const getCartId = async (req, res) => {
+    try {
+        const { user } = req.params;
+
+        const cart = await Cart.findOne({ user });
+
+        if (cart) {
+            return res.json(cart._id);
+        } 
+        
+        return res.json(null);
+    } catch (err) {
+        console.error(`[cart.getCartId]  ${strings.DB_ERROR}`, err);
+        return res.status(400).send(strings.DB_ERROR + err);
+    }
+};
+
+export const update = async (req, res) => {
+    try {
+        const { id, user } = req.params;
+
+        const cart = await Cart.findById(id);
+
+        if (cart) {
+            cart.user = user;
+            await cart.save();
+
+            return res.sendStatus(200);
+        } else {
+            return res.sendStatus(204);
+        }
+    } catch (err) {
+        console.error(`[cart.getCartId]  ${strings.DB_ERROR}`, err);
+        return res.status(400).send(strings.DB_ERROR + err);
+    }
+};

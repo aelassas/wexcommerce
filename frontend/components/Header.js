@@ -119,8 +119,9 @@ export default function Header(props) {
     useEffect(() => {
         (async function () {
             // CartService.setCartId('63518b6742cb8993c1dab202');
+            // CartService.setCartId('6353db5afa4dbc37efccdd99');
             const cartId = CartService.getCartId();
-            
+
             if (cartId) {
                 const cartCount = await CartService.getCartCount(cartId);
                 setCartCount(cartCount);
@@ -240,7 +241,7 @@ export default function Header(props) {
     };
 
     const handleSignout = () => {
-        UserService.signout();
+        UserService.signout(true, false);
     };
 
     const handleMobileMenuOpen = (event) => {
@@ -493,17 +494,18 @@ export default function Header(props) {
                     <div
                         className={styles.headerDesktop}
                         style={{ minWidth: isSignedIn ? 280 : props.hideSignIn ? 142 : 280 }}>
-                        <IconButton
-                            onClick={(e) => {
+                        {!props.hideCart &&
+                            <IconButton
+                                onClick={(e) => {
 
-                            }}
-                            className={styles.iconButton}
-                        // style={{ width: 52 }}
-                        >
-                            <Badge badgeContent={cartCount > 0 ? cartCount : null} color="error">
-                                <CartIcon />
-                            </Badge>
-                        </IconButton>
+                                }}
+                                className={styles.iconButton}
+                                style={{ width: isSignedIn ? 52 : 42 }}
+                            >
+                                <Badge badgeContent={cartCount > 0 ? cartCount : null} color="error">
+                                    <CartIcon />
+                                </Badge>
+                            </IconButton>}
                         {isSignedIn &&
                             <IconButton
                                 onClick={handleNotificationsClick}
@@ -550,6 +552,16 @@ export default function Header(props) {
 
                     {isLoaded && !loading && !showMobileSearch &&
                         <div className={styles.headerMobile}>
+                            {!props.hideCart && <IconButton
+                                onClick={(e) => {
+
+                                }}
+                                className={styles.iconButton}
+                            >
+                                <Badge badgeContent={cartCount > 0 ? cartCount : null} color="error">
+                                    <CartIcon />
+                                </Badge>
+                            </IconButton>}
                             {(!isSignedIn && !loading) &&
                                 <Button
                                     variant="contained"

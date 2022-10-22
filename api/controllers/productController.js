@@ -305,9 +305,9 @@ export const getBackendProducts = async (req, res) => {
 
 export const getFrontendProducts = async (req, res) => {
     try {
-        // const cartItem1 = new CartItem({ product: '634ae2f223d738415ba21641', quantity: 1 });
-        // const cartItem2 = new CartItem({ product: '634ae2f223d738415ba2163f', quantity: 2 });
-        // const cartItem3 = new CartItem({ product: '634ae2f223d738415ba2163d', quantity: 3 });
+        // const cartItem1 = new CartItem({ product: '634ae2f223d738415ba21641', quantity: 2 });
+        // const cartItem2 = new CartItem({ product: '634ae2f223d738415ba2163f', quantity: 3 });
+        // const cartItem3 = new CartItem({ product: '634ae2f223d738415ba2163d', quantity: 4 });
 
         // await cartItem1.save();
         // await cartItem2.save();

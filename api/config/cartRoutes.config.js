@@ -4,5 +4,7 @@ export default {
     deleteItem: '/api/delete-cart-item/:id',
     delete: '/api/delete-cart/:id',
     getCart: '/api/cart/:id',
-    getCartCount: '/api/cart-count/:id'
+    getCartCount: '/api/cart-count/:id',
+    getCartId: '/api/cart-id/:user',
+    update: '/api/update-cart/:id/:user'
 };

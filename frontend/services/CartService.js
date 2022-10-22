@@ -38,7 +38,11 @@ export default class CartService {
     static setCartId(id) {
         const user = UserService.getCurrentUser();
         let key = 'sc-fe-cart';
+
+        if (hasCookie(key)) deleteCookie(key);
+
         if (user) {
+            key += '-';
             key += user.id;
         }
         setCookie(key, id, { maxAge: MAX_AGE });
@@ -49,10 +53,19 @@ export default class CartService {
         const user = UserService.getCurrentUser(_context);
         let key = 'sc-fe-cart';
         if (user) {
+            key += '-';
             key += user.id;
         }
 
         if (hasCookie(key, _context)) return getCookie(key, _context);
         return '';
+    }
+
+    static getUserCartId(userId) {
+        return axios.get(`${Env.API_HOST}/api/cart-id/${userId}`, { headers: UserService.authHeader() }).then(res => res.data);
+    }
+
+    static updateCart(cartId, userId) {
+        return axios.put(`${Env.API_HOST}/api/update-cart/${cartId}/${userId}`, null, { headers: UserService.authHeader() }).then(res => res.status);
     }
 }
