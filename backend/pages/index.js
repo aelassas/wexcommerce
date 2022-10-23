@@ -34,10 +34,10 @@ import PaymentType from '../components/PaymentType';
 import OrderStatus from '../components/OrderStatus';
 import PaymentTypeFilter from '../components/PaymentTypeFilter';
 import OrderStatusFilter from '../components/OrderStatusFilter';
+import OrderDateFilter from '../components/OrderDateFilter';
 import { useRouter } from 'next/router';
 
 import styles from '../styles/home.module.css';
-import OrderDateFilter from '../components/OrderDateFilter';
 
 export default function Home({
   _user,
@@ -83,7 +83,7 @@ export default function Home({
 
   useEffect(() => {
     if (_signout) {
-      // UserService.signout();
+      UserService.signout();
     }
   }, [_signout]);
 

@@ -114,19 +114,23 @@ export default function Header(props) {
         }
     }, [showMobileSearch, searchRef]);
 
+    const search = (keyword) => {
+        const url = router.pathname.includes('/categories') ?
+            (keyword ? '/categories?s=' + encodeURIComponent(keyword) : '/categories')
+            : router.pathname.includes('/products') ?
+                (keyword ? '/products?s=' + encodeURIComponent(keyword) : '/products')
+                : router.pathname.includes('/users') ?
+                    (keyword ? '/users?s=' + encodeURIComponent(keyword) : '/users')
+                    : (keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
+
+        router.replace(url);
+    };
+
     const handleSearch = (e) => {
         const keyword = e.currentTarget.value;
 
         if (e.key === 'Enter') {
-            const url = router.pathname.includes('/categories') ?
-                (keyword ? '/categories?s=' + encodeURIComponent(keyword) : '/categories')
-                : router.pathname.includes('/products') ?
-                    (keyword ? '/products?s=' + encodeURIComponent(keyword) : '/products')
-                    : router.pathname.includes('/users') ?
-                        (keyword ? '/users?s=' + encodeURIComponent(keyword) : '/users')
-                        : (keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
-
-            router.replace(url);
+            search(keyword);
         } else {
             setSearchKeyword(keyword);
         }
@@ -435,15 +439,7 @@ export default function Header(props) {
 
                                         setShowMobileSearch(false);
 
-                                        const url = router.pathname.includes('/categories') ?
-                                            (searchKeyword ? '/categories?s=' + encodeURIComponent(searchKeyword) : '/categories')
-                                            : router.pathname.includes('/products') ?
-                                                (searchKeyword ? '/products?s=' + encodeURIComponent(searchKeyword) : '/products')
-                                                : router.pathname.includes('/users') ?
-                                                    (searchKeyword ? '/users?s=' + encodeURIComponent(searchKeyword) : '/users')
-                                                    : (searchKeyword ? '/?s=' + encodeURIComponent(searchKeyword) : '/');
-
-                                        router.replace(url);
+                                        search(searchKeyword);
                                     }}>
                                     <SearchIcon />
                                 </div>

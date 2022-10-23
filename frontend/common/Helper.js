@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import Env from '../config/env.config';
 import { strings as commonStrings } from '../lang/common';
 import { strings as osStrings } from '../lang/order-status';
 import UserService from '../services/UserService';

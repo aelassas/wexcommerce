@@ -142,16 +142,21 @@ export default function Header(props) {
         }
     }, [props.signout]);
 
+
+    const search = (keyword) => {
+        const url = router.pathname.includes('/orders') ?
+            (keyword ? '/orders?s=' + encodeURIComponent(keyword) : '/orders')
+            : (keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
+
+        router.replace(url);
+    }
+
     const handleSearch = (e) => {
         const keyword = e.currentTarget.value;
 
         if (e.key === 'Enter') {
             setShowMobileSearch(false);
-            const url = router.pathname.includes('/orders') ?
-                (keyword ? '/orders?s=' + encodeURIComponent(keyword) : '/orders')
-                : (keyword ? '/?s=' + encodeURIComponent(keyword) : '/');
-
-            router.replace(url);
+            search(keyword);
         } else {
             setSearchKeyword(keyword);
         }
@@ -455,7 +460,7 @@ export default function Header(props) {
                                         }
 
                                         setShowMobileSearch(false);
-                                        router.replace(searchKeyword ? '/?s=' + encodeURIComponent(searchKeyword) : '/');
+                                        search(searchKeyword);
                                     }}>
                                     <SearchIcon />
                                 </div>

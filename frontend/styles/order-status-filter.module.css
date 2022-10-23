@@ -1,0 +1,40 @@
+ ul.statusList {
+     list-style-type: none;
+     font-size: 13px;
+     margin: 15px 0 0 0;
+     padding: 0;
+     display: inline-block;
+     width: 100%;
+ }
+
+ ul.statusList li {
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     justify-content: center;
+     flex: 1;
+     margin-bottom: 12px;
+ }
+
+ ul.statusList li .statusLabel:hover {
+     cursor: pointer;
+ }
+
+ ul.statusList li input[type='checkbox'].statusCheckbox {
+     cursor: pointer;
+ }
+
+ div.filterActions {
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     justify-content: center;
+     flex: 1;
+     padding-bottom: 10px;
+ }
+
+ div.filterActions span.uncheckall {
+     text-decoration: underline;
+     cursor: pointer;
+     color: #0064C8;
+ }
