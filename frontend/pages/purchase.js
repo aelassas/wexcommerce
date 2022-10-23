@@ -236,7 +236,7 @@ export default function Purchase({ _user, _signout, _noMatch, _cart }) {
 
     return (
         <>
-            <Header user={_user} hideSearch hideSignIn />
+            <Header user={_user} hideSearch hideSignIn signout={_signout} />
 
             <div className={styles.content}>
                 {(!_user && subscription && !_noMatch && !success) &&
@@ -511,6 +511,7 @@ export async function getServerSideProps(context) {
                 }
             } else {
                 _signout = true;
+                CartService.deleteCartId(context);
             }
 
         } else {

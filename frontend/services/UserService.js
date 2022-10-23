@@ -40,24 +40,10 @@ export default class UserService {
         });
     }
 
-    static signout(redirect = true, redirectSignIn = false) {
-
-        const cartId = CartService.getCartId();
-
-        if (cartId) {
-            const user = UserService.getCurrentUser();
-            let key = 'sc-fe-cart';
-            if (user) {
-                key += '-';
-                key += user.id;
-            }
-
-            if (hasCookie(key)) deleteCookie(key);
-
-            setCookie('sc-fe-cart', cartId);
-        }
+    static signout(redirect = true, redirectSignIn = false, deleteCartId = false) {
 
         deleteCookie('sc-fe-user');
+        if (deleteCartId) CartService.deleteCartId();
 
         if (redirect) {
             window.location.href = '/';

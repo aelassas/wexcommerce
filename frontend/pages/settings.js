@@ -16,6 +16,7 @@ import {
   Paper
 } from '@mui/material';
 import validator from 'validator';
+import CartService from '../services/CartService';
 
 import styles from '../styles/settings.module.css';
 
@@ -45,6 +46,7 @@ export default function Settings({ _user, _signout }) {
 
   useEffect(() => {
     if (_signout) {
+      CartService.deleteCartId();
       UserService.signout(false, true);
     }
   }, [_signout]);

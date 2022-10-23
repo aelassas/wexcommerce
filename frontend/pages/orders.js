@@ -21,6 +21,7 @@ import Env from '../config/env.config';
 import Link from 'next/link';
 import { fr, enUS } from "date-fns/locale";
 import NoMatch from '../components/NoMatch';
+import CartService from '../services/CartService';
 
 import styles from '../styles/orders.module.css';
 
@@ -54,7 +55,8 @@ export default function Orders({
 
     useEffect(() => {
         if (_signout) {
-            UserService.signout();
+            CartService.deleteCartId();
+            UserService.signout(false, true);
         }
     }, [_signout]);
 

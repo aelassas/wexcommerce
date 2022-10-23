@@ -7,20 +7,18 @@ const MAX_AGE = 100 * 365 * 24 * 60 * 60;
 
 export default class CartService {
 
-    static addItem(userId, cartId, productId) {
-        const data = { userId, cartId, productId };
+    static addItem(cartId, userId, productId) {
+        const data = { cartId, userId, productId };
 
-        return axios.post(`${Env.API_HOST}/api/add-cart-item`, data).then(res => res.data);
+        return axios.post(`${Env.API_HOST}/api/add-cart-item`, data).then(res => ({ status: res.status, data: res.data }));
     }
 
-    static updateQuantity(cartItemId, quantity) {
-        const data = { quantity };
-
-        return axios.put(`${Env.API_HOST}/api/update-cart-item/${cartItemId}`, data).then(res => res.status);
+    static updateQuantity(cartId, productId, quantity) {
+        return axios.put(`${Env.API_HOST}/api/update-cart-item/${cartId}/${productId}/${quantity}`, null).then(res => res.status);
     }
 
-    static deleteItem(cartItemId) {
-        return axios.delete(`${Env.API_HOST}/api/delete-cart-item/${cartItemId}`).then(res => res.status);
+    static deleteItem(cartId, productId) {
+        return axios.delete(`${Env.API_HOST}/api/delete-cart-item/${cartId}/${productId}`).then(res => ({ status: res.status, data: res.data }));
     }
 
     static clearCart(cartId) {
@@ -36,28 +34,22 @@ export default class CartService {
     }
 
     static setCartId(id) {
-        const user = UserService.getCurrentUser();
-        let key = 'sc-fe-cart';
-
-        if (hasCookie(key)) deleteCookie(key);
-
-        if (user) {
-            key += '-';
-            key += user.id;
-        }
-        setCookie(key, id, { maxAge: MAX_AGE });
+        setCookie('sc-fe-cart', id, { maxAge: MAX_AGE });
     }
 
     static getCartId(context) {
         const _context = context ? { req: context.req, res: context.res } : {};
-        const user = UserService.getCurrentUser(_context);
         let key = 'sc-fe-cart';
-        if (user) {
-            key += '-';
-            key += user.id;
-        }
 
         if (hasCookie(key, _context)) return getCookie(key, _context);
+        return '';
+    }
+
+    static deleteCartId(context) {
+        const _context = context ? { req: context.req, res: context.res } : {};
+        let key = 'sc-fe-cart';
+
+        if (hasCookie(key, _context)) return deleteCookie(key, _context);
         return '';
     }
 

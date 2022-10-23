@@ -62,7 +62,7 @@ export default function Cart({ _user, _signout, _noMatch, _cart }) {
 
   return (
     <>
-      <Header user={_user} />
+      <Header user={_user} signout={_signout} />
       {
         ((_user && _user.verified) || !_user) &&
         <div className={styles.content}>
@@ -110,8 +110,19 @@ export async function getServerSideProps(context) {
 
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
+      } else {
+        CartService.deleteCartId(context);
+        _signout = true;
+      }
+    } else {
+      _signout = true;
+    }
 
-        if (_user) {
+    if (!_user || (_user && _user.verified)) {
+      const { p: productId } = context.query;
+
+      if (productId) {
+        try {
           const cartId = CartService.getCartId(context);
 
           if (cartId) {
@@ -124,20 +135,22 @@ export async function getServerSideProps(context) {
             } catch (err) {
               console.log(err);
               _noMatch = true;
+              // TODO empty cart + deleteCartId
             }
           } else {
             _noMatch = true;
+            // TODO empty cart + deleteCartId
           }
-        } else {
-          _signout = true;
+        } catch (err) {
+          console.log(err);
+          _noMatch = true;
+          // TODO empty cart + deleteCartId
         }
       } else {
-        _signout = true;
+        _noMatch = true;
       }
-
-    } else {
-      _signout = true;
     }
+
   } catch (err) {
     console.log(err);
     _signout = true;

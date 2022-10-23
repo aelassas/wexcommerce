@@ -125,10 +125,14 @@
     }
 }
 
- article.product div.actions .button,
- article.product div.actions .removeButton {
-        height: 38px;
-    }
+article.product div.actions .button,
+article.product div.actions .removeButton {
+    height: 38px;
+}
+
+article.product div.actions .removeButton {
+    background-color: #e33b2f;
+}
 
 div.main {
     display: flex;

@@ -16,6 +16,7 @@ import * as Helper from '../common/Helper';
 import ProductService from '../services/ProductService';
 import NoMatch from '../components/NoMatch';
 import { useRouter } from 'next/router';
+import CartService from '../services/CartService';
 
 import styles from '../styles/product.module.css';
 
@@ -62,7 +63,7 @@ export default function Product({ _user, _signout, _noMatch, _product }) {
 
   return (
     <>
-      <Header user={_user} />
+      <Header user={_user} signout={_signout} />
       {
         ((_user && _user.verified) || !_user) &&
         <div className={styles.content}>
@@ -111,6 +112,7 @@ export async function getServerSideProps(context) {
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
       } else {
+        CartService.deleteCartId(context);
         _signout = true;
       }
     } else {
@@ -135,7 +137,6 @@ export async function getServerSideProps(context) {
         _noMatch = true;
       }
     }
-
   } catch (err) {
     console.log(err);
     _signout = true;

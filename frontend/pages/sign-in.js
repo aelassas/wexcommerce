@@ -82,10 +82,11 @@ export default function SignIn() {
             const res = await UserService.signin(data);
 
             if (res.status === 200) {
+                const userId = res.data.id;
+
                 if (cartId) {
-                    const userId = res.data.id;
                     const userCartId = await CartService.getUserCartId(userId);
-                    
+
                     if (!userCartId) {
                         const status = await CartService.updateCart(cartId, userId);
                         if (status !== 200) {
@@ -101,8 +102,12 @@ export default function SignIn() {
                             Helper.error();
                         }
                     }
+                } else {
+                    const userCartId = await CartService.getUserCartId(userId);
 
-                    CartService.setCartId(cartId);
+                    if (userCartId) {
+                        CartService.setCartId(userCartId);
+                    }
                 }
                 router.replace('/');
             } else {

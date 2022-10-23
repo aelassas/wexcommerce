@@ -10,11 +10,9 @@ export const addItem = async (req, res) => {
         let cart;
         if (cartId) {
             cart = await Cart.findById(cartId);
+        }
 
-            if (!cart) {
-                return res.sendStatus(204);
-            }
-        } else {
+        if (!cart) {
             const { userId } = req.body;
 
             if (userId) {
@@ -39,7 +37,7 @@ export const addItem = async (req, res) => {
         cart.cartItems.push(cartItem._id);
         await cart.save();
 
-        return res.json(cart._id);
+        return res.status(200).json(cart._id);
     } catch (err) {
         console.error(`[cart.create]  ${strings.DB_ERROR} ${req.body}`, err);
         return res.status(400).send(strings.DB_ERROR + err);
@@ -47,10 +45,11 @@ export const addItem = async (req, res) => {
 };
 export const updateItem = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { quantity } = req.body;
+        const { cart: cartId, product: productId, quantity } = req.params;
 
-        const cartItem = await CartItem.findById(id);
+        // TODO
+
+        const cartItem = await CartItem.findOne({ product });
 
         if (cartItem) {
             cartItem.quantity = quantity;
@@ -68,14 +67,41 @@ export const updateItem = async (req, res) => {
 
 export const deleteItem = async (req, res) => {
     try {
-        const { id } = req.params;
-        const result = await CartItem.deleteOne({ _id: id });
+        const { cart: cartId, product: productId } = req.params;
+        const cart = await Cart.findById(cartId).populate('cartItems');
+        let cartDeleted = false;
 
-        if (result.deletedCount === 1) {
-            return res.sendStatus(200);
+        if (cart) {
+            const cartItems = cart.cartItems.filter(ci => ci.product.equals(productId));
+            console.log('--------', cartItems)
+
+            if (cartItems.length > 0) {
+                const cartItem = cartItems[0];
+                const result = await CartItem.deleteOne({ _id: cartItem._id });
+
+                if (result.deletedCount === 1) {
+                    const cartItems = cart.cartItems.filter(ci => !ci.product.equals(productId));
+
+                    if (cartItems.length === 0) {
+                        console.log('!!!')
+                        const result = await Cart.deleteOne({ _id: cart._id });
+
+                        if (result.deletedCount === 1) {
+                            cartDeleted = true;
+                        }
+                    }
+
+                    return res.status(200).json({ cartDeleted });
+                } else {
+                    return res.sendStatus(204);
+                }
+            } else {
+                return res.sendStatus(204);
+            }
         } else {
             return res.sendStatus(204);
         }
+
     } catch (err) {
         console.error(`[cart.deleteItem]  ${strings.DB_ERROR} ${req.body}`, err);
         return res.status(400).send(strings.DB_ERROR + err);
@@ -178,8 +204,8 @@ export const getCartId = async (req, res) => {
 
         if (cart) {
             return res.json(cart._id);
-        } 
-        
+        }
+
         return res.json(null);
     } catch (err) {
         console.error(`[cart.getCartId]  ${strings.DB_ERROR}`, err);

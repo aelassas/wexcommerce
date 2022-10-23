@@ -420,7 +420,6 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
                 </DialogActions>
               </Dialog>
 
-              
               <Dialog
                 disableEscapeKeyDown
                 maxWidth="xs"

@@ -14,6 +14,10 @@ import {
   Card,
   CardContent,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import {
   ShoppingBag as CategoryIcon,
@@ -52,6 +56,9 @@ export default function Home({
   const [closeIconRef, setCloseIconRef] = useState();
   const [productsRef, setProductsRef] = useState();
   const [products, setProducts] = useState([]);
+  const [cartCount, setCartCount] = useState(0);
+  const [productId, setProductId]=useState();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   useEffect(() => {
     Helper.setLanguage(strings);
@@ -78,7 +85,18 @@ export default function Home({
 
   useEffect(() => {
     if (_products) setProducts(_products);
-  }, [_products])
+  }, [_products]);
+
+  useEffect(() => {
+    (async function () {
+      const cartId = CartService.getCartId();
+
+      if (cartId) {
+        const cartCount = await CartService.getCartCount(cartId);
+        setCartCount(cartCount);
+      }
+    })();
+  }, []);
 
   const handleResend = async (e) => {
     try {
@@ -102,7 +120,7 @@ export default function Home({
 
   return (
     <>
-      <Header user={_user} />
+      <Header user={_user} signout={_signout} cartCount={cartCount} />
       {
         ((_user && _user.verified) || !_user) &&
         <div className='content'>
@@ -236,13 +254,8 @@ export default function Home({
                                         className={styles.removeButton}
                                         color='error'
                                         onClick={async (e) => {
-                                          try {
-
-
-                                          } catch (err) {
-                                            console.log(err);
-                                            Helper.error();
-                                          }
+                                          setProductId(product._id);
+                                          setOpenDeleteDialog(true);
                                         }}
                                       >
                                         {commonStrings.REMOVE_FROM_CART}
@@ -254,8 +267,22 @@ export default function Home({
                                         size="small"
                                         onClick={async (e) => {
                                           try {
+                                            const cartId = CartService.getCartId();
+                                            const userId = (_user && _user._id) || '';
 
+                                            const res = await CartService.addItem(cartId, userId, product._id);
 
+                                            if (res.status === 200) {
+                                              if (!cartId) {
+                                                CartService.setCartId(res.data);
+                                              }
+                                              const __products = Helper.cloneArray(products);
+                                              __products.filter(p => p._id === product._id)[0].inCart = true;
+                                              setProducts(__products);
+                                              setCartCount(cartCount + 1);
+                                            } else {
+                                              Helper.error();
+                                            }
                                           } catch (err) {
                                             console.log(err);
                                             Helper.error();
@@ -303,6 +330,42 @@ export default function Home({
                   }
                 </div>
               </div>
+
+              <Dialog
+                disableEscapeKeyDown
+                maxWidth="xs"
+                open={openDeleteDialog}
+              >
+                <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+                <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
+                <DialogActions className='dialog-actions'>
+                  <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+                  <Button onClick={async () => {
+                    try {
+                      const cartId = CartService.getCartId();
+                      const res = await CartService.deleteItem(cartId, productId);
+
+                      if (res.status === 200) {
+                        const __products = Helper.cloneArray(products);
+                        __products.filter(p => p._id === productId)[0].inCart = false;
+                        setProducts(__products);
+                        setCartCount(cartCount - 1);
+
+                        if (res.data.cartDeleted) {
+                          CartService.deleteCartId();
+                        }
+                      } else {
+                        Helper.error();
+                      }
+                    } catch (err) {
+                      console.log(err);
+                      Helper.error();
+                    }
+                    setOpenDeleteDialog(false);
+                  }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
+                </DialogActions>
+              </Dialog>
+
             </>
           }
         </div>
@@ -343,6 +406,7 @@ export async function getServerSideProps(context) {
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
       } else {
+        CartService.deleteCartId(context);
         _signout = true;
       }
     } else {

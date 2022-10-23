@@ -118,8 +118,7 @@ export default function Header(props) {
 
     useEffect(() => {
         (async function () {
-            // CartService.setCartId('63518b6742cb8993c1dab202');
-            // CartService.setCartId('6353db5afa4dbc37efccdd99');
+            // CartService.setCartId('6353ee8deda70238e0b8206a');
             const cartId = CartService.getCartId();
 
             if (cartId) {
@@ -132,6 +131,17 @@ export default function Header(props) {
     useEffect(() => {
         setCartCount(props.cartCount);
     }, [props.cartCount]);
+
+    useEffect(() => {
+        if (props.signout) {
+            setIsSignedIn(false);
+            const cartId = CartService.getCartId();
+
+            if (!cartId) {
+                setCartCount(0);
+            }
+        }
+    }, [props.signout]);
 
     const handleSearch = (e) => {
         const keyword = e.currentTarget.value;
@@ -241,7 +251,7 @@ export default function Header(props) {
     };
 
     const handleSignout = () => {
-        UserService.signout(true, false);
+        UserService.signout(true, false, true);
     };
 
     const handleMobileMenuOpen = (event) => {

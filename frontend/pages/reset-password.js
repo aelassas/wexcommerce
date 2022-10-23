@@ -18,6 +18,7 @@ import * as Helper from '../common/Helper';
 import { useRouter } from "next/router";
 import Header from '../components/Header';
 import Link from 'next/link';
+import CartService from '../services/CartService';
 
 import styles from '../styles/reset-password.module.css';
 
@@ -136,7 +137,7 @@ export default function ResetUserPassword({
 
     return (
         <>
-            <Header user={_user} hideSearch hideSignIn />
+            <Header user={_user} hideSearch hideSignIn signout={_signout} />
             <div className='content'>
                 {_resend && _email &&
                     <div className={styles.resend}>
@@ -284,6 +285,7 @@ export async function getServerSideProps(context) {
                         _noMatch = true;
                     }
                 } else {
+                    CartService.deleteCartId(context);
                     _signout = true;
                 }
             } else {

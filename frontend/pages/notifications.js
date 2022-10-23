@@ -33,6 +33,7 @@ import Header from '../components/Header';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NoMatch from '../components/NoMatch';
+import CartService from '../services/CartService';
 
 import styles from '../styles/notifications.module.css';
 
@@ -93,7 +94,8 @@ export default function Notifications({
 
     useEffect(() => {
         if (_signout) {
-            UserService.signout();
+            CartService.deleteCartId();
+            UserService.signout(false, true);
         }
     }, [_signout]);
 
