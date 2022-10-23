@@ -334,7 +334,7 @@ export default function Header(props) {
                         className={styles.headerLogo}
                         style={{
                             display: showMobileSearch ? 'none' : 'flex',
-                            minWidth: isSignedIn ? 140 : 120
+                            minWidth: isSignedIn ? 160 : 140
                         }}>
                         {
                             isLoaded && !loading && !showMobileSearch &&
@@ -353,18 +353,7 @@ export default function Header(props) {
                                     </IconButton>
                                 }
 
-                                <div className={styles.logo}>
-                                    <Link href='/'>
-                                        <a>
-                                            <Image
-                                                src='/logo.png'
-                                                alt=''
-                                                layout='fill'
-                                                objectFit='contain'
-                                            />
-                                        </a>
-                                    </Link>
-                                </div>
+                                <Link href='/'><a className={styles.logo}><div className={styles.logo}></div></a></Link>
                             </>
                         }
                     </div>

@@ -19,7 +19,6 @@ export default function OrderDateFilter({ language, from, to, onSubmit, classNam
         } else {
             setFromDate(null);
         }
-        console.log('from', from)
     }, [from]);
 
     useEffect(() => {

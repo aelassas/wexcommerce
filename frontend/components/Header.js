@@ -36,8 +36,8 @@ import {
 } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Image from 'next/image';
 import Backdrop from './SimpleBackdrop';
+import Image from 'next/image';
 
 import styles from '../styles/header.module.css';
 
@@ -360,7 +360,7 @@ export default function Header(props) {
                         className={styles.headerLogo}
                         style={{
                             display: showMobileSearch ? 'none' : 'flex',
-                            minWidth: isSignedIn || Env.isMobile() ? 140 : 120
+                            minWidth: isSignedIn || Env.isMobile() ? 160 : 140
                         }}>
                         {
                             isLoaded && !loading && !showMobileSearch &&
@@ -379,18 +379,8 @@ export default function Header(props) {
                                     </IconButton>
                                 }
 
-                                <div className={styles.logo}>
-                                    <Link href='/'>
-                                        <a>
-                                            <Image
-                                                src='/logo.png'
-                                                alt=''
-                                                layout='fill'
-                                                objectFit='contain'
-                                            />
-                                        </a>
-                                    </Link>
-                                </div>
+
+                                <Link href='/'><a className={styles.logo}><div className={styles.logo}></div></a></Link>
                             </>
                         }
                     </div>

@@ -53,6 +53,8 @@ export const strings = new LocalizedStrings({
         REMOVE_FROM_CART: 'Retirer du panier',
         REMOVE_FROM_CART_CONFIRM: 'Êtes-vous sûr de vouloir retirer cet article du panier ?',
         PRICE: 'Prix',
+        ARTICLE_ADDED: 'Article ajouté au panier.',
+        ARTICLE_REMOVED: 'Article retiré du panier.',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -106,5 +108,7 @@ export const strings = new LocalizedStrings({
         REMOVE_FROM_CART: 'Remove from cart',
         REMOVE_FROM_CART_CONFIRM: 'Are you sure you want to remove this article from cart?',
         PRICE: 'Price',
+        ARTICLE_ADDED: 'Article added to cart.',
+        ARTICLE_REMOVED: 'Article removed from cart.',
     }
 });

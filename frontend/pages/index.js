@@ -57,7 +57,7 @@ export default function Home({
   const [productsRef, setProductsRef] = useState();
   const [products, setProducts] = useState([]);
   const [cartCount, setCartCount] = useState(0);
-  const [productId, setProductId]=useState();
+  const [productId, setProductId] = useState();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   useEffect(() => {
@@ -279,6 +279,7 @@ export default function Home({
                                               __products.filter(p => p._id === product._id)[0].inCart = true;
                                               setProducts(__products);
                                               setCartCount(cartCount + 1);
+                                              Helper.info(commonStrings.ARTICLE_ADDED);
                                             } else {
                                               Helper.error();
                                             }
@@ -353,6 +354,9 @@ export default function Home({
                         if (res.data.cartDeleted) {
                           CartService.deleteCartId();
                         }
+
+                        setOpenDeleteDialog(false);
+                        Helper.info(commonStrings.ARTICLE_REMOVED);
                       } else {
                         Helper.error();
                       }
@@ -360,7 +364,6 @@ export default function Home({
                       console.log(err);
                       Helper.error();
                     }
-                    setOpenDeleteDialog(false);
                   }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
                 </DialogActions>
               </Dialog>
@@ -406,7 +409,7 @@ export async function getServerSideProps(context) {
         _user = await UserService.getUser(context, currentUser.id);
       }
 
-      if(!_user || status !==200){
+      if (!_user || status !== 200) {
         CartService.deleteCartId(context);
         _signout = true;
       }

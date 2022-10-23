@@ -201,14 +201,13 @@ article.product div.label {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    flex: 1;
     border-radius: 4px;
     font-size: 12px;
-    padding: 2px;
+    padding: 2px 10px;
     margin: 2px 0;
-    max-width: 390px;
     margin-right: auto;
     margin-left: auto;
+    width: fit-content;
 }
 
 article.product div.label .labelIcon {

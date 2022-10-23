@@ -8,6 +8,10 @@ export const info = (msg) => {
     toast(msg, { type: 'info' });
 };
 
+export const success = (msg) => {
+    toast(msg, { type: 'success' });
+};
+
 export const error = (msg) => {
     toast(msg || commonStrings.GENERIC_ERROR, { type: 'error' });
 };

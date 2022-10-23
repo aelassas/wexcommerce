@@ -26,13 +26,18 @@
     display: none;
 }
 
-.logo {
-    width: 100%;
-    height: 36px;
+a.logo {
+    flex: 1;
+}
+
+div.logo {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    height: 36px;
+    background-image: url(/logo.png);
+    background-repeat: no-repeat;
+    background-size: 100% auto;
 }
 
 .btnSignin {

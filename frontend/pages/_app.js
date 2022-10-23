@@ -132,7 +132,7 @@ function App({ Component, pageProps }) {
         <CssBaseline>
           <Component {...pageProps} />
           <ToastContainer
-            position='bottom-right'
+            position='bottom-left'
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}

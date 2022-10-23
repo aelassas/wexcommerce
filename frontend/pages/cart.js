@@ -256,6 +256,9 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                         if (res.data.cartDeleted) {
                           CartService.deleteCartId();
                         }
+
+                        Helper.info(commonStrings.ARTICLE_REMOVED);
+                        setOpenDeleteDialog(false);
                       } else {
                         Helper.error();
                       }
@@ -263,7 +266,6 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                       console.log(err);
                       Helper.error();
                     }
-                    setOpenDeleteDialog(false);
                   }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
                 </DialogActions>
               </Dialog>
