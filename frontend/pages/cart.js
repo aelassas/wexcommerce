@@ -41,6 +41,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
   const [cartCount, setCartCount] = useState(0);
   const [productId, setProductId] = useState();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openClearDialog, setOpenClearDialog] = useState(false);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -51,8 +52,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
 
   useEffect(() => {
     if (_signout) {
-      console.log('!!!')
-      // UserService.signout(false);
+      UserService.signout(false);
     }
   }, [_signout]);
 
@@ -217,6 +217,16 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                   >
                     {strings.PURCHASE}
                   </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    className={styles.btn}
+                    onClick={async (e) => {
+                      setOpenClearDialog(true);
+                    }}
+                  >
+                    {strings.CLEAR_CART}
+                  </Button>
                 </div>
               </div>
 
@@ -255,6 +265,37 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                     }
                     setOpenDeleteDialog(false);
                   }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
+                </DialogActions>
+              </Dialog>
+
+              <Dialog
+                disableEscapeKeyDown
+                maxWidth="xs"
+                open={openClearDialog}
+              >
+                <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+                <DialogContent>{strings.CLEAR_CART_CONFIRM}</DialogContent>
+                <DialogActions className='dialog-actions'>
+                  <Button onClick={() => setOpenClearDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+                  <Button onClick={async () => {
+                    try {
+                      const cartId = _cart._id;
+                      const status = await CartService.clearCart(cartId);
+
+                      if (status === 200) {
+                        CartService.deleteCartId();
+                        setCartItems([]);
+                        setCartCount(0);
+                        setTotal(0);
+                      } else {
+                        Helper.error();
+                      }
+                    } catch (err) {
+                      console.log(err);
+                      Helper.error();
+                    }
+                    setOpenDeleteDialog(false);
+                  }} variant='contained' color='error'>{strings.CLEAR_CART}</Button>
                 </DialogActions>
               </Dialog>
             </div>
@@ -300,7 +341,7 @@ export async function getServerSideProps(context) {
       } catch (err) {
         console.log('Unauthorized!');
       }
-      
+
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
       }

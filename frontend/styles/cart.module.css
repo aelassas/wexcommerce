@@ -1,4 +1,16 @@
-@media only screen and (max-width: 960px) {}
+@media only screen and (max-width: 960px) {
+
+    div.main div.items,
+    div.main div.total {
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+
+    div.main div.total {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+}
 
 @media only screen and (min-width: 960px) {
     div.main {
@@ -12,20 +24,10 @@
         flex-direction: row;
     }
 
-    div.main div.items {
-        flex: 1;
-        background-color: #fff;
-        border: 1px solid #ededed;
-        border-radius: 4px;
-    }
-
     div.main div.total {
-        background-color: #fff;
         width: 300px;
         height: fit-content;
         margin-left: 25px;
-        border: 1px solid #ededed;
-        border-radius: 4px;
         top: 80px;
         position: sticky;
     }
@@ -36,6 +38,13 @@
     width: 250px;
     margin-top: 15px;
     margin-left: calc(50% - 125px);
+}
+
+div.main div.items {
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #ededed;
+    border-radius: 4px;
 }
 
 div.main div.items article.item {
@@ -136,6 +145,9 @@ div.main div.items article.item div.actions div.quantity span.quantity {
 div.main div.total {
     display: flex;
     flex-direction: column;
+    background-color: #fff;
+    border: 1px solid #ededed;
+    border-radius: 4px;
 }
 
 div.main div.total div.title,
@@ -166,4 +178,5 @@ div.main div.total div.price span.price {
 
 div.main div.total div.action .btn {
     width: 100%;
+    margin: 10px 0;
 }
