@@ -477,8 +477,7 @@ export async function getServerSideProps(context) {
           const { p: productId } = context.query;
           if (productId) {
             try {
-              const lang = UserService.getLanguage(context);
-              _product = await ProductService.getProduct(productId, lang);
+              _product = await ProductService.getProduct(productId, _language);
 
               if (!_product) {
                 _noMatch = true;

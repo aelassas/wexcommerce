@@ -13,8 +13,8 @@ export default class CartService {
         return axios.post(`${Env.API_HOST}/api/add-cart-item`, data).then(res => ({ status: res.status, data: res.data }));
     }
 
-    static updateQuantity(cartId, productId, quantity) {
-        return axios.put(`${Env.API_HOST}/api/update-cart-item/${cartId}/${productId}/${quantity}`, null).then(res => res.status);
+    static updateQuantity(cartItemId, quantity) {
+        return axios.put(`${Env.API_HOST}/api/update-cart-item/${cartItemId}/${quantity}`, null).then(res => res.status);
     }
 
     static deleteItem(cartId, productId) {

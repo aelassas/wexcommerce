@@ -45,11 +45,9 @@ export const addItem = async (req, res) => {
 };
 export const updateItem = async (req, res) => {
     try {
-        const { cart: cartId, product: productId, quantity } = req.params;
+        const { cartItem: cartItemId, quantity } = req.params;
 
-        // TODO
-
-        const cartItem = await CartItem.findOne({ product });
+        const cartItem = await CartItem.findById(cartItemId);
 
         if (cartItem) {
             cartItem.quantity = quantity;

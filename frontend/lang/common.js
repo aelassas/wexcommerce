@@ -51,7 +51,7 @@ export const strings = new LocalizedStrings({
         STATUS: 'Statut',
         ADD_TO_CART: 'Ajouter au panier',
         REMOVE_FROM_CART: 'Retirer du panier',
-        REMOVE_FROM_CART_CONFIRM: 'Êtes-vous sûr de vouloir retire cet article du panier ?',
+        REMOVE_FROM_CART_CONFIRM: 'Êtes-vous sûr de vouloir retirer cet article du panier ?',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -103,6 +103,6 @@ export const strings = new LocalizedStrings({
         STATUS: 'Status',
         ADD_TO_CART: 'Add to cart',
         REMOVE_FROM_CART: 'Remove from cart',
-        REMOVE_FROM_CART_CONFIRM: 'Are you sure you want to remove this product from cart?'
+        REMOVE_FROM_CART_CONFIRM: 'Are you sure you want to remove this article from cart?',
     }
 });

@@ -87,3 +87,11 @@ export const getOrderStatus = (orderStatus) => {
                         : orderStatus === Env.ORDER_STATUS.CANCELLED ? osStrings.CANCELLED
                             : '';
 };
+
+export const total = (cartItems) => {
+    let total = 0;
+    for (const item of cartItems) {
+        total += item.product.price * item.quantity;
+    }
+    return total;
+}

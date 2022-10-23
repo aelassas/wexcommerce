@@ -60,6 +60,15 @@ function App({ Component, pageProps }) {
             }
           },
         },
+        MuiIconButton: {
+          styleOverrides: {
+            root: {
+              '&.Mui-disabled': {
+                opacity: 0.5
+              }
+            }
+          },
+        },
         MuiFormControl: {
           styleOverrides: {
             root: {

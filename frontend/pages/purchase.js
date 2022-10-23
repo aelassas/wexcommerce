@@ -236,82 +236,84 @@ export default function Purchase({ _user, _signout, _noMatch, _cart }) {
 
     return (
         <>
-            <Header user={_user} hideSearch hideSignIn signout={_signout} />
+            <Header user={_user} hideSearch hideSignIn signout={_signout} hideCart hideNotification />
 
-            <div className={styles.content}>
-                {(!_user && subscription && !_noMatch && !success) &&
+            <div className={'content'}>
+                {(_cart && !_noMatch && !success) &&
                     <>
                         <form onSubmit={handleSubmit} className={styles.purchaseForm}>
 
-                            <div className={styles.signIn}>
-                                <p>{strings.SIGN_IN}</p>
-                                <Button
-                                    type="button"
-                                    variant="contained"
-                                    size='small'
-                                    className='btn-primary'
-                                    onClick={() => {
-                                        router.replace('/sign-in');
-                                    }}
-                                >{headerStrings.SIGN_IN}</Button>
-                            </div>
-
-                            <div className={styles.box}>
-                                <div className={styles.boxInfo}>
-                                    <UserIcon />
-                                    <label>{strings.USER_DETAILS}</label>
-                                </div>
-                                <div className={styles.boxForm}>
-                                    <FormControl fullWidth margin="dense">
-                                        <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
-                                        <Input
-                                            type="text"
-                                            label={commonStrings.FULL_NAME}
-                                            required
-                                            onChange={(e) => {
-                                                setFullName(e.target.value);
+                            {!_user &&
+                                <>
+                                    <div className={styles.signIn}>
+                                        <p>{strings.SIGN_IN}</p>
+                                        <Button
+                                            type="button"
+                                            variant="contained"
+                                            size='small'
+                                            className='btn-primary'
+                                            onClick={() => {
+                                                router.replace('/sign-in');
                                             }}
-                                            autoComplete="off"
-                                        />
-                                    </FormControl>
-                                    <FormControl fullWidth margin="dense">
-                                        <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
-                                        <Input
-                                            type="text"
-                                            label={commonStrings.EMAIL}
-                                            error={!emailValid || emailRegistered}
-                                            onChange={(e) => {
-                                                setEmail(e.target.value);
-                                                setFormError(false);
+                                        >{headerStrings.SIGN_IN}</Button>
+                                    </div>
 
-                                                if (!e.target.value) {
-                                                    setEmailRegistered(false);
-                                                    setEmailValid(true);
-                                                    setEmailInfo(true);
-                                                }
-                                            }}
-                                            onBlur={async (e) => {
-                                                await validateEmail(e.target.value);
-                                            }}
-                                            required
-                                            autoComplete="off"
-                                        />
-                                        <FormHelperText error={!emailValid || emailRegistered}>
-                                            {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
-                                            {(emailRegistered &&
-                                                <span>
-                                                    <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
-                                                    <span> </span>
-                                                    <Link href='/sign-in'><a>{strings.SIGN_IN}</a></Link>
-                                                </span>
-                                            ) || ''}
-                                            {(emailInfo && strings.EMAIL_INFO) || ''}
-                                        </FormHelperText>
-                                    </FormControl>
-                                </div>
-                            </div>
+                                    <div className={styles.box}>
+                                        <div className={styles.boxInfo}>
+                                            <UserIcon />
+                                            <label>{strings.USER_DETAILS}</label>
+                                        </div>
+                                        <div className={styles.boxForm}>
+                                            <FormControl fullWidth margin="dense">
+                                                <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
+                                                <Input
+                                                    type="text"
+                                                    label={commonStrings.FULL_NAME}
+                                                    required
+                                                    onChange={(e) => {
+                                                        setFullName(e.target.value);
+                                                    }}
+                                                    autoComplete="off"
+                                                />
+                                            </FormControl>
+                                            <FormControl fullWidth margin="dense">
+                                                <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
+                                                <Input
+                                                    type="text"
+                                                    label={commonStrings.EMAIL}
+                                                    error={!emailValid || emailRegistered}
+                                                    onChange={(e) => {
+                                                        setEmail(e.target.value);
+                                                        setFormError(false);
 
-
+                                                        if (!e.target.value) {
+                                                            setEmailRegistered(false);
+                                                            setEmailValid(true);
+                                                            setEmailInfo(true);
+                                                        }
+                                                    }}
+                                                    onBlur={async (e) => {
+                                                        await validateEmail(e.target.value);
+                                                    }}
+                                                    required
+                                                    autoComplete="off"
+                                                />
+                                                <FormHelperText error={!emailValid || emailRegistered}>
+                                                    {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
+                                                    {(emailRegistered &&
+                                                        <span>
+                                                            <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
+                                                            <span> </span>
+                                                            <Link href='/sign-in'><a>{strings.SIGN_IN}</a></Link>
+                                                        </span>
+                                                    ) || ''}
+                                                    {(emailInfo && strings.EMAIL_INFO) || ''}
+                                                </FormHelperText>
+                                            </FormControl>
+                                        </div>
+                                    </div>
+                                </>
+                            }
 
                             <div className={styles.payment}>
 
@@ -322,7 +324,7 @@ export default function Purchase({ _user, _signout, _noMatch, _cart }) {
                                     </div>
                                     <div className={styles.securePaymentCost}>
                                         <label className={styles.costTitle}>{strings.COST}</label>
-                                        <label className={styles.costValue}>{`${subscription.price} ${commonStrings.CURRENCY_PER_MONTH}`}</label>
+                                        <label className={styles.costValue}>{`${Helper.total(_cart.cartItems)} ${commonStrings.CURRENCY}`}</label>
                                     </div>
                                 </div>
 
@@ -444,25 +446,20 @@ export default function Purchase({ _user, _signout, _noMatch, _cart }) {
                                     <LockIcon className={styles.paymentIcon} />
                                     <label>{strings.SECURE_PAYMENT_INFO}</label>
                                 </div>
-
-                                <div className={styles.paymentInfo}>
-                                    <label className={styles.paymentInfoLabel}>{'*'}</label>
-                                    <label>{strings.SUBSCRIPTION_INFO}</label>
-                                </div>
                             </div>
 
                             <div className={styles.buttons}>
                                 <Button
                                     type="submit"
                                     variant="contained"
-                                    className={`${styles.btnPurchase}  btn-margin-bottom`}
+                                    className={`${styles.btnPurchase} btn-margin-bottom`}
                                     size="small"
                                 >
                                     {strings.PURCHASE}
                                 </Button>
                                 <Button
                                     variant="contained"
-                                    className={`${styles.btnCancel}  btn-margin-bottom`}
+                                    className={`${styles.btnCancel} btn-margin-bottom`}
                                     size="small"
                                     onClick={() => {
                                         router.replace('/');
@@ -503,28 +500,22 @@ export async function getServerSideProps(context) {
 
             if (status === 200) {
                 _user = await UserService.getUser(context, currentUser.id);
+            }
 
-                if (_user) {
-                    _noMatch = true;
-                } else {
-                    _signout = true;
-                }
-            } else {
+            if (!_user || status !== 200) {
                 _signout = true;
                 CartService.deleteCartId(context);
             }
-
         } else {
             _signout = true;
         }
 
         if (!_noMatch) {
             try {
-                const language = UserService.getLanguage(context);
-                const cartId = CartService.getCartId();
+                const cartId = CartService.getCartId(context);
                 _cart = await CartService.getCart(cartId);
 
-                if (_cart) {
+                if (!_cart) {
                     _noMatch = true;
                 }
             } catch (err) {

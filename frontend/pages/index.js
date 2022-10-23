@@ -250,8 +250,7 @@ export default function Home({
                                   {
                                     product.inCart ?
                                       <Button
-                                        variant="contained"
-                                        className={styles.removeButton}
+                                        variant="outlined"
                                         color='error'
                                         onClick={async (e) => {
                                           setProductId(product._id);
@@ -405,7 +404,9 @@ export async function getServerSideProps(context) {
 
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
-      } else {
+      }
+
+      if(!_user || status !==200){
         CartService.deleteCartId(context);
         _signout = true;
       }

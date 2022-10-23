@@ -1,3 +1,169 @@
-@media only screen and (min-width: 960px) {}
-
 @media only screen and (max-width: 960px) {}
+
+@media only screen and (min-width: 960px) {
+    div.main {
+        max-width: 1184px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-bottom: 30px;
+        margin-top: 15px;
+
+        display: flex;
+        flex-direction: row;
+    }
+
+    div.main div.items {
+        flex: 1;
+        background-color: #fff;
+        border: 1px solid #ededed;
+        border-radius: 4px;
+    }
+
+    div.main div.total {
+        background-color: #fff;
+        width: 300px;
+        height: fit-content;
+        margin-left: 25px;
+        border: 1px solid #ededed;
+        border-radius: 4px;
+        top: 80px;
+        position: sticky;
+    }
+}
+
+.empty {
+    text-align: center;
+    width: 250px;
+    margin-top: 15px;
+    margin-left: calc(50% - 125px);
+}
+
+div.main div.items article.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    height: 220px;
+    padding: 15px;
+}
+
+div.main div.items article.itemBorder {
+    border-bottom: 1px solid #ededed;
+}
+
+div.main div.items article.item div.product {
+    height: 150px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+div.main div.items article.item div.product div.thumbnailContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+div.main div.items article.item div.product div.thumbnailContainer div.thumbnail {
+    width: 160px;
+    height: 130px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+
+div.main div.items article.item div.product a {
+    color: #030303;
+    text-decoration: none;
+}
+
+div.main div.items article.item div.product a:hover {
+    text-decoration: none;
+}
+
+div.main div.items article.item div.product div.thumbnailContainer div.name {
+    flex: 1;
+}
+
+div.main div.items article.item div.product div.thumbnailContainer span.name {
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+div.main div.items article.item div.product div.thumbnailContainer span.stock {
+    font-size: 11px;
+    padding-top: 4px;
+    display: block;
+    color: #65656a;
+}
+
+div.main div.items article.item div.product div.thumbnailContainer span.name,
+div.main div.items article.item div.product span.price {
+    height: fit-content;
+    margin-top: 15px;
+}
+
+div.main div.items article.item div.product span.price {
+    font-weight: 500;
+    min-width: 100px;
+    text-align: right;
+}
+
+div.main div.items article.item div.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+div.main div.items article.item div.actions div.quantity {
+    display: flex;
+    flex-direction: row;
+}
+
+div.main div.items article.item div.actions div.quantity span.quantity {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-width: 55px;
+    margin: 0 5px;
+}
+
+div.main div.total {
+    display: flex;
+    flex-direction: column;
+}
+
+div.main div.total div.title,
+div.main div.total div.price,
+div.main div.total div.action {
+    padding: 10px;
+}
+
+div.main div.total div.title,
+div.main div.total div.price {
+    border-bottom: 1px solid #ededed;
+}
+
+div.main div.total div.title {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+div.main div.total div.price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+div.main div.total div.price span.price {
+    font-weight: 500;
+}
+
+div.main div.total div.action .btn {
+    width: 100%;
+}

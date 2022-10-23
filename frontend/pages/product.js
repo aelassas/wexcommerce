@@ -20,7 +20,7 @@ import CartService from '../services/CartService';
 
 import styles from '../styles/product.module.css';
 
-export default function Product({ _user, _signout, _noMatch, _product }) {
+export default function Product({ _user, _language, _signout, _noMatch, _product }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -97,6 +97,7 @@ export default function Product({ _user, _signout, _noMatch, _product }) {
 
 export async function getServerSideProps(context) {
   let _user = null, _signout = false, _noMatch = false, _product = null;
+  const _language = UserService.getLanguage(context);
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -111,7 +112,9 @@ export async function getServerSideProps(context) {
 
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
-      } else {
+      }
+
+      if(!_user || status !==200){
         CartService.deleteCartId(context);
         _signout = true;
       }
@@ -124,7 +127,7 @@ export async function getServerSideProps(context) {
 
       if (productId) {
         try {
-          _product = await ProductService.getProduct(productId);
+          _product = await ProductService.getProduct(productId, _language);
 
           if (!_product) {
             _noMatch = true;
@@ -145,6 +148,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       _user,
+      _language,
       _signout,
       _noMatch,
       _product

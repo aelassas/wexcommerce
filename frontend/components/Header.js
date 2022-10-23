@@ -118,7 +118,6 @@ export default function Header(props) {
 
     useEffect(() => {
         (async function () {
-            // CartService.setCartId('6353ee8deda70238e0b8206a');
             const cartId = CartService.getCartId();
 
             if (cartId) {
@@ -503,24 +502,22 @@ export default function Header(props) {
 
                     <div
                         className={styles.headerDesktop}
-                        style={{ minWidth: isSignedIn ? 280 : props.hideSignIn ? 142 : 280 }}>
+                    >
                         {!props.hideCart &&
                             <IconButton
                                 onClick={(e) => {
-
+                                    router.replace('/cart');
                                 }}
                                 className={styles.iconButton}
-                                style={{ width: isSignedIn ? 52 : 42 }}
                             >
                                 <Badge badgeContent={cartCount > 0 ? cartCount : null} color="error">
                                     <CartIcon />
                                 </Badge>
                             </IconButton>}
-                        {isSignedIn &&
+                        {isSignedIn && !props.hideNotification &&
                             <IconButton
                                 onClick={handleNotificationsClick}
                                 className={styles.iconButton}
-                                style={{ width: 52 }}
                             >
                                 <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">
                                     <NotificationsIcon />
@@ -542,7 +539,6 @@ export default function Header(props) {
                                 disableElevation
                                 fullWidth
                                 className={styles.button}
-                                style={{ margin: 0, marginRight: isSignedIn ? 20 : props.hideSignIn ? 0 : 20, marginLeft: isSignedIn ? 20 : props.hideSignIn ? 0 : 20 }}
                             >
                                 {getLang(lang)}
                             </Button>}
@@ -564,7 +560,7 @@ export default function Header(props) {
                         <div className={styles.headerMobile}>
                             {!props.hideCart && <IconButton
                                 onClick={(e) => {
-
+                                    router.replace('/cart');
                                 }}
                                 className={styles.iconButton}
                             >

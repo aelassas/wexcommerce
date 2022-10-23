@@ -1,6 +1,6 @@
 export default {
     addItem: '/api/add-cart-item',
-    updateItem: '/api/update-cart-item/:cart/:product/:quantity',
+    updateItem: '/api/update-cart-item/:cartItem/:quantity',
     deleteItem: '/api/delete-cart-item/:cart/:product',
     delete: '/api/delete-cart/:id',
     getCart: '/api/cart/:id',
