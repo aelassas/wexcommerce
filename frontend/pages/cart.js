@@ -20,6 +20,7 @@ import {
 import {
   Add as IncrementIcon,
   Remove as DecrementIcon,
+  ShoppingCartCheckout as CheckoutIcon,
 } from '@mui/icons-material';
 import { strings } from '../lang/cart';
 import { strings as commonStrings } from '../lang/common';
@@ -211,6 +212,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                   <Button
                     variant="contained"
                     className={`btn-primary ${styles.btn}`}
+                    startIcon={<CheckoutIcon />}
                     onClick={async (e) => {
                       router.replace('/purchase');
                     }}
