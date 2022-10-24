@@ -10,8 +10,8 @@
         max-width: 872px;
         margin-right: auto;
         margin-left: auto;
-        padding-bottom: 30px;
         margin-top: 15px;
+        padding-bottom: 30px;
     }
 
     div.main div.product {
@@ -25,6 +25,7 @@ div.main {
     border: 1px solid #ededed;
     border-radius: 4px;
     padding: 15px;
+    margin-bottom: 15px;
 }
 
 div.main div.product div.thumbnail {
