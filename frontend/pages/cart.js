@@ -129,7 +129,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                             </div>
                           </a>
                         </Link>
-                        <span className={styles.price}>{`${cartItem.product.price} ${commonStrings.CURRENCY}`}</span>
+                        <span className={styles.price}>{`${Helper.formatNumber(cartItem.product.price)} ${commonStrings.CURRENCY}`}</span>
                       </div>
                       <div className={styles.actions}>
                         <Button
@@ -206,7 +206,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                 <div className={styles.title}>{strings.SUMMARY}</div>
                 <div className={styles.price}>
                   <span>{strings.SUBTOTAL}</span>
-                  <span className={styles.price}>{`${total} ${commonStrings.CURRENCY}`}</span>
+                  <span className={styles.price}>{`${Helper.formatNumber(total)} ${commonStrings.CURRENCY}`}</span>
                 </div>
                 <div className={styles.action}>
                   <Button

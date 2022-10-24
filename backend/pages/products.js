@@ -239,7 +239,7 @@ export default function Products({
                                       </div>
                                   }
                                     <span className={styles.name} title={product.name}>{product.name}</span>
-                                  <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
+                                  <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
                                 </a>
                               </Link>
                             </article>

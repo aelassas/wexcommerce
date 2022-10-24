@@ -114,7 +114,7 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
                   <div className={styles.rightPanel}>
                     <div className={styles.name}>
                       <span className={styles.name}>{product.name}</span>
-                      <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
+                      <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
                       {
                         product.soldOut
                           ? <div className={`${styles.label} ${styles.soldOut}`} title={commonStrings.SOLD_OUT_INFO}>

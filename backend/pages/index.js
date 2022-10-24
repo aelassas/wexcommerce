@@ -267,7 +267,7 @@ export default function Home({
                                           </div>
                                           <div className={styles.orderItemInfo}>
                                             <span className={styles.orderItemLabel}>{cpStrings.PRICE}</span>
-                                            <span>{`${orderItem.product.price} ${commonStrings.CURRENCY}`}</span>
+                                            <span>{`${Helper.formatNumber(orderItem.product.price)} ${commonStrings.CURRENCY}`}</span>
                                           </div>
                                           <div className={styles.orderItemInfo}>
                                             <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
@@ -284,7 +284,7 @@ export default function Home({
                                 </div>
                                 <div className={styles.orderInfo}>
                                   <span className={styles.orderLabel}>{strings.TOTAL}</span>
-                                  <span>{`${order.total} ${commonStrings.CURRENCY}`}</span>
+                                  <span>{`${Helper.formatNumber(order.total)} ${commonStrings.CURRENCY}`}</span>
                                 </div>
                               </div>
 

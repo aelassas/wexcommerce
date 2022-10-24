@@ -205,7 +205,7 @@ export default function Orders({
                                   <span className={styles.orderLabel}>{strings.STATUS}</span>
                                   <span>
                                     {
-                                    <OrderStatus value={statuses[index]} />
+                                      <OrderStatus value={statuses[index]} />
                                     }
                                   </span>
                                 </div>
@@ -231,7 +231,7 @@ export default function Orders({
                                           </div>
                                           <div className={styles.orderItemInfo}>
                                             <span className={styles.orderItemLabel}>{commonStrings.PRICE}</span>
-                                            <span>{`${orderItem.product.price} ${commonStrings.CURRENCY}`}</span>
+                                            <span>{`${Helper.formatNumber(orderItem.product.price)} ${commonStrings.CURRENCY}`}</span>
                                           </div>
                                           <div className={styles.orderItemInfo}>
                                             <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
@@ -248,7 +248,7 @@ export default function Orders({
                                 </div>
                                 <div className={styles.orderInfo}>
                                   <span className={styles.orderLabel}>{strings.TOTAL}</span>
-                                  <span>{`${order.total} ${commonStrings.CURRENCY}`}</span>
+                                  <span>{`${Helper.formatNumber(order.total)} ${commonStrings.CURRENCY}`}</span>
                                 </div>
                               </div>
                             </div>
@@ -364,7 +364,7 @@ export async function getServerSideProps(context) {
             if (_page >= 1) {
               const data = await OrderService.getOrders(
                 context,
-                 _user._id,
+                _user._id,
                 _page,
                 Env.PAGE_SIZE,
                 _keyword,
