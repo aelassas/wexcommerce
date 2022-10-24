@@ -123,7 +123,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                               </div>
                               <div className={styles.name}>
                                 <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
-                                <span className={styles.stock}>{`${cartItem.product.quantity} ${cartItem.product.quantity > 1 ? strings.ARTICLES_IN_STOCK : strings.ARTICLE_IN_STOCK}`}</span>
+                                <span className={styles.stock}>{`${cartItem.product.quantity} ${cartItem.product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
                               </div>
                             </div>
                           </a>

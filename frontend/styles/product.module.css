@@ -1,3 +1,79 @@
-@media only screen and (min-width: 960px) {}
+@media only screen and (max-width: 960px) {
+    div.main div.product {
+        display: flex;
+        flex-direction: column;
+    }
+}
 
-@media only screen and (max-width: 960px) {}
+@media only screen and (min-width: 960px) {
+    div.main {
+        max-width: 872px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-bottom: 30px;
+        margin-top: 15px;
+    }
+
+    div.main div.product {
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+div.main {
+    background-color: #fff;
+    border: 1px solid #ededed;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+div.main div.product div.thumbnail {
+    width: 350px;
+    height: 350px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    margin: 15px;
+    cursor: pointer;
+}
+
+div.main div.product div.rightPanel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+div.main div.product div.rightPanel div.name {
+    display: flex;
+    flex-direction: column;
+    color: #282828;
+}
+
+div.main div.product div.rightPanel div.name span.name {
+    font-size: 1.25rem;
+    font-weight: 500;
+    padding-bottom: 4px;
+    word-break: break-word;
+}
+
+div.main div.product div.rightPanel div.name span.price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding-bottom: 4px;
+}
+
+div.main div.product div.rightPanel div.name span.stock {
+    font-size: 11px;
+    padding-top: 4px;
+    display: block;
+    color: #65656a;
+}
+
+div.main div.product div.rightPanel div.actions {
+    margin-top: 20px;
+}
+
+div.main div.product div.rightPanel div.actions .button {
+    width: 100%;
+    height: 38px;
+}

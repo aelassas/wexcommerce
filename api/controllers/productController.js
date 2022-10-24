@@ -163,6 +163,16 @@ export const getProduct = async (req, res) => {
         const _id = mongoose.Types.ObjectId(req.params.id);
         const language = req.params.language;
 
+        const { cart: cartId } = req.body;
+        let cartProducts = [];
+        if (cartId) {
+            const _cart = await Cart.findById(cartId).populate('cartItems').lean();
+
+            if (_cart) {
+                cartProducts = _cart.cartItems.map(cartItem => cartItem.product);
+            }
+        }
+
         const products = await Product.aggregate([
             {
                 $match: {
@@ -202,7 +212,14 @@ export const getProduct = async (req, res) => {
                     ],
                     as: 'categories'
                 }
-            }
+            },
+            {
+                $addFields: {
+                    inCart: {
+                        $cond: [{ $in: ['$_id', cartProducts] }, 1, 0]
+                    }
+                }
+            },
         ]);
 
         if (products.length > 0) {
@@ -215,6 +232,7 @@ export const getProduct = async (req, res) => {
         return res.status(400).send(strings.ERROR + err);
     }
 };
+
 export const getBackendProducts = async (req, res) => {
     try {
         // cat 1 634a9cf7d21ed77c797b7846
@@ -327,13 +345,10 @@ export const getFrontendProducts = async (req, res) => {
             category = mongoose.Types.ObjectId(req.params.category);
         }
 
-        let cart, cartProducts = [];
-        if (req.body.cart) {
-            cart = mongoose.Types.ObjectId(req.body.cart);
-
-            const _cart = await Cart.findById(cart)
-                .populate('cartItems')
-                .lean();
+        const { cart: cartId } = req.body;
+        let cartProducts = [];
+        if (cartId) {
+            const _cart = await Cart.findById(cartId).populate('cartItems').lean();
 
             if (_cart) {
                 cartProducts = _cart.cartItems.map(cartItem => cartItem.product);

@@ -12,7 +12,7 @@ routes.route(routeNames.create).post(authJwt.verifyToken, productController.crea
 routes.route(routeNames.update).put(authJwt.verifyToken, productController.update);
 routes.route(routeNames.checkProduct).get(authJwt.verifyToken, productController.checkProduct);
 routes.route(routeNames.delete).delete(authJwt.verifyToken, productController.deleteProduct);
-routes.route(routeNames.getProduct).get(productController.getProduct);
+routes.route(routeNames.getProduct).post(productController.getProduct);
 routes.route(routeNames.getBackendProducts).post(authJwt.verifyToken, productController.getBackendProducts);
 routes.route(routeNames.getFrontendProducts).post(productController.getFrontendProducts);
 

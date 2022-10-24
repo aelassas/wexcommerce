@@ -55,6 +55,8 @@ export const strings = new LocalizedStrings({
         PRICE: 'Prix',
         ARTICLE_ADDED: 'Article ajouté au panier.',
         ARTICLE_REMOVED: 'Article retiré du panier.',
+        ARTICLES_IN_STOCK: 'articles en stock',
+        ARTICLE_IN_STOCK: 'article en stock',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -110,5 +112,7 @@ export const strings = new LocalizedStrings({
         PRICE: 'Price',
         ARTICLE_ADDED: 'Article added to cart.',
         ARTICLE_REMOVED: 'Article removed from cart.',
+        ARTICLES_IN_STOCK: 'articles in stock',
+        ARTICLE_IN_STOCK: 'article in stock',
     }
 });

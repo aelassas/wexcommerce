@@ -7,8 +7,15 @@ import {
   FormControl,
   FormHelperText,
   Button,
-  Paper
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
+import {
+  AddShoppingCart as AddShoppingCartIcon
+} from '@mui/icons-material';
 import { strings } from '../lang/product';
 import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
@@ -17,6 +24,9 @@ import ProductService from '../services/ProductService';
 import NoMatch from '../components/NoMatch';
 import { useRouter } from 'next/router';
 import CartService from '../services/CartService';
+import Env from '../config/env.config';
+// import ImageViewer from 'react-simple-image-viewer';
+import ImageViewer from '../components/ImageViewer';
 
 import styles from '../styles/product.module.css';
 
@@ -24,6 +34,12 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState();
+  const [images, setImages] = useState([]);
+  const [currentImage, setCurrentImage] = useState(0);
+  const [openImageDialog, setOpenImageDialog] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   useEffect(() => {
     if (_user) {
@@ -42,6 +58,28 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
     Helper.setLanguage(commonStrings);
     Helper.setLanguage(masterStrings);
   }, []);
+
+  useEffect(() => {
+    if (_product) {
+      setProduct(_product);
+      const images = [];
+      images.push(Helper.joinURL(Env.CDN_PRODUCTS, _product.image));
+      images.push('http://placeimg.com/1920/1080/nature');
+      setImages(images);
+    }
+  }, [_product]);
+
+  useEffect(() => {
+    (async function () {
+      const cartId = CartService.getCartId();
+
+      if (cartId) {
+        const cartCount = await CartService.getCartCount(cartId);
+        setCartCount(cartCount);
+      }
+    })();
+  }, []);
+
 
   const handleResend = async (e) => {
     try {
@@ -63,14 +101,129 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
 
   return (
     <>
-      <Header user={_user} signout={_signout} />
+      <Header user={_user} signout={_signout} cartCount={cartCount} />
       {
         ((_user && _user.verified) || !_user) &&
-        <div className={styles.content}>
-          {_product &&
+        <div className={'content'}>
+          {product &&
             <>
-              {/* TODO */}
-              {_product._id}
+              <div className={styles.main}>
+                <div className={styles.product}>
+                  <div
+                    className={styles.thumbnail}
+                    style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
+                    onClick={() => setOpenImageDialog(true)}
+                  >
+                  </div>
+                  <div className={styles.rightPanel}>
+                    <div className={styles.name}>
+                      <span className={styles.name}>{product.name}</span>
+                      <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
+                      <span className={styles.stock}>{`${product.quantity} ${product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
+                    </div>
+                    {
+                      !product.soldOut &&
+                      <div className={styles.actions}>
+                        {
+                          product.inCart ?
+                            <Button
+                              variant="outlined"
+                              color='error'
+                              className={styles.button}
+                              onClick={async (e) => {
+                                setOpenDeleteDialog(true);
+                              }}
+                            >
+                              {commonStrings.REMOVE_FROM_CART}
+                            </Button>
+                            :
+                            <Button
+                              variant="contained"
+                              className={`${styles.button} btn-primary`}
+                              startIcon={<AddShoppingCartIcon />}
+                              onClick={async (e) => {
+                                try {
+                                  const cartId = CartService.getCartId();
+                                  const userId = (_user && _user._id) || '';
+
+                                  const res = await CartService.addItem(cartId, userId, product._id);
+
+                                  if (res.status === 200) {
+                                    if (!cartId) {
+                                      CartService.setCartId(res.data);
+                                    }
+                                    product.inCart = true;
+                                    setProduct(product);
+                                    setCartCount(cartCount + 1);
+                                    Helper.info(commonStrings.ARTICLE_ADDED);
+                                  } else {
+                                    Helper.error();
+                                  }
+                                } catch (err) {
+                                  console.log(err);
+                                  Helper.error();
+                                }
+                              }}
+                            >
+                              {commonStrings.ADD_TO_CART}
+                            </Button>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+                <div className={styles.description}>
+                  <div dangerouslySetInnerHTML={{ __html: product.description }} />
+                </div>
+              </div>
+
+              {openImageDialog &&
+                <ImageViewer
+                  src={images}
+                  currentIndex={currentImage}
+                  closeOnClickOutside={true}
+                  imageStyle={{ maxWidth: '80%', maxHeight: '80%' }}
+                  onClose={() => {
+                    setOpenImageDialog(false);
+                    setCurrentImage(0);
+                  }}
+                />}
+
+              <Dialog
+                disableEscapeKeyDown
+                maxWidth="xs"
+                open={openDeleteDialog}
+              >
+                <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+                <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
+                <DialogActions className='dialog-actions'>
+                  <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+                  <Button onClick={async () => {
+                    try {
+                      const cartId = CartService.getCartId();
+                      const res = await CartService.deleteItem(cartId, product._id);
+
+                      if (res.status === 200) {
+                        product.inCart = false;
+                        setProduct(product);
+                        setCartCount(cartCount - 1);
+
+                        if (res.data.cartDeleted) {
+                          CartService.deleteCartId();
+                        }
+
+                        setOpenDeleteDialog(false);
+                        Helper.info(commonStrings.ARTICLE_REMOVED);
+                      } else {
+                        Helper.error();
+                      }
+                    } catch (err) {
+                      console.log(err);
+                      Helper.error();
+                    }
+                  }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
+                </DialogActions>
+              </Dialog>
             </>
           }
 
@@ -114,7 +267,7 @@ export async function getServerSideProps(context) {
         _user = await UserService.getUser(context, currentUser.id);
       }
 
-      if(!_user || status !==200){
+      if (!_user || status !== 200) {
         CartService.deleteCartId(context);
         _signout = true;
       }
@@ -127,7 +280,8 @@ export async function getServerSideProps(context) {
 
       if (productId) {
         try {
-          _product = await ProductService.getProduct(productId, _language);
+          const cartId = CartService.getCartId(context);
+          _product = await ProductService.getProduct(productId, _language, cartId);
 
           if (!_product) {
             _noMatch = true;

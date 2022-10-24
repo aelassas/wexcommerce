@@ -173,7 +173,8 @@ article.product div.actions {
     margin-top: 5px;
 }
 
-article.product div.actions button {
+article.product div.actions button,
+article.product div.actions .removeButton {
     width: 100%;
 }
 

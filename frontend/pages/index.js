@@ -26,7 +26,6 @@ import {
   ArrowForwardIos as NextPageIcon,
   Clear as CloseIcon,
   Block as SoldOutIcon,
-  VisibilityOff as HiddenIcon
 } from '@mui/icons-material';
 import Env from '../config/env.config';
 import Link from 'next/link';
@@ -233,13 +232,6 @@ export default function Home({
                                       <span>{commonStrings.SOLD_OUT}</span>
                                     </div>
                                   }
-                                  {
-                                    product.hidden &&
-                                    <div className={`${styles.label} ${styles.hidden}`} title={commonStrings.HIDDEN_INFO}>
-                                      <HiddenIcon className={styles.labelIcon} />
-                                      <span>{commonStrings.HIDDEN}</span>
-                                    </div>
-                                  }
                                   <span className={styles.name} title={product.name}>{product.name}</span>
                                   <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
                                 </a>
@@ -252,6 +244,7 @@ export default function Home({
                                       <Button
                                         variant="outlined"
                                         color='error'
+                                        className={styles.removeButton}
                                         onClick={async (e) => {
                                           setProductId(product._id);
                                           setOpenDeleteDialog(true);
@@ -263,7 +256,6 @@ export default function Home({
                                       <Button
                                         variant="contained"
                                         className={`${styles.button} btn-primary`}
-                                        size="small"
                                         onClick={async (e) => {
                                           try {
                                             const cartId = CartService.getCartId();
@@ -292,8 +284,8 @@ export default function Home({
                                         {commonStrings.ADD_TO_CART}
                                       </Button>
                                   }
-
-                                </div>}
+                                </div>
+                                }
                             </article>
                           ))
                         }
