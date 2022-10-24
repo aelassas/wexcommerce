@@ -8,7 +8,8 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: black;
+    /* background-color: black; */
+    background-color: white;
     box-sizing: border-box;
   }
   
@@ -37,9 +38,10 @@
   }
   
   .close {
-    color: white;
+    /* color: white; */
+    color: black;
     position: absolute;
-    top: 15px;
+    top: 0;
     right: 15px;
     font-size: 40px;
     font-weight: bold;
@@ -53,7 +55,8 @@
   
   .navigation {
     height: 80%;
-    color: white;
+    /* color: white; */
+    color: black;
     cursor: pointer;
     position: absolute;
     font-size: 60px;
