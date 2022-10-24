@@ -3,12 +3,35 @@ import styles from "../styles/image-viewer.module.css";
 
 const ImageViewer = (props) => {
     const [currentIndex, setCurrentIndex] = useState(props.currentIndex ?? 0);
+    const thumbnails = [];
+
+    const scrollToThumbnail = (el, index) => {
+        if (index === 0) {
+            el.parentNode.parentNode.scrollLeft = 0;
+        } else {
+            const offset = 15;
+            const elLeft = el.offsetLeft + el.offsetWidth + offset;
+            const elParentLeft = el.parentNode.parentNode.offsetLeft + el.parentNode.parentNode.offsetWidth;
+
+            // check if element not in view
+            if (elLeft >= elParentLeft + el.parentNode.parentNode.scrollLeft) {
+                el.parentNode.parentNode.scrollLeft = elLeft - elParentLeft;
+            } else if (elLeft <= el.parentNode.parentNode.offsetLeft + el.parentNode.parentNode.scrollLeft) {
+                el.parentNode.parentNode.scrollLeft = el.offsetLeft - el.parentNode.parentNode.offsetLeft;
+            }
+        }
+    };
 
     const changeImage = useCallback(
         (delta) => {
             let nextIndex = (currentIndex + delta) % props.src.length;
             if (nextIndex < 0) nextIndex = props.src.length - 1;
             setCurrentIndex(nextIndex);
+
+            if (props.src.length > 1) {
+                const thumbnail = thumbnails[nextIndex];
+                scrollToThumbnail(thumbnail, nextIndex);
+            }
         },
         [currentIndex]
     );
@@ -32,6 +55,8 @@ const ImageViewer = (props) => {
 
     const handleKeyDown = useCallback(
         (event) => {
+            event.preventDefault();
+
             if (event.key === "Escape") {
                 props.onClose?.();
             }
@@ -92,8 +117,6 @@ const ImageViewer = (props) => {
 
                 {props.title && <span className={styles.title}>{props.title}</span>}
 
-                {/* <hr className={styles.hr} /> */}
-
                 {props.src.length > 1 && (
                     <span
                         className={`${styles.navigation} ${styles.prev} react-simple-image-viewer__previous`}
@@ -123,16 +146,19 @@ const ImageViewer = (props) => {
 
                 {
                     props.src.length > 0 &&
-                    <div className={styles.thumbnails}>
-                        {props.src.map((src, index) => (
-                            <div
-                                key={index}
-                                className={`${styles.thumbnail}${currentIndex === index ? ` ${styles.selected}` : ''}`}
-                                onClick={() => setCurrentIndex(index)}
-                            >
-                                <img className={styles.thumbnail} src={src} alt="" />
-                            </div>
-                        ))}
+                    <div className={styles.thumbnailsContainer}>
+                        <div className={styles.thumbnails}>
+                            {props.src.map((src, index) => (
+                                <div
+                                    key={index}
+                                    ref={el => thumbnails[index] = el}
+                                    className={`${styles.thumbnail}${currentIndex === index ? ` ${styles.selected}` : ''}`}
+                                    onClick={() => setCurrentIndex(index)}
+                                >
+                                    <img className={styles.thumbnail} src={src} alt="" />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 }
             </div>

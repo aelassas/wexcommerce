@@ -65,15 +65,6 @@
   font-weight: 500;
 }
 
-.hr {
-  position: absolute;
-  top: 55px;
-  right: 15px;
-  left: 15px;
-  border: 0;
-  border-bottom: 2px solid #fafafa;
-}
-
 .close:hover {
   opacity: 1;
 }
@@ -119,16 +110,22 @@
   }
 }
 
-div.thumbnails {
+div.thumbnailsContainer {
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
   height: 100px;
+  overflow-x: auto;
+}
+
+div.thumbnails {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  padding: 0 15px;
 }
 
 div.thumbnails div.thumbnail {
