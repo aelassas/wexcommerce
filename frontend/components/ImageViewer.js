@@ -122,7 +122,7 @@ const ImageViewer = (props) => {
                 </div>
 
                 {
-                    props.src.length > 1 &&
+                    props.src.length > 0 &&
                     <div className={styles.thumbnails}>
                         {props.src.map((src, index) => (
                             <div
