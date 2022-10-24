@@ -73,8 +73,7 @@ export default function Orders({
 
   useEffect(() => {
     if (_signout) {
-        console.log('signout')
-      // UserService.signout();
+      UserService.signout();
     }
   }, [_signout]);
 
@@ -223,7 +222,7 @@ export default function Orders({
                                           <div className={styles.orderItemInfo}>
                                             <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
                                             <span>
-                                              <Link href={`/update-product?p=${orderItem.product._id}`}>
+                                              <Link href={`/product?p=${orderItem.product._id}`}>
                                                 <a className={styles.orderItemText} title={orderItem.product.name}>
                                                   {orderItem.product.name}
                                                 </a>

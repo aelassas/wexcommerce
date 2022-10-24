@@ -2,19 +2,15 @@ import { useEffect, useState } from 'react';
 import UserService from '../services/UserService';
 import Header from '../components/Header';
 import {
-  Input,
-  InputLabel,
-  FormControl,
-  FormHelperText,
   Button,
-  Paper,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from '@mui/material';
 import {
-  AddShoppingCart as AddShoppingCartIcon
+  AddShoppingCart as AddShoppingCartIcon,
+  Block as SoldOutIcon,
 } from '@mui/icons-material';
 import { strings } from '../lang/product';
 import { strings as commonStrings } from '../lang/common';
@@ -25,7 +21,6 @@ import NoMatch from '../components/NoMatch';
 import { useRouter } from 'next/router';
 import CartService from '../services/CartService';
 import Env from '../config/env.config';
-// import ImageViewer from 'react-simple-image-viewer';
 import ImageViewer from '../components/ImageViewer';
 
 import styles from '../styles/product.module.css';
@@ -64,7 +59,8 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
       setProduct(_product);
       const images = [];
       images.push(Helper.joinURL(Env.CDN_PRODUCTS, _product.image));
-      images.push('http://placeimg.com/1920/1080/nature');
+      // images.push('http://placeimg.com/1920/1080/nature');
+      // images.push('http://placeimg.com/1920/2550/nature');
       setImages(images);
     }
   }, [_product]);
@@ -119,7 +115,14 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
                     <div className={styles.name}>
                       <span className={styles.name}>{product.name}</span>
                       <span className={styles.price}>{`${product.price} ${commonStrings.CURRENCY}`}</span>
-                      <span className={styles.stock}>{`${product.quantity} ${product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
+                      {
+                        product.soldOut
+                          ? <div className={`${styles.label} ${styles.soldOut}`} title={commonStrings.SOLD_OUT_INFO}>
+                            <SoldOutIcon className={styles.labelIcon} />
+                            <span>{commonStrings.SOLD_OUT}</span>
+                          </div>
+                          : <span className={styles.stock}>{`${product.quantity} ${product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
+                      }
                     </div>
                     {
                       !product.soldOut &&
@@ -182,7 +185,7 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
                   src={images}
                   currentIndex={currentImage}
                   closeOnClickOutside={true}
-                  imageStyle={{ maxWidth: '80%', maxHeight: '80%' }}
+                  title={strings.PRODUCT_IMAGES}
                   onClose={() => {
                     setOpenImageDialog(false);
                     setCurrentImage(0);

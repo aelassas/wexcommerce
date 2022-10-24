@@ -70,6 +70,28 @@ div.main div.product div.rightPanel div.name span.stock {
     color: #65656a;
 }
 
+div.main div.product div.rightPanel div.label {
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 2px 10px;
+    margin: 2px 0;
+    width: fit-content;
+}
+
+div.main div.product div.rightPanel div.label .labelIcon {
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+div.main div.product div.rightPanel div.soldOut {
+    background-color: #e33b2f;
+}
+
 div.main div.product div.rightPanel div.actions {
     margin-top: 20px;
 }

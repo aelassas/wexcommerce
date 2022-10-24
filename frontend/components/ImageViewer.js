@@ -82,38 +82,59 @@ const ImageViewer = (props) => {
             onClick={handleClick}
             style={props.backgroundStyle}
         >
-            <span
-                className={`${styles.close} react-simple-image-viewer__close`}
-                onClick={() => props.onClose?.()}
-            >
-                {props.closeComponent || "×"}
-            </span>
-
-            {props.src.length > 1 && (
+            <div className={styles.popup}>
                 <span
-                    className={`${styles.navigation} ${styles.prev} react-simple-image-viewer__previous`}
-                    onClick={() => changeImage(-1)}
+                    className={`${styles.close} react-simple-image-viewer__close`}
+                    onClick={() => props.onClose?.()}
                 >
-                    {props.leftArrowComponent || "❮"}
+                    {props.closeComponent || "×"}
                 </span>
-            )}
 
-            {props.src.length > 1 && (
-                <span
-                    className={`${styles.navigation} ${styles.next} react-simple-image-viewer__next`}
-                    onClick={() => changeImage(1)}
+                {props.title && <span className={styles.title}>{props.title}</span>}
+
+                {/* <hr className={styles.hr} /> */}
+
+                {props.src.length > 1 && (
+                    <span
+                        className={`${styles.navigation} ${styles.prev} react-simple-image-viewer__previous`}
+                        onClick={() => changeImage(-1)}
+                    >
+                        {props.leftArrowComponent || "❮"}
+                    </span>
+                )}
+
+                {props.src.length > 1 && (
+                    <span
+                        className={`${styles.navigation} ${styles.next} react-simple-image-viewer__next`}
+                        onClick={() => changeImage(1)}
+                    >
+                        {props.rightArrowComponent || "❯"}
+                    </span>
+                )}
+
+                <div
+                    className={`${styles.content} react-simple-image-viewer__modal-content`}
+                    onClick={handleClick}
                 >
-                    {props.rightArrowComponent || "❯"}
-                </span>
-            )}
-
-            <div
-                className={`${styles.content} react-simple-image-viewer__modal-content`}
-                onClick={handleClick}
-            >
-                <div className={`${styles.slide} react-simple-image-viewer__slide`}>
-                    <img className={styles.image} src={props.src[currentIndex]} alt="" style={props.imageStyle} />
+                    <div className={`${styles.slide} react-simple-image-viewer__slide`}>
+                        <img className={styles.image} src={props.src[currentIndex]} alt="" style={props.imageStyle} />
+                    </div>
                 </div>
+
+                {
+                    props.src.length > 1 &&
+                    <div className={styles.thumbnails}>
+                        {props.src.map((src, index) => (
+                            <div
+                                key={index}
+                                className={`${styles.thumbnail}${currentIndex === index ? ` ${styles.selected}` : ''}`}
+                                onClick={() => setCurrentIndex(index)}
+                            >
+                                <img className={styles.thumbnail} src={src} alt="" />
+                            </div>
+                        ))}
+                    </div>
+                }
             </div>
         </div>
     );
