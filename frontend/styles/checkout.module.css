@@ -4,14 +4,14 @@
 
 @media only screen and (max-width: 550px) {
 
-    .purchaseForm .signIn,
-    .purchaseForm .box,
-    .purchaseForm .payment,
-    .purchaseForm .buttons {
+    .checkoutForm .signIn,
+    .checkoutForm .box,
+    .checkoutForm .payment,
+    .checkoutForm .buttons {
         width: 100%;
     }
 
-    .purchaseForm .signIn {
+    .checkoutForm .signIn {
         flex-direction: column !important;
 
     }
@@ -19,10 +19,10 @@
 
 @media only screen and (min-width: 550px) {
 
-    .purchaseForm .signIn,
-    .purchaseForm .box,
-    .purchaseForm .payment,
-    .purchaseForm .buttons {
+    .checkoutForm .signIn,
+    .checkoutForm .box,
+    .checkoutForm .payment,
+    .checkoutForm .buttons {
         width: 550px;
     }
 }
@@ -31,14 +31,14 @@
 
 }
 
-.purchaseForm {
+.checkoutForm {
     padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.purchaseForm .signIn {
+.checkoutForm .signIn {
     background: #fbfbfb;
     border: 1px solid #d9d8d9;
     padding: 25px;
@@ -50,11 +50,11 @@
     justify-content: center;
 }
 
-.purchaseForm .signIn p {
+.checkoutForm .signIn p {
     margin-right: 10px;
 }
 
-.purchaseForm .box {
+.checkoutForm .box {
     background: #fbfbfb;
     border: 1px solid #d9d8d9;
     padding: 25px;
@@ -62,38 +62,38 @@
     border-radius: 3px;
 }
 
-.purchaseForm .boxInfo {
+.checkoutForm .boxInfo {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-.purchaseForm .boxInfo label {
+.checkoutForm .boxInfo label {
     margin-left: 5px;
 }
 
-.purchaseForm .boxForm {
+.checkoutForm .boxForm {
     margin-top: 5px;
 }
 
-.purchaseForm .box .subscription {
+.checkoutForm .box .subscription {
     display: flex;
     flex-direction: column;
     margin-bottom: 5px;
 }
 
-.purchaseForm .box .subscription .subscriptionName {
+.checkoutForm .box .subscription .subscriptionName {
     font-size: 16px;
     font-weight: 500;
 
 }
 
-.purchaseForm .box .subscription .subscriptionDescription {
+.checkoutForm .box .subscription .subscriptionDescription {
     color: #777;
     font-size: 15px;
 }
 
-.purchaseForm .payment {
+.checkoutForm .payment {
     margin-top: 35px;
     margin-bottom: 15px;
     padding: 25px;
@@ -101,7 +101,7 @@
     border: 1px solid #d9d8d9;
 }
 
-.purchaseForm .payment .cost {
+.checkoutForm .payment .cost {
     color: #1c8901;
     font-size: 20px;
     font-weight: 700;
@@ -114,7 +114,7 @@
     margin-bottom: 15px;
 }
 
-.purchaseForm .payment .cost .securePaymentLabel {
+.checkoutForm .payment .cost .securePaymentLabel {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,33 +123,27 @@
     font-weight: 600;
 }
 
-.purchaseForm .payment .cost .securePaymentLabel label {
+.checkoutForm .payment .cost .securePaymentLabel label {
     margin-left: 5px;
 }
 
-.purchaseForm .payment .cost .securePaymentLabel .securePaymentLock {
+.checkoutForm .payment .cost .securePaymentLabel .securePaymentLock {
     height: 16px;
 }
 
-.purchaseForm .payment .cost .securePaymentCost {
+.checkoutForm .payment .cost .securePaymentCost {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.purchaseForm .payment .cost .securePaymentCost .costTitle,
-.purchaseForm .payment .cost .securePaymentCost .costValue {
+.checkoutForm .payment .cost .securePaymentCost .costTitle,
+.checkoutForm .payment .cost .securePaymentCost .costValue {
     display: table-cell;
     padding: 5px;
 }
 
-.purchaseForm .payment .cost .securePaymentCost .costValue:after {
-    content: '*';
-    vertical-align: super;
-    font-size: 13px;
-}
-
-.purchaseForm .payment .securePaymentLogo {
+.checkoutForm .payment .securePaymentLogo {
     width: 100%;
     height: 40px;
     display: flex;
@@ -158,8 +152,8 @@
     margin-bottom: 5px;
 }
 
-.purchaseForm .payment .paymentInfo,
-.purchaseForm .payment .securePaymentInfo {
+.checkoutForm .payment .paymentInfo,
+.checkoutForm .payment .securePaymentInfo {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -168,29 +162,29 @@
     color: #1c8901;
 }
 
-.purchaseForm .payment .paymentInfo .paymentInfoLabel {
+.checkoutForm .payment .paymentInfo .paymentInfoLabel {
     font-weight: bold;
     width: 32px;
     display: flex;
     justify-content: center;
 }
 
-.purchaseForm .payment .paymentInfo .paymentIcon,
-.purchaseForm .payment .securePaymentInfo .paymentIcon {
+.checkoutForm .payment .paymentInfo .paymentIcon,
+.checkoutForm .payment .securePaymentInfo .paymentIcon {
     height: 16px;
 }
 
-.purchaseForm .buttons {
+.checkoutForm .buttons {
     display: inline-block;
 }
 
-.purchaseForm .buttons button,
-.purchaseForm .buttons a {
+.checkoutForm .buttons button,
+.checkoutForm .buttons a {
     float: right;
 }
 
-.purchaseForm .buttons .btnPurchase,
-.purchaseForm .buttons .btnCancel {
+.checkoutForm .buttons .btnCheckout,
+.checkoutForm .buttons .btnCancel {
     font-size: 18px;
     line-height: 24px;
     font-weight: 500;
@@ -205,10 +199,10 @@
     margin-left: 7px;
 }
 
-.purchaseForm .buttons .btnPurchase {
+.checkoutForm .buttons .btnCheckout {
     background: #1d1d1b;
 }
 
-.purchaseForm .buttons .btnCancel {
+.checkoutForm .buttons .btnCancel {
     background: #999;
 }

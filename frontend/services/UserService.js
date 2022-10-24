@@ -3,8 +3,6 @@ import Env from '../config/env.config';
 import { hasCookie, getCookie, setCookie, deleteCookie } from 'cookies-next';
 import CartService from './CartService';
 
-const MAX_AGE = 100 * 365 * 24 * 60 * 60;
-
 export default class UserService {
 
     static authHeader(context) {
@@ -34,7 +32,7 @@ export default class UserService {
     static signin(data) {
         return axios.post(`${Env.API_HOST}/api/sign-in/${Env.APP_TYPE}`, data).then(res => {
             if (res.data.accessToken) {
-                setCookie('sc-fe-user', JSON.stringify(res.data), { maxAge: MAX_AGE });
+                setCookie('sc-fe-user', JSON.stringify(res.data), Env.COOCKIES_OPTIONS);
             }
             return { status: res.status, data: res.data };
         });
@@ -103,7 +101,7 @@ export default class UserService {
                 if (hasCookie('sc-fe-user')) user = JSON.parse(getCookie('sc-fe-user'));
                 if (user) {
                     user.language = data.language;
-                    setCookie('sc-fe-user', JSON.stringify(user), { maxAge: MAX_AGE });
+                    setCookie('sc-fe-user', JSON.stringify(user), Env.COOCKIES_OPTIONS);
                 }
             }
             return res.status;
@@ -111,7 +109,7 @@ export default class UserService {
     }
 
     static setLanguage(lang) {
-        setCookie('sc-fe-language', JSON.stringify(lang), { maxAge: MAX_AGE });
+        setCookie('sc-fe-language', JSON.stringify(lang), Env.COOCKIES_OPTIONS);
     }
 
     static getCurrentUser(context) {

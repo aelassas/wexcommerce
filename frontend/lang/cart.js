@@ -5,7 +5,7 @@ export const strings = new LocalizedStrings({
         EMPTY: 'Votre panier est vide.',
         SUMMARY: 'Résumé du panier',
         SUBTOTAL: 'Sous-total',
-        PURCHASE: 'Commander',
+        CHECKOUT: 'Commander',
         CLEAR_CART: 'Vider le panier',
         CLEAR_CART_CONFIRM: 'Êtes-vous sûr de vouloir vider le panier ?',
     },
@@ -13,7 +13,7 @@ export const strings = new LocalizedStrings({
         EMPTY: 'Your cart is empty.',
         SUMMARY: 'Cart summary',
         SUBTOTAL: 'Subtotal',
-        PURCHASE: 'Purchase',
+        CHECKOUT: 'Checkout',
         CLEAR_CART: 'Clear cart',
         CLEAR_CART_CONFIRM:'Are you sure you want to clear cart?',
     }

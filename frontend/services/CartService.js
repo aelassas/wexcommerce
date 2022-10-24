@@ -34,7 +34,7 @@ export default class CartService {
     }
 
     static setCartId(id) {
-        setCookie('sc-fe-cart', id, { maxAge: MAX_AGE });
+        setCookie('sc-fe-cart', id, Env.COOCKIES_OPTIONS);
     }
 
     static getCartId(context) {

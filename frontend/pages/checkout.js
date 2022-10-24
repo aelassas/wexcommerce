@@ -15,7 +15,7 @@ import {
     Person as UserIcon,
     Orders as OrdersIcon
 } from '@mui/icons-material';
-import { strings } from '../lang/purchase';
+import { strings } from '../lang/checkout';
 import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
 import { strings as headerStrings } from '../lang/header';
@@ -31,9 +31,9 @@ import validator from 'validator';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import styles from '../styles/purchase.module.css';
+import styles from '../styles/checkout.module.css';
 
-export default function Purchase({ _user, _signout, _noMatch, _cart }) {
+export default function Checkout({ _user, _signout, _noMatch, _cart }) {
     const router = useRouter();
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
@@ -241,7 +241,7 @@ export default function Purchase({ _user, _signout, _noMatch, _cart }) {
             <div className={'content'}>
                 {(_cart && !_noMatch && !success) &&
                     <>
-                        <form onSubmit={handleSubmit} className={styles.purchaseForm}>
+                        <form onSubmit={handleSubmit} className={styles.checkoutForm}>
 
                             {!_user &&
                                 <>
@@ -324,7 +324,7 @@ export default function Purchase({ _user, _signout, _noMatch, _cart }) {
                                     </div>
                                     <div className={styles.securePaymentCost}>
                                         <label className={styles.costTitle}>{strings.COST}</label>
-                                        <label className={styles.costValue}>{`${Helper.total(_cart.cartItems)} ${commonStrings.CURRENCY}`}</label>
+                                        <label className={styles.costValue}>{`${Helper.formatNumber(Helper.total(_cart.cartItems))} ${commonStrings.CURRENCY}`}</label>
                                     </div>
                                 </div>
 
@@ -452,10 +452,10 @@ export default function Purchase({ _user, _signout, _noMatch, _cart }) {
                                 <Button
                                     type="submit"
                                     variant="contained"
-                                    className={`${styles.btnPurchase} btn-margin-bottom`}
+                                    className={`${styles.btnCheckout} btn-margin-bottom`}
                                     size="small"
                                 >
-                                    {strings.PURCHASE}
+                                    {strings.CHECKOUT}
                                 </Button>
                                 <Button
                                     variant="contained"

@@ -17,7 +17,7 @@ export const strings = new LocalizedStrings({
         CVV: 'Code de sécurité',
         CVV_NOT_VALID: 'Code de sécurité non valide',
         CARD_DATE_ERROR: 'Date de carte non valide.',
-        PURCHASE: "Acheter",
+        CHECKOUT: "Acheter",
         SUCCESS: "Votre paiement a été effectué avec succès. Nous vous avons envoyé un e-mail pour activer votre compte.",
         SIGN_IN: 'Vous êtes déjà inscrit ?',
     },
@@ -37,7 +37,7 @@ export const strings = new LocalizedStrings({
         CVV: 'Card Validation Code',
         CVV_NOT_VALID: 'Invalid Card Validation Code',
         CARD_DATE_ERROR: 'Invalid card date.',
-        PURCHASE: 'Purchase',
+        CHECKOUT: 'Checkout',
         SUCCESS: 'Your payment was successfully done. We sent you an email to activate your account.',
         SIGN_IN: 'You already have an account?',
     }

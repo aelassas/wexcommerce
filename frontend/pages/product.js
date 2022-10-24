@@ -61,6 +61,10 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
       images.push(Helper.joinURL(Env.CDN_PRODUCTS, _product.image));
       // images.push('http://placeimg.com/1920/1080/nature');
       // images.push('http://placeimg.com/1920/2550/nature');
+      // for (let i = 0; i < 25; i++) {
+      //   images.push('http://placeimg.com/1920/1080/nature');
+      //   images.push('http://placeimg.com/1920/2550/nature');
+      // }
       setImages(images);
     }
   }, [_product]);

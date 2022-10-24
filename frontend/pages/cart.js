@@ -214,10 +214,10 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                     className={`btn-primary ${styles.btn}`}
                     startIcon={<CheckoutIcon />}
                     onClick={async (e) => {
-                      router.replace('/purchase');
+                      router.replace('/checkout');
                     }}
                   >
-                    {strings.PURCHASE}
+                    {strings.CHECKOUT}
                   </Button>
                   <Button
                     variant="outlined"
