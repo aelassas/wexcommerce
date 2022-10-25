@@ -80,7 +80,7 @@ export const create = async (req, res) => {
         _order.user = _user._id;
         _order.paymentType = order.paymentType;
         _order.total = order.total;
-        
+
         // order.status
         if (order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD) {
             // TODO CMI
@@ -127,7 +127,7 @@ export const create = async (req, res) => {
                         : __order.paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? strings.WIRE_TRANSFER
                             : '') + '<br><br>'
 
-                + (__order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.PAID + '<br><br>': '')
+                + (__order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.PAID + '<br><br>' : '')
 
                 + strings.ORDER_CONFIRMED_PART_3 + '<br><br>'
                 + Helper.joinURL(FRONTEND_HOST, 'orders')
@@ -141,7 +141,7 @@ export const create = async (req, res) => {
 
         // admin email
         strings.setLanguage(admin.language);
-        
+
         mailOptions = {
             from: SMTP_FROM,
             to: admin.email,
@@ -424,12 +424,13 @@ export const getOrders = async (req, res) => {
                                 let: { productId: '$product' },
                                 pipeline: [
                                     {
-                                        $match: {
-                                            $and: [
-                                                { $expr: { $eq: ['$_id', '$$productId'] } },
-                                                isObjectId ? {} : { $expr: { $regexMatch: { input: '$name', regex: keyword, options } } }
-                                            ]
-                                        }
+                                        // $match: {
+                                        //     $and: [
+                                        //         { $expr: { $eq: ['$_id', '$$productId'] } },
+                                        //         isObjectId ? {} : { $expr: { $regexMatch: { input: '$name', regex: keyword, options } } }
+                                        //     ]
+                                        // }
+                                        $match: { $expr: { $eq: ['$_id', '$$productId'] } }
                                     }
                                 ],
                                 as: 'product'
@@ -439,6 +440,16 @@ export const getOrders = async (req, res) => {
                     ],
                     as: 'orderItems'
                 }
+            },
+            {
+                $match:
+                    isObjectId ? {}
+                        : {
+                            $or: [
+                                { 'orderItems.product.name': { $regex: keyword, $options: options } },
+                                { 'user.fullName': { $regex: keyword, $options: options } }
+                            ]
+                        }
             },
             {
                 $match: { 'orderItems': { $not: { $size: 0 } } }
