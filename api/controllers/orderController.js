@@ -214,12 +214,14 @@ export const update = async (req, res) => {
 
             strings.setLanguage(_user.language);
 
+            const message = strings.ORDER_UPDATED_PART_1 + order._id + strings.ORDER_UPDATED_PART_2;
+
             const mailOptions = {
                 from: SMTP_FROM,
                 to: _user.email,
                 subject: strings.ORDER_UPDATED_PART_1 + order._id + strings.ORDER_UPDATED_PART_2,
                 html: '<p>' + strings.HELLO + _user.fullName + ',<br><br>'
-                    + strings.ORDER_UPDATED_PART_1 + order._id + strings.ORDER_UPDATED_PART_2 + '<br><br>'
+                    + message + '<br><br>'
                     + strings.ORDER_CONFIRMED_PART_3 + '<br><br>'
 
                     + Helper.joinURL(FRONTEND_HOST, 'order')
@@ -230,6 +232,19 @@ export const update = async (req, res) => {
                     + '</p>'
             };
             await transporter.sendMail(mailOptions);
+
+            // user notification
+            const notification = new Notification({ user: _user._id, message, order: order._id });
+
+            await notification.save();
+            let counter = await NotificationCounter.findOne({ user: _user._id });
+            if (counter) {
+                counter.count++;
+                await counter.save();
+            } else {
+                counter = new NotificationCounter({ user: _user._id, count: 1 });
+                await counter.save();
+            }
 
             return res.sendStatus(200);
         } else {

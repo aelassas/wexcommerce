@@ -23,7 +23,8 @@ import {
     Markunread as MarkUnreadIcon,
     Delete as DeleteIcon,
     ArrowBackIos as PreviousPageIcon,
-    ArrowForwardIos as NextPageIcon
+    ArrowForwardIos as NextPageIcon,
+    Visibility as ViewIcon
 } from '@mui/icons-material';
 import * as Helper from '../common/Helper';
 import Env from '../config/env.config';
@@ -252,6 +253,33 @@ export default function Notifications({
                                                         {row.message}
                                                     </div>
                                                     <div className={styles.actions}>
+                                                        {
+                                                            row.order &&
+                                                            <Tooltip title={strings.VIEW}>
+                                                                <IconButton onClick={async () => {
+                                                                    const redirect = () => router.replace(`/orders?o=${row.order}`);
+
+                                                                    try {
+                                                                        if (!row.isRead) {
+                                                                            const status = await NotificationService.markAsRead(_user._id, [row._id]);
+
+                                                                            if (status === 200) {
+                                                                                redirect();
+                                                                            } else {
+                                                                                Helper.error();
+                                                                            }
+                                                                        } else {
+                                                                            redirect();
+                                                                        }
+                                                                    }
+                                                                    catch (err) {
+                                                                        UserService.signout();
+                                                                    }
+                                                                }}>
+                                                                    <ViewIcon />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        }
                                                         {
                                                             !row.isRead ?
                                                                 <Tooltip title={strings.MARK_AS_READ}>

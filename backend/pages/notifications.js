@@ -23,7 +23,8 @@ import {
     Markunread as MarkUnreadIcon,
     Delete as DeleteIcon,
     ArrowBackIos as PreviousPageIcon,
-    ArrowForwardIos as NextPageIcon
+    ArrowForwardIos as NextPageIcon,
+    Visibility as ViewIcon
 } from '@mui/icons-material';
 import * as Helper from '../common/Helper';
 import Env from '../config/env.config';
@@ -122,7 +123,7 @@ export default function Notifications({
     return (
         !loading && _user &&
         <>
-            <Header user={_user} notificationCount={notificationCount} />
+            <Header user={_user} notificationCount={notificationCount} hideSearch />
 
             {
                 _user.verified &&
@@ -159,7 +160,7 @@ export default function Notifications({
                                                         row.checked = event.target.checked;
                                                     });
                                                 }
-                                                setRows(Helper.clone(rows));
+                                                setRows(Helper.cloneArray(rows));
                                             }} />
                                     </div>
                                     {
@@ -178,7 +179,7 @@ export default function Notifications({
                                                                 _rows.forEach(row => {
                                                                     row.isRead = true;
                                                                 });
-                                                                setRows(Helper.clone(rows));
+                                                                setRows(Helper.cloneArray(rows));
                                                                 setNotificationCount(notificationCount - _rows.length);
                                                             } else {
                                                                 Helper.error();
@@ -205,7 +206,7 @@ export default function Notifications({
                                                                 _rows.forEach(row => {
                                                                     row.isRead = false;
                                                                 });
-                                                                setRows(Helper.clone(rows));
+                                                                setRows(Helper.cloneArray(rows));
                                                                 setNotificationCount(notificationCount + _rows.length);
                                                             } else {
                                                                 Helper.error();
@@ -238,7 +239,7 @@ export default function Notifications({
                                             <div className={styles.notificationCheckbox}>
                                                 <Checkbox checked={row.checked} onChange={(event) => {
                                                     row.checked = event.target.checked;
-                                                    setRows(Helper.clone(rows));
+                                                    setRows(Helper.cloneArray(rows));
                                                 }} />
                                             </div>
                                             <div className={`${styles.notification}${!row.isRead ? ` ${styles.unread}` : ''}`}>
@@ -251,6 +252,33 @@ export default function Notifications({
                                                     </div>
                                                     <div className={styles.actions}>
                                                         {
+                                                            row.order &&
+                                                            <Tooltip title={strings.VIEW}>
+                                                                <IconButton onClick={async () => {
+                                                                    const redirect = () => router.replace(`/?o=${row.order}`);
+
+                                                                    try {
+                                                                        if (!row.isRead) {
+                                                                            const status = await NotificationService.markAsRead(_user._id, [row._id]);
+
+                                                                            if (status === 200) {
+                                                                                redirect();
+                                                                            } else {
+                                                                                Helper.error();
+                                                                            }
+                                                                        } else {
+                                                                            redirect();
+                                                                        }
+                                                                    }
+                                                                    catch (err) {
+                                                                        UserService.signout();
+                                                                    }
+                                                                }}>
+                                                                    <ViewIcon />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        }
+                                                        {
                                                             !row.isRead ?
                                                                 <Tooltip title={strings.MARK_AS_READ}>
                                                                     <IconButton onClick={async () => {
@@ -259,7 +287,7 @@ export default function Notifications({
 
                                                                             if (status === 200) {
                                                                                 row.isRead = true;
-                                                                                setRows(Helper.clone(rows));
+                                                                                setRows(Helper.cloneArray(rows));
                                                                                 setNotificationCount(notificationCount - 1);
                                                                             } else {
                                                                                 Helper.error();
@@ -280,7 +308,7 @@ export default function Notifications({
 
                                                                             if (status === 200) {
                                                                                 row.isRead = false;
-                                                                                setRows(Helper.clone(rows));
+                                                                                setRows(Helper.cloneArray(rows));
                                                                                 setNotificationCount(notificationCount + 1);
                                                                             } else {
                                                                                 Helper.error();
@@ -357,7 +385,7 @@ export default function Notifications({
                                                     selectedRows.forEach(row => {
                                                         rows.splice(rows.findIndex(_row => _row._id === row._id), 1);
                                                     });
-                                                    setRows(Helper.clone(rows));
+                                                    setRows(Helper.cloneArray(rows));
                                                     setRowCount(rowCount - selectedRows.length);
                                                     setTotalRecords(totalRecords - selectedRows.length);
                                                 }

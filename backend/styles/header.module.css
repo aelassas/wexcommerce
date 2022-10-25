@@ -12,7 +12,9 @@
 
 .headerDesktop {
     display: flex;
-    min-width: 200px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .headerLogo {

@@ -481,13 +481,12 @@ export default function Header(props) {
 
                     <div style={classes.grow} />
 
-                    <div className={styles.headerDesktop} style={{ minWidth: !isSignedIn ? 0 : 220 }}>
+                    <div className={styles.headerDesktop}>
                         {isSignedIn &&
                             <>
                                 <IconButton
                                     onClick={handleNotificationsClick}
                                     className={styles.iconButton}
-                                    style={{ width: 52 }}
                                 >
                                     <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">
                                         <NotificationsIcon />
@@ -504,7 +503,6 @@ export default function Header(props) {
                                 disableElevation
                                 fullWidth
                                 className={styles.button}
-                                style={{ margin: 0, marginRight: !isSignedIn ? 0 : 20, marginLeft: !isSignedIn ? 0 : 20 }}
                             >
                                 {getLang(lang)}
                             </Button>}

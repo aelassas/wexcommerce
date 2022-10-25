@@ -58,7 +58,7 @@ div.notifications div.headerContainer div.header {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    max-width: 680px;
+    max-width: 800px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -81,7 +81,7 @@ div.notifications div.notificationList div.notificationContainer {
     display: flex;
     flex-direction: row;
     width: 100%;
-    max-width: 680px;
+    max-width: 800px;
 }
 
 div.notifications div.notificationList div.notificationContainer div.notificationCheckbox {
