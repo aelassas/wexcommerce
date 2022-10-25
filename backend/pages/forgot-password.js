@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import UserService from '../services/UserService';
 import { strings as commonStrings } from '../lang/common';
 import { strings } from '../lang/forgot-password';
-import NoMatch from '../components/NoMatch';
 import {
     Input,
     InputLabel,
@@ -10,12 +9,12 @@ import {
     FormHelperText,
     Button,
     Paper,
-    Link
 } from '@mui/material';
 import validator from 'validator';
 import * as Helper from '../common/Helper';
 import Header from '../components/Header';
 import { useRouter } from "next/router";
+import Link from 'next/link';
 
 import styles from '../styles/forgot-password.module.css';
 
@@ -26,7 +25,6 @@ export default function ResetPassword() {
     const [visible, setVisible] = useState(false);
     const [error, setError] = useState(false);
     const [emailValid, setEmailValid] = useState(true);
-    const [noMatch, setNoMatch] = useState(false);
     const [sent, setSent] = useState(false);
 
     useEffect(() => {
@@ -102,7 +100,7 @@ export default function ResetPassword() {
                 return;
             }
 
-            const isAdmin = await UserService.isAdmin({ email }) === 200;
+            const isAdmin = (await UserService.isAdmin({ email })) === 200;
             if (!isAdmin) {
                 setError(true);
                 return;
@@ -129,66 +127,68 @@ export default function ResetPassword() {
         Helper.setLanguage(strings);
     }, []);
 
-    return (
-        visible &&
-        <>
-            <Header />
-            <div className='content'>
-                <div className={styles.resetPassword}>
-                    <Paper className={styles.resetPasswordForm} elevation={10}>
-                        <h1 className={styles.resetPasswordTitle}> {strings.RESET_PASSWORD_HEADING} </h1>
-                        {sent &&
-                            <div>
-                                <label>{strings.EMAIL_SENT}</label>
-                                <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
-                            </div>}
-                        {!sent &&
-                            <form onSubmit={handleSubmit}>
-                                <label>{strings.RESET_PASSWORD}</label>
-                                <FormControl fullWidth margin="dense">
-                                    <InputLabel className='required'>
-                                        {commonStrings.EMAIL}
-                                    </InputLabel>
-                                    <Input
-                                        onChange={handleEmailChange}
-                                        onKeyDown={handleEmailKeyDown}
-                                        onBlur={handleEmailBlur}
-                                        type='text'
-                                        error={error || !emailValid}
-                                        autoComplete='off'
-                                        required
-                                    />
-                                    <FormHelperText error={error || !emailValid}>
-                                        {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
-                                        {(error && strings.EMAIL_ERROR) || ''}
-                                    </FormHelperText>
-                                </FormControl>
+    return visible &&
+    <>
+        <Header />
+        <div className='content'>
+            <div className={styles.resetPassword}>
+                <Paper className={styles.resetPasswordForm} elevation={10}>
+                    <h1 className={styles.resetPasswordTitle}> {strings.RESET_PASSWORD_HEADING} </h1>
+                    {sent &&
+                        <div>
+                            <label>{strings.EMAIL_SENT}</label>
+                            <p>
+                                <Link href='/'>
+                                    {commonStrings.GO_TO_HOME}
+                                </Link>
+                            </p>
+                        </div>}
+                    {!sent &&
+                        <form onSubmit={handleSubmit}>
+                            <label>{strings.RESET_PASSWORD}</label>
+                            <FormControl fullWidth margin="dense">
+                                <InputLabel className='required'>
+                                    {commonStrings.EMAIL}
+                                </InputLabel>
+                                <Input
+                                    onChange={handleEmailChange}
+                                    onKeyDown={handleEmailKeyDown}
+                                    onBlur={handleEmailBlur}
+                                    type='text'
+                                    error={error || !emailValid}
+                                    autoComplete='off'
+                                    required
+                                />
+                                <FormHelperText error={error || !emailValid}>
+                                    {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
+                                    {(error && strings.EMAIL_ERROR) || ''}
+                                </FormHelperText>
+                            </FormControl>
 
-                                <div className='buttons'>
-                                    <Button
-                                        type="submit"
-                                        className='btn-primary btn-margin btn-margin-bottom'
-                                        size="small"
-                                        variant='contained'
-                                    >
-                                        {strings.RESET}
-                                    </Button>
-                                    <Button
-                                        className='btn-secondary btn-margin-bottom'
-                                        size="small"
-                                        variant='contained'
-                                        onClick={() => {
-                                            router.replace('/');
-                                        }}
-                                    >
-                                        {commonStrings.CANCEL}
-                                    </Button>
-                                </div>
-                            </form>
-                        }
-                    </Paper>
-                </div>
+                            <div className='buttons'>
+                                <Button
+                                    type="submit"
+                                    className='btn-primary btn-margin btn-margin-bottom'
+                                    size="small"
+                                    variant='contained'
+                                >
+                                    {strings.RESET}
+                                </Button>
+                                <Button
+                                    className='btn-secondary btn-margin-bottom'
+                                    size="small"
+                                    variant='contained'
+                                    onClick={() => {
+                                        router.replace('/');
+                                    }}
+                                >
+                                    {commonStrings.CANCEL}
+                                </Button>
+                            </div>
+                        </form>
+                    }
+                </Paper>
             </div>
-        </>
-    );
+        </div>
+    </>;
 }

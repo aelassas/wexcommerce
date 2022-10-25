@@ -89,120 +89,122 @@ export default function Home({
     }
   };
 
-  return (
-    !loading && _user &&
-    <>
-      <Header user={_user} />
-      {
-        _user.verified &&
-        <div className='content'>
+  return !loading && _user &&
+  <>
+    <Header user={_user} />
+    {
+      _user.verified &&
+      <div className='content'>
 
-          {_noMatch && <NoMatch />}
+        {_noMatch && <NoMatch />}
 
-          {!_noMatch &&
-            <div className={styles.users}>
-              {
-                _totalRecords === 0 &&
-                <Card variant="outlined" className={styles.emptyList}>
-                  <CardContent>
-                    <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-                  </CardContent>
-                </Card>
-              }
+        {!_noMatch &&
+          <div className={styles.users}>
+            {
+              _totalRecords === 0 &&
+              <Card variant="outlined" className={styles.emptyList}>
+                <CardContent>
+                  <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
+                </CardContent>
+              </Card>
+            }
 
-              {
-                _totalRecords > 0 &&
-                <>
-                  <div ref={userListRef} className={styles.userList}>
-                    {
-                      _users.map((user) => (
-                        <article key={user._id} className={styles.user}>
-                          <div className={styles.userContent}>
-                            <div className={styles.userInfo}>
-                              <span className={styles.userLabel}>{commonStrings.FULL_NAME}</span>
-                              <span>{user.fullName}</span>
-                            </div>
-                            <div className={styles.userInfo}>
-                              <span className={styles.userLabel}>{commonStrings.EMAIL}</span>
-                              <span>{user.email}</span>
-                            </div>
-                            <div className={styles.userInfo}>
-                              <span className={styles.userLabel}>{commonStrings.PHONE}</span>
-                              <span>{user.phone || '-'}</span>
-                            </div>
-                            <div className={styles.userInfo}>
-                              <span className={styles.userLabel}>{commonStrings.ADDRESS}</span>
-                              <pre>{user.address || '-'}</pre>
-                            </div>
-                            <div className={styles.userInfo}>
-                              <span className={styles.userLabel}>{strings.SUBSCRIBED_AT}</span>
-                              <span>{Helper.capitalize(format(new Date(user.createdAt), _format, { locale: _locale }))}</span>
-                            </div>
-                          </div>
-                          <div className={styles.userActions}>
-                            <Tooltip title={strings.ORDERS}>
-                              <IconButton onClick={() => {
-                                router.replace(`/?u=${user._id}`);
-                              }}
-                              >
-                                <OrdersIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </div>
-                        </article>
-                      ))
-                    }
-                  </div>
-
+            {
+              _totalRecords > 0 &&
+              <>
+                <div ref={userListRef} className={styles.userList}>
                   {
-                    (_page > 1 || _rowCount < _totalRecords) &&
-                    <div className={styles.footer}>
-
-                      <div className={styles.pager}>
-                        <div className={styles.rowCount}>
-                          {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
+                    _users.map((user) => (
+                      <article key={user._id} className={styles.user}>
+                        <div className={styles.userContent}>
+                          <div className={styles.userInfo}>
+                            <span className={styles.userLabel}>{commonStrings.FULL_NAME}</span>
+                            <span>{user.fullName}</span>
+                          </div>
+                          <div className={styles.userInfo}>
+                            <span className={styles.userLabel}>{commonStrings.EMAIL}</span>
+                            <span>{user.email}</span>
+                          </div>
+                          <div className={styles.userInfo}>
+                            <span className={styles.userLabel}>{commonStrings.PHONE}</span>
+                            <span>{user.phone || '-'}</span>
+                          </div>
+                          <div className={styles.userInfo}>
+                            <span className={styles.userLabel}>{commonStrings.ADDRESS}</span>
+                            <pre>{user.address || '-'}</pre>
+                          </div>
+                          <div className={styles.userInfo}>
+                            <span className={styles.userLabel}>{strings.SUBSCRIBED_AT}</span>
+                            <span>{Helper.capitalize(format(new Date(user.createdAt), _format, { locale: _locale }))}</span>
+                          </div>
                         </div>
-
-                        <div className={styles.actions}>
-
-                          <Link href={`/users?${`p=${_page - 1}`}${(_keyword !== '' && `&k=${encodeURIComponent(_keyword)}`) || ''}`}>
-                            <a className={_page === 1 ? styles.disabled : ''}>
-                              <PreviousPageIcon className={styles.icon} />
-                            </a>
-                          </Link>
-
-                          <Link href={`/users?${`p=${_page + 1}`}${(_keyword !== '' && `&k=${encodeURIComponent(_keyword)}`) || ''}`}>
-                            <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
-                              <NextPageIcon className={styles.icon} />
-                            </a>
-                          </Link>
+                        <div className={styles.userActions}>
+                          <Tooltip title={strings.ORDERS}>
+                            <IconButton onClick={() => {
+                              router.replace(`/?u=${user._id}`);
+                            }}
+                            >
+                              <OrdersIcon />
+                            </IconButton>
+                          </Tooltip>
                         </div>
+                      </article>
+                    ))
+                  }
+                </div>
+
+                {
+                  (_page > 1 || _rowCount < _totalRecords) &&
+                  <div className={styles.footer}>
+
+                    <div className={styles.pager}>
+                      <div className={styles.rowCount}>
+                        {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
                       </div>
 
-                    </div>
-                  }
-                </>
-              }
-            </div>
-          }
-        </div>
-      }
+                      <div className={styles.actions}>
 
-      {
-        !_user.verified &&
-        <div className="validate-email">
-          <span>{masterStrings.VALIDATE_EMAIL}</span>
-          <Button
-            type="button"
-            variant="contained"
-            size="small"
-            className="btn-primary btn-resend"
-            onClick={handleResend}
-          >{masterStrings.RESEND}</Button>
-        </div>
-      }
-    </>
-  );
+                        <Link
+                          href={`/users?${`p=${_page - 1}`}${(_keyword !== '' && `&k=${encodeURIComponent(_keyword)}`) || ''}`}
+                          className={_page === 1 ? styles.disabled : ''}>
+
+                          <PreviousPageIcon className={styles.icon} />
+
+                        </Link>
+
+                        <Link
+                          href={`/users?${`p=${_page + 1}`}${(_keyword !== '' && `&k=${encodeURIComponent(_keyword)}`) || ''}`}
+                          className={_rowCount === _totalRecords ? styles.disabled : ''}>
+
+                          <NextPageIcon className={styles.icon} />
+
+                        </Link>
+                      </div>
+                    </div>
+
+                  </div>
+                }
+              </>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    {
+      !_user.verified &&
+      <div className="validate-email">
+        <span>{masterStrings.VALIDATE_EMAIL}</span>
+        <Button
+          type="button"
+          variant="contained"
+          size="small"
+          className="btn-primary btn-resend"
+          onClick={handleResend}
+        >{masterStrings.RESEND}</Button>
+      </div>
+    }
+  </>;
 };
 
 export async function getServerSideProps(context) {

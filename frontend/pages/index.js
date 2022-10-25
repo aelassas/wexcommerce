@@ -117,263 +117,268 @@ export default function Home({
 
   const _locale = _language === 'fr' ? fr : enUS;
 
-  return (
-    <>
-      <Header user={_user} signout={_signout} cartCount={cartCount} />
-      {
-        ((_user && _user.verified) || !_user) &&
-        <div className='content'>
+  return <>
+    <Header user={_user} signout={_signout} cartCount={cartCount} />
+    {
+      ((_user && _user.verified) || !_user) &&
+      <div className='content'>
 
-          {_noMatch && <NoMatch />}
+        {_noMatch && <NoMatch />}
 
 
-          {!_noMatch &&
-            <>
-              {
-                Env.isMobile() &&
-                <div
-                  className={styles.categoriesAction}
-                  onClick={() => {
-                    if (leftPanelRef) {
-                      if (leftPanelRef.style.display === 'none') {
-                        leftPanelRef.style.display = 'block';
-                        if (productsRef) {
-                          productsRef.style.display = 'none';
-                        }
-                        if (closeIconRef) {
-                          closeIconRef.style.visibility = 'visible';
-                        }
-                      } else {
-                        leftPanelRef.style.display = 'none';
-                        if (productsRef) {
-                          productsRef.style.display = 'block';
-                        }
-                        if (closeIconRef) {
-                          closeIconRef.style.visibility = 'hidden';
-                        }
+        {!_noMatch &&
+          <>
+            {
+              Env.isMobile() &&
+              <div
+                className={styles.categoriesAction}
+                onClick={() => {
+                  if (leftPanelRef) {
+                    if (leftPanelRef.style.display === 'none') {
+                      leftPanelRef.style.display = 'block';
+                      if (productsRef) {
+                        productsRef.style.display = 'none';
+                      }
+                      if (closeIconRef) {
+                        closeIconRef.style.visibility = 'visible';
+                      }
+                    } else {
+                      leftPanelRef.style.display = 'none';
+                      if (productsRef) {
+                        productsRef.style.display = 'block';
+                      }
+                      if (closeIconRef) {
+                        closeIconRef.style.visibility = 'hidden';
                       }
                     }
-                  }}
-                >
-                  <div className={styles.categoriesText} >
-                    <CategoryIcon className={styles.categoriesIcon} />
-                    <span>{headerStrings.CATEGORIES}</span>
-                  </div>
-                  <CloseIcon
-                    className={styles.closeIcon}
-                    ref={el => setCloseIconRef(el)}
-                  />
-                </div>
-
-              }
-
-
-              <div className={styles.main}>
-                <div
-                  ref={el => setLeftPanelRef(el)}
-                  className={styles.leftPanel}
-                >
-                  <ul className={styles.categories}>
-                    <li>
-                      <Link href='/'>
-                        <a className={!_categoryId ? styles.selected : ''}>
-                          <HomeIcon className={styles.categoryIcon} />
-                          <span>{strings.ALL}</span>
-                        </a>
-                      </Link>
-                    </li>
-                    {
-                      _categories.map((category) => (
-                        <li key={category._id}>
-                          <Link href={`/?c=${category._id}`}>
-                            <a className={_categoryId === category._id ? styles.selected : ''} title={category.name}>
-                              <CategoryIcon className={styles.categoryIcon} />
-                              <span>{category.name}</span>
-                            </a>
-                          </Link>
-                        </li>
-                      ))
-                    }
-                  </ul>
-                </div>
-
-                <div
-                  className={styles.products}
-                  ref={el => setProductsRef(el)}
-                >
-
-                  {
-                    _totalRecords === 0 &&
-                    <Card variant="outlined" className={styles.emptyList}>
-                      <CardContent>
-                        <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-                      </CardContent>
-                    </Card>
                   }
-
-                  {
-                    _totalRecords > 0 &&
-                    <>
-                      <div className={styles.productList}>
-                        {
-                          products.map((product) => (
-                            <article key={product._id} className={styles.product}>
-                              <Link href={`/product?p=${product._id}`} title={product.name}>
-                                <a>
-                                  <div
-                                    className={styles.thumbnail}
-                                    style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
-                                  >
-                                  </div>
-                                  {product.soldOut && <SoldOut className={styles.label} />}
-                                  <span className={styles.name} title={product.name}>{product.name}</span>
-                                  <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
-                                </a>
-                              </Link>
-                              {
-                                !product.soldOut &&
-                                <div className={styles.actions}>
-                                  {
-                                    product.inCart ?
-                                      <Button
-                                        variant="outlined"
-                                        color='error'
-                                        className={styles.removeButton}
-                                        onClick={async (e) => {
-                                          setProductId(product._id);
-                                          setOpenDeleteDialog(true);
-                                        }}
-                                      >
-                                        {commonStrings.REMOVE_FROM_CART}
-                                      </Button>
-                                      :
-                                      <Button
-                                        variant="contained"
-                                        className={`${styles.button} btn-primary`}
-                                        onClick={async (e) => {
-                                          try {
-                                            const cartId = CartService.getCartId();
-                                            const userId = (_user && _user._id) || '';
-
-                                            const res = await CartService.addItem(cartId, userId, product._id);
-
-                                            if (res.status === 200) {
-                                              if (!cartId) {
-                                                CartService.setCartId(res.data);
-                                              }
-                                              const __products = Helper.cloneArray(products);
-                                              __products.filter(p => p._id === product._id)[0].inCart = true;
-                                              setProducts(__products);
-                                              setCartCount(cartCount + 1);
-                                              Helper.info(commonStrings.ARTICLE_ADDED);
-                                            } else {
-                                              Helper.error();
-                                            }
-                                          } catch (err) {
-                                            console.log(err);
-                                            Helper.error();
-                                          }
-                                        }}
-                                      >
-                                        {commonStrings.ADD_TO_CART}
-                                      </Button>
-                                  }
-                                </div>
-                              }
-                            </article>
-                          ))
-                        }
-                      </div>
-
-                      {
-                        (_page > 1 || _rowCount < _totalRecords) &&
-                        <div className={styles.footer}>
-
-                          <div className={styles.pager}>
-                            <div className={styles.rowCount}>
-                              {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
-                            </div>
-
-                            <div className={styles.actions}>
-
-                              <Link href={`/?${`p=${_page - 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
-                                <a className={_page === 1 ? styles.disabled : ''}>
-                                  <PreviousPageIcon className={styles.icon} />
-                                </a>
-                              </Link>
-
-                              <Link href={`/?${`p=${_page + 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}>
-                                <a className={_rowCount === _totalRecords ? styles.disabled : ''}>
-                                  <NextPageIcon className={styles.icon} />
-                                </a>
-                              </Link>
-                            </div>
-                          </div>
-
-                        </div>
-                      }
-                    </>
-                  }
+                }}
+              >
+                <div className={styles.categoriesText} >
+                  <CategoryIcon className={styles.categoriesIcon} />
+                  <span>{headerStrings.CATEGORIES}</span>
                 </div>
+                <CloseIcon
+                  className={styles.closeIcon}
+                  ref={el => setCloseIconRef(el)}
+                />
               </div>
 
-              <Dialog
-                disableEscapeKeyDown
-                maxWidth="xs"
-                open={openDeleteDialog}
+            }
+
+
+            <div className={styles.main}>
+              <div
+                ref={el => setLeftPanelRef(el)}
+                className={styles.leftPanel}
               >
-                <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
-                <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
-                <DialogActions className='dialog-actions'>
-                  <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
-                  <Button onClick={async () => {
-                    try {
-                      const cartId = CartService.getCartId();
-                      const res = await CartService.deleteItem(cartId, productId);
+                <ul className={styles.categories}>
+                  <li>
+                    <Link href='/' className={!_categoryId ? styles.selected : ''}>
 
-                      if (res.status === 200) {
-                        const __products = Helper.cloneArray(products);
-                        __products.filter(p => p._id === productId)[0].inCart = false;
-                        setProducts(__products);
-                        setCartCount(cartCount - 1);
+                      <HomeIcon className={styles.categoryIcon} />
+                      <span>{strings.ALL}</span>
 
-                        if (res.data.cartDeleted) {
-                          CartService.deleteCartId();
-                        }
+                    </Link>
+                  </li>
+                  {
+                    _categories.map((category) => (
+                      <li key={category._id}>
+                        <Link
+                          href={`/?c=${category._id}`}
+                          className={_categoryId === category._id ? styles.selected : ''}
+                          title={category.name}>
 
-                        setOpenDeleteDialog(false);
-                        Helper.info(commonStrings.ARTICLE_REMOVED);
-                      } else {
-                        Helper.error();
+                          <CategoryIcon className={styles.categoryIcon} />
+                          <span>{category.name}</span>
+
+                        </Link>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+
+              <div
+                className={styles.products}
+                ref={el => setProductsRef(el)}
+              >
+
+                {
+                  _totalRecords === 0 &&
+                  <Card variant="outlined" className={styles.emptyList}>
+                    <CardContent>
+                      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
+                    </CardContent>
+                  </Card>
+                }
+
+                {
+                  _totalRecords > 0 &&
+                  <>
+                    <div className={styles.productList}>
+                      {
+                        products.map((product) => (
+                          <article key={product._id} className={styles.product}>
+                            <Link href={`/product?p=${product._id}`} title={product.name}>
+
+                              <div
+                                className={styles.thumbnail}
+                                style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
+                              >
+                              </div>
+                              {product.soldOut && <SoldOut className={styles.label} />}
+                              <span className={styles.name} title={product.name}>{product.name}</span>
+                              <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
+
+                            </Link>
+                            {
+                              !product.soldOut &&
+                              <div className={styles.actions}>
+                                {
+                                  product.inCart ?
+                                    <Button
+                                      variant="outlined"
+                                      color='error'
+                                      className={styles.removeButton}
+                                      onClick={async (e) => {
+                                        setProductId(product._id);
+                                        setOpenDeleteDialog(true);
+                                      }}
+                                    >
+                                      {commonStrings.REMOVE_FROM_CART}
+                                    </Button>
+                                    :
+                                    <Button
+                                      variant="contained"
+                                      className={`${styles.button} btn-primary`}
+                                      onClick={async (e) => {
+                                        try {
+                                          const cartId = CartService.getCartId();
+                                          const userId = (_user && _user._id) || '';
+
+                                          const res = await CartService.addItem(cartId, userId, product._id);
+
+                                          if (res.status === 200) {
+                                            if (!cartId) {
+                                              CartService.setCartId(res.data);
+                                            }
+                                            const __products = Helper.cloneArray(products);
+                                            __products.filter(p => p._id === product._id)[0].inCart = true;
+                                            setProducts(__products);
+                                            setCartCount(cartCount + 1);
+                                            Helper.info(commonStrings.ARTICLE_ADDED);
+                                          } else {
+                                            Helper.error();
+                                          }
+                                        } catch (err) {
+                                          console.log(err);
+                                          Helper.error();
+                                        }
+                                      }}
+                                    >
+                                      {commonStrings.ADD_TO_CART}
+                                    </Button>
+                                }
+                              </div>
+                            }
+                          </article>
+                        ))
                       }
-                    } catch (err) {
-                      console.log(err);
+                    </div>
+
+                    {
+                      (_page > 1 || _rowCount < _totalRecords) &&
+                      <div className={styles.footer}>
+
+                        <div className={styles.pager}>
+                          <div className={styles.rowCount}>
+                            {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
+                          </div>
+
+                          <div className={styles.actions}>
+
+                            <Link
+                              href={`/?${`p=${_page - 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
+                              className={_page === 1 ? styles.disabled : ''}>
+
+                              <PreviousPageIcon className={styles.icon} />
+
+                            </Link>
+
+                            <Link
+                              href={`/?${`p=${_page + 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
+                              className={_rowCount === _totalRecords ? styles.disabled : ''}>
+
+                              <NextPageIcon className={styles.icon} />
+
+                            </Link>
+                          </div>
+                        </div>
+
+                      </div>
+                    }
+                  </>
+                }
+              </div>
+            </div>
+
+            <Dialog
+              disableEscapeKeyDown
+              maxWidth="xs"
+              open={openDeleteDialog}
+            >
+              <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+              <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
+              <DialogActions className='dialog-actions'>
+                <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+                <Button onClick={async () => {
+                  try {
+                    const cartId = CartService.getCartId();
+                    const res = await CartService.deleteItem(cartId, productId);
+
+                    if (res.status === 200) {
+                      const __products = Helper.cloneArray(products);
+                      __products.filter(p => p._id === productId)[0].inCart = false;
+                      setProducts(__products);
+                      setCartCount(cartCount - 1);
+
+                      if (res.data.cartDeleted) {
+                        CartService.deleteCartId();
+                      }
+
+                      setOpenDeleteDialog(false);
+                      Helper.info(commonStrings.ARTICLE_REMOVED);
+                    } else {
                       Helper.error();
                     }
-                  }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
-                </DialogActions>
-              </Dialog>
+                  } catch (err) {
+                    console.log(err);
+                    Helper.error();
+                  }
+                }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
+              </DialogActions>
+            </Dialog>
 
-            </>
-          }
-        </div>
-      }
+          </>
+        }
+      </div>
+    }
 
-      {
-        _user && !_user.verified &&
-        <div className="validate-email">
-          <span>{masterStrings.VALIDATE_EMAIL}</span>
-          <Button
-            type="button"
-            variant="contained"
-            size="small"
-            className="btn-primary btn-resend"
-            onClick={handleResend}
-          >{masterStrings.RESEND}</Button>
-        </div>
-      }
-    </>
-  );
+    {
+      _user && !_user.verified &&
+      <div className="validate-email">
+        <span>{masterStrings.VALIDATE_EMAIL}</span>
+        <Button
+          type="button"
+          variant="contained"
+          size="small"
+          className="btn-primary btn-resend"
+          onClick={handleResend}
+        >{masterStrings.RESEND}</Button>
+      </div>
+    }
+  </>;
 };
 
 export async function getServerSideProps(context) {

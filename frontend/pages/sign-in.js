@@ -167,7 +167,7 @@ export default function SignIn() {
                             </div>
 
                             <div className={styles.resetPassword}>
-                                <Link href='/forgot-password'><a>{strings.RESET_PASSWORD}</a></Link>
+                                <Link href='/forgot-password'>{strings.RESET_PASSWORD}</Link>
                             </div>
 
                             <div className={styles.signinButtons}>

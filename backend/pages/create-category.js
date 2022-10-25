@@ -72,7 +72,7 @@ export default function CreateCategory({ _user, _signout }) {
 
       for (let i = 0; i < values.length; i++) {
         const value = values[i];
-        const _isValid = await CategoryService.validate(value) === 200;
+        const _isValid = (await CategoryService.validate(value)) === 200;
         isValid = isValid && _isValid;
         if (!_isValid) valueErrors[i] = true;
       }

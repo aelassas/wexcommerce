@@ -96,244 +96,242 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
 
   const iconStyle = { borderRadius: 1 };
 
-  return (
-    <>
-      <Header user={_user} signout={_signout} cartCount={cartCount} />
-      {
-        ((_user && _user.verified) || !_user) &&
-        <div className='content'>
-          {!_empty && cartItems.length > 0 &&
-            <div className={styles.main}>
-              <div className={styles.items}>
-                {
-                  cartItems.map((cartItem, index) => (
-                    <article key={cartItem._id} className={`${styles.item} ${index < (cartItems.length - 1) ? styles.itemBorder : ''}`}>
-                      <div className={styles.product} >
-                        <Link href={`/product?p=${cartItem.product._id}`}>
-                          <a>
-                            <div className={styles.thumbnailContainer}>
-                              <div
-                                className={styles.thumbnail}
-                                style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)})` }}
-                              >
-                              </div>
-                              <div className={styles.name}>
-                                <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
-                                {
-                                  !cartItem.product.soldOut &&
-                                  <span className={styles.stock}>{`${cartItem.product.quantity} ${cartItem.product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
+  return <>
+    <Header user={_user} signout={_signout} cartCount={cartCount} />
+    {
+      ((_user && _user.verified) || !_user) &&
+      <div className='content'>
+        {!_empty && cartItems.length > 0 &&
+          <div className={styles.main}>
+            <div className={styles.items}>
+              {
+                cartItems.map((cartItem, index) => (
+                  <article key={cartItem._id} className={`${styles.item} ${index < (cartItems.length - 1) ? styles.itemBorder : ''}`}>
+                    <div className={styles.product} >
+                      <Link href={`/product?p=${cartItem.product._id}`}>
+
+                        <div className={styles.thumbnailContainer}>
+                          <div
+                            className={styles.thumbnail}
+                            style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)})` }}
+                          >
+                          </div>
+                          <div className={styles.name}>
+                            <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
+                            {
+                              !cartItem.product.soldOut &&
+                              <span className={styles.stock}>{`${cartItem.product.quantity} ${cartItem.product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
+                            }
+
+                          </div>
+                        </div>
+
+                      </Link>
+                      <span className={styles.price}>{`${Helper.formatNumber(cartItem.product.price)} ${commonStrings.CURRENCY}`}</span>
+                    </div>
+                    <div className={styles.actions}>
+                      <Button
+                        variant="outlined"
+                        color='error'
+                        onClick={async (e) => {
+                          setProductId(cartItem.product._id);
+                          setOpenDeleteDialog(true);
+                        }}
+                      >
+                        {commonStrings.REMOVE_FROM_CART}
+                      </Button>
+                      {
+                        cartItem.product.soldOut
+                          ? <SoldOut className={styles.label} />
+                          : <div className={styles.quantity}>
+                            <IconButton
+                              className='btn-primary'
+                              disabled={cartItem.quantity === 1}
+                              sx={iconStyle}
+                              onClick={async (e) => {
+                                const __cartItems = Helper.clone(cartItems);
+                                const __cartItem = __cartItems.find(item => item._id === cartItem._id);
+                                const quantity = __cartItem.quantity - 1;
+
+                                if (quantity >= 1) {
+                                  const status = await CartService.updateQuantity(__cartItem._id, quantity);
+                                  if (status === 200) {
+                                    __cartItem.quantity = quantity;
+                                    setCartItems(__cartItems);
+                                    setTotal(Helper.total(__cartItems));
+                                    setCartCount(cartCount - 1);
+                                  } else {
+                                    Helper.error();
+                                  }
+                                } else {
+                                  Helper.error();
                                 }
+                              }}
+                            >
+                              <DecrementIcon />
+                            </IconButton>
+                            <span className={styles.quantity}>{cartItem.quantity}</span>
+                            <IconButton
+                              className='btn-primary'
+                              disabled={cartItem.quantity >= cartItem.product.quantity}
+                              sx={iconStyle}
+                              onClick={async (e) => {
+                                const __cartItems = Helper.clone(cartItems);
+                                const __cartItem = __cartItems.find(item => item._id === cartItem._id);
+                                const quantity = __cartItem.quantity + 1;
 
-                              </div>
-                            </div>
-                          </a>
-                        </Link>
-                        <span className={styles.price}>{`${Helper.formatNumber(cartItem.product.price)} ${commonStrings.CURRENCY}`}</span>
-                      </div>
-                      <div className={styles.actions}>
-                        <Button
-                          variant="outlined"
-                          color='error'
-                          onClick={async (e) => {
-                            setProductId(cartItem.product._id);
-                            setOpenDeleteDialog(true);
-                          }}
-                        >
-                          {commonStrings.REMOVE_FROM_CART}
-                        </Button>
-                        {
-                          cartItem.product.soldOut
-                            ? <SoldOut className={styles.label} />
-                            : <div className={styles.quantity}>
-                              <IconButton
-                                className='btn-primary'
-                                disabled={cartItem.quantity === 1}
-                                sx={iconStyle}
-                                onClick={async (e) => {
-                                  const __cartItems = Helper.clone(cartItems);
-                                  const __cartItem = __cartItems.find(item => item._id === cartItem._id);
-                                  const quantity = __cartItem.quantity - 1;
-
-                                  if (quantity >= 1) {
-                                    const status = await CartService.updateQuantity(__cartItem._id, quantity);
-                                    if (status === 200) {
-                                      __cartItem.quantity = quantity;
-                                      setCartItems(__cartItems);
-                                      setTotal(Helper.total(__cartItems));
-                                      setCartCount(cartCount - 1);
-                                    } else {
-                                      Helper.error();
-                                    }
+                                if (quantity <= __cartItem.product.quantity) {
+                                  const status = await CartService.updateQuantity(__cartItem._id, quantity);
+                                  if (status === 200) {
+                                    __cartItem.quantity = quantity;
+                                    setCartItems(__cartItems);
+                                    setTotal(Helper.total(__cartItems));
+                                    setCartCount(cartCount + 1);
                                   } else {
                                     Helper.error();
                                   }
-                                }}
-                              >
-                                <DecrementIcon />
-                              </IconButton>
-                              <span className={styles.quantity}>{cartItem.quantity}</span>
-                              <IconButton
-                                className='btn-primary'
-                                disabled={cartItem.quantity >= cartItem.product.quantity}
-                                sx={iconStyle}
-                                onClick={async (e) => {
-                                  const __cartItems = Helper.clone(cartItems);
-                                  const __cartItem = __cartItems.find(item => item._id === cartItem._id);
-                                  const quantity = __cartItem.quantity + 1;
-
-                                  if (quantity <= __cartItem.product.quantity) {
-                                    const status = await CartService.updateQuantity(__cartItem._id, quantity);
-                                    if (status === 200) {
-                                      __cartItem.quantity = quantity;
-                                      setCartItems(__cartItems);
-                                      setTotal(Helper.total(__cartItems));
-                                      setCartCount(cartCount + 1);
-                                    } else {
-                                      Helper.error();
-                                    }
-                                  } else {
-                                    Helper.error();
-                                  }
-                                }}
-                              >
-                                <IncrementIcon />
-                              </IconButton>
-                            </div>
-                        }
-                      </div>
-                    </article>
-                  ))
-                }
-              </div>
-              <div className={styles.total}>
-                <div className={styles.title}>{strings.SUMMARY}</div>
-                <div className={styles.price}>
-                  <span>{commonStrings.SUBTOTAL}</span>
-                  <span className={styles.price}>{`${Helper.formatNumber(total)} ${commonStrings.CURRENCY}`}</span>
-                </div>
-                <div className={styles.action}>
-                  <Button
-                    variant="contained"
-                    className={`btn-primary ${styles.btn}`}
-                    startIcon={<CheckoutIcon />}
-                    disabled={total === 0}
-                    onClick={async (e) => {
-                      router.replace('/checkout');
-                    }}
-                  >
-                    {strings.CHECKOUT}
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    className={styles.btn}
-                    onClick={async (e) => {
-                      setOpenClearDialog(true);
-                    }}
-                  >
-                    {strings.CLEAR_CART}
-                  </Button>
-                </div>
-              </div>
-
-              <Dialog
-                disableEscapeKeyDown
-                maxWidth="xs"
-                open={openDeleteDialog}
-              >
-                <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
-                <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
-                <DialogActions className='dialog-actions'>
-                  <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
-                  <Button onClick={async () => {
-                    try {
-                      const cartId = _cart._id;
-                      const res = await CartService.deleteItem(cartId, productId);
-
-                      if (res.status === 200) {
-                        const __cartItems = Helper.cloneArray(cartItems);
-                        const cartItem = __cartItems.find(item => item.product._id === productId);
-                        const index = __cartItems.findIndex(item => item.product._id === productId);
-                        __cartItems.splice(index, 1);
-                        setCartItems(__cartItems);
-                        setCartCount(cartCount - cartItem.quantity);
-                        setTotal(Helper.total(__cartItems));
-
-                        if (res.data.cartDeleted) {
-                          CartService.deleteCartId();
-                        }
-
-                        Helper.info(commonStrings.ARTICLE_REMOVED);
-                        setOpenDeleteDialog(false);
-                      } else {
-                        Helper.error();
+                                } else {
+                                  Helper.error();
+                                }
+                              }}
+                            >
+                              <IncrementIcon />
+                            </IconButton>
+                          </div>
                       }
-                    } catch (err) {
-                      console.log(err);
-                      Helper.error();
-                    }
-                  }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
-                </DialogActions>
-              </Dialog>
-
-              <Dialog
-                disableEscapeKeyDown
-                maxWidth="xs"
-                open={openClearDialog}
-              >
-                <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
-                <DialogContent>{strings.CLEAR_CART_CONFIRM}</DialogContent>
-                <DialogActions className='dialog-actions'>
-                  <Button onClick={() => setOpenClearDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
-                  <Button onClick={async () => {
-                    try {
-                      const cartId = _cart._id;
-                      const status = await CartService.clearCart(cartId);
-
-                      if (status === 200) {
-                        CartService.deleteCartId();
-                        setCartItems([]);
-                        setCartCount(0);
-                        setTotal(0);
-                      } else {
-                        Helper.error();
-                      }
-                    } catch (err) {
-                      console.log(err);
-                      Helper.error();
-                    }
-                    setOpenDeleteDialog(false);
-                  }} variant='contained' color='error'>{strings.CLEAR_CART}</Button>
-                </DialogActions>
-              </Dialog>
+                    </div>
+                  </article>
+                ))
+              }
             </div>
-          }
+            <div className={styles.total}>
+              <div className={styles.title}>{strings.SUMMARY}</div>
+              <div className={styles.price}>
+                <span>{commonStrings.SUBTOTAL}</span>
+                <span className={styles.price}>{`${Helper.formatNumber(total)} ${commonStrings.CURRENCY}`}</span>
+              </div>
+              <div className={styles.action}>
+                <Button
+                  variant="contained"
+                  className={`btn-primary ${styles.btn}`}
+                  startIcon={<CheckoutIcon />}
+                  disabled={total === 0}
+                  onClick={async (e) => {
+                    router.replace('/checkout');
+                  }}
+                >
+                  {strings.CHECKOUT}
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  className={styles.btn}
+                  onClick={async (e) => {
+                    setOpenClearDialog(true);
+                  }}
+                >
+                  {strings.CLEAR_CART}
+                </Button>
+              </div>
+            </div>
 
-          {(_empty || (!loading && cartItems.length === 0)) &&
-            <Card variant="outlined" className={styles.empty}>
-              <CardContent>
-                <Typography color="textSecondary">{strings.EMPTY}</Typography>
-              </CardContent>
-            </Card>
-          }
-        </div>
-      }
+            <Dialog
+              disableEscapeKeyDown
+              maxWidth="xs"
+              open={openDeleteDialog}
+            >
+              <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+              <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
+              <DialogActions className='dialog-actions'>
+                <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+                <Button onClick={async () => {
+                  try {
+                    const cartId = _cart._id;
+                    const res = await CartService.deleteItem(cartId, productId);
 
-      {
-        _user && !_user.verified &&
-        <div className="validate-email">
-          <span>{masterStrings.VALIDATE_EMAIL}</span>
-          <Button
-            type="button"
-            variant="contained"
-            size="small"
-            className="btn-primary btn-resend"
-            onClick={handleResend}
-          >{masterStrings.RESEND}</Button>
-        </div>
-      }
-    </>
-  );
+                    if (res.status === 200) {
+                      const __cartItems = Helper.cloneArray(cartItems);
+                      const cartItem = __cartItems.find(item => item.product._id === productId);
+                      const index = __cartItems.findIndex(item => item.product._id === productId);
+                      __cartItems.splice(index, 1);
+                      setCartItems(__cartItems);
+                      setCartCount(cartCount - cartItem.quantity);
+                      setTotal(Helper.total(__cartItems));
+
+                      if (res.data.cartDeleted) {
+                        CartService.deleteCartId();
+                      }
+
+                      Helper.info(commonStrings.ARTICLE_REMOVED);
+                      setOpenDeleteDialog(false);
+                    } else {
+                      Helper.error();
+                    }
+                  } catch (err) {
+                    console.log(err);
+                    Helper.error();
+                  }
+                }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
+              </DialogActions>
+            </Dialog>
+
+            <Dialog
+              disableEscapeKeyDown
+              maxWidth="xs"
+              open={openClearDialog}
+            >
+              <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+              <DialogContent>{strings.CLEAR_CART_CONFIRM}</DialogContent>
+              <DialogActions className='dialog-actions'>
+                <Button onClick={() => setOpenClearDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+                <Button onClick={async () => {
+                  try {
+                    const cartId = _cart._id;
+                    const status = await CartService.clearCart(cartId);
+
+                    if (status === 200) {
+                      CartService.deleteCartId();
+                      setCartItems([]);
+                      setCartCount(0);
+                      setTotal(0);
+                    } else {
+                      Helper.error();
+                    }
+                  } catch (err) {
+                    console.log(err);
+                    Helper.error();
+                  }
+                  setOpenDeleteDialog(false);
+                }} variant='contained' color='error'>{strings.CLEAR_CART}</Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        }
+
+        {(_empty || (!loading && cartItems.length === 0)) &&
+          <Card variant="outlined" className={styles.empty}>
+            <CardContent>
+              <Typography color="textSecondary">{strings.EMPTY}</Typography>
+            </CardContent>
+          </Card>
+        }
+      </div>
+    }
+
+    {
+      _user && !_user.verified &&
+      <div className="validate-email">
+        <span>{masterStrings.VALIDATE_EMAIL}</span>
+        <Button
+          type="button"
+          variant="contained"
+          size="small"
+          className="btn-primary btn-resend"
+          onClick={handleResend}
+        >{masterStrings.RESEND}</Button>
+      </div>
+    }
+  </>;
 };
 
 export async function getServerSideProps(context) {

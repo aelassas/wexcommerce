@@ -135,109 +135,107 @@ export default function Activate({
         }
     };
 
-    return (
-        <>
-            <Header user={_user} hideSearch signout={_signout} />
-            <div className='content'>
-                {_resend && _email &&
-                    <div className={styles.resend}>
-                        <Paper className={styles.resendForm} elevation={10}>
-                            <h1>{strings.ACTIVATE_HEADING}</h1>
-                            <div className={styles.resendFormContent}>
-                                <label>{strings.TOKEN_EXPIRED}</label>
-                                <Button
-                                    type="button"
-                                    variant="contained"
-                                    size="small"
-                                    className={`btn-primary ${styles.btnResend}`}
-                                    onClick={async () => {
-                                        try {
-                                            const status = await UserService.resend(_email, false);
+    return <>
+        <Header user={_user} hideSearch signout={_signout} />
+        <div className='content'>
+            {_resend && _email &&
+                <div className={styles.resend}>
+                    <Paper className={styles.resendForm} elevation={10}>
+                        <h1>{strings.ACTIVATE_HEADING}</h1>
+                        <div className={styles.resendFormContent}>
+                            <label>{strings.TOKEN_EXPIRED}</label>
+                            <Button
+                                type="button"
+                                variant="contained"
+                                size="small"
+                                className={`btn-primary ${styles.btnResend}`}
+                                onClick={async () => {
+                                    try {
+                                        const status = await UserService.resend(_email, false);
 
-                                            if (status === 200) {
-                                                Helper.info(commonStrings.ACTIVATION_EMAIL_SENT);
-                                            } else {
-                                                Helper.error();
-                                            }
-                                        } catch (err) {
+                                        if (status === 200) {
+                                            Helper.info(commonStrings.ACTIVATION_EMAIL_SENT);
+                                        } else {
                                             Helper.error();
                                         }
-                                    }}
-                                >{masterStrings.RESEND}</Button>
-                                <p><Link href='/'><a>{commonStrings.GO_TO_HOME}</a></Link></p>
-                            </div>
-                        </Paper>
-                    </div>
-                }
+                                    } catch (err) {
+                                        Helper.error();
+                                    }
+                                }}
+                            >{masterStrings.RESEND}</Button>
+                            <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
+                        </div>
+                    </Paper>
+                </div>
+            }
 
-                {_userId && _email && _token && !_user && !_noMatch && !_resend &&
-                    <div className={styles.activate}>
-                        <Paper className={styles.activateForm} elevation={10}>
-                            <h1>{strings.ACTIVATE_HEADING}</h1>
-                            <form onSubmit={handleSubmit}>
-                                <FormControl fullWidth margin="dense">
-                                    <InputLabel className='required' error={passwordLengthError}>
-                                        {cpStrings.NEW_PASSWORD}
-                                    </InputLabel>
-                                    <Input
-                                        onChange={handlePasswordChange}
-                                        onBlur={handlePasswordBlur}
-                                        type='password'
-                                        error={passwordLengthError}
-                                        required
-                                    />
-                                    <FormHelperText
-                                        error={passwordLengthError}
-                                    >
-                                        {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
-                                    </FormHelperText>
-                                </FormControl>
-                                <FormControl fullWidth margin="dense" error={confirmPasswordError}>
-                                    <InputLabel error={confirmPasswordError} className='required'>
-                                        {commonStrings.CONFIRM_PASSWORD}
-                                    </InputLabel>
-                                    <Input
-                                        onChange={handleConfirmPasswordChange}
-                                        onKeyDown={handleConfirmPasswordKeyDown}
-                                        onBlur={handleConfirmPasswordBlur}
-                                        error={confirmPasswordError}
-                                        type='password'
-                                        required
-                                    />
-                                    <FormHelperText
-                                        error={confirmPasswordError}
-                                    >
-                                        {(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
-                                    </FormHelperText>
-                                </FormControl>
-                                <div className='buttons'>
-                                    <Button
-                                        type="submit"
-                                        className='btn-primary btn-margin btn-margin-bottom'
-                                        size="small"
-                                        variant='contained'
-                                    >
-                                        {strings.ACTIVATE}
-                                    </Button>
-                                    <Button
-                                        className='btn-secondary btn-margin-bottom'
-                                        size="small"
-                                        variant='contained'
-                                        onClick={() => {
-                                            router.replace('/');
-                                        }}
-                                    >
-                                        {commonStrings.CANCEL}
-                                    </Button>
-                                </div>
-                            </form>
-                        </Paper>
-                    </div>
-                }
-                {_noMatch && <NoMatch />}
-            </div>
-        </>
-    );
+            {_userId && _email && _token && !_user && !_noMatch && !_resend &&
+                <div className={styles.activate}>
+                    <Paper className={styles.activateForm} elevation={10}>
+                        <h1>{strings.ACTIVATE_HEADING}</h1>
+                        <form onSubmit={handleSubmit}>
+                            <FormControl fullWidth margin="dense">
+                                <InputLabel className='required' error={passwordLengthError}>
+                                    {cpStrings.NEW_PASSWORD}
+                                </InputLabel>
+                                <Input
+                                    onChange={handlePasswordChange}
+                                    onBlur={handlePasswordBlur}
+                                    type='password'
+                                    error={passwordLengthError}
+                                    required
+                                />
+                                <FormHelperText
+                                    error={passwordLengthError}
+                                >
+                                    {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
+                                </FormHelperText>
+                            </FormControl>
+                            <FormControl fullWidth margin="dense" error={confirmPasswordError}>
+                                <InputLabel error={confirmPasswordError} className='required'>
+                                    {commonStrings.CONFIRM_PASSWORD}
+                                </InputLabel>
+                                <Input
+                                    onChange={handleConfirmPasswordChange}
+                                    onKeyDown={handleConfirmPasswordKeyDown}
+                                    onBlur={handleConfirmPasswordBlur}
+                                    error={confirmPasswordError}
+                                    type='password'
+                                    required
+                                />
+                                <FormHelperText
+                                    error={confirmPasswordError}
+                                >
+                                    {(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
+                                </FormHelperText>
+                            </FormControl>
+                            <div className='buttons'>
+                                <Button
+                                    type="submit"
+                                    className='btn-primary btn-margin btn-margin-bottom'
+                                    size="small"
+                                    variant='contained'
+                                >
+                                    {strings.ACTIVATE}
+                                </Button>
+                                <Button
+                                    className='btn-secondary btn-margin-bottom'
+                                    size="small"
+                                    variant='contained'
+                                    onClick={() => {
+                                        router.replace('/');
+                                    }}
+                                >
+                                    {commonStrings.CANCEL}
+                                </Button>
+                            </div>
+                        </form>
+                    </Paper>
+                </div>
+            }
+            {_noMatch && <NoMatch />}
+        </div>
+    </>;
 }
 
 export async function getServerSideProps(context) {

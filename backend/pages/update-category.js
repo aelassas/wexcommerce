@@ -110,7 +110,7 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category })
       for (let i = 0; i < values.length; i++) {
         const value = values[i];
         if (value.value !== _category.values[i].value) {
-          const _isValid = await CategoryService.validate(value) === 200;
+          const _isValid = (await CategoryService.validate(value)) === 200;
           isValid = isValid && _isValid;
           if (!_isValid) valueErrors[i] = true;
         }

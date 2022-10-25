@@ -10,7 +10,7 @@ export default function NoMatch() {
     return (
         <div className={styles.noMatch}>
             <h2>{strings.NO_MATCH}</h2>
-            <p><Link href='/'><a>{commonStrings.GO_TO_HOME}</a></Link></p>
+            <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
         </div>
     );
 }
