@@ -77,12 +77,11 @@ export default function SignIn() {
 
             const data = { email, password, stayConnected };
 
-            const cartId = CartService.getCartId();
-
             const res = await UserService.signin(data);
 
             if (res.status === 200) {
                 const userId = res.data.id;
+                const cartId = CartService.getCartId();
 
                 if (cartId) {
                     const userCartId = await CartService.getUserCartId(userId);
@@ -109,7 +108,15 @@ export default function SignIn() {
                         CartService.setCartId(userCartId);
                     }
                 }
-                router.replace('/');
+
+                if (router.query.from === 'checkout') {
+                    router.replace('/checkout');
+                } else if (router.query.o) {
+                    router.replace(`/orders?o=${router.query.o}`);
+                } else {
+                    router.replace('/');
+                }
+
             } else {
                 setError(true);
             }

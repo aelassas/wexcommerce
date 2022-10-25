@@ -24,7 +24,7 @@ export default new LocalizedStrings.default({
 
         ORDER_CONFIRMED: 'Votre commande a bien été confirmée.',
         ORDER_CONFIRMED_PART_1: 'Votre commande ',
-        ORDER_CONFIRMED_PART_2: ' a bien été confirmée.',
+        ORDER_CONFIRMED_PART_2: ' a été confirmée avec succès.',
         ORDER_CONFIRMED_PART_3: 'Vous pouvez suivre votre commande sur le lien suivant : ',
         NEW_ORDER: 'Nouvelle commande',
         NEW_ORDER_PART_1: 'La nouvelle commande ',
@@ -33,6 +33,20 @@ export default new LocalizedStrings.default({
 
         ORDER_UPDATED_PART_1: 'Votre commande ',
         ORDER_UPDATED_PART_2: ' a été mise à jour.',
+
+        PRODUCT: 'Produit',
+        QUANTITY: 'Quantité',
+        PRICE: 'Prix',
+        TOTAL: 'Total TTC',
+        CURRENCY: 'DH',
+
+        PAYMENT_TYPE: 'Mode de paiement',
+        CREDIT_CARD: 'Carte bancaire',
+        COD: 'Cash à la livraison',
+        WIRE_TRANSFER: 'Virement bancaire',
+        PAID: 'Le paiement par carte bancaire a été effectué avec succès.',
+        NEW_ORDER: 'a effectué la commande',
+        NEW_ORDER_SUBJECT: 'Nouvelle commande',
     },
     en: {
         ERROR: 'Internal error: ',
@@ -57,7 +71,7 @@ export default new LocalizedStrings.default({
 
         ORDER_CONFIRMED: 'Your order was confirmed',
         ORDER_CONFIRMED_PART_1: 'Your order ',
-        ORDER_CONFIRMED_PART_2: ' was confirmed.',
+        ORDER_CONFIRMED_PART_2: ' was successfully confirmed.',
         ORDER_CONFIRMED_PART_3: 'You can track your order on the following link:',
         NEW_ORDER: 'New order',
         NEW_ORDER_PART_1: 'The new order ',
@@ -66,5 +80,19 @@ export default new LocalizedStrings.default({
 
         ORDER_UPDATED_PART_1: 'Your order ',
         ORDER_UPDATED_PART_2: ' was updated.',
+
+        PRODUCT: 'Product',
+        QUANTITY: 'Quantity',
+        PRICE: 'Price',
+        TOTAL: 'Total',
+        CURRENCY: 'DH',
+
+        PAYMENT_TYPE: 'Payment method',
+        CREDIT_CARD: 'Credit card',
+        COD: 'Cash on delivery',
+        WIRE_TRANSFER: 'Wire transfer',
+        PAID: 'The payment by credit card was made successfully.',
+        NEW_ORDER: 'made the order',
+        NEW_ORDER_SUBJECT: 'New order',
     }
 });

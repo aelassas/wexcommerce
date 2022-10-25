@@ -34,7 +34,7 @@ export default class ProductService {
     }
 
     static getProduct(id, language) {
-        return axios.get(`${Env.API_HOST}/api/product/${id}/${language}`).then(res => res.data);
+        return axios.post(`${Env.API_HOST}/api/product/${id}/${language}`).then(res => res.data);
     }
 
     static getProducts(context, userId, keyword, page, size, categoryId) {

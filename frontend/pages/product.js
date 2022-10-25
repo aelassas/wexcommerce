@@ -8,10 +8,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import {
-  AddShoppingCart as AddShoppingCartIcon,
-  Block as SoldOutIcon,
-} from '@mui/icons-material';
+import { AddShoppingCart as AddShoppingCartIcon } from '@mui/icons-material';
 import { strings } from '../lang/product';
 import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
@@ -22,6 +19,7 @@ import { useRouter } from 'next/router';
 import CartService from '../services/CartService';
 import Env from '../config/env.config';
 import ImageViewer from '../components/ImageViewer';
+import SoldOut from '../components/SoldOut';
 
 import styles from '../styles/product.module.css';
 
@@ -121,10 +119,7 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
                       <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
                       {
                         product.soldOut
-                          ? <div className={`${styles.label} ${styles.soldOut}`} title={commonStrings.SOLD_OUT_INFO}>
-                            <SoldOutIcon className={styles.labelIcon} />
-                            <span>{commonStrings.SOLD_OUT}</span>
-                          </div>
+                          ? <SoldOut />
                           : <span className={styles.stock}>{`${product.quantity} ${product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
                       }
                     </div>

@@ -13,7 +13,8 @@ import {
 import {
     Lock as LockIcon,
     Person as UserIcon,
-    Orders as OrdersIcon
+    ShoppingBag as ProductsIcon,
+    AttachMoney as PaymentIcon,
 } from '@mui/icons-material';
 import { strings } from '../lang/checkout';
 import { strings as commonStrings } from '../lang/common';
@@ -30,17 +31,24 @@ import { useRouter } from 'next/router';
 import validator from 'validator';
 import Image from 'next/image';
 import Link from 'next/link';
+import PaymentTypeService from '../services/PaymentTypeService';
+import Env from '../config/env.config';
+import Backdrop from '../components/SimpleBackdrop';
 
 import styles from '../styles/checkout.module.css';
 
-export default function Checkout({ _user, _signout, _noMatch, _cart }) {
+export default function Checkout({ _user, _signout, _noMatch, _cart, _paymentTypes, _language }) {
     const router = useRouter();
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [emailInfo, setEmailInfo] = useState(true);
     const [emailValid, setEmailValid] = useState(true);
     const [emailRegistered, setEmailRegistered] = useState(false);
-
+    const [phone, setPhone] = useState('');
+    const [phoneValid, setPhoneValid] = useState(true);
+    const [address, setAddress] = useState('');
+    const [paymentType, setPaymentType] = useState(Env.PAYMENT_TYPE.CREDIT_CARD);
+    const [total, setTotal] = useState(0);
     const [cardNumber, setCardNumber] = useState('');
     const [cardNumberValid, setCardNumberValid] = useState(true);
     const [cardMonth, setCardMonth] = useState('');
@@ -53,6 +61,8 @@ export default function Checkout({ _user, _signout, _noMatch, _cart }) {
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     const [formError, setFormError] = useState(false);
+    const [cartCount, setCartCount] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         Helper.setLanguage(strings);
@@ -65,6 +75,29 @@ export default function Checkout({ _user, _signout, _noMatch, _cart }) {
             UserService.signout(false);
         }
     }, [_signout]);
+
+    useEffect(() => {
+        if (_cart) {
+            const total = Helper.total(_cart.cartItems);
+
+            if (total === 0) {
+                router.replace('/');
+            } else {
+                setTotal(total);
+            }
+        }
+    }, [_cart]);
+
+    useEffect(() => {
+        (async function () {
+            const cartId = CartService.getCartId();
+
+            if (cartId) {
+                const cartCount = await CartService.getCartCount(cartId);
+                setCartCount(cartCount);
+            }
+        })();
+    }, []);
 
     const validateEmail = async (_email) => {
         if (_email) {
@@ -101,6 +134,19 @@ export default function Checkout({ _user, _signout, _noMatch, _cart }) {
             setEmailValid(true);
             setEmailInfo(true);
             return false;
+        }
+    };
+
+    const validatePhone = (phone) => {
+        if (phone) {
+            const phoneValid = validator.isMobilePhone(phone);
+            setPhoneValid(phoneValid);
+
+            return phoneValid;
+        } else {
+            setPhoneValid(true);
+
+            return true;
         }
     };
 
@@ -196,50 +242,101 @@ export default function Checkout({ _user, _signout, _noMatch, _cart }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const emailValid = await validateEmail(email);
-        if (!emailValid) {
-            return setFormError(true);
+        if (!_user) {
+            const emailValid = await validateEmail(email);
+            if (!emailValid) {
+                return setFormError(true);
+            }
+
+            const phoneValid = await validatePhone(phone);
+            if (!phoneValid) {
+                return setFormError(true);;
+            }
         }
 
-        const cardNumberValid = validateCardNumber(cardNumber);
-        if (!cardNumberValid) {
-            return;
-        }
+        if (paymentType === Env.PAYMENT_TYPE.CREDIT_CARD) {
+            const cardNumberValid = validateCardNumber(cardNumber);
+            if (!cardNumberValid) {
+                return;
+            }
 
-        const cardMonthValid = validateCardMonth(cardMonth);
-        if (!cardMonthValid) {
-            return;
-        }
+            const cardMonthValid = validateCardMonth(cardMonth);
+            if (!cardMonthValid) {
+                return;
+            }
 
-        const cardYearValid = validateCardYear(cardYear);
-        if (!cardYearValid) {
-            return;
-        }
+            const cardYearValid = validateCardYear(cardYear);
+            if (!cardYearValid) {
+                return;
+            }
 
-        const cvvValid = validateCvv(cvv);
-        if (!cvvValid) {
-            return;
-        }
+            const cvvValid = validateCvv(cvv);
+            if (!cvvValid) {
+                return;
+            }
 
-        const cardDateValid = validateCardDate(cardMonth, cardYear);
-        if (!cardDateValid) {
-            return setCardDateError(true);
+            const cardDateValid = validateCardDate(cardMonth, cardYear);
+            if (!cardDateValid) {
+                return setCardDateError(true);
+            }
         }
 
         try {
-            // TODO
+            setLoading(true);
+
+            // user
+            let user;
+            if (!_user) {
+                user = {
+                    email,
+                    phone,
+                    address,
+                    fullName,
+                    language: _language
+                }
+            }
+
+            // order
+            const orderItems = _cart.cartItems.filter(ci => !ci.soldOut).map(ci => ({ product: ci.product._id, quantity: ci.quantity }))
+
+            const order = {
+                paymentType,
+                total,
+                orderItems
+            };
+            if (_user) order.user = _user._id;
+
+            // checkout
+            const status = await OrderService.createOrder(user, order);
+
+            if (status === 200) {
+                const _status = await CartService.clearCart(_cart._id);
+
+                if (_status === 200) {
+                    CartService.deleteCartId();
+                    setCartCount(0);
+                    setSuccess(true);
+                } else {
+                    Helper.error();
+                }
+            } else {
+                Helper.error();
+            }
+
         } catch (err) {
             console.log(err);
             setError(true);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <>
-            <Header user={_user} hideSearch hideSignIn signout={_signout} hideCart hideNotification />
+            <Header user={_user} hideSearch hideSignIn signout={_signout} cartCount={cartCount} />
 
             <div className={'content'}>
-                {(_cart && !_noMatch && !success) &&
+                {(_cart && _paymentTypes && total > 0 && !_noMatch && !success) &&
                     <>
                         <form onSubmit={handleSubmit} className={styles.checkoutForm}>
 
@@ -253,7 +350,7 @@ export default function Checkout({ _user, _signout, _noMatch, _cart }) {
                                             size='small'
                                             className='btn-primary'
                                             onClick={() => {
-                                                router.replace('/sign-in');
+                                                router.replace('/sign-in?from=checkout');
                                             }}
                                         >{headerStrings.SIGN_IN}</Button>
                                     </div>
@@ -310,143 +407,265 @@ export default function Checkout({ _user, _signout, _noMatch, _cart }) {
                                                     {(emailInfo && strings.EMAIL_INFO) || ''}
                                                 </FormHelperText>
                                             </FormControl>
+                                            <FormControl fullWidth margin="dense">
+                                                <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
+                                                <Input
+                                                    type="text"
+                                                    label={commonStrings.PHONE}
+                                                    error={!phoneValid}
+                                                    value={phone}
+                                                    onBlur={(e) => {
+                                                        validatePhone(e.target.value);
+                                                    }}
+                                                    onChange={(e) => {
+                                                        setPhone(e.target.value);
+                                                        setPhoneValid(true);
+                                                    }}
+                                                    required
+                                                    autoComplete="off"
+                                                />
+                                                <FormHelperText error={!phoneValid}>
+                                                    {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
+                                                </FormHelperText>
+                                            </FormControl>
+                                            <FormControl fullWidth margin="dense">
+                                                <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
+                                                <Input
+                                                    type="text"
+                                                    onChange={(e) => {
+                                                        setAddress(e.target.value);
+                                                    }}
+                                                    required
+                                                    multiline
+                                                    minRows={3}
+                                                    value={address}
+                                                />
+                                            </FormControl>
                                         </div>
                                     </div>
                                 </>
                             }
 
-                            <div className={styles.payment}>
-
-                                <div className={styles.cost}>
-                                    <div className={styles.securePaymentLabel}>
-                                        <LockIcon className={styles.securePaymentLock} />
-                                        <label>{strings.PAYMENT}</label>
-                                    </div>
-                                    <div className={styles.securePaymentCost}>
-                                        <label className={styles.costTitle}>{strings.COST}</label>
-                                        <label className={styles.costValue}>{`${Helper.formatNumber(Helper.total(_cart.cartItems))} ${commonStrings.CURRENCY}`}</label>
-                                    </div>
+                            <div className={styles.box}>
+                                <div className={styles.boxInfo}>
+                                    <ProductsIcon />
+                                    <label>{strings.PRODUCTS}</label>
                                 </div>
+                                <div className={styles.articles}>
+                                    {
+                                        _cart.cartItems.filter(cartItem => !cartItem.product.soldOut).map(cartItem => (
 
-                                <div className={styles.securePaymentLogo}>
-                                    <div style={{
-                                        position: 'relative',
-                                        width: 220,
-                                        height: 40
-                                    }}>
-                                        <Image
-                                            src='/secure-payment.png'
-                                            alt=''
-                                            layout='fill'
-                                            objectFit='contain'
-                                        />
+                                            <div key={cartItem._id} className={styles.article}>
+                                                <Link href={`/product?p=${cartItem.product._id}`}>
+                                                    <a>
+                                                        <div
+                                                            className={styles.thumbnail}
+                                                            style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)})` }}
+                                                        >
+                                                        </div>
+                                                    </a>
+                                                </Link>
+                                                <div className={styles.articleInfo}>
+                                                    <Link href={`/product?p=${cartItem.product._id}`}>
+                                                        <a>
+                                                            <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
+                                                        </a>
+                                                    </Link>
+                                                    <span className={styles.price}>{`${Helper.formatNumber(cartItem.product.price)} ${commonStrings.CURRENCY}`}</span>
+                                                    <span className={styles.quantity}>
+                                                        <span className={styles.quantityLabel}>{strings.QUANTITY}</span>
+                                                        <span>{Helper.formatNumber(cartItem.quantity)}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                        ))
+                                    }
+
+                                    <div className={styles.boxTotal}>
+                                        <span className={styles.totalLabel}>{commonStrings.SUBTOTAL}</span>
+                                        <span className={styles.total}>{`${Helper.formatNumber(Helper.total(_cart.cartItems))} ${commonStrings.CURRENCY}`}</span>
                                     </div>
-                                </div>
-
-                                <div className={styles.card}>
-                                    <FormControl margin="dense" className={styles.cardNumber} fullWidth>
-                                        <InputLabel className='required'>{strings.CARD_NUMBER}</InputLabel>
-                                        <Input
-                                            type="text"
-                                            label={strings.CARD_NUMBER}
-                                            error={!cardNumberValid}
-                                            onBlur={(e) => {
-                                                validateCardNumber(e.target.value);
-                                            }}
-                                            onChange={(e) => {
-                                                setCardNumber(e.target.value);
-
-                                                if (!e.target.value) {
-                                                    setCardNumberValid(true);
-                                                }
-                                            }}
-                                            required
-                                            autoComplete="off"
-                                        />
-                                        <FormHelperText error={!cardNumberValid}>
-                                            {(!cardNumberValid && strings.CARD_NUMBER_NOT_VALID) || ''}
-                                        </FormHelperText>
-                                    </FormControl>
-                                    <div className='card-date'>
-                                        <FormControl margin="dense" className={styles.cardMonth} fullWidth>
-                                            <InputLabel className='required'>{strings.CARD_MONTH}</InputLabel>
-                                            <Input
-                                                type="text"
-                                                label={strings.CARD_MONTH}
-                                                error={!cardMonthValid}
-                                                onBlur={(e) => {
-                                                    validateCardMonth(e.target.value);
-                                                }}
-                                                onChange={(e) => {
-                                                    setCardMonth(e.target.value);
-
-                                                    if (!e.target.value) {
-                                                        setCardMonthValid(true);
-                                                        setCardDateError(false);
-                                                    }
-                                                }}
-                                                required
-                                                autoComplete="off"
-                                            />
-                                            <FormHelperText error={!cardMonthValid}>
-                                                {(!cardMonthValid && strings.CARD_MONTH_NOT_VALID) || ''}
-                                            </FormHelperText>
-                                        </FormControl>
-                                        <FormControl margin="dense" className={styles.cardYear} fullWidth>
-                                            <InputLabel className='required'>{strings.CARD_YEAR}</InputLabel>
-                                            <Input
-                                                type="text"
-                                                label={strings.CARD_YEAR}
-                                                error={!cardYearValid}
-                                                onBlur={(e) => {
-                                                    validateCardYear(e.target.value);
-                                                }}
-                                                onChange={(e) => {
-                                                    setCardYear(e.target.value);
-
-                                                    if (!e.target.value) {
-                                                        setCardYearValid(true);
-                                                        setCardDateError(false);
-                                                    }
-                                                }}
-                                                required
-                                                autoComplete="off"
-                                            />
-                                            <FormHelperText error={!cardYearValid}>
-                                                {(!cardYearValid && strings.CARD_YEAR_NOT_VALID) || ''}
-                                            </FormHelperText>
-                                        </FormControl>
-                                    </div>
-                                    <FormControl margin="dense" className={styles.cvv} fullWidth>
-                                        <InputLabel className='required'>{strings.CVV}</InputLabel>
-                                        <Input
-                                            type="text"
-                                            label={strings.CVV}
-                                            error={!cvvValid}
-                                            onBlur={(e) => {
-                                                validateCvv(e.target.value);
-                                            }}
-                                            onChange={(e) => {
-                                                setCvv(e.target.value);
-
-                                                if (!e.target.value) {
-                                                    setCvvValid(true);
-                                                }
-                                            }}
-                                            required
-                                            autoComplete="off"
-                                        />
-                                        <FormHelperText error={!cvvValid}>
-                                            {(!cvvValid && strings.CVV_NOT_VALID) || ''}
-                                        </FormHelperText>
-                                    </FormControl>
-                                </div>
-
-                                <div className={styles.securePaymentInfo}>
-                                    <LockIcon className={styles.paymentIcon} />
-                                    <label>{strings.SECURE_PAYMENT_INFO}</label>
                                 </div>
                             </div>
+
+                            <div className={styles.box}>
+                                <div className={styles.boxInfo}>
+                                    <PaymentIcon />
+                                    <label>{strings.PAYMENT_METHOD}</label>
+                                </div>
+                                <div className={styles.boxForm}>
+                                    <RadioGroup
+                                        value={paymentType}
+                                        onChange={(event) => {
+                                            setPaymentType(event.target.value);
+                                        }}>
+                                        {
+                                            _paymentTypes.map((paymentType) => (
+                                                <FormControlLabel key={paymentType.name} value={paymentType.name} control={<Radio />} label={
+                                                    <span className={styles.paymentButton}>
+                                                        <span>{
+                                                            paymentType.name === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.CREDIT_CARD
+                                                                : paymentType.name === Env.PAYMENT_TYPE.COD ? strings.COD
+                                                                    : paymentType.name === Env.PAYMENT_TYPE.WIRE_TRANSFER ? strings.WIRE_TRANSFER
+                                                                        : ''
+                                                        }</span>
+                                                        <span className={styles.paymentInfo}>{
+                                                            paymentType.name === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.CREDIT_CARD_INFO
+                                                                : paymentType.name === Env.PAYMENT_TYPE.COD ? strings.COD_INFO
+                                                                    : paymentType.name === Env.PAYMENT_TYPE.WIRE_TRANSFER ? strings.WIRE_TRANSFER_INFO
+                                                                        : ''
+                                                        }</span>
+                                                    </span>
+                                                } />
+                                            ))
+                                        }
+                                    </RadioGroup>
+                                </div>
+                            </div>
+
+                            {[Env.PAYMENT_TYPE.COD, Env.PAYMENT_TYPE.WIRE_TRANSFER].includes(paymentType) &&
+                                <div className={`${styles.box} ${styles.boxTotal}`}>
+                                    <span className={styles.totalLabel}>{strings.TOTAL_LABEL}</span>
+                                    <span className={styles.total}>{`${Helper.formatNumber(total)} ${commonStrings.CURRENCY}`}</span>
+                                </div>
+                            }
+
+                            {
+                                paymentType === Env.PAYMENT_TYPE.CREDIT_CARD &&
+                                <div className={styles.payment}>
+
+                                    <div className={styles.cost}>
+                                        <div className={styles.securePaymentLabel}>
+                                            <LockIcon className={styles.securePaymentLock} />
+                                            <label>{strings.PAYMENT}</label>
+                                        </div>
+                                        <div className={styles.securePaymentCost}>
+                                            <label className={styles.costTitle}>{strings.COST}</label>
+                                            <label className={styles.costValue}>{`${Helper.formatNumber(total)} ${commonStrings.CURRENCY}`}</label>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.securePaymentLogo}>
+                                        <div style={{
+                                            position: 'relative',
+                                            width: 220,
+                                            height: 40
+                                        }}>
+                                            <Image
+                                                src='/secure-payment.png'
+                                                alt=''
+                                                layout='fill'
+                                                objectFit='contain'
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.card}>
+                                        <FormControl margin="dense" className={styles.cardNumber} fullWidth>
+                                            <InputLabel className='required'>{strings.CARD_NUMBER}</InputLabel>
+                                            <Input
+                                                type="text"
+                                                label={strings.CARD_NUMBER}
+                                                error={!cardNumberValid}
+                                                onBlur={(e) => {
+                                                    validateCardNumber(e.target.value);
+                                                }}
+                                                onChange={(e) => {
+                                                    setCardNumber(e.target.value);
+
+                                                    if (!e.target.value) {
+                                                        setCardNumberValid(true);
+                                                    }
+                                                }}
+                                                required
+                                                autoComplete="off"
+                                            />
+                                            <FormHelperText error={!cardNumberValid}>
+                                                {(!cardNumberValid && strings.CARD_NUMBER_NOT_VALID) || ''}
+                                            </FormHelperText>
+                                        </FormControl>
+                                        <div className='card-date'>
+                                            <FormControl margin="dense" className={styles.cardMonth} fullWidth>
+                                                <InputLabel className='required'>{strings.CARD_MONTH}</InputLabel>
+                                                <Input
+                                                    type="text"
+                                                    label={strings.CARD_MONTH}
+                                                    error={!cardMonthValid}
+                                                    onBlur={(e) => {
+                                                        validateCardMonth(e.target.value);
+                                                    }}
+                                                    onChange={(e) => {
+                                                        setCardMonth(e.target.value);
+
+                                                        if (!e.target.value) {
+                                                            setCardMonthValid(true);
+                                                            setCardDateError(false);
+                                                        }
+                                                    }}
+                                                    required
+                                                    autoComplete="off"
+                                                />
+                                                <FormHelperText error={!cardMonthValid}>
+                                                    {(!cardMonthValid && strings.CARD_MONTH_NOT_VALID) || ''}
+                                                </FormHelperText>
+                                            </FormControl>
+                                            <FormControl margin="dense" className={styles.cardYear} fullWidth>
+                                                <InputLabel className='required'>{strings.CARD_YEAR}</InputLabel>
+                                                <Input
+                                                    type="text"
+                                                    label={strings.CARD_YEAR}
+                                                    error={!cardYearValid}
+                                                    onBlur={(e) => {
+                                                        validateCardYear(e.target.value);
+                                                    }}
+                                                    onChange={(e) => {
+                                                        setCardYear(e.target.value);
+
+                                                        if (!e.target.value) {
+                                                            setCardYearValid(true);
+                                                            setCardDateError(false);
+                                                        }
+                                                    }}
+                                                    required
+                                                    autoComplete="off"
+                                                />
+                                                <FormHelperText error={!cardYearValid}>
+                                                    {(!cardYearValid && strings.CARD_YEAR_NOT_VALID) || ''}
+                                                </FormHelperText>
+                                            </FormControl>
+                                        </div>
+                                        <FormControl margin="dense" className={styles.cvv} fullWidth>
+                                            <InputLabel className='required'>{strings.CVV}</InputLabel>
+                                            <Input
+                                                type="text"
+                                                label={strings.CVV}
+                                                error={!cvvValid}
+                                                onBlur={(e) => {
+                                                    validateCvv(e.target.value);
+                                                }}
+                                                onChange={(e) => {
+                                                    setCvv(e.target.value);
+
+                                                    if (!e.target.value) {
+                                                        setCvvValid(true);
+                                                    }
+                                                }}
+                                                required
+                                                autoComplete="off"
+                                            />
+                                            <FormHelperText error={!cvvValid}>
+                                                {(!cvvValid && strings.CVV_NOT_VALID) || ''}
+                                            </FormHelperText>
+                                        </FormControl>
+                                    </div>
+
+                                    <div className={styles.securePaymentInfo}>
+                                        <LockIcon className={styles.paymentIcon} />
+                                        <label>{strings.SECURE_PAYMENT_INFO}</label>
+                                    </div>
+                                </div>
+                            }
 
                             <div className={styles.buttons}>
                                 <Button
@@ -456,15 +675,6 @@ export default function Checkout({ _user, _signout, _noMatch, _cart }) {
                                     size="small"
                                 >
                                     {strings.CHECKOUT}
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    className={`${styles.btnCancel} btn-margin-bottom`}
-                                    size="small"
-                                    onClick={() => {
-                                        router.replace('/');
-                                    }}>
-                                    {commonStrings.CANCEL}
                                 </Button>
                             </div>
 
@@ -477,15 +687,25 @@ export default function Checkout({ _user, _signout, _noMatch, _cart }) {
                     </>
                 }
 
-                {success && <Info message={strings.SUCCESS} />}
+                {
+                    success &&
+                    <Info message={
+                        paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.CREDIT_CARD_SUCCESS
+                            : paymentType === Env.PAYMENT_TYPE.COD ? strings.COD_SUCCESS
+                                : paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? strings.WIRE_TRANSFER_SUCCESS
+                                    : ''
+                    } />
+                }
                 {_noMatch && <NoMatch />}
+                {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
             </div>
         </>
     );
 };
 
 export async function getServerSideProps(context) {
-    let _user = null, _signout = false, _noMatch = false, _cart = [];
+    let _user = null, _signout = false, _noMatch = false, _cart = null, _paymentTypes = [];
+    const _language = UserService.getLanguage(context);
 
     try {
         const currentUser = UserService.getCurrentUser(context);
@@ -513,9 +733,15 @@ export async function getServerSideProps(context) {
         if (!_noMatch) {
             try {
                 const cartId = CartService.getCartId(context);
-                _cart = await CartService.getCart(cartId);
+                if (cartId) {
+                    _cart = await CartService.getCart(cartId);
 
-                if (!_cart) {
+                    if (_cart) {
+                        _paymentTypes = await PaymentTypeService.getPaymentTypes();
+                    } else {
+                        _noMatch = true;
+                    }
+                } else {
                     _noMatch = true;
                 }
             } catch (err) {
@@ -534,7 +760,9 @@ export async function getServerSideProps(context) {
             _user,
             _signout,
             _noMatch,
-            _cart
+            _cart,
+            _paymentTypes,
+            _language
         }
     };
 }

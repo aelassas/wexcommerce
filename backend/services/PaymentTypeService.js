@@ -2,7 +2,7 @@ import axios from 'axios';
 import Env from '../config/env.config';
 import UserService from './UserService';
 
-export default class OrderService {
+export default class PaymentTypeService {
 
     static getPaymentTypes(context) {
         return axios.get(`${Env.API_HOST}/api/payment-types`, { headers: UserService.authHeader(context) }).then(res => res.data);

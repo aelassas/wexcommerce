@@ -1,6 +1,4 @@
-@media only screen and (max-width: 960px) {
-
-}
+@media only screen and (max-width: 960px) {}
 
 @media only screen and (max-width: 550px) {
 
@@ -27,9 +25,7 @@
     }
 }
 
-@media only screen and (min-width: 960px) {
-
-}
+@media only screen and (min-width: 960px) {}
 
 .checkoutForm {
     padding: 30px;
@@ -60,6 +56,7 @@
     padding: 25px;
     margin-bottom: 15px;
     border-radius: 3px;
+    z-index: 0;
 }
 
 .checkoutForm .boxInfo {
@@ -76,21 +73,85 @@
     margin-top: 5px;
 }
 
-.checkoutForm .box .subscription {
+.checkoutForm div.article {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+}
+
+.checkoutForm div.article div.thumbnail {
+    width: 160px;
+    height: 130px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+
+.checkoutForm div.article .articleInfo {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    margin-bottom: 5px;
+    margin-top: 15px;
 }
 
-.checkoutForm .box .subscription .subscriptionName {
-    font-size: 16px;
+.checkoutForm div.article .articleInfo a {
+    color: #030303;
+    text-decoration: none;
+}
+
+.checkoutForm div.article .articleInfo a:hover {
+    text-decoration: none;
+}
+
+.checkoutForm div.article .articleInfo span.name {
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.checkoutForm div.article .articleInfo span.price {
     font-weight: 500;
-
+    align-self: flex-end;
 }
 
-.checkoutForm .box .subscription .subscriptionDescription {
-    color: #777;
-    font-size: 15px;
+.checkoutForm div.article .articleInfo span.quantity {
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 12px;
+    align-self: flex-end;
+}
+
+.checkoutForm div.article .articleInfo span.quantityLabel{
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+.checkoutForm span.paymentButton {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkoutForm span.paymentInfo {
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 13px;
+}
+
+.checkoutForm .boxTotal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.checkoutForm .boxTotal .totalLabel {
+    font-weight: 500;
+}
+
+.checkoutForm .boxTotal .total {
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .checkoutForm .payment {
@@ -193,6 +254,7 @@
     color: #fff;
     height: 42px;
     min-width: 75px;
+    width: 100%;
     margin: 0;
     white-space: nowrap;
     padding: 5px 32px;

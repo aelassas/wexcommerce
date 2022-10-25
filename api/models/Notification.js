@@ -16,7 +16,12 @@ const notificationSchema = new Schema({
     isRead: {
         type: Boolean,
         default: false
-    }
+    },
+    order: {
+        type: Schema.Types.ObjectId,
+        ref: 'Order',
+        index: true
+    },
 }, {
     timestamps: true,
     strict: true,

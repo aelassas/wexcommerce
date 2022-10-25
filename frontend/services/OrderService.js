@@ -5,7 +5,7 @@ import UserService from './UserService';
 export default class OrderService {
 
     static createOrder(user, order) {
-        const data = { user, order };
+        const data = { user: user, order };
 
         return axios.post(`${Env.API_HOST}/api/create-order`, data).then(res => res.status);
     }

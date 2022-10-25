@@ -95,9 +95,7 @@ export const getOrderStatus = (orderStatus) => {
 
 export const total = (cartItems) => {
     let total = 0;
-    for (const item of cartItems) {
-        total += item.product.price * item.quantity;
-    }
+    for (const item of cartItems) if (!item.product.soldOut) total += item.product.price * item.quantity;
     return total;
 };
 

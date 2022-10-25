@@ -141,6 +141,11 @@ div.main div.items article.item div.actions div.quantity span.quantity {
     margin: 0 5px;
 }
 
+div.main div.items article.item div.actions .label {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 div.main div.total {
     display: flex;
     flex-direction: column;

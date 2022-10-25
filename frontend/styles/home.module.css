@@ -196,28 +196,9 @@ article.product span.price {
     font-weight: bold;
 }
 
-article.product div.label {
-    color: #fff;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    font-size: 12px;
-    padding: 2px 10px;
-    margin: 2px 0;
+article.product .label {
     margin-right: auto;
     margin-left: auto;
-    width: fit-content;
-}
-
-article.product div.label .labelIcon {
-    font-size: 15px;
-    margin-right: 5px;
-}
-
-article.product div.soldOut {
-    background-color: #e33b2f;
 }
 
 ul.categories {

@@ -25,13 +25,13 @@ import {
   ArrowBackIos as PreviousPageIcon,
   ArrowForwardIos as NextPageIcon,
   Clear as CloseIcon,
-  Block as SoldOutIcon,
 } from '@mui/icons-material';
 import Env from '../config/env.config';
 import Link from 'next/link';
 import { fr, enUS } from "date-fns/locale";
 import NoMatch from '../components/NoMatch';
 import { useRouter } from 'next/router';
+import SoldOut from '../components/SoldOut';
 
 import styles from '../styles/home.module.css';
 
@@ -225,13 +225,7 @@ export default function Home({
                                     style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
                                   >
                                   </div>
-                                  {
-                                    product.soldOut &&
-                                    <div className={`${styles.label} ${styles.soldOut}`} title={commonStrings.SOLD_OUT_INFO}>
-                                      <SoldOutIcon className={styles.labelIcon} />
-                                      <span>{commonStrings.SOLD_OUT}</span>
-                                    </div>
-                                  }
+                                  {product.soldOut && <SoldOut className={styles.label} />}
                                   <span className={styles.name} title={product.name}>{product.name}</span>
                                   <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
                                 </a>

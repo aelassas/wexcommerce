@@ -15,4 +15,11 @@ export default class Helper {
     static clone(obj) {
         return JSON.parse(JSON.stringify(obj));
     }
+
+    static formatNumber(x) {
+        const parts = x.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        return parts.join(".");
+    }
+
 };

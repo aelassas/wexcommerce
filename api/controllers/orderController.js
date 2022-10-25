@@ -1,8 +1,11 @@
 import strings from '../config/app.config.js';
 import Env from '../config/env.config.js';
+import User from '../models/User.js';
+import Token from '../models/Token.js';
 import Order from '../models/Order.js';
 import OrderItem from '../models/OrderItem.js';
-import User from '../models/User.js';
+import Notification from '../models/Notification.js';
+import NotificationCounter from '../models/NotificationCounter.js';
 import { v1 as uuid } from 'uuid';
 import escapeStringRegexp from 'escape-string-regexp';
 import mongoose from 'mongoose';
@@ -20,10 +23,10 @@ const FRONTEND_HOST = process.env.SC_FRONTEND_HOST;
 
 export const create = async (req, res) => {
     try {
-        let _user, _order;
+        let _user, _order = {};
         const { user, order } = req.body;
 
-        const admin = await User.find({ email: ADMIN_EMAIL });
+        const admin = await User.findOne({ email: ADMIN_EMAIL });
         if (!admin) {
             const err = `[order.create] admin user ${ADMIN_EMAIL} not found.`;
             console.error(err);
@@ -59,7 +62,7 @@ export const create = async (req, res) => {
                     + strings.ACCOUNT_ACTIVATION_LINK + '<br><br>'
 
                     + Helper.joinURL(FRONTEND_HOST, 'activate')
-                    + '/?u=' + encodeURIComponent(_user._id)
+                    + '?u=' + encodeURIComponent(_user._id)
                     + '&e=' + encodeURIComponent(_user.email)
                     + '&t=' + encodeURIComponent(token.token)
                     + '<br><br>'
@@ -77,39 +80,58 @@ export const create = async (req, res) => {
         _order.user = _user._id;
         _order.paymentType = order.paymentType;
         _order.total = order.total;
-
+        
         // order.status
-        if (order.paymentType === Env.ORDER_STATUS.CREDIT_CARD) {
+        if (order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD) {
             // TODO CMI
             _order.status = Env.ORDER_STATUS.PAID;
-        } else if ([Env.ORDER_STATUS.COD, Env.ORDER_STATUS.WIRE_TRANSFER].includes(order.paymentType)) {
+        } else if ([Env.PAYMENT_TYPE.COD, Env.PAYMENT_TYPE.WIRE_TRANSFER].includes(order.paymentType)) {
             _order.status = Env.ORDER_STATUS.PENDING;
         }
 
         // order.orderItems
+        const __orderItems = [];
         const orderItems = [];
         for (const orderItem of order.orderItems) {
-            const _orderItem = new OrderItem(orderItem)
+            const _orderItem = new OrderItem(orderItem);
             await _orderItem.save();
-            orderItems.push(_orderItem._id);
+            await _orderItem.populate('product');
+            orderItems.push(_orderItem);
+            __orderItems.push(_orderItem._id);
         }
-        _order.orderItems = orderItems;
+        _order.orderItems = __orderItems;
 
         const __order = new Order(_order);
         await __order.save();
 
         // user confirmation email
         strings.setLanguage(_user.language);
+
         let mailOptions = {
             from: SMTP_FROM,
             to: _user.email,
-            subject: strings.ORDER_CONFIRMED,
-            html: '<p>' + strings.HELLO + user.fullName + ',<br><br>'
+            subject: strings.ORDER_CONFIRMED_PART_1 + __order._id + strings.ORDER_CONFIRMED_PART_2,
+            html: '<p>' + strings.HELLO + _user.fullName + ',<br><br>'
                 + strings.ORDER_CONFIRMED_PART_1 + __order._id + strings.ORDER_CONFIRMED_PART_2 + '<br><br>'
-                + strings.ORDER_CONFIRMED_PART_3 + '<br><br>'
 
-                + Helper.joinURL(FRONTEND_HOST, 'order')
-                + '/?o=' + encodeURIComponent(__order._id)
+                + orderItems.map((orderItem) => (
+                    '<b>' + strings.PRODUCT + '</b> ' + orderItem.product.name + '<br>'
+                    + '<b>' + strings.QUANTITY + '</b> ' + orderItem.quantity + '<br>'
+                    + '<b>' + strings.PRICE + '</b> ' + Helper.formatNumber(orderItem.product.price) + ' ' + strings.CURRENCY + '<br>'
+                )).join('<br>')
+
+                + '<br><b>' + strings.TOTAL + '</b> ' + Helper.formatNumber(__order.total) + ' ' + strings.CURRENCY + '<br><br>'
+
+                + '<b>' + strings.PAYMENT_TYPE + '</b> ' + (__order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.CREDIT_CARD
+                    : __order.paymentType === Env.PAYMENT_TYPE.COD ? strings.COD
+                        : __order.paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? strings.WIRE_TRANSFER
+                            : '') + '<br><br>'
+
+                + (__order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.PAID + '<br><br>': '')
+
+                + strings.ORDER_CONFIRMED_PART_3 + '<br><br>'
+                + Helper.joinURL(FRONTEND_HOST, 'orders')
+                + '?o=' + encodeURIComponent(__order._id)
                 + '<br><br>'
 
                 + strings.REGARDS + '<br>'
@@ -119,22 +141,37 @@ export const create = async (req, res) => {
 
         // admin email
         strings.setLanguage(admin.language);
+        
         mailOptions = {
             from: SMTP_FROM,
             to: admin.email,
-            subject: `${strings.NEW_ORDER} ${__order._id}`,
-            html: '<p>' + strings.HELLO + user.fullName + ',<br><br>'
+            subject: `${strings.NEW_ORDER_SUBJECT} ${__order._id}`,
+            html: '<p>' + strings.HELLO + admin.fullName + ',<br><br>'
                 + strings.NEW_ORDER_PART_1 + __order._id + strings.NEW_ORDER_PART_2 + '<br><br>'
                 + strings.NEW_ORDER_PART_3 + '<br><br>'
 
-                + Helper.joinURL(BACKEND_HOST, 'order')
-                + '/?o=' + encodeURIComponent(__order._id)
+                + BACKEND_HOST
+                + '?o=' + encodeURIComponent(__order._id)
                 + '<br><br>'
 
                 + strings.REGARDS + '<br>'
                 + '</p>'
         };
         await transporter.sendMail(mailOptions);
+
+        // admin notification
+        const message = `${_user.fullName} ${strings.NEW_ORDER} ${__order._id}.`;
+        const notification = new Notification({ user: admin._id, message, order: __order._id });
+
+        await notification.save();
+        let counter = await NotificationCounter.findOne({ user: admin._id });
+        if (counter) {
+            counter.count++;
+            await counter.save();
+        } else {
+            counter = new NotificationCounter({ user: admin._id, count: 1 });
+            await counter.save();
+        }
 
         return res.sendStatus(200);
     } catch (err) {

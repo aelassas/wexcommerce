@@ -2,11 +2,6 @@ import { useEffect, useState } from 'react';
 import UserService from '../services/UserService';
 import Header from '../components/Header';
 import {
-  Input,
-  InputLabel,
-  FormControl,
-  FormHelperText,
-  Paper,
   Button,
   IconButton,
   Card,
@@ -27,12 +22,12 @@ import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
 import * as Helper from '../common/Helper';
 import CartService from '../services/CartService';
-import NoMatch from '../components/NoMatch';
 import { useRouter } from 'next/router';
 import Env from '../config/env.config';
+import SoldOut from '../components/SoldOut';
+import Link from 'next/link';
 
 import styles from '../styles/cart.module.css';
-import Link from 'next/link';
 
 export default function Cart({ _user, _signout, _empty, _cart }) {
   const router = useRouter();
@@ -124,7 +119,11 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                               </div>
                               <div className={styles.name}>
                                 <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
-                                <span className={styles.stock}>{`${cartItem.product.quantity} ${cartItem.product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
+                                {
+                                  !cartItem.product.soldOut &&
+                                  <span className={styles.stock}>{`${cartItem.product.quantity} ${cartItem.product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
+                                }
+
                               </div>
                             </div>
                           </a>
@@ -142,61 +141,65 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                         >
                           {commonStrings.REMOVE_FROM_CART}
                         </Button>
-                        <div className={styles.quantity}>
-                          <IconButton
-                            className='btn-primary'
-                            disabled={cartItem.quantity === 1}
-                            sx={iconStyle}
-                            onClick={async (e) => {
-                              const __cartItems = Helper.clone(cartItems);
-                              const __cartItem = __cartItems.find(item => item._id === cartItem._id);
-                              const quantity = __cartItem.quantity - 1;
+                        {
+                          cartItem.product.soldOut
+                            ? <SoldOut className={styles.label} />
+                            : <div className={styles.quantity}>
+                              <IconButton
+                                className='btn-primary'
+                                disabled={cartItem.quantity === 1}
+                                sx={iconStyle}
+                                onClick={async (e) => {
+                                  const __cartItems = Helper.clone(cartItems);
+                                  const __cartItem = __cartItems.find(item => item._id === cartItem._id);
+                                  const quantity = __cartItem.quantity - 1;
 
-                              if (quantity >= 1) {
-                                const status = await CartService.updateQuantity(__cartItem._id, quantity);
-                                if (status === 200) {
-                                  __cartItem.quantity = quantity;
-                                  setCartItems(__cartItems);
-                                  setTotal(Helper.total(__cartItems));
-                                  setCartCount(cartCount - 1);
-                                } else {
-                                  Helper.error();
-                                }
-                              } else {
-                                Helper.error();
-                              }
-                            }}
-                          >
-                            <DecrementIcon />
-                          </IconButton>
-                          <span className={styles.quantity}>{cartItem.quantity}</span>
-                          <IconButton
-                            className='btn-primary'
-                            disabled={cartItem.quantity >= cartItem.product.quantity}
-                            sx={iconStyle}
-                            onClick={async (e) => {
-                              const __cartItems = Helper.clone(cartItems);
-                              const __cartItem = __cartItems.find(item => item._id === cartItem._id);
-                              const quantity = __cartItem.quantity + 1;
+                                  if (quantity >= 1) {
+                                    const status = await CartService.updateQuantity(__cartItem._id, quantity);
+                                    if (status === 200) {
+                                      __cartItem.quantity = quantity;
+                                      setCartItems(__cartItems);
+                                      setTotal(Helper.total(__cartItems));
+                                      setCartCount(cartCount - 1);
+                                    } else {
+                                      Helper.error();
+                                    }
+                                  } else {
+                                    Helper.error();
+                                  }
+                                }}
+                              >
+                                <DecrementIcon />
+                              </IconButton>
+                              <span className={styles.quantity}>{cartItem.quantity}</span>
+                              <IconButton
+                                className='btn-primary'
+                                disabled={cartItem.quantity >= cartItem.product.quantity}
+                                sx={iconStyle}
+                                onClick={async (e) => {
+                                  const __cartItems = Helper.clone(cartItems);
+                                  const __cartItem = __cartItems.find(item => item._id === cartItem._id);
+                                  const quantity = __cartItem.quantity + 1;
 
-                              if (quantity <= __cartItem.product.quantity) {
-                                const status = await CartService.updateQuantity(__cartItem._id, quantity);
-                                if (status === 200) {
-                                  __cartItem.quantity = quantity;
-                                  setCartItems(__cartItems);
-                                  setTotal(Helper.total(__cartItems));
-                                  setCartCount(cartCount + 1);
-                                } else {
-                                  Helper.error();
-                                }
-                              } else {
-                                Helper.error();
-                              }
-                            }}
-                          >
-                            <IncrementIcon />
-                          </IconButton>
-                        </div>
+                                  if (quantity <= __cartItem.product.quantity) {
+                                    const status = await CartService.updateQuantity(__cartItem._id, quantity);
+                                    if (status === 200) {
+                                      __cartItem.quantity = quantity;
+                                      setCartItems(__cartItems);
+                                      setTotal(Helper.total(__cartItems));
+                                      setCartCount(cartCount + 1);
+                                    } else {
+                                      Helper.error();
+                                    }
+                                  } else {
+                                    Helper.error();
+                                  }
+                                }}
+                              >
+                                <IncrementIcon />
+                              </IconButton>
+                            </div>
+                        }
                       </div>
                     </article>
                   ))
@@ -205,7 +208,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
               <div className={styles.total}>
                 <div className={styles.title}>{strings.SUMMARY}</div>
                 <div className={styles.price}>
-                  <span>{strings.SUBTOTAL}</span>
+                  <span>{commonStrings.SUBTOTAL}</span>
                   <span className={styles.price}>{`${Helper.formatNumber(total)} ${commonStrings.CURRENCY}`}</span>
                 </div>
                 <div className={styles.action}>
@@ -213,6 +216,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                     variant="contained"
                     className={`btn-primary ${styles.btn}`}
                     startIcon={<CheckoutIcon />}
+                    disabled={total === 0}
                     onClick={async (e) => {
                       router.replace('/checkout');
                     }}

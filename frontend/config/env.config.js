@@ -6,6 +6,8 @@ const Env = {
 
     APP_TYPE: process.env.NEXT_PUBLIC_SC_APP_TYPE || 'backend',
     API_HOST: process.env.NEXT_PUBLIC_SC_API_HOST,
+    LANGUAGE_FR: 'fr',
+    LANGUAGE_EN: 'en',
     LANGUAGES: ['fr', 'en'],
     _LANGUAGES: [
         {

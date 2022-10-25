@@ -73,7 +73,7 @@ export default function Orders({
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      UserService.signout(false, true);
     }
   }, [_signout]);
 

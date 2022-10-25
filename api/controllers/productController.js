@@ -145,9 +145,13 @@ export const deleteProduct = async (req, res) => {
 
         if (product) {
             const _image = path.join(CDN_PRODUCTS, product.image);
+
             if (fs.existsSync(_image)) {
                 fs.unlinkSync(_image);
             }
+
+            await CartItem.deleteMany({ product: product._id });
+
             return res.sendStatus(200);
         } else {
             return res.sendStatus(204);

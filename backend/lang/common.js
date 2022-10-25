@@ -43,7 +43,7 @@ export const strings = new LocalizedStrings({
         CREDIT_CARD: 'Carte bancaire',
         COD: 'Cash à la livraison',
         WIRE_TRANSFER: 'Virement bancaire',
-        SOLD_OUT: 'En rupture de stock',
+        SOLD_OUT: 'Rupture de stock',
         SOLD_OUT_INFO: 'Ce produit est en rupture de stock.',
         HIDDEN: 'Caché',
         HIDDEN_INFO: "Ce produit n'est pas visible par les clients.",

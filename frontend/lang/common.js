@@ -26,7 +26,6 @@ export const strings = new LocalizedStrings({
         CANCEL: 'Annuler',
         RESET_PASSWORD: 'Changer le mot de passe',
         CURRENCY: 'DH',
-        CURRENCY_PER_MONTH: 'DH/mois',
         CLOSE: 'Fermer',
         CONFIRM: 'Confirmer',
         VERIFIED: 'Compte vérifié',
@@ -43,8 +42,6 @@ export const strings = new LocalizedStrings({
         CREDIT_CARD: 'Carte bancaire',
         COD: 'Cash à la livraison',
         WIRE_TRANSFER: 'Virement bancaire',
-        SOLD_OUT: 'En rupture de stock',
-        SOLD_OUT_INFO: 'Ce produit est en rupture de stock.',
         QUANTITY: 'Quantité',
         UNCHECK_ALL: 'Décocher tout',
         CHECK_ALL: 'Cocher tout',
@@ -57,6 +54,7 @@ export const strings = new LocalizedStrings({
         ARTICLE_REMOVED: 'Article retiré du panier.',
         ARTICLES_IN_STOCK: 'articles en stock',
         ARTICLE_IN_STOCK: 'article en stock',
+        SUBTOTAL: 'Sous-total',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -83,7 +81,6 @@ export const strings = new LocalizedStrings({
         CANCEL: 'Cancel',
         RESET_PASSWORD: 'Change Password',
         CURRENCY: 'DH',
-        CURRENCY_PER_MONTH: 'DH/month',
         CLOSE: 'Close',
         CONFIRM: 'Confirm',
         VERIFIED: 'Verified account',
@@ -100,8 +97,6 @@ export const strings = new LocalizedStrings({
         CREDIT_CARD: 'Credit card',
         COD: 'Cash on delivery',
         WIRE_TRANSFER: 'Wire transfer',
-        SOLD_OUT: 'Sold out',
-        SOLD_OUT_INFO: 'This product is sold out.',
         QUANTITY: 'Quantity',
         UNCHECK_ALL: 'Uncheck all',
         CHECK_ALL: 'Check all',
@@ -114,5 +109,6 @@ export const strings = new LocalizedStrings({
         ARTICLE_REMOVED: 'Article removed from cart.',
         ARTICLES_IN_STOCK: 'articles in stock',
         ARTICLE_IN_STOCK: 'article in stock',
+        SUBTOTAL: 'Subtotal',
     }
 });

@@ -262,7 +262,7 @@ export default function SignUp() {
                                     }}
                                     required
                                     multiline
-                                    minRows={5}
+                                    minRows={3}
                                     value={address}
                                 />
                             </FormControl>

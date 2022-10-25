@@ -35,6 +35,17 @@ export const getPaymentTypes = async (req, res) => {
     }
 };
 
+export const getEnabledPaymentTypes = async (req, res) => {
+    try {
+        const paymentTypes = await PaymentType.find({ enabled: true }).sort({ createdAt: 1 });
+
+        return res.json(paymentTypes);
+    } catch (err) {
+        console.error(`[paymentType.getEnabledPaymentTypes]  ${strings.DB_ERROR}`, err);
+        return res.status(400).send(strings.DB_ERROR + err);
+    }
+};
+
 export const updatePaymentTypes = async (req, res) => {
     try {
         const paymentTypes = req.body;
