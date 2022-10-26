@@ -193,9 +193,8 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
             <Paper className={styles.form} elevation={10}>
               <form onSubmit={handleSubmit}>
 
-                <div className={styles.image}
-                  style={{ backgroundImage: `url(${Helper.joinURL(tempImage ? Env.CDN_TEMP_PRODUCTS : Env.CDN_PRODUCTS, tempImage || _product.image)})` }}
-                >
+                <div className={styles.image}>
+                  <img className={styles.image} src={Helper.joinURL(tempImage ? Env.CDN_TEMP_PRODUCTS : Env.CDN_PRODUCTS, tempImage || _product.image)} />
                 </div>
 
                 <FormControl fullWidth margin="dense" className={styles.imageControl}>
@@ -230,21 +229,9 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
                 </FormControl>
 
                 <FormControl fullWidth margin="dense">
-                  {/* <InputLabel className='required'>{cpStrings.DESCRIPTION}</InputLabel> */}
                   <span className={`${styles.label} required`}>{cpStrings.DESCRIPTION}</span>
-                  {/* <Input
-                    type="text"
-                    value={description}
-                    required
-                    multiline
-                    minRows={3}
-                    onChange={(e) => {
-                      setDescription(e.target.value);
-                    }}
-                    autoComplete="off"
-                  /> */}
+                 
                   <Editor
-                    // editorState={state => setEditorState(state)}
                     editorState={editorState}
                     toolbarClassName="toolbarClassName"
                     wrapperClassName="wrapperClassName"

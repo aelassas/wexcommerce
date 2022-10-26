@@ -31,11 +31,18 @@ div.main {
 div.main div.product div.thumbnail {
     width: 350px;
     height: 350px;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: 100% auto;
     margin: 15px;
+    padding: 5px;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.main div.product img.thumbnail {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 div.main div.product div.rightPanel {

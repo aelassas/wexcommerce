@@ -93,73 +93,19 @@ export default function Products({
   };
 
   return !loading && _user &&
-  <>
-    <Header user={_user} />
-    {
-      _user.verified &&
-      <div className='content'>
+    <>
+      <Header user={_user} />
+      {
+        _user.verified &&
+        <div className='content'>
 
-        {_noMatch && <NoMatch />}
+          {_noMatch && <NoMatch />}
 
-        {!_noMatch &&
-          <>
-            {
-              Env.isMobile() &&
-              <>
-                <Button
-                  variant="contained"
-                  className={`btn-primary ${styles.newProduct}`}
-                  size="small"
-                  onClick={() => {
-                    router.replace('/create-product');
-                  }}
-                >
-                  {strings.NEW_PRODUCT}
-                </Button>
-
-                <div
-                  className={styles.categoriesAction}
-                  onClick={() => {
-                    if (leftPanelRef) {
-                      if (leftPanelRef.style.display === 'none') {
-                        leftPanelRef.style.display = 'block';
-                        if (productsRef) {
-                          productsRef.style.display = 'none';
-                        }
-                        if (closeIconRef) {
-                          closeIconRef.style.visibility = 'visible';
-                        }
-                      } else {
-                        leftPanelRef.style.display = 'none';
-                        if (productsRef) {
-                          productsRef.style.display = 'block';
-                        }
-                        if (closeIconRef) {
-                          closeIconRef.style.visibility = 'hidden';
-                        }
-                      }
-                    }
-                  }}
-                >
-                  <div className={styles.categoriesText} >
-                    <CategoryIcon className={styles.categoriesIcon} />
-                    <span>{headerStrings.CATEGORIES}</span>
-                  </div>
-                  <CloseIcon
-                    className={styles.closeIcon}
-                    ref={el => setCloseIconRef(el)}
-                  />
-                </div>
-              </>
-            }
-
-            <div className={styles.main}>
-              <div
-                ref={el => setLeftPanelRef(el)}
-                className={styles.leftPanel}
-              >
-                {
-                  !Env.isMobile() &&
+          {!_noMatch &&
+            <>
+              {
+                Env.isMobile() &&
+                <>
                   <Button
                     variant="contained"
                     className={`btn-primary ${styles.newProduct}`}
@@ -170,139 +116,191 @@ export default function Products({
                   >
                     {strings.NEW_PRODUCT}
                   </Button>
-                }
-                <ul className={styles.categories}>
-                  <li>
-                    <Link href='/products' className={!_categoryId ? styles.selected : ''}>
 
-                      <HomeIcon className={styles.categoryIcon} />
-                      <span>{strings.ALL}</span>
+                  <div
+                    className={styles.categoriesAction}
+                    onClick={() => {
+                      if (leftPanelRef) {
+                        if (leftPanelRef.style.display === 'none') {
+                          leftPanelRef.style.display = 'block';
+                          if (productsRef) {
+                            productsRef.style.display = 'none';
+                          }
+                          if (closeIconRef) {
+                            closeIconRef.style.visibility = 'visible';
+                          }
+                        } else {
+                          leftPanelRef.style.display = 'none';
+                          if (productsRef) {
+                            productsRef.style.display = 'block';
+                          }
+                          if (closeIconRef) {
+                            closeIconRef.style.visibility = 'hidden';
+                          }
+                        }
+                      }
+                    }}
+                  >
+                    <div className={styles.categoriesText} >
+                      <CategoryIcon className={styles.categoriesIcon} />
+                      <span>{headerStrings.CATEGORIES}</span>
+                    </div>
+                    <CloseIcon
+                      className={styles.closeIcon}
+                      ref={el => setCloseIconRef(el)}
+                    />
+                  </div>
+                </>
+              }
 
-                    </Link>
-                  </li>
+              <div className={styles.main}>
+                <div
+                  ref={el => setLeftPanelRef(el)}
+                  className={styles.leftPanel}
+                >
                   {
-                    _categories.map((category) => (
-                      <li key={category._id}>
-                        <Link
-                          href={`/products?c=${category._id}`}
-                          className={_categoryId === category._id ? styles.selected : ''}
-                          title={category.name}>
-
-                          <CategoryIcon className={styles.categoryIcon} />
-                          <span>{category.name}</span>
-
-                        </Link>
-                      </li>
-                    ))
+                    !Env.isMobile() &&
+                    <Button
+                      variant="contained"
+                      className={`btn-primary ${styles.newProduct}`}
+                      size="small"
+                      onClick={() => {
+                        router.replace('/create-product');
+                      }}
+                    >
+                      {strings.NEW_PRODUCT}
+                    </Button>
                   }
-                </ul>
-              </div>
+                  <ul className={styles.categories}>
+                    <li>
+                      <Link href='/products' className={!_categoryId ? styles.selected : ''}>
 
-              <div
-                className={styles.products}
-                ref={el => setProductsRef(el)}
-              >
+                        <HomeIcon className={styles.categoryIcon} />
+                        <span>{strings.ALL}</span>
 
-                {
-                  _totalRecords === 0 &&
-                  <Card variant="outlined" className={styles.emptyList}>
-                    <CardContent>
-                      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-                    </CardContent>
-                  </Card>
-                }
+                      </Link>
+                    </li>
+                    {
+                      _categories.map((category) => (
+                        <li key={category._id}>
+                          <Link
+                            href={`/products?c=${category._id}`}
+                            className={_categoryId === category._id ? styles.selected : ''}
+                            title={category.name}>
 
-                {
-                  _totalRecords > 0 &&
-                  <>
-                    <div className={styles.productList}>
-                      {
-                        _products.map((product) => (
-                          <article key={product._id} className={styles.product}>
-                            <Link href={`/update-product?p=${product._id}`} title={product.name}>
+                            <CategoryIcon className={styles.categoryIcon} />
+                            <span>{category.name}</span>
 
-                              <div
-                                className={styles.thumbnail}
-                                style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
-                              >
-                              </div>
-                              {
-                                product.soldOut &&
+                          </Link>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+
+                <div
+                  className={styles.products}
+                  ref={el => setProductsRef(el)}
+                >
+
+                  {
+                    _totalRecords === 0 &&
+                    <Card variant="outlined" className={styles.emptyList}>
+                      <CardContent>
+                        <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
+                      </CardContent>
+                    </Card>
+                  }
+
+                  {
+                    _totalRecords > 0 &&
+                    <>
+                      <div className={styles.productList}>
+                        {
+                          _products.map((product) => (
+                            <article key={product._id} className={styles.product}>
+                              <Link href={`/update-product?p=${product._id}`} title={product.name}>
+
+                                <div className={styles.thumbnail}>
+                                  <img className={styles.thumbnail} src={Helper.joinURL(Env.CDN_PRODUCTS, product.image)} />
+                                </div>
+                                {
+                                  product.soldOut &&
                                   <div className={`${styles.label} ${styles.soldOut}`} title={commonStrings.SOLD_OUT_INFO}>
                                     <SoldOutIcon className={styles.labelIcon} />
                                     <span>{commonStrings.SOLD_OUT}</span>
                                   </div>
-                              }
-                              {
-                                product.hidden &&
+                                }
+                                {
+                                  product.hidden &&
                                   <div className={`${styles.label} ${styles.hidden}`} title={commonStrings.HIDDEN_INFO}>
                                     <HiddenIcon className={styles.labelIcon} />
                                     <span>{commonStrings.HIDDEN}</span>
                                   </div>
-                              }
-                              <span className={styles.name} title={product.name}>{product.name}</span>
-                              <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
+                                }
+                                <span className={styles.name} title={product.name}>{product.name}</span>
+                                <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
 
-                            </Link>
-                          </article>
-                        ))
-                      }
-                    </div>
-
-                    {
-                      (_page > 1 || _rowCount < _totalRecords) &&
-                      <div className={styles.footer}>
-
-                        <div className={styles.pager}>
-                          <div className={styles.rowCount}>
-                            {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
-                          </div>
-
-                          <div className={styles.actions}>
-
-                            <Link
-                              href={`/products?${`p=${_page - 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
-                              className={_page === 1 ? styles.disabled : ''}>
-
-                              <PreviousPageIcon className={styles.icon} />
-
-                            </Link>
-
-                            <Link
-                              href={`/products?${`p=${_page + 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
-                              className={_rowCount === _totalRecords ? styles.disabled : ''}>
-
-                              <NextPageIcon className={styles.icon} />
-
-                            </Link>
-                          </div>
-                        </div>
-
+                              </Link>
+                            </article>
+                          ))
+                        }
                       </div>
-                    }
-                  </>
-                }
-              </div>
-            </div>
-          </>
-        }
-      </div>
-    }
 
-    {
-      !_user.verified &&
-      <div className="validate-email">
-        <span>{masterStrings.VALIDATE_EMAIL}</span>
-        <Button
-          type="button"
-          variant="contained"
-          size="small"
-          className="btn-primary btn-resend"
-          onClick={handleResend}
-        >{masterStrings.RESEND}</Button>
-      </div>
-    }
-  </>;
+                      {
+                        (_page > 1 || _rowCount < _totalRecords) &&
+                        <div className={styles.footer}>
+
+                          <div className={styles.pager}>
+                            <div className={styles.rowCount}>
+                              {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
+                            </div>
+
+                            <div className={styles.actions}>
+
+                              <Link
+                                href={`/products?${`p=${_page - 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
+                                className={_page === 1 ? styles.disabled : ''}>
+
+                                <PreviousPageIcon className={styles.icon} />
+
+                              </Link>
+
+                              <Link
+                                href={`/products?${`p=${_page + 1}`}${(_categoryId && `&c=${_categoryId}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
+                                className={_rowCount === _totalRecords ? styles.disabled : ''}>
+
+                                <NextPageIcon className={styles.icon} />
+
+                              </Link>
+                            </div>
+                          </div>
+
+                        </div>
+                      }
+                    </>
+                  }
+                </div>
+              </div>
+            </>
+          }
+        </div>
+      }
+
+      {
+        !_user.verified &&
+        <div className="validate-email">
+          <span>{masterStrings.VALIDATE_EMAIL}</span>
+          <Button
+            type="button"
+            variant="contained"
+            size="small"
+            className="btn-primary btn-resend"
+            onClick={handleResend}
+          >{masterStrings.RESEND}</Button>
+        </div>
+      }
+    </>;
 };
 
 export async function getServerSideProps(context) {

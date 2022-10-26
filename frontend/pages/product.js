@@ -107,12 +107,11 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
             <>
               <div className={styles.main}>
                 <div className={styles.product}>
-                  <div
-                    className={styles.thumbnail}
-                    style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
-                    onClick={() => setOpenImageDialog(true)}
-                  >
+
+                  <div className={styles.thumbnail} onClick={() => setOpenImageDialog(true)}>
+                    <img className={styles.thumbnail} src={Helper.joinURL(Env.CDN_PRODUCTS, product.image)} />
                   </div>
+
                   <div className={styles.rightPanel}>
                     <div className={styles.name}>
                       <span className={styles.name}>{product.name}</span>

@@ -457,10 +457,8 @@ export default function Checkout({ _user, _signout, _noMatch, _cart, _paymentTyp
                                         <div key={cartItem._id} className={styles.article}>
                                             <Link href={`/product?p=${cartItem.product._id}`}>
 
-                                                <div
-                                                    className={styles.thumbnail}
-                                                    style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)})` }}
-                                                >
+                                                <div className={styles.thumbnail}>
+                                                    <img className={styles.thumbnail} src={Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)} />
                                                 </div>
 
                                             </Link>

@@ -157,10 +157,9 @@ export default function CreateProduct({ _user, _signout }) {
           <Paper className={styles.form} elevation={10}>
             <form onSubmit={handleSubmit}>
 
-              <div className={styles.image}
-                style={{ backgroundImage: `url(${tempImage ? Helper.joinURL(Env.CDN_TEMP_PRODUCTS, tempImage) : '/product.png'})` }}
-              >
-              </div>
+              <div className={styles.image}>
+                  <img className={styles.image} src={tempImage ? Helper.joinURL(Env.CDN_TEMP_PRODUCTS, tempImage) : '/product.png'} />
+                </div>
 
               <FormControl fullWidth margin="dense" className={styles.imageControl}>
                 <a onClick={(e) => {

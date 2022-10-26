@@ -221,11 +221,8 @@ export default function Home({
                         products.map((product) => (
                           <article key={product._id} className={styles.product}>
                             <Link href={`/product?p=${product._id}`} title={product.name}>
-
-                              <div
-                                className={styles.thumbnail}
-                                style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, product.image)})` }}
-                              >
+                              <div className={styles.thumbnail}>
+                                <img className={styles.thumbnail} src={Helper.joinURL(Env.CDN_PRODUCTS, product.image)} />
                               </div>
                               {product.soldOut && <SoldOut className={styles.label} />}
                               <span className={styles.name} title={product.name}>{product.name}</span>

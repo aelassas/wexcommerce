@@ -111,10 +111,8 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                       <Link href={`/product?p=${cartItem.product._id}`}>
 
                         <div className={styles.thumbnailContainer}>
-                          <div
-                            className={styles.thumbnail}
-                            style={{ backgroundImage: `url(${Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)})` }}
-                          >
+                          <div className={styles.thumbnail}>
+                            <img className={styles.thumbnail} src={Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)} />
                           </div>
                           <div className={styles.name}>
                             <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
@@ -122,7 +120,6 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                               !cartItem.product.soldOut &&
                               <span className={styles.stock}>{`${cartItem.product.quantity} ${cartItem.product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
                             }
-
                           </div>
                         </div>
 

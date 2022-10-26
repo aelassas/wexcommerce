@@ -18,12 +18,19 @@
     }
 }
 
-.form .image {
+.form div.image {
     width: 100%;
     height: 300px;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: auto 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.form img.image {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .form .imageControl {
@@ -56,7 +63,7 @@
     color: #030303;
 }
 
-.form .label{
+.form .label {
     color: rgba(0, 0, 0, 0.6);
     font-weight: 400;
     font-size: 12px;
@@ -65,7 +72,7 @@
     margin: 0 0 12px 12px;
 }
 
-.form .editor{
+.form .editor {
     border: 1px solid #F1F1F1;
     height: 500px;
     overflow: auto;
