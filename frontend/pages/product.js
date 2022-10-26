@@ -109,7 +109,7 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
                 <div className={styles.product}>
 
                   <div className={styles.thumbnail} onClick={() => setOpenImageDialog(true)}>
-                    <img className={styles.thumbnail} src={Helper.joinURL(Env.CDN_PRODUCTS, product.image)} />
+                    <img className={styles.thumbnail} alt="" src={Helper.joinURL(Env.CDN_PRODUCTS, product.image)} />
                   </div>
 
                   <div className={styles.rightPanel}>

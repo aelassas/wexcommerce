@@ -458,7 +458,7 @@ export default function Checkout({ _user, _signout, _noMatch, _cart, _paymentTyp
                                             <Link href={`/product?p=${cartItem.product._id}`}>
 
                                                 <div className={styles.thumbnail}>
-                                                    <img className={styles.thumbnail} src={Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)} />
+                                                    <img className={styles.thumbnail} alt="" src={Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)} />
                                                 </div>
 
                                             </Link>
@@ -544,11 +544,7 @@ export default function Checkout({ _user, _signout, _noMatch, _cart, _paymentTyp
                                 </div>
 
                                 <div className={styles.securePaymentLogo}>
-                                    <img
-                                        src='/secure-payment.png'
-                                        alt=''
-                                        className={styles.securePaymentLogo}
-                                    />
+                                    <img src='/secure-payment.png' alt='' className={styles.securePaymentLogo} />
                                 </div>
 
                                 <div className={styles.card}>

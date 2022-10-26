@@ -194,7 +194,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
               <form onSubmit={handleSubmit}>
 
                 <div className={styles.image}>
-                  <img className={styles.image} src={Helper.joinURL(tempImage ? Env.CDN_TEMP_PRODUCTS : Env.CDN_PRODUCTS, tempImage || _product.image)} />
+                  <img className={styles.image} alt="" src={Helper.joinURL(tempImage ? Env.CDN_TEMP_PRODUCTS : Env.CDN_PRODUCTS, tempImage || _product.image)} />
                 </div>
 
                 <FormControl fullWidth margin="dense" className={styles.imageControl}>

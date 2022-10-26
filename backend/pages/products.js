@@ -222,7 +222,7 @@ export default function Products({
                               <Link href={`/update-product?p=${product._id}`} title={product.name}>
 
                                 <div className={styles.thumbnail}>
-                                  <img className={styles.thumbnail} src={Helper.joinURL(Env.CDN_PRODUCTS, product.image)} />
+                                  <img className={styles.thumbnail} alt="" src={Helper.joinURL(Env.CDN_PRODUCTS, product.image)} />
                                 </div>
                                 {
                                   product.soldOut &&

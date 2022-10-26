@@ -158,7 +158,7 @@ export default function CreateProduct({ _user, _signout }) {
             <form onSubmit={handleSubmit}>
 
               <div className={styles.image}>
-                  <img className={styles.image} src={tempImage ? Helper.joinURL(Env.CDN_TEMP_PRODUCTS, tempImage) : '/product.png'} />
+                  <img className={styles.image} alt="" src={tempImage ? Helper.joinURL(Env.CDN_TEMP_PRODUCTS, tempImage) : '/product.png'} />
                 </div>
 
               <FormControl fullWidth margin="dense" className={styles.imageControl}>

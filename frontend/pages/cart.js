@@ -112,7 +112,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
 
                         <div className={styles.thumbnailContainer}>
                           <div className={styles.thumbnail}>
-                            <img className={styles.thumbnail} src={Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)} />
+                            <img className={styles.thumbnail} alt="" src={Helper.joinURL(Env.CDN_PRODUCTS, cartItem.product.image)} />
                           </div>
                           <div className={styles.name}>
                             <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
