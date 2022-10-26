@@ -138,6 +138,9 @@ div.productList {
 div.productList a {
     color: #030303;
     text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 div.productList a:hover {
@@ -168,6 +171,7 @@ article.product img.thumbnail {
 
 article.product div.actions {
     margin-top: 5px;
+    height: 38px;
 }
 
 article.product div.actions button,

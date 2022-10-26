@@ -119,6 +119,9 @@ div.productList {
 div.productList a {
   color: #030303;
   text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 div.productList a:hover {

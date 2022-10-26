@@ -146,7 +146,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
 
     try {
       const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-      console.log('description',description);
+      
       if(description.trim().toLowerCase() === '<p></p>'){
         return setDescriptionRequired(true);
       }
