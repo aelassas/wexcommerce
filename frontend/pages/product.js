@@ -178,7 +178,8 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
                 </div>
               </div>
 
-              {openImageDialog &&
+              {
+                openImageDialog &&
                 <ImageViewer
                   src={images}
                   currentIndex={currentImage}
@@ -188,7 +189,8 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
                     setOpenImageDialog(false);
                     setCurrentImage(0);
                   }}
-                />}
+                />
+              }
 
               <Dialog
                 disableEscapeKeyDown

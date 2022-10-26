@@ -19,6 +19,9 @@ const productSchema = new Schema({
     image: {
         type: String
     },
+    images: {
+        type: [String]
+    },
     price: {
         type: Number,
         required: [true, "can't be blank"],

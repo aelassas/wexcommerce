@@ -52,6 +52,7 @@
     width: fit-content;
     text-decoration: none;
     color: #3498db;
+    margin-top: 5px;
 }
 
 .form .imageControl .action:hover {

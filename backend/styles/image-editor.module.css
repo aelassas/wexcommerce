@@ -1,0 +1,52 @@
+div.images {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    flex-wrap: wrap;
+}
+
+div.images div.container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+div.images div.container div.image {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #D5DBDB;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+div.images div.image:hover {
+    border: 2px solid #FF8F00;
+}
+
+div.images img.image {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+div.images div.container div.action {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    background-color: #D5DBDB;
+}
+
+div.images div.container div.action span.button {
+    cursor: pointer;
+    padding: 0 2px;
+    display: flex;
+}
+
+div.images div.container div.action svg.button {
+    font-size: 18px;
+    color: #030303;
+}

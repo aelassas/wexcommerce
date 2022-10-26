@@ -6,7 +6,7 @@ export default class ProductService {
 
     static uploadImage(file) {
         const user = UserService.getCurrentUser();
-        var formData = new FormData();
+        const formData = new FormData();
         formData.append('image', file);
         return axios.post(`${Env.API_HOST}/api/upload-image`, formData,
             user && user.accessToken ? { headers: { 'x-access-token': user.accessToken, 'Content-Type': 'multipart/form-data' } }

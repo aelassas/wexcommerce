@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Link from 'next/link';
 import { strings as commonStrings } from '../lang/common';

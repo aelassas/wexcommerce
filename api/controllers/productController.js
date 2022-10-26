@@ -48,12 +48,13 @@ export const create = async (req, res) => {
 
     let product;
     try {
-        const { name, description, categories, image: imageFile, price, quantity, soldOut, hidden } = req.body;
+        const { name, description, categories, image: imageFile, price, quantity, soldOut, hidden, images } = req.body;
         const __product = { name, description, categories, price, quantity, soldOut, hidden };
 
         product = new Product(__product);
         await product.save();
 
+        // image
         const _image = path.join(CDN_TEMP_PRODUCTS, imageFile);
         if (fs.existsSync(_image)) {
             const filename = `${product._id}_${Date.now()}${path.extname(imageFile)}`;
@@ -66,6 +67,25 @@ export const create = async (req, res) => {
             const err = 'Image file not found';
             console.error(strings.ERROR, err);
             return res.status(400).send(strings.ERROR + err);
+        }
+
+        // images
+        for (let i = 0; i < images.length; i++) {
+            const imageFile = images[i];
+            const _image = path.join(CDN_TEMP_PRODUCTS, imageFile);
+
+            if (fs.existsSync(_image)) {
+                const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`;
+                const newPath = path.join(CDN_PRODUCTS, filename);
+
+                fs.renameSync(_image, newPath);
+                product.images.push(filename);
+            } else {
+                await Product.deleteOne({ _id: product._id });
+                const err = 'Image file not found';
+                console.error(strings.ERROR, err);
+                return res.status(400).send(strings.ERROR + err);
+            }
         }
 
         await product.save();
@@ -148,6 +168,14 @@ export const deleteProduct = async (req, res) => {
 
             if (fs.existsSync(_image)) {
                 fs.unlinkSync(_image);
+            }
+
+            for (const image of product.images) {
+                const _image = path.join(CDN_PRODUCTS, image);
+
+                if (fs.existsSync(_image)) {
+                    fs.unlinkSync(_image);
+                }
             }
 
             await CartItem.deleteMany({ product: product._id });

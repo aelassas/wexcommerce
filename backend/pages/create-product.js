@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import UserService from '../services/UserService';
 import Header from '../components/Header';
 import {
@@ -20,6 +20,7 @@ import CategorySelectList from '../components/CategorySelectList';
 import { useRouter } from 'next/router';
 import Error from '../components/Error';
 import Env from '../config/env.config';
+import ImageEditor from '../components/ImageEditor';
 
 import styles from '../styles/create-product.module.css';
 
@@ -35,9 +36,12 @@ export default function CreateProduct({ _user, _signout }) {
   const [soldOut, setSoldOut] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [tempImage, setTempImage] = useState('');
+  const [tempImages, setTempImages] = useState([]);
   const [imageError, setImageError] = useState(false);
+  const [fileNames, setFileNames] = useState([]);
 
-  const upload = useRef(null);
+  const uploadImageRef = useRef(null);
+  const uploadImagesRef = useRef(null);
 
   useEffect(() => {
     if (_user) {
@@ -99,6 +103,31 @@ export default function CreateProduct({ _user, _signout }) {
     reader.readAsDataURL(file);
   };
 
+  const handleChangeImages = (e) => {
+
+    const files = e.target.files;
+
+    for (const file of files) {
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        try {
+          if (!fileNames.includes(file.name)) {
+            const filename = await ProductService.uploadImage(file);
+            fileNames.push(file.name);
+            tempImages.push({ temp: true, src: filename });
+            setTempImages(Helper.cloneArray(tempImages));
+            setFileNames(Helper.cloneArray(fileNames))
+          }
+        } catch (err) {
+          Helper.error();
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -119,7 +148,8 @@ export default function CreateProduct({ _user, _signout }) {
         quantity: _quantity,
         soldOut,
         hidden,
-        image: tempImage
+        image: tempImage,
+        images: tempImages.map(image => image.src)
       };
 
       const res = await ProductService.createProduct(data);
@@ -158,25 +188,67 @@ export default function CreateProduct({ _user, _signout }) {
             <form onSubmit={handleSubmit}>
 
               <div className={styles.image}>
-                  <img className={styles.image} alt="" src={tempImage ? Helper.joinURL(Env.CDN_TEMP_PRODUCTS, tempImage) : '/product.png'} />
-                </div>
+                <img className={styles.image} alt="" src={tempImage ? Helper.joinURL(Env.CDN_TEMP_PRODUCTS, tempImage) : '/product.png'} />
+              </div>
 
               <FormControl fullWidth margin="dense" className={styles.imageControl}>
-                <a onClick={(e) => {
-                  if (upload.current) {
-                    upload.current.value = '';
+                <div>
+                  <a onClick={(e) => {
+                    if (uploadImageRef.current) {
+                      uploadImageRef.current.value = '';
 
-                    setTimeout(() => {
-                      upload.current.click(e);
-                    }, 0);
-                  }
-                }}
-                  className={styles.action}
-                >
-                  <ImageIcon className={styles.icon} />
-                  <span>{tempImage ? strings.UPDATE_IMAGE : strings.ADD_IMAGE}</span>
-                </a>
-                <input ref={upload} type="file" accept="image/*" hidden onChange={handleChangeImage} />
+                      setTimeout(() => {
+                        uploadImageRef.current.click(e);
+                      }, 0);
+                    }
+                  }}
+                    className={styles.action}
+                  >
+                    <ImageIcon className={styles.icon} />
+                    <span>{tempImage ? strings.UPDATE_IMAGE : strings.ADD_IMAGE}</span>
+                  </a>
+                  <input ref={uploadImageRef} type="file" accept="image/*" hidden onChange={handleChangeImage} />
+                  <a onClick={(e) => {
+                    if (uploadImagesRef.current) {
+                      uploadImagesRef.current.value = '';
+
+                      setTimeout(() => {
+                        uploadImagesRef.current.click(e);
+                      }, 0);
+                    }
+                  }}
+                    className={styles.action}
+                  >
+                    <ImageIcon className={styles.icon} />
+                    <span>{strings.ADD_IMAGES}</span>
+                  </a>
+                  <input ref={uploadImagesRef} type="file" accept="image/*" hidden multiple onChange={handleChangeImages} />
+                </div>
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <ImageEditor
+                  title={strings.IMAGES}
+                  images={tempImages}
+                  onDelete={async (image, index) => {
+                    try {
+                      const status = await ProductService.deleteTempImage(image.src);
+
+                      if (status === 200) {
+                        const _tempImages = Helper.cloneArray(tempImages);
+                        _tempImages.splice(index, 1);
+                        setTempImages(_tempImages);
+
+                        const _fileNames = Helper.cloneArray(fileNames);
+                        _fileNames.splice(index, 1);
+                        setFileNames(_fileNames);
+                      } else {
+                        Helper.error();
+                      }
+                    } catch (err) {
+                      Helper.error();
+                    }
+                  }} />
               </FormControl>
 
               <FormControl fullWidth margin="dense">
@@ -285,15 +357,27 @@ export default function CreateProduct({ _user, _signout }) {
                   className='btn-secondary btn-margin-bottom'
                   size="small"
                   onClick={async () => {
-                    if (tempImage) {
-                      const status = await ProductService.deleteTempImage(tempImage);
+                    try {
+                      if (tempImage) {
+                        const status = await ProductService.deleteTempImage(tempImage);
 
-                      if (status !== 200) {
-                        Helper.error();
+                        if (status !== 200) {
+                          Helper.error();
+                        }
                       }
-                    }
 
-                    router.replace('/products');
+                      for (const image of tempImages) {
+                        const status = await ProductService.deleteTempImage(image.src);
+
+                        if (status !== 200) {
+                          Helper.error();
+                        }
+                      }
+
+                      router.replace('/products');
+                    } catch (err) {
+                      Helper.error();
+                    }
                   }}
                 >
                   {commonStrings.CANCEL}
