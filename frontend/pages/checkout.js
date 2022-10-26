@@ -86,7 +86,7 @@ export default function Checkout({ _user, _signout, _noMatch, _cart, _paymentTyp
                 setTotal(total);
             }
         }
-    }, [_cart]);
+    }, [_cart, router]);
 
     useEffect(() => {
         (async function () {

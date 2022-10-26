@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import styles from "../styles/image-viewer.module.css";
+import React, { useCallback, useEffect, useState } from 'react';
+import styles from '../styles/image-viewer.module.css';
 
 const ImageViewer = (props) => {
     const [currentIndex, setCurrentIndex] = useState(props.currentIndex ?? 0);
@@ -33,7 +33,7 @@ const ImageViewer = (props) => {
                 scrollToThumbnail(thumbnail, nextIndex);
             }
         },
-        [currentIndex]
+        [currentIndex, props.src.length]
     );
 
     const handleClick = useCallback(
@@ -47,25 +47,27 @@ const ImageViewer = (props) => {
 
             if (checkId || checkClass) {
                 event.stopPropagation();
-                props.onClose?.();
+                // props.onClose?.();
+                if (props.onClose) props.onClose();
             }
         },
-        [props.onClose]
+        [props.closeOnClickOutside, props.onClose]
     );
 
     const handleKeyDown = useCallback(
         (event) => {
             event.preventDefault();
 
-            if (event.key === "Escape") {
-                props.onClose?.();
+            if (event.key === 'Escape') {
+                // props.onClose?.();
+                if (props.onClose) props.onClose();
             }
 
-            if (["ArrowLeft", "h"].includes(event.key)) {
+            if (['ArrowLeft', 'h'].includes(event.key)) {
                 changeImage(-1);
             }
 
-            if (["ArrowRight", "l"].includes(event.key)) {
+            if (['ArrowRight', 'l'].includes(event.key)) {
                 changeImage(1);
             }
         },
@@ -84,24 +86,24 @@ const ImageViewer = (props) => {
     );
 
     useEffect(() => {
-        document.addEventListener("keydown", handleKeyDown);
+        document.addEventListener('keydown', handleKeyDown);
 
         if (!props.disableScroll) {
-            document.addEventListener("wheel", handleWheel);
+            document.addEventListener('wheel', handleWheel);
         }
 
         return () => {
-            document.removeEventListener("keydown", handleKeyDown);
+            document.removeEventListener('keydown', handleKeyDown);
 
             if (!props.disableScroll) {
-                document.removeEventListener("wheel", handleWheel);
+                document.removeEventListener('wheel', handleWheel);
             }
         };
-    }, [handleKeyDown, handleWheel]);
+    }, [handleKeyDown, handleWheel, props.disableScroll]);
 
     return (
         <div
-            id="ReactSimpleImageViewer"
+            id='ReactSimpleImageViewer'
             className={`${styles.wrapper} react-simple-image-viewer__modal`}
             onKeyDown={handleKeyDown}
             onClick={handleClick}
@@ -112,7 +114,7 @@ const ImageViewer = (props) => {
                     className={`${styles.close} react-simple-image-viewer__close`}
                     onClick={() => props.onClose?.()}
                 >
-                    {props.closeComponent || "×"}
+                    {props.closeComponent || '×'}
                 </span>
 
                 {props.title && <span className={styles.title}>{props.title}</span>}
@@ -122,7 +124,7 @@ const ImageViewer = (props) => {
                         className={`${styles.navigation} ${styles.prev} react-simple-image-viewer__previous`}
                         onClick={() => changeImage(-1)}
                     >
-                        {props.leftArrowComponent || "❮"}
+                        {props.leftArrowComponent || '❮'}
                     </span>
                 )}
 
@@ -131,7 +133,7 @@ const ImageViewer = (props) => {
                         className={`${styles.navigation} ${styles.next} react-simple-image-viewer__next`}
                         onClick={() => changeImage(1)}
                     >
-                        {props.rightArrowComponent || "❯"}
+                        {props.rightArrowComponent || '❯'}
                     </span>
                 )}
 
@@ -140,7 +142,7 @@ const ImageViewer = (props) => {
                     onClick={handleClick}
                 >
                     <div className={`${styles.slide} react-simple-image-viewer__slide`}>
-                        <img className={styles.image} src={props.src[currentIndex]} alt="" style={props.imageStyle} />
+                        <img className={styles.image} src={props.src[currentIndex]} alt='' style={props.imageStyle} />
                     </div>
                 </div>
 
@@ -155,7 +157,7 @@ const ImageViewer = (props) => {
                                     className={`${styles.thumbnail}${currentIndex === index ? ` ${styles.selected}` : ''}`}
                                     onClick={() => setCurrentIndex(index)}
                                 >
-                                    <img className={styles.thumbnail} src={src} alt="" />
+                                    <img className={styles.thumbnail} src={src} alt='' />
                                 </div>
                             ))}
                         </div>
