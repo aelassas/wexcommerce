@@ -3,7 +3,7 @@ import styles from '../styles/image-viewer.module.css';
 
 const ImageViewer = (props) => {
     const [currentIndex, setCurrentIndex] = useState(props.currentIndex ?? 0);
-    const thumbnails = useMemo(() => []);
+    const thumbnails = useMemo(() => [], []);
 
     const scrollToThumbnail = (el, index) => {
         if (index === 0) {
