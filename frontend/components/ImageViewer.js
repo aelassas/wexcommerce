@@ -33,7 +33,7 @@ const ImageViewer = (props) => {
                 scrollToThumbnail(thumbnail, nextIndex);
             }
         },
-        [currentIndex, props.src.length]
+        [currentIndex, props, thumbnails]
     );
 
     const handleClick = useCallback(
@@ -47,11 +47,10 @@ const ImageViewer = (props) => {
 
             if (checkId || checkClass) {
                 event.stopPropagation();
-                // props.onClose?.();
-                if (props.onClose) props.onClose();
+                props.onClose?.();
             }
         },
-        [props.closeOnClickOutside, props.onClose]
+        [props]
     );
 
     const handleKeyDown = useCallback(
@@ -59,8 +58,7 @@ const ImageViewer = (props) => {
             event.preventDefault();
 
             if (event.key === 'Escape') {
-                // props.onClose?.();
-                if (props.onClose) props.onClose();
+                props.onClose?.();
             }
 
             if (['ArrowLeft', 'h'].includes(event.key)) {
@@ -71,7 +69,7 @@ const ImageViewer = (props) => {
                 changeImage(1);
             }
         },
-        [props.onClose, changeImage]
+        [props, changeImage]
     );
 
     const handleWheel = useCallback(
