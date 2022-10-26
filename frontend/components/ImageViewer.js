@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from '../styles/image-viewer.module.css';
 
 const ImageViewer = (props) => {
     const [currentIndex, setCurrentIndex] = useState(props.currentIndex ?? 0);
-    const thumbnails = [];
+    const thumbnails = useMemo(() => []);
 
     const scrollToThumbnail = (el, index) => {
         if (index === 0) {
