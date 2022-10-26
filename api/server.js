@@ -12,6 +12,7 @@ import cartRoutes from './routes/cartRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import paymentTypeRoutes from './routes/paymentTypeRoutes.js';
+import * as paymentTypeController from './controllers/paymentTypeController.js';
 
 const DB_HOST = process.env.SC_DB_HOST;
 const DB_PORT = process.env.SC_DB_PORT;
@@ -26,6 +27,16 @@ const DB_PASSWORD = process.env.SC_DB_PASSWORD;
 const DB_APP_NAME = process.env.SC_DB_APP_NAME;
 const DB_NAME = process.env.SC_DB_NAME;
 const DB_URI = `mongodb://${encodeURIComponent(DB_USERNAME)}:${encodeURIComponent(DB_PASSWORD)}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=${DB_AUTH_SOURCE}&appName=${DB_APP_NAME}`;
+
+const init = async () => {
+    const done = await paymentTypeController.init();
+
+    if (done) {
+        console.log('Initialization succeeded')
+    } else {
+        console.log('Initialization failed')
+    }
+};
 
 let options = {};
 if (DB_SSL) {
@@ -42,8 +53,13 @@ mongoose.set('debug', DB_DEBUG);
 mongoose.Promise = global.Promise;
 mongoose.connect(DB_URI, options)
     .then(
-        () => { console.log('Database is connected') },
-        err => { console.error('Cannot connect to the database:', err) }
+        async () => {
+            console.log('Database is connected');
+            await init();
+        },
+        (err) => {
+            console.error('Cannot connect to the database:', err);
+        }
     );
 
 const app = express();

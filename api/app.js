@@ -1,22 +1,11 @@
 import app from './server.js';
 import fs from 'fs';
 import https from 'https';
-import * as paymentTypeController from './controllers/paymentTypeController.js';
 
 const PORT = parseInt(process.env.SC_PORT) || 4000;
 const HTTPS = process.env.SC_HTTPS.toLocaleLowerCase() === 'true';
 const PRIVATE_KEY = process.env.SC_PRIVATE_KEY;
 const CERTIFICATE = process.env.SC_CERTIFICATE;
-
-const init = async () => {
-    const done = await paymentTypeController.init();
-
-    if (done) {
-        console.log('Initialization succeeded')
-    } else {
-        console.log('Initialization failed')
-    }
-};
 
 if (HTTPS) {
     https.globalAgent.maxSockets = Infinity;
@@ -27,11 +16,9 @@ if (HTTPS) {
 
     httpsServer.listen(PORT, async () => {
         console.log('HTTPS server is running on Port:', PORT);
-        await init();
     });
 } else {
     app.listen(PORT, async () => {
         console.log('HTTP server is running on Port:', PORT);
-        await init();
     });
 }
