@@ -26,6 +26,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - uses: actions/cache@v3
       with:
         path: |
@@ -36,11 +37,13 @@ jobs:
         # If source files changed but packages didn't, rebuild from a prior cache.
         restore-keys: |
           ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: './frontend/package-lock.json'
-    - run: npm ci
+    
+    # - name: Use Node.js ${{ matrix.node-version }}
+    #   uses: actions/setup-node@v3
+    #   with:
+    #     node-version: ${{ matrix.node-version }}
+    #     cache: 'npm'
+    #     cache-dependency-path: './frontend/package-lock.json'
+
+    - run: npm install
     - run: CI='' npm run build
