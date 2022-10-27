@@ -54,7 +54,7 @@ export default function ImageEditor({ title, images, onDelete }) {
             {
                 openImageDialog &&
                 <ImageViewer
-                    src={images.map(image => src(image))}
+                    src={images.map(src)}
                     currentIndex={currentImage}
                     closeOnClickOutside={true}
                     title={title}

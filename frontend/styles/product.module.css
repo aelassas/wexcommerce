@@ -28,10 +28,17 @@ div.main {
     margin-bottom: 15px;
 }
 
-div.main div.product div.thumbnail {
+div.main div.product div.thumbnailContainer {
     width: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-right: 15px;
+}
+
+div.main div.product div.thumbnail {
+    width: 100%;
     height: 350px;
-    margin: 15px;
     padding: 5px;
     cursor: pointer;
     display: flex;
@@ -41,6 +48,40 @@ div.main div.product div.thumbnail {
 }
 
 div.main div.product img.thumbnail {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+div.main div.product div.images {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    flex-wrap: wrap;
+}
+
+div.main div.product div.images div.image {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #D5DBDB;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 5px;
+}
+
+div.main div.product div.images div.image:hover {
+    border: 2px solid #004b91;
+}
+
+div.main div.product div.images div.selected,
+div.main div.product div.images div.selected:hover {
+    border: 2px solid #FF8F00;
+}
+
+div.main div.product div.images img.image {
     max-width: 100%;
     max-height: 100%;
 }

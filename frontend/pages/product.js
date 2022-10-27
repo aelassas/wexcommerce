@@ -28,6 +28,7 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
 
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState();
+  const [image, setImage] = useState();
   const [images, setImages] = useState([]);
   const [currentImage, setCurrentImage] = useState(0);
   const [openImageDialog, setOpenImageDialog] = useState(false);
@@ -53,16 +54,14 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
   }, []);
 
   useEffect(() => {
+    const src = (image) => Helper.joinURL(Env.CDN_PRODUCTS, image);
+
     if (_product) {
       setProduct(_product);
-      const images = [];
-      images.push(Helper.joinURL(Env.CDN_PRODUCTS, _product.image));
-      // images.push('http://placeimg.com/1920/1080/nature');
-      // images.push('http://placeimg.com/1920/2550/nature');
-      // for (let i = 0; i < 25; i++) {
-      //   images.push('http://placeimg.com/1920/1080/nature');
-      //   images.push('http://placeimg.com/1920/2550/nature');
-      // }
+      const image = src(_product.image);
+      setImage(image)
+      const _images = _product.images ? _product.images.map(src) : [];
+      const images = [image, ..._images];
       setImages(images);
     }
   }, [_product]);
@@ -108,8 +107,25 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
               <div className={styles.main}>
                 <div className={styles.product}>
 
-                  <div className={styles.thumbnail} onClick={() => setOpenImageDialog(true)}>
-                    <img className={styles.thumbnail} alt="" src={Helper.joinURL(Env.CDN_PRODUCTS, product.image)} />
+                  <div className={styles.thumbnailContainer}>
+                    <div className={styles.thumbnail}>
+                      <img className={styles.thumbnail} alt="" src={image} onClick={() => setOpenImageDialog(true)} />
+                    </div>
+                    <div className={styles.images}>
+                      {
+                        images.map((image, index) => (
+                          <div
+                            key={index}
+                            className={`${styles.image}${currentImage === index ? ` ${styles.selected}` : ''}`}
+                            onClick={() => {
+                              setCurrentImage(index);
+                              setImage(image);
+                            }}>
+                            <img alt='' className={styles.image} src={image} />
+                          </div>
+                        ))
+                      }
+                    </div>
                   </div>
 
                   <div className={styles.rightPanel}>
