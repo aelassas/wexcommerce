@@ -203,7 +203,6 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
                   title={product.name}
                   onClose={() => {
                     setOpenImageDialog(false);
-                    setCurrentImage(0);
                   }}
                 />
               }
