@@ -27,11 +27,10 @@ import { useRouter } from 'next/router';
 import Env from '../config/env.config';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-// import htmlToDraft from 'html-to-draftjs';
-// import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import styles from '../styles/update-product.module.css';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import ImageEditor from '../components/ImageEditor';
 
 let htmlToDraft = null;
 let Editor = null;
@@ -45,7 +44,6 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
 
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -56,9 +54,12 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [editorState, setEditorState] = useState();
   const [descriptionRequired, setDescriptionRequired] = useState(false);
+  const [fileNames, setFileNames] = useState([]);
+  const [images, setImages] = useState([]);
+  const [tempImages, setTempImages] = useState([]);
 
-  const upload = useRef(null);
-  // const editorState = useRef(null);
+  const uploadImageRef = useRef(null);
+  const uploadImagesRef = useRef(null);
 
   useEffect(() => {
     if (_user) {
@@ -82,12 +83,12 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
   useEffect(() => {
     if (_product) {
       setName(_product.name);
-      setDescription(_product.description);
       setCategories(_product.categories);
       setPrice(_product.price.toString());
       setQuantity(_product.quantity.toString());
       setSoldOut(_product.soldOut);
       setHidden(_product.hidden);
+      if (_product.images) setImages(_product.images.map(i => ({ temp: false, src: i })));
 
       const contentBlock = htmlToDraft(_product.description);
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
@@ -137,6 +138,33 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
     reader.readAsDataURL(file);
   };
 
+  const handleChangeImages = (e) => {
+
+    const files = e.target.files;
+
+    for (const file of files) {
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        try {
+          if (!fileNames.includes(file.name)) {
+            const filename = await ProductService.uploadImage(file);
+            fileNames.push(file.name);
+            images.push({ temp: true, src: filename });
+            tempImages.push(filename);
+            setImages(Helper.cloneArray(images));
+            setTempImages(Helper.cloneArray(tempImages));
+            setFileNames(Helper.cloneArray(fileNames))
+          }
+        } catch (err) {
+          Helper.error();
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   const onEditorStateChange = (state) => {
     setEditorState(state);
   };
@@ -146,15 +174,15 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
 
     try {
       const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-      
-      if(description.trim().toLowerCase() === '<p></p>'){
+
+      if (description.trim().toLowerCase() === '<p></p>') {
         return setDescriptionRequired(true);
       }
 
       const _categories = categories.map(c => c._id);
       const _price = parseFloat(price);
       const _quantity = parseInt(quantity);
-     
+
       const data = {
         _id: _product._id,
         name,
@@ -163,7 +191,8 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
         price: _price,
         quantity: _quantity,
         soldOut,
-        hidden
+        hidden,
+        tempImages
       };
       if (tempImage) data.image = tempImage;
       const res = await ProductService.updateProduct(data);
@@ -198,21 +227,74 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
                 </div>
 
                 <FormControl fullWidth margin="dense" className={styles.imageControl}>
-                  <a onClick={(e) => {
-                    if (upload.current) {
-                      upload.current.value = '';
+                  <div>
+                    <a onClick={(e) => {
+                      if (uploadImageRef.current) {
+                        uploadImageRef.current.value = '';
 
-                      setTimeout(() => {
-                        upload.current.click(e);
-                      }, 0);
-                    }
-                  }}
-                    className={styles.action}
-                  >
-                    <ImageIcon className={styles.icon} />
-                    <span>{cpStrings.UPDATE_IMAGE}</span>
-                  </a>
-                  <input ref={upload} type="file" accept="image/*" hidden onChange={handleChangeImage} />
+                        setTimeout(() => {
+                          uploadImageRef.current.click(e);
+                        }, 0);
+                      }
+                    }}
+                      className={styles.action}
+                    >
+                      <ImageIcon className={styles.icon} />
+                      <span>{cpStrings.UPDATE_IMAGE}</span>
+                    </a>
+                    <input ref={uploadImageRef} type="file" accept="image/*" hidden onChange={handleChangeImage} />
+                    <a onClick={(e) => {
+                      if (uploadImagesRef.current) {
+                        uploadImagesRef.current.value = '';
+
+                        setTimeout(() => {
+                          uploadImagesRef.current.click(e);
+                        }, 0);
+                      }
+                    }}
+                      className={styles.action}
+                    >
+                      <ImageIcon className={styles.icon} />
+                      <span>{cpStrings.ADD_IMAGES}</span>
+                    </a>
+                    <input ref={uploadImagesRef} type="file" accept="image/*" hidden multiple onChange={handleChangeImages} />
+                  </div>
+                </FormControl>
+
+                <FormControl fullWidth margin="dense">
+                  <ImageEditor
+                    title={cpStrings.IMAGES}
+                    images={images}
+                    onDelete={async (image, index) => {
+                      try {
+                        let status;
+                        if (image.temp) {
+                          status = await ProductService.deleteTempImage(image.src);
+                        } else {
+                          status = await ProductService.deleteImage(_product._id, image.src);
+                        }
+
+                        if (status === 200) {
+                          const _images = Helper.cloneArray(images);
+                          _images.splice(index, 1);
+                          setImages(_images);
+
+                          if (image.temp) {
+                            const _tempImages = Helper.cloneArray(tempImages);
+                            _tempImages.splice(index, 1);
+                            setTempImages(_tempImages);
+
+                            const _fileNames = Helper.cloneArray(fileNames);
+                            _fileNames.splice(index, 1);
+                            setFileNames(_fileNames);
+                          }
+                        } else {
+                          Helper.error();
+                        }
+                      } catch (err) {
+                        Helper.error();
+                      }
+                    }} />
                 </FormControl>
 
                 <FormControl fullWidth margin="dense">
@@ -230,7 +312,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
 
                 <FormControl fullWidth margin="dense">
                   <span className={`${styles.label} required`}>{cpStrings.DESCRIPTION}</span>
-                 
+
                   <Editor
                     editorState={editorState}
                     toolbarClassName="toolbarClassName"
@@ -351,15 +433,27 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
                     className='btn-secondary btn-margin-bottom'
                     size="small"
                     onClick={async () => {
-                      if (tempImage) {
-                        const status = await ProductService.deleteTempImage(tempImage);
+                      try {
+                        if (tempImage) {
+                          const status = await ProductService.deleteTempImage(tempImage);
 
-                        if (status !== 200) {
-                          Helper.error();
+                          if (status !== 200) {
+                            Helper.error();
+                          }
                         }
-                      }
 
-                      router.replace('/products');
+                        for (const image of tempImages) {
+                          const status = await ProductService.deleteTempImage(image);
+
+                          if (status !== 200) {
+                            Helper.error();
+                          }
+                        }
+
+                        router.replace('/products');
+                      } catch (err) {
+                        Helper.error();
+                      }
                     }}
                   >
                     {commonStrings.CANCEL}

@@ -44,6 +44,39 @@ export const deleteTempImage = (req, res) => {
     }
 };
 
+export const deleteImage = async (req, res) => {
+    try {
+        const { product: productId, image: imageFileName } = req.params;
+
+        const product = await Product.findById(productId);
+
+        if (product) {
+            const index = product.images.findIndex(i => i === imageFileName);
+
+            if (index > -1) {
+                const _image = path.join(CDN_PRODUCTS, imageFileName);
+                if (fs.existsSync(_image)) {
+                    fs.unlinkSync(_image);
+                }
+                product.images.splice(index, 1);
+                await product.save();
+                return res.sendStatus(200);
+            } else {
+                return res.sendStatus(204);
+            }
+
+        } else {
+            return res.sendStatus(204);
+        }
+
+
+        return res.sendStatus(200);
+    } catch (err) {
+        console.error(strings.ERROR, err);
+        return res.status(400).send(strings.ERROR + err);
+    }
+};
+
 export const create = async (req, res) => {
 
     let product;
@@ -99,7 +132,7 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
     try {
-        const { _id, categories, name, description, image, price, quantity, soldOut, hidden } = req.body;
+        const { _id, categories, name, description, image, price, quantity, soldOut, hidden, tempImages } = req.body;
         const product = await Product.findById(_id);
 
         if (product) {
@@ -111,11 +144,11 @@ export const update = async (req, res) => {
             product.soldOut = soldOut;
             product.hidden = hidden;
 
-            if (image) {
-                if (!fs.existsSync(CDN_PRODUCTS)) {
-                    fs.mkdirSync(CDN_PRODUCTS, { recursive: true });
-                }
+            if (!fs.existsSync(CDN_PRODUCTS)) {
+                fs.mkdirSync(CDN_PRODUCTS, { recursive: true });
+            }
 
+            if (image) {
                 const oldImage = path.join(CDN_PRODUCTS, product.image);
                 if (fs.existsSync(oldImage)) {
                     fs.unlinkSync(oldImage);
@@ -127,6 +160,20 @@ export const update = async (req, res) => {
                 const tempImagePath = path.join(CDN_TEMP_PRODUCTS, image);
                 fs.renameSync(tempImagePath, filepath);
                 product.image = filename;
+            }
+
+            // images
+            for (let i = 0; i < tempImages.length; i++) {
+                const imageFile = tempImages[i];
+                const _image = path.join(CDN_TEMP_PRODUCTS, imageFile);
+
+                if (fs.existsSync(_image)) {
+                    const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`;
+                    const newPath = path.join(CDN_PRODUCTS, filename);
+
+                    fs.renameSync(_image, newPath);
+                    product.images.push(filename);
+                }
             }
 
             await product.save();

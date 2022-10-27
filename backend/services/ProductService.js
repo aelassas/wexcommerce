@@ -17,6 +17,10 @@ export default class ProductService {
         return axios.post(`${Env.API_HOST}/api/delete-temp-image/${encodeURIComponent(fileName)}`, null, { headers: UserService.authHeader() }).then(res => res.status);
     }
 
+    static deleteImage(productId, fileName) {
+        return axios.post(`${Env.API_HOST}/api/delete-image/${productId}/${encodeURIComponent(fileName)}`, null, { headers: UserService.authHeader() }).then(res => res.status);
+    }
+
     static createProduct(data) {
         return axios.post(`${Env.API_HOST}/api/create-product`, data, { headers: UserService.authHeader() }).then(res => ({ status: res.status, data: res.data }));
     }
