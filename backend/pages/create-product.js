@@ -21,15 +21,24 @@ import { useRouter } from 'next/router';
 import Error from '../components/Error';
 import Env from '../config/env.config';
 import ImageEditor from '../components/ImageEditor';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
 import styles from '../styles/create-product.module.css';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-export default function CreateProduct({ _user, _signout }) {
+let htmlToDraft = null;
+let Editor = null;
+if (typeof window === 'object') {
+  htmlToDraft = require('html-to-draftjs').default;
+  Editor = require('react-draft-wysiwyg').Editor;
+}
+
+export default function CreateProduct({ _user, _signout, _language }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -39,6 +48,7 @@ export default function CreateProduct({ _user, _signout }) {
   const [tempImages, setTempImages] = useState([]);
   const [imageError, setImageError] = useState(false);
   const [fileNames, setFileNames] = useState([]);
+  const [editorState, setEditorState] = useState();
 
   const uploadImageRef = useRef(null);
   const uploadImagesRef = useRef(null);
@@ -59,6 +69,13 @@ export default function CreateProduct({ _user, _signout }) {
     Helper.setLanguage(strings);
     Helper.setLanguage(commonStrings);
     Helper.setLanguage(masterStrings);
+  }, []);
+
+  useEffect(() => {
+    const contentBlock = htmlToDraft('');
+    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+    const editorState = EditorState.createWithContent(contentState);
+    setEditorState(editorState);
   }, []);
 
   const handleResend = async (e) => {
@@ -128,6 +145,10 @@ export default function CreateProduct({ _user, _signout }) {
     }
   };
 
+  const onEditorStateChange = (state) => {
+    setEditorState(state);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -140,6 +161,8 @@ export default function CreateProduct({ _user, _signout }) {
       const _categories = categories.map(c => c._id);
       const _price = parseFloat(price);
       const _quantity = parseInt(quantity);
+      const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+
       const data = {
         name,
         description,
@@ -264,18 +287,21 @@ export default function CreateProduct({ _user, _signout }) {
                 />
               </FormControl>
 
-              <FormControl fullWidth margin="dense">
-                <InputLabel className='required'>{strings.DESCRIPTION}</InputLabel>
-                <Input
-                  type="text"
-                  value={description}
-                  required
-                  multiline
-                  minRows={3}
-                  onChange={(e) => {
-                    setDescription(e.target.value);
+              <FormControl fullWidth margin="dense" className={styles.editorField}>
+                <span className={`${styles.label} required`}>{strings.DESCRIPTION}</span>
+
+                <Editor
+                  editorState={editorState}
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="wrapperClassName"
+                  editorClassName={styles.editor}
+                  onEditorStateChange={onEditorStateChange}
+                  toolbar={{
+                    options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'image', 'remove', 'history'],
                   }}
-                  autoComplete="off"
+                  localization={{
+                    locale: _language
+                  }}
                 />
               </FormControl>
 
@@ -409,7 +435,8 @@ export default function CreateProduct({ _user, _signout }) {
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _product = null;
+  let _user = null, _signout = false;
+  const _language = UserService.getLanguage(context);
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -444,6 +471,7 @@ export async function getServerSideProps(context) {
     props: {
       _user,
       _signout,
+      _language
     }
   };
 }

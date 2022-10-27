@@ -25,9 +25,9 @@ import NoMatch from '../components/NoMatch';
 import CategorySelectList from '../components/CategorySelectList';
 import { useRouter } from 'next/router';
 import Env from '../config/env.config';
+import ImageEditor from '../components/ImageEditor';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import ImageEditor from '../components/ImageEditor';
 
 import styles from '../styles/update-product.module.css';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";

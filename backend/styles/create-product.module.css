@@ -68,3 +68,21 @@
 .form .error {
     margin-top: 15px;
 }
+
+.form .label {
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 400;
+    font-size: 12px;
+    display: block;
+    width: fit-content;
+    margin: 0 0 12px 12px;
+}
+
+.form .editorField {
+    z-index: 0;
+}
+.form .editor {
+    border: 1px solid #F1F1F1;
+    height: 500px;
+    overflow: auto;
+}
