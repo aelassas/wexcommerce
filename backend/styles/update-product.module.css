@@ -72,6 +72,9 @@
     margin: 0 0 12px 12px;
 }
 
+.form .editorField {
+    z-index: 0;
+}
 .form .editor {
     border: 1px solid #F1F1F1;
     height: 500px;

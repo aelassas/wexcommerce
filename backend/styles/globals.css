@@ -4,10 +4,6 @@ body,
 #root {
   margin: 0;
   padding: 0;
-  /* width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden; */
 }
 
 #__next{
@@ -214,20 +210,10 @@ a {
 }
 
 @media only screen and (min-width: 600px) {
-  /* div.content {
-    top: 65px !important;
-  } */
 }
-
 
 @media only screen and (max-width: 960px) {
   div.content {
-    /* position: absolute;
-    top: 55px;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    overflow: hidden; */
     margin: 0;
     padding: 0;
   }

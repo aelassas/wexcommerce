@@ -310,7 +310,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
                   />
                 </FormControl>
 
-                <FormControl fullWidth margin="dense">
+                <FormControl fullWidth margin="dense" className={styles.editorField}>
                   <span className={`${styles.label} required`}>{cpStrings.DESCRIPTION}</span>
 
                   <Editor
