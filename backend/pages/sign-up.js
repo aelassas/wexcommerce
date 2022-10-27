@@ -177,7 +177,6 @@ export default function SignUp() {
         <>
             <Header />
             <div className='content'>
-                <div className={styles.signup}>
                     <Paper className={styles.signupForm} elevation={10}>
                         <h1 className={styles.signupFormTitle}> {strings.SIGN_UP_HEADING} </h1>
                         <form onSubmit={handleSubmit}>
@@ -268,7 +267,6 @@ export default function SignUp() {
                             </div>
                         </form>
                     </Paper>
-                </div>
             </div>
             {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
         </>
