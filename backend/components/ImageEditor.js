@@ -42,7 +42,8 @@ export default function ImageEditor({ title, images, onDelete }) {
                                 onClick={(e) => {
                                     setImage(image);
                                     setIndex(index);
-                                    setOpenDeleteDialog(true);
+                                    // setOpenDeleteDialog(true);
+                                    if (onDelete) onDelete(image, index);
                                 }}>
                                 <DeleteIcon className={styles.button} />
                             </span>

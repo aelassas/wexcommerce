@@ -132,7 +132,7 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
     try {
-        const { _id, categories, name, description, image, price, quantity, soldOut, hidden, tempImages } = req.body;
+        const { _id, categories, name, description, image, price, quantity, soldOut, hidden, images, tempImages } = req.body;
         const product = await Product.findById(_id);
 
         if (product) {
@@ -162,7 +162,19 @@ export const update = async (req, res) => {
                 product.image = filename;
             }
 
-            // images
+            // delete deleted images
+            for (const image of product.images) {
+                if (!images.includes(image)) {
+                    const _image = path.join(CDN_PRODUCTS, image);
+                    if (fs.existsSync(_image)) {
+                        fs.unlinkSync(_image);
+                    }
+                    const index = product.images.indexOf(image);
+                    product.images.splice(index, 1);
+                }
+            }
+
+            // add temp images
             for (let i = 0; i < tempImages.length; i++) {
                 const imageFile = tempImages[i];
                 const _image = path.join(CDN_TEMP_PRODUCTS, imageFile);

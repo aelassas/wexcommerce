@@ -27,10 +27,10 @@ import { useRouter } from 'next/router';
 import Env from '../config/env.config';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import ImageEditor from '../components/ImageEditor';
 
 import styles from '../styles/update-product.module.css';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import ImageEditor from '../components/ImageEditor';
 
 let htmlToDraft = null;
 let Editor = null;
@@ -192,6 +192,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
         quantity: _quantity,
         soldOut,
         hidden,
+        images: images.filter(i => !i.temp).map(i => i.src),
         tempImages
       };
       if (tempImage) data.image = tempImage;
@@ -267,19 +268,14 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
                     images={images}
                     onDelete={async (image, index) => {
                       try {
-                        let status;
+                        const _images = Helper.cloneArray(images);
+                        _images.splice(index, 1);
+                        setImages(_images);
+
                         if (image.temp) {
-                          status = await ProductService.deleteTempImage(image.src);
-                        } else {
-                          status = await ProductService.deleteImage(_product._id, image.src);
-                        }
+                          const status = await ProductService.deleteTempImage(image.src);
 
-                        if (status === 200) {
-                          const _images = Helper.cloneArray(images);
-                          _images.splice(index, 1);
-                          setImages(_images);
-
-                          if (image.temp) {
+                          if (status === 200) {
                             const _tempImages = Helper.cloneArray(tempImages);
                             _tempImages.splice(index, 1);
                             setTempImages(_tempImages);
@@ -287,10 +283,11 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
                             const _fileNames = Helper.cloneArray(fileNames);
                             _fileNames.splice(index, 1);
                             setFileNames(_fileNames);
+                          } else {
+                            Helper.error();
                           }
-                        } else {
-                          Helper.error();
                         }
+
                       } catch (err) {
                         Helper.error();
                       }
