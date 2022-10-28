@@ -224,7 +224,7 @@ export const update = async (req, res) => {
                     + message + '<br><br>'
                     + strings.ORDER_CONFIRMED_PART_3 + '<br><br>'
 
-                    + Helper.joinURL(FRONTEND_HOST, 'order')
+                    + Helper.joinURL(FRONTEND_HOST, 'orders')
                     + '?o=' + encodeURIComponent(order._id)
                     + '<br><br>'
 
