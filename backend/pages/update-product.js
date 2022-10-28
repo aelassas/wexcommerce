@@ -312,16 +312,15 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
 
                   <Editor
                     editorState={editorState}
-                    toolbarClassName="toolbarClassName"
-                    wrapperClassName="wrapperClassName"
                     editorClassName={styles.editor}
                     onEditorStateChange={onEditorStateChange}
                     toolbar={{
-                      options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'image', 'remove', 'history'],
+                      options: ['inline', 'blockType', 'fontSize', 'link', 'embedded', 'list', 'textAlign', 'colorPicker', 'image', 'remove', 'history'],
                     }}
                     localization={{
                       locale: _language
                     }}
+                    stripPastedStyles
                   />
                 </FormControl>
 

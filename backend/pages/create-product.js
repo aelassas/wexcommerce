@@ -292,16 +292,15 @@ export default function CreateProduct({ _user, _signout, _language }) {
 
                 <Editor
                   editorState={editorState}
-                  toolbarClassName="toolbarClassName"
-                  wrapperClassName="wrapperClassName"
                   editorClassName={styles.editor}
                   onEditorStateChange={onEditorStateChange}
                   toolbar={{
-                    options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'image', 'remove', 'history'],
+                    options: ['inline', 'blockType', 'fontSize', 'link', 'embedded', 'list', 'textAlign', 'colorPicker', 'image', 'remove', 'history'],
                   }}
                   localization={{
                     locale: _language
                   }}
+                  stripPastedStyles
                 />
               </FormControl>
 
