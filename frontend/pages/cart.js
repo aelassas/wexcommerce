@@ -41,10 +41,10 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    if (_user) {
+    if (_cart || _empty) {
       setLoading(false);
     }
-  }, [_user]);
+  }, [_cart, _empty]);
 
   useEffect(() => {
     if (_signout) {
