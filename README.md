@@ -68,8 +68,8 @@ SC_ADMIN_EMAIL = poweredge-840@hotmail.com
 SC_CDN_PRODUCTS = C:\inetpub\wwwroot\cdn\shopping-cart\products
 SC_CDN_TEMP_PRODUCTS = C:\inetpub\wwwroot\cdn\shopping-cart\temp\products
 SC_DEFAULT_LANGUAGE = fr
-SC_BACKEND_HOST = http://localhost:5001/
-SC_FRONTEND_HOST = http://localhost:5000/
+SC_BACKEND_HOST = http://localhost:8002/
+SC_FRONTEND_HOST = http://localhost:8001/
 ```
 
 # backend/.env
