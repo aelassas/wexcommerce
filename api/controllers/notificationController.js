@@ -36,92 +36,6 @@ export const notificationCounter = (req, res) => {
         });
 };
 
-export const notify = async (req, res) => {
-    const notification = new Notification(req.body);
-    notification.save()
-        .then(notification => {
-            User.findById(notification.user)
-                .then(user => {
-                    if (user) {
-                        NotificationCounter.findOne({ user: notification.user })
-                            .then(async counter => {
-                                if (user.enableEmailNotifications) {
-                                    strings.setLanguage(user.language);
-
-                                    const transporter = nodemailer.createTransport({
-                                        host: SMTP_HOST,
-                                        port: SMTP_PORT,
-                                        auth: {
-                                            user: SMTP_USER,
-                                            pass: SMTP_PASS
-                                        }
-                                    });
-
-                                    const mailOptions = {
-                                        from: SMTP_FROM,
-                                        to: user.email,
-                                        subject: strings.NOTIFICATION_SUBJECT,
-                                        html: '<p ' + (user.language === 'ar' ? 'dir="rtl"' : ')') + '>'
-                                            + strings.HELLO + user.fullName + ',<br><br>'
-                                            + strings.NOTIFICATION_BODY + '<br><br>'
-                                            + '---<br>'
-                                            + notification.message + '<br><br>'
-                                            + (notification.isLink ? ('<a href="' + notification.link + '">' + strings.NOTIFICATION_LINK + '</a>' + '<br>') : '')
-                                            + '<a href="' + 'http' + (HTTPS ? 's' : '') + ':\/\/' + APP_HOST + '\/notifications' + '">' + strings.NOTIFICATIONS_LINK + '</a>'
-                                            + '<br>---'
-                                            + '<br><br>' + strings.REGARDS + '<br>'
-                                            + '</p>'
-                                    };
-
-                                    await transporter.sendMail(mailOptions, (err, info) => {
-                                        if (err) {
-                                            console.error(strings.SMTP_ERROR, err);
-                                            res.status(400).send(strings.SMTP_ERROR + err);
-                                        }
-                                    });
-                                }
-
-                                if (counter) {
-                                    counter.count = counter.count + 1;
-                                    counter.save()
-                                        .then(ct => {
-                                            res.sendStatus(200);
-                                        })
-                                        .catch(err => {
-                                            console.error(strings.DB_ERROR, err);
-                                            res.status(400).send(strings.DB_ERROR + err);
-                                        });
-                                } else {
-                                    const cnt = new NotificationCounter({ user: notification.user, count: 1 });
-                                    cnt.save()
-                                        .then(n => {
-                                            res.sendStatus(200);
-                                        })
-                                        .catch(err => {
-                                            console.error(strings.DB_ERROR, err);
-                                            res.status(400).send(strings.DB_ERROR + err);
-                                        });
-                                }
-                            })
-                            .catch(err => {
-                                console.error(strings.DB_ERROR, err);
-                                res.status(400).send(strings.DB_ERROR + err);
-                            });
-                    } else {
-                        console.error(strings.DB_ERROR, err);
-                        res.status(400).send(strings.DB_ERROR + err);
-                    }
-                })
-                .catch(err => {
-                    console.error(strings.DB_ERROR, err);
-                    res.status(400).send(strings.DB_ERROR + err);
-                });
-        })
-        .catch(err => {
-            res.status(400).send(strings.DB_ERROR + err)
-        });
-};
-
 export const getNotifications = async (req, res) => {
     try {
         const userId = mongoose.Types.ObjectId(req.params.userId);
@@ -130,10 +44,10 @@ export const getNotifications = async (req, res) => {
 
         // await Notification.deleteMany();
         // await NotificationCounter.deleteMany();
-        // for (let i = 1; i <= 45; i++) {
-        //     // 63493d057ade381e52c01b5c (poweredge-840@hotmail.com) Nouvelle commande ${i} effectuée.
+        // for (let i = 1; i <= 35; i++) {
+        //     // 635a6ddd2c487867f759015e (poweredge-840@hotmail.com) Nouvelle commande ${i} effectuée.
         //     // 63497dc164b5af0b1d9971cb (akram.elassas@gmail.com) commande ${i} a été mis à jour.
-        //     await new Notification({ user: '63493d057ade381e52c01b5c', message: `Nouvelle commande ${i} effectuée.` }).save();
+        //     await new Notification({ user: '635a6e4b2c487867f759018b', message: `commande ${i} a été mis à jour.`, order: '635d0172fe37050901839dd8' }).save();
         // }
 
         const notifications = await Notification.aggregate([

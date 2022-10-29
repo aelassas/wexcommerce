@@ -319,35 +319,51 @@ export const getOrder = async (req, res) => {
 };
 
 export const getOrders = async (req, res) => {
-    // TODO search by date
     try {
 
-        // const orderItem1 = new OrderItem({ product: '634ae2f223d738415ba21643', quantity: 1 });
+        // let orderItem1 = new OrderItem({ product: '635c9ef7f0d1be5323e017ca', quantity: 1 }); // 779 DH
         // await orderItem1.save();
 
-        // const orderItem2 = new OrderItem({ product: '634ae2f223d738415ba21641', quantity: 1 });
+        // let orderItem2 = new OrderItem({ product: '635c9ea8f0d1be5323e017bf', quantity: 1 }); // 129 DH
         // await orderItem2.save();
 
-        // for (let i = 1; i <= 30; i++) {
-        //     // const orderItems = i % 2 === 0 ? [orderItem1._id, orderItem2._id] : [orderItem1._id];
-        //     const orderItems = i % 2 === 0 ? ['634e7032a709bf94cbb449ca', '634e7032a709bf94cbb449cc'] : ['634e7032a709bf94cbb449ca'];
+        // let orderItem3 = new OrderItem({ product: '635c9ce6f0d1be5323e0176d', quantity: 1 }); // 259 DH
+        // await orderItem3.save();
+
+        // let orderItem4 = new OrderItem({ product: '635ba45ec385996e012c7fe3', quantity: 1 }); // 3749 DH
+        // await orderItem4.save();
+
+        // for (let i = 1; i <= 20; i++) {
+        //     const orderItems = i % 2 === 0 ? [orderItem1._id] : i % 3 === 0 ? [orderItem2._id] : [orderItem3._id, orderItem4._id];
         //     const order = new Order({
-        //         user: '63497dc164b5af0b1d9971cb',
+        //         user: '635a6e4b2c487867f759018b',
         //         paymentType: i % 2 === 0 ? Env.PAYMENT_TYPE.CREDIT_CARD : Env.PAYMENT_TYPE.COD,
-        //         total: i % 2 === 0 ? 69000 : 68000,
+        //         total: i % 2 === 0 ? 779 : i % 3 === 0 ? 129 : (259 + 3749),
         //         status: i % 2 === 0 ? Env.ORDER_STATUS.PAID : Env.ORDER_STATUS.PENDING,
         //         orderItems
         //     });
         //     await order.save();
         // }
 
-        // for (let i = 1; i <= 5; i++) {
-        //     const orderItems = i % 2 === 0 ? ['634e7032a709bf94cbb449ca', '634e7032a709bf94cbb449cc'] : ['634e7032a709bf94cbb449ca'];
+        // orderItem1 = new OrderItem({ product: '635ac292157b7d4b11a90763', quantity: 1 }); // 2799 DH
+        // await orderItem1.save();
+
+        // orderItem2 = new OrderItem({ product: '635ac2f4157b7d4b11a9076e', quantity: 1 }); // 3599 DH
+        // await orderItem2.save();
+
+        // orderItem3 = new OrderItem({ product: '635ca003f0d1be5323e017fb', quantity: 1 }); // 1499 DH
+        // await orderItem3.save();
+
+        // orderItem4 = new OrderItem({ product: '635c9daff0d1be5323e0178e', quantity: 1 }); // 169 DH
+        // await orderItem4.save();
+
+        // for (let i = 1; i <= 20; i++) {
+        //     const orderItems = i % 2 === 0 ? [orderItem1._id] : i % 3 === 0 ? [orderItem2._id] : [orderItem3._id, orderItem4._id];
         //     const order = new Order({
-        //         user: '634c3dd6b948c634fdf109de',
-        //         paymentType: i % 2 === 0 ? Env.PAYMENT_TYPE.CREDIT_CARD : Env.PAYMENT_TYPE.COD,
-        //         total: i % 2 === 0 ? 69000 : 68000,
-        //         status: i % 2 === 0 ? Env.ORDER_STATUS.PAID : Env.ORDER_STATUS.PENDING,
+        //         user: '635cff6c2c43b079ad9d25c8',
+        //         paymentType: i % 2 === 0 ? Env.PAYMENT_TYPE.WIRE_TRANSFER : Env.PAYMENT_TYPE.CREDIT_CARD,
+        //         total: i % 2 === 0 ? 2799 : i % 3 === 0 ? 3599 : (1499 + 169),
+        //         status: i % 2 === 0 ? Env.ORDER_STATUS.CONFIRMED : i % 3 === 0 ? Env.ORDER_STATUS.IN_PROGRESS : Env.ORDER_STATUS.PAID,
         //         orderItems
         //     });
         //     await order.save();
