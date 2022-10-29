@@ -3,11 +3,37 @@
 
 # Prerequisites
 
+## Windows (IIS)
+
 Create theses directories:
 
 ```
 C:\inetpub\wwwroot\cdn\shopping-cart\products
 C:\inetpub\wwwroot\cdn\shopping-cart\temp\products
+```
+
+## Linux (NGINX)
+
+Create theses directories:
+
+```
+/var/www/cdn/shopping-cart/products
+/var/www/cdn/shopping-cart/temp/products
+```
+
+Update NGINX config (/etc/nginx/sites-available/default):
+
+```
+server {
+    listen 80 default_server;
+    server_name _;
+    
+    ...
+    
+    location /cdn {
+      alias /var/www/cdn;
+    }
+}
 ```
 
 # api/.env
