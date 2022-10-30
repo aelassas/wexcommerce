@@ -31,8 +31,8 @@ You can find instructions to run weeCommerce from code [here](https://github.com
 ## Frontend
 
 ![Frontend](__content/frontend-1.png)
-![Frontend](__content/frontend-7.png)
-![Frontend](__content/frontend-8.png)
+![Frontend](__content/frontend-7-bis.png)
+![Frontend](__content/frontend-8-bis.png)
 ![Frontend](__content/frontend-2.png)
 ![Frontend](__content/frontend-3.png)
 ![Frontend](__content/frontend-4.png)
