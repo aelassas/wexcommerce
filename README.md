@@ -20,11 +20,11 @@ weeCommerce backend and frontend are built with Node.js, Next.js and React.
 
 # Installation
 
-You can find installation instructions in the [wiki](https://github.com/aelassas/bookcars/wiki/Installation).
+You can find installation instructions in the [here](https://github.com/aelassas/weecommerce/wiki/Installation).
 
 # Run from code
 
-You can find instructions in the [wiki](https://github.com/aelassas/bookcars/wiki/Run-from-code) to run BookCars from code.
+You can find instructions to run weeCommerce from code [here](https://github.com/aelassas/weecommerce/wiki/Run-from-code).
 
 # Screenshots
 
