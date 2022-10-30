@@ -4,18 +4,18 @@ import PaymentType from '../models/PaymentType.js';
 
 export const init = async () => {
     try {
-        const _init = async (paymentType) => {
+        const _init = async (paymentType, enabled) => {
             const pt = await PaymentType.findOne({ name: paymentType });
 
             if (!pt) {
-                await new PaymentType({ name: paymentType, enabled: true }).save();
+                await new PaymentType({ name: paymentType, enabled }).save();
                 console.log(`Payment Type ${paymentType} created and enabled.`)
             }
         };
 
-        await _init(Env.PAYMENT_TYPE.CREDIT_CARD);
-        await _init(Env.PAYMENT_TYPE.COD);
-        await _init(Env.PAYMENT_TYPE.WIRE_TRANSFER);
+        await _init(Env.PAYMENT_TYPE.CREDIT_CARD, true);
+        await _init(Env.PAYMENT_TYPE.COD, true);
+        await _init(Env.PAYMENT_TYPE.WIRE_TRANSFER, false);
 
         return true;
     } catch (err) {

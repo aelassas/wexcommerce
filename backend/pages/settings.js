@@ -39,6 +39,7 @@ export default function Settings({ _user, _signout, _paymentTypes, _settings }) 
   const [address, setAddress] = useState('');
   const [paymentTypes, setPaymentTypes] = useState([]);
   const [paymentTypesWarning, setPaymentTypesWarning] = useState(false);
+  const [wireTransferWarning, setWireTransferWarning] = useState(false);
 
   const [language, setLanguage] = useState('');
   const [currency, setCurrency] = useState('');
@@ -169,6 +170,20 @@ export default function Settings({ _user, _signout, _paymentTypes, _settings }) 
       const count = paymentTypes.filter(pt => pt.enabled).length;
 
       if (count > 0) {
+
+        const index = paymentTypes.findIndex(pt => pt.enabled && pt.name === Env.PAYMENT_TYPE.WIRE_TRANSFER);
+
+        if (index > -1) {
+          const setting = await SettingService.getSettings();
+
+          if (!setting.bankName || !setting.accountHolder || !setting.rib || !setting.iban) {
+            const _paymentTypes = Helper.cloneArray(paymentTypes);
+            paymentTypes[index].enabled = false;
+            setPaymentTypes(_paymentTypes);
+            return setWireTransferWarning(true);
+          }
+        }
+
         const status = await PaymentTypeService.updatePaymentTypes(paymentTypes);
 
         if (status === 200) {
@@ -501,12 +516,15 @@ export default function Settings({ _user, _signout, _paymentTypes, _settings }) 
             <Dialog
               disableEscapeKeyDown
               maxWidth="xs"
-              open={paymentTypesWarning}
+              open={paymentTypesWarning || wireTransferWarning}
             >
               <DialogTitle className='dialog-header'>{commonStrings.INFO}</DialogTitle>
-              <DialogContent>{strings.PAYMENT_SETTINGS_WARNING}</DialogContent>
+              <DialogContent>{paymentTypesWarning ? strings.PAYMENT_SETTINGS_WARNING : wireTransferWarning ? strings.WIRE_TRANSFER_WARNING : ''}</DialogContent>
               <DialogActions className='dialog-actions'>
-                <Button onClick={() => setPaymentTypesWarning(false)} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
+                <Button onClick={() => {
+                  if (paymentTypesWarning) setPaymentTypesWarning(false);
+                  if (wireTransferWarning) setWireTransferWarning(false);
+                }} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
               </DialogActions>
             </Dialog>
           </div>

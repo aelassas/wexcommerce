@@ -6,6 +6,7 @@ import Order from '../models/Order.js';
 import OrderItem from '../models/OrderItem.js';
 import Notification from '../models/Notification.js';
 import NotificationCounter from '../models/NotificationCounter.js';
+import Setting from '../models/Setting.js';
 import { v1 as uuid } from 'uuid';
 import escapeStringRegexp from 'escape-string-regexp';
 import mongoose from 'mongoose';
@@ -107,6 +108,11 @@ export const create = async (req, res) => {
         // user confirmation email
         strings.setLanguage(_user.language);
 
+        let settings;
+        if (__order.paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER) {
+            settings = await Setting.findOne();
+        }
+
         let mailOptions = {
             from: SMTP_FROM,
             to: _user.email,
@@ -126,6 +132,14 @@ export const create = async (req, res) => {
                     : __order.paymentType === Env.PAYMENT_TYPE.COD ? strings.COD
                         : __order.paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? strings.WIRE_TRANSFER
                             : '') + '<br><br>'
+
+                + (__order.paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? (
+                    strings.WIRE_TRANSFER_PART_1 + '<br><br>'
+                    + '<b>' + strings.BANK_NAME + '</b> ' + settings.bankName + '<br>'
+                    + '<b>' + strings.ACCOUNT_HOLDER + '</b> ' + settings.accountHolder + '<br>'
+                    + '<b>' + strings.RIB + '</b> ' + settings.rib + '<br>'
+                    + '<b>' + strings.IBAN + '</b> ' + settings.iban + '<br><br>'
+                ) : '')
 
                 + (__order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.PAID + '<br><br>' : '')
 

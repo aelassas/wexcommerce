@@ -47,6 +47,12 @@ export default new LocalizedStrings.default({
         PAID: 'Le paiement par carte bancaire a été effectué avec succès.',
         NEW_ORDER: 'a effectué la commande',
         NEW_ORDER_SUBJECT: 'Nouvelle commande',
+
+        WIRE_TRANSFER_PART_1:'Voici les informations bancaire pour effectuer le virement :',
+        BANK_NAME: 'Nom de banque',
+        ACCOUNT_HOLDER: 'Titulaire',
+        RIB: 'RIB',
+        IBAN: 'IBAN',
     },
     en: {
         ERROR: 'Internal error: ',
@@ -94,5 +100,11 @@ export default new LocalizedStrings.default({
         PAID: 'The payment by credit card was made successfully.',
         NEW_ORDER: 'made the order',
         NEW_ORDER_SUBJECT: 'New order',
+
+        WIRE_TRANSFER_PART_1:'Here are bank details to make the transfer:',
+        BANK_NAME: 'Bank name',
+        ACCOUNT_HOLDER: 'Account holder',
+        RIB: 'RIB',
+        IBAN: 'IBAN',
     }
 });
