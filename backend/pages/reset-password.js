@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import UserService from '../services/UserService';
 import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
 import { strings as cpStrings } from '../lang/change-password';
-import { strings as rpStrings } from '../lang/forgot-password';
-import { strings } from '../lang/activate';
+import { strings as fpStrings } from '../lang/forgot-password';
+import { strings as activateStrings } from '../lang/activate';
+import { strings as masterStrings } from '../lang/master';
 import NoMatch from '../components/NoMatch';
 import {
     Input,
@@ -18,12 +18,11 @@ import * as Helper from '../common/Helper';
 import { useRouter } from "next/router";
 import Header from '../components/Header';
 import Link from 'next/link';
-import CartService from '../services/CartService';
 import SettingService from '../services/SettingService';
 
-import styles from '../styles/activate.module.css';
+import styles from '../styles/reset-password.module.css';
 
-export default function Activate({
+export default function ResetUserPassword({
     _noMatch,
     _userId,
     _email,
@@ -31,7 +30,8 @@ export default function Activate({
     _user,
     _signout,
     _resend,
-    _language }) {
+    _language
+}) {
     const router = useRouter();
 
     const [password, setPassword] = useState('');
@@ -43,7 +43,7 @@ export default function Activate({
         if (_language) {
             Helper.setLanguage(commonStrings, _language);
             Helper.setLanguage(cpStrings, _language);
-            Helper.setLanguage(rpStrings, _language);
+            Helper.setLanguage(fpStrings, _language);
         }
     }, [_language]);
 
@@ -140,14 +140,14 @@ export default function Activate({
     };
 
     return <>
-        <Header user={_user} language={_language} signout={_signout} hideSearch hideCart />
+        <Header user={_user} hideSearch hideSignIn />
         <div className='content'>
             {_resend && _email &&
                 <div className={styles.resend}>
                     <Paper className={styles.resendForm} elevation={10}>
-                        <h1>{strings.ACTIVATE_HEADING}</h1>
+                        <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
                         <div className={styles.resendFormContent}>
-                            <label>{strings.TOKEN_EXPIRED}</label>
+                            <label>{activateStrings.TOKEN_EXPIRED}</label>
                             <Button
                                 type="button"
                                 variant="contained"
@@ -155,10 +155,10 @@ export default function Activate({
                                 className={`btn-primary ${styles.btnResend}`}
                                 onClick={async () => {
                                     try {
-                                        const status = await UserService.resend(_email, false);
+                                        const status = await UserService.resend(_email, true);
 
                                         if (status === 200) {
-                                            Helper.info(commonStrings.ACTIVATION_EMAIL_SENT);
+                                            Helper.info(commonStrings.RESET_PASSWORD_EMAIL_SENT);
                                         } else {
                                             Helper.error();
                                         }
@@ -174,9 +174,9 @@ export default function Activate({
             }
 
             {_userId && _email && _token && !_user && !_noMatch && !_resend &&
-                <div className={styles.activate}>
-                    <Paper className={styles.activateForm} elevation={10}>
-                        <h1>{strings.ACTIVATE_HEADING}</h1>
+                <div className={styles.resetUserPassword}>
+                    <Paper className={styles.resetUserPasswordForm} elevation={10}>
+                        <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
                         <form onSubmit={handleSubmit}>
                             <FormControl fullWidth margin="dense">
                                 <InputLabel className='required' error={passwordLengthError}>
@@ -220,7 +220,7 @@ export default function Activate({
                                     size="small"
                                     variant='contained'
                                 >
-                                    {strings.ACTIVATE}
+                                    {commonStrings.UPDATE}
                                 </Button>
                                 <Button
                                     className='btn-secondary btn-margin-bottom'
@@ -245,22 +245,22 @@ export default function Activate({
 export async function getServerSideProps(context) {
     const { u: userId, e: email, t: token } = context.query;
 
-    let _noMatch = false, _userId = '', _email = '', _token = '', _user = null,
-        isUser = false, _signout = false, _resend = false, _language = '';
+    let _noMatch = false, _userId = '', _email = '', _token = '',
+        _user = null, isAdmin = false, _signout = false, _resend = false,
+        _language = '';
 
     try {
         _language = await SettingService.getLanguage();
 
         if (userId && email && token) {
-            isUser = await UserService.isUser(email);
+            isAdmin = await UserService.isAdmin(email);
         }
 
         const currentUser = UserService.getCurrentUser(context);
 
         if (userId && email && token) {
-            if (isUser) {
+            if (isAdmin) {
                 const status = await UserService.checkToken(userId, email, token);
-
                 _userId = userId;
                 _email = email;
                 _token = token;
@@ -276,7 +276,7 @@ export async function getServerSideProps(context) {
         }
 
         if (currentUser) {
-            if (isUser) {
+            if (isAdmin) {
                 let status;
                 try {
                     status = await UserService.validateAccessToken(context);
@@ -291,7 +291,6 @@ export async function getServerSideProps(context) {
                         _noMatch = true;
                     }
                 } else {
-                    CartService.deleteCartId(context);
                     _signout = true;
                 }
             } else {

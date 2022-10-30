@@ -204,7 +204,7 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category, _
             </Paper>
           }
 
-          {_noMatch && <NoMatch />}
+          {_noMatch && <NoMatch language={_language} />}
         </div>
       }
 

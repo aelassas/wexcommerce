@@ -132,7 +132,7 @@ export default function Notifications({
                 _user.verified &&
                 <div className={styles.notifications}>
 
-                    {_noMatch && <NoMatch className={styles.noMatch} />}
+                    {_noMatch && <NoMatch language={_language} className={styles.noMatch} />}
 
                     {
                         !_noMatch && totalRecords === 0 &&

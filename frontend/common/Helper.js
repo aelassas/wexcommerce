@@ -16,8 +16,8 @@ export const error = (msg) => {
     toast(msg || commonStrings.GENERIC_ERROR, { type: 'error' });
 };
 
-export const setLanguage = (strings) => {
-    strings.setLanguage(UserService.getLanguage());
+export const setLanguage = (strings, language) => {
+    strings.setLanguage(language);
 };
 
 export const joinURL = (part1, part2) => {
@@ -60,8 +60,8 @@ export const getPaymentTypes = () => {
     return [Env.PAYMENT_TYPE.CREDIT_CARD, Env.PAYMENT_TYPE.COD, Env.PAYMENT_TYPE.WIRE_TRANSFER];
 };
 
-export const getPaymentType = (paymentType) => {
-    setLanguage(commonStrings);
+export const getPaymentType = (paymentType, language) => {
+    setLanguage(commonStrings, language);
 
     return paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? commonStrings.CREDIT_CARD
         : paymentType === Env.PAYMENT_TYPE.COD ? commonStrings.COD
@@ -81,8 +81,8 @@ export const getOrderStatuses = () => {
 };
 
 
-export const getOrderStatus = (orderStatus) => {
-    setLanguage(osStrings);
+export const getOrderStatus = (orderStatus, language) => {
+    setLanguage(osStrings, language);
 
     return orderStatus === Env.ORDER_STATUS.PENDING ? osStrings.PENDING
         : orderStatus === Env.ORDER_STATUS.PAID ? osStrings.PAID

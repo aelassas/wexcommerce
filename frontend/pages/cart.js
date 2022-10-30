@@ -26,10 +26,11 @@ import { useRouter } from 'next/router';
 import Env from '../config/env.config';
 import SoldOut from '../components/SoldOut';
 import Link from 'next/link';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/cart.module.css';
 
-export default function Cart({ _user, _signout, _empty, _cart }) {
+export default function Cart({ _user, _language, _currency, _signout, _empty, _cart }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -53,10 +54,12 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
   }, [_signout]);
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+    }
+  }, [_language]);
 
   useEffect(() => {
     if (_cart) {
@@ -97,7 +100,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
   const iconStyle = { borderRadius: 1 };
 
   return <>
-    <Header user={_user} signout={_signout} cartCount={cartCount} />
+    <Header user={_user} language={_language} signout={_signout} cartCount={cartCount} />
     {
       ((_user && _user.verified) || !_user) &&
       <div className='content'>
@@ -124,7 +127,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
                         </div>
 
                       </Link>
-                      <span className={styles.price}>{`${Helper.formatNumber(cartItem.product.price)} ${commonStrings.CURRENCY}`}</span>
+                      <span className={styles.price}>{`${Helper.formatNumber(cartItem.product.price)} ${_currency}`}</span>
                     </div>
                     <div className={styles.actions}>
                       <Button
@@ -205,7 +208,7 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
               <div className={styles.title}>{strings.SUMMARY}</div>
               <div className={styles.price}>
                 <span>{commonStrings.SUBTOTAL}</span>
-                <span className={styles.price}>{`${Helper.formatNumber(total)} ${commonStrings.CURRENCY}`}</span>
+                <span className={styles.price}>{`${Helper.formatNumber(total)} ${_currency}`}</span>
               </div>
               <div className={styles.action}>
                 <Button
@@ -332,9 +335,12 @@ export default function Cart({ _user, _signout, _empty, _cart }) {
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _empty = false, _cart = null;
+  let _user = null, _signout = false, _empty = false, _cart = null, _language = '', _currency = '';
 
   try {
+    _language = await SettingService.getLanguage();
+    _currency = await SettingService.getCurrency();
+
     const currentUser = UserService.getCurrentUser(context);
 
     if (currentUser) {
@@ -392,7 +398,9 @@ export async function getServerSideProps(context) {
       _user,
       _signout,
       _empty,
-      _cart
+      _cart,
+      _language,
+      _currency
     }
   };
 }

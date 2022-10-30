@@ -514,7 +514,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
             </Paper>
           }
 
-          {_noMatch && <NoMatch />}
+          {_noMatch && <NoMatch language={_language} />}
         </div>
       }
 

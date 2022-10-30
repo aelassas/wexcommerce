@@ -19,17 +19,20 @@ import { useRouter } from "next/router";
 import Header from '../components/Header';
 import Link from 'next/link';
 import CartService from '../services/CartService';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/reset-password.module.css';
 
-export default function ResetUserPassword({
+export default function ResetPassword({
     _noMatch,
     _userId,
     _email,
     _token,
     _user,
     _signout,
-    _resend }) {
+    _resend,
+    _language
+}) {
     const router = useRouter();
 
     const [password, setPassword] = useState('');
@@ -38,10 +41,12 @@ export default function ResetUserPassword({
     const [passwordLengthError, setPasswordLengthError] = useState(false);
 
     useEffect(() => {
-        Helper.setLanguage(commonStrings);
-        Helper.setLanguage(cpStrings);
-        Helper.setLanguage(fpStrings);
-    }, []);
+        if (_language) {
+            Helper.setLanguage(commonStrings, _language);
+            Helper.setLanguage(cpStrings, _language);
+            Helper.setLanguage(fpStrings, _language);
+        }
+    }, [_language]);
 
     useEffect(() => {
         if (_signout) {
@@ -135,115 +140,121 @@ export default function ResetUserPassword({
         }
     };
 
-    return <>
-        <Header user={_user} hideSearch hideSignIn signout={_signout} />
-        <div className='content'>
-            {_resend && _email &&
-                <div className={styles.resend}>
-                    <Paper className={styles.resendForm} elevation={10}>
-                        <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
-                        <div className={styles.resendFormContent}>
-                            <label>{activateStrings.TOKEN_EXPIRED}</label>
-                            <Button
-                                type="button"
-                                variant="contained"
-                                size="small"
-                                className={`btn-primary ${styles.btnResend}`}
-                                onClick={async () => {
-                                    try {
-                                        const status = await UserService.resend(_email, true);
+    return (
+        _language &&
+        <>
+            <Header user={_user} language={_language} signout={_signout} hideSearch hideSignIn hideCart />
+            <div className='content'>
+                {_resend && _email &&
+                    <div className={styles.resend}>
+                        <Paper className={styles.resendForm} elevation={10}>
+                            <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
+                            <div className={styles.resendFormContent}>
+                                <label>{activateStrings.TOKEN_EXPIRED}</label>
+                                <Button
+                                    type="button"
+                                    variant="contained"
+                                    size="small"
+                                    className={`btn-primary ${styles.btnResend}`}
+                                    onClick={async () => {
+                                        try {
+                                            const status = await UserService.resend(_email, true);
 
-                                        if (status === 200) {
-                                            Helper.info(commonStrings.RESET_PASSWORD_EMAIL_SENT);
-                                        } else {
+                                            if (status === 200) {
+                                                Helper.info(commonStrings.RESET_PASSWORD_EMAIL_SENT);
+                                            } else {
+                                                Helper.error();
+                                            }
+                                        } catch (err) {
                                             Helper.error();
                                         }
-                                    } catch (err) {
-                                        Helper.error();
-                                    }
-                                }}
-                            >{masterStrings.RESEND}</Button>
-                            <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
-                        </div>
-                    </Paper>
-                </div>
-            }
-
-            {_userId && _email && _token && !_user && !_noMatch && !_resend &&
-                <div className={styles.resetUserPassword}>
-                    <Paper className={styles.resetUserPasswordForm} elevation={10}>
-                        <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
-                        <form onSubmit={handleSubmit}>
-                            <FormControl fullWidth margin="dense">
-                                <InputLabel className='required' error={passwordLengthError}>
-                                    {cpStrings.NEW_PASSWORD}
-                                </InputLabel>
-                                <Input
-                                    onChange={handlePasswordChange}
-                                    onBlur={handlePasswordBlur}
-                                    type='password'
-                                    error={passwordLengthError}
-                                    required
-                                />
-                                <FormHelperText
-                                    error={passwordLengthError}
-                                >
-                                    {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
-                                </FormHelperText>
-                            </FormControl>
-                            <FormControl fullWidth margin="dense" error={confirmPasswordError}>
-                                <InputLabel error={confirmPasswordError} className='required'>
-                                    {commonStrings.CONFIRM_PASSWORD}
-                                </InputLabel>
-                                <Input
-                                    onChange={handleConfirmPasswordChange}
-                                    onKeyDown={handleConfirmPasswordKeyDown}
-                                    onBlur={handleConfirmPasswordBlur}
-                                    error={confirmPasswordError}
-                                    type='password'
-                                    required
-                                />
-                                <FormHelperText
-                                    error={confirmPasswordError}
-                                >
-                                    {(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
-                                </FormHelperText>
-                            </FormControl>
-                            <div className='buttons'>
-                                <Button
-                                    type="submit"
-                                    className='btn-primary btn-margin btn-margin-bottom'
-                                    size="small"
-                                    variant='contained'
-                                >
-                                    {commonStrings.UPDATE}
-                                </Button>
-                                <Button
-                                    className='btn-secondary btn-margin-bottom'
-                                    size="small"
-                                    variant='contained'
-                                    onClick={() => {
-                                        router.replace('/');
                                     }}
-                                >
-                                    {commonStrings.CANCEL}
-                                </Button>
+                                >{masterStrings.RESEND}</Button>
+                                <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
                             </div>
-                        </form>
-                    </Paper>
-                </div>
-            }
-            {_noMatch && <NoMatch />}
-        </div>
-    </>;
+                        </Paper>
+                    </div>
+                }
+
+                {_userId && _email && _token && !_user && !_noMatch && !_resend &&
+                    <div className={styles.resetUserPassword}>
+                        <Paper className={styles.resetUserPasswordForm} elevation={10}>
+                            <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
+                            <form onSubmit={handleSubmit}>
+                                <FormControl fullWidth margin="dense">
+                                    <InputLabel className='required' error={passwordLengthError}>
+                                        {cpStrings.NEW_PASSWORD}
+                                    </InputLabel>
+                                    <Input
+                                        onChange={handlePasswordChange}
+                                        onBlur={handlePasswordBlur}
+                                        type='password'
+                                        error={passwordLengthError}
+                                        required
+                                    />
+                                    <FormHelperText
+                                        error={passwordLengthError}
+                                    >
+                                        {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
+                                    </FormHelperText>
+                                </FormControl>
+                                <FormControl fullWidth margin="dense" error={confirmPasswordError}>
+                                    <InputLabel error={confirmPasswordError} className='required'>
+                                        {commonStrings.CONFIRM_PASSWORD}
+                                    </InputLabel>
+                                    <Input
+                                        onChange={handleConfirmPasswordChange}
+                                        onKeyDown={handleConfirmPasswordKeyDown}
+                                        onBlur={handleConfirmPasswordBlur}
+                                        error={confirmPasswordError}
+                                        type='password'
+                                        required
+                                    />
+                                    <FormHelperText
+                                        error={confirmPasswordError}
+                                    >
+                                        {(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
+                                    </FormHelperText>
+                                </FormControl>
+                                <div className='buttons'>
+                                    <Button
+                                        type="submit"
+                                        className='btn-primary btn-margin btn-margin-bottom'
+                                        size="small"
+                                        variant='contained'
+                                    >
+                                        {commonStrings.UPDATE}
+                                    </Button>
+                                    <Button
+                                        className='btn-secondary btn-margin-bottom'
+                                        size="small"
+                                        variant='contained'
+                                        onClick={() => {
+                                            router.replace('/');
+                                        }}
+                                    >
+                                        {commonStrings.CANCEL}
+                                    </Button>
+                                </div>
+                            </form>
+                        </Paper>
+                    </div>
+                }
+                {_noMatch && <NoMatch language={_language} />}
+            </div>
+        </>
+    );
 }
 
 export async function getServerSideProps(context) {
     const { u: userId, e: email, t: token } = context.query;
 
-    let _noMatch = false, _userId = '', _email = '', _token = '', _user = null, isUser = false, _signout = false, _resend = false;
+    let _noMatch = false, _userId = '', _email = '', _token = '', _user = null,
+        isUser = false, _signout = false, _resend = false, _language = '';
 
     try {
+        _language = await SettingService.getLanguage();
+
         if (userId && email && token) {
             isUser = await UserService.isUser(email);
         }
@@ -303,7 +314,8 @@ export async function getServerSideProps(context) {
             _token,
             _user,
             _signout,
-            _resend
+            _resend,
+            _language
         }
     };
 }

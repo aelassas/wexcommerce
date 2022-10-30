@@ -73,12 +73,19 @@ export default function Header(props) {
         }
     }, [router.query]);
 
+    // useEffect(() => {
+    //     const language = UserService.getLanguage();
+    //     setLang(language);
+    //     Helper.setLanguage(strings);
+    //     Helper.setLanguage(commonStrings);
+    // }, []);
+
     useEffect(() => {
-        const language = UserService.getLanguage();
-        setLang(language);
-        Helper.setLanguage(strings);
-        Helper.setLanguage(commonStrings);
-    }, []);
+        if (props.language) {
+            Helper.setLanguage(commonStrings, props.language);
+            Helper.setLanguage(strings, props.language);
+        }
+    }, [props.language]);
 
     useEffect(() => {
         if (!props.hidden) {
@@ -141,7 +148,6 @@ export default function Header(props) {
             }
         }
     }, [props.signout]);
-
 
     const search = (keyword) => {
         const url = router.pathname.includes('/orders') ?
@@ -525,7 +531,7 @@ export default function Header(props) {
 
                         </Link>
                     }
-                    {(isLoaded && !loading) &&
+                    {/* {(isLoaded && !loading) &&
                         <Button
                             variant="contained"
                             startIcon={<LanguageIcon />}
@@ -535,7 +541,7 @@ export default function Header(props) {
                             className={styles.button}
                         >
                             {getLang(lang)}
-                        </Button>}
+                        </Button>} */}
                     {isSignedIn && <IconButton
                         edge="end"
                         aria-label="account"
@@ -546,7 +552,7 @@ export default function Header(props) {
                         className={styles.iconButton}
                         style={{ width: 52 }}
                     >
-                        <Avatar loggedUser={props.user} user={props.user} size="small" readonly />
+                        <Avatar loggedUser={props.user} language={props.language} user={props.user} size="small" readonly />
                     </IconButton>}
                 </div>
 
@@ -562,7 +568,7 @@ export default function Header(props) {
                                 <CartIcon />
                             </Badge>
                         </IconButton>}
-                        {(!isSignedIn && !loading) &&
+                        {/* {(!isSignedIn && !loading) &&
                             <Button
                                 variant="contained"
                                 startIcon={<LanguageIcon />}
@@ -573,7 +579,7 @@ export default function Header(props) {
                             >
                                 {getLang(lang)}
                             </Button>
-                        }
+                        } */}
                         {isSignedIn &&
                             <IconButton color="inherit" onClick={handleNotificationsClick} className={styles.iconButton}>
                                 <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">

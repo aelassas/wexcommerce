@@ -7,7 +7,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/order-status-filter.module.css';
 
-export default function OrderStatusFilter({ selectedOptions, onChange, className }) {
+export default function OrderStatusFilter({ language, selectedOptions, onChange, className }) {
     const statuses = Helper.getOrderStatuses();
     const [checkedStatuses, setCheckedStatuses] = useState(statuses);
     const [allChecked, setAllChecked] = useState(true);
@@ -101,7 +101,7 @@ export default function OrderStatusFilter({ selectedOptions, onChange, className
                     statuses.map((status, index) => (
                         <li key={status}>
                             <input ref={ref => refs.current[index] = ref} type='checkbox' data-value={status} className={styles.statusCheckbox} onChange={handleCheckOrderStatusChange} />
-                            <OrderStatus value={status} className={styles.statusLabel} onClick={handleOrderStatusClick} />
+                            <OrderStatus value={status} language={language} className={styles.statusLabel} onClick={handleOrderStatusClick} />
                         </li>
                     ))
                 }

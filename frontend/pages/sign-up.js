@@ -17,10 +17,11 @@ import * as Helper from '../common/Helper';
 import Env from '../config/env.config';
 import { useRouter } from "next/router";
 import Header from '../components/Header';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/signup.module.css';
 
-export default function SignUp() {
+export default function SignUp({ _language }) {
     const router = useRouter();
 
     const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
@@ -40,9 +41,11 @@ export default function SignUp() {
     const [address, setAddress] = useState('');
 
     useEffect(() => {
-        Helper.setLanguage(commonStrings);
-        Helper.setLanguage(strings);
-    }, []);
+        if (_language) {
+            Helper.setLanguage(commonStrings, _language);
+            Helper.setLanguage(strings, _language);
+        }
+    }, [_language]);
 
     useEffect(() => {
         const currentUser = UserService.getCurrentUser();
@@ -51,7 +54,8 @@ export default function SignUp() {
             router.replace('/');
         } else {
             setVisible(true);
-            setLanguage(UserService.getLanguage());
+            // setLanguage(UserService.getLanguage());
+            setLanguage(_language);
         }
     }, [router]);
 
@@ -163,7 +167,7 @@ export default function SignUp() {
                 address,
                 password,
                 fullName,
-                language
+                language: _language
             };
 
             const status = await UserService.signup(data);
@@ -196,9 +200,9 @@ export default function SignUp() {
     };
 
     return (
-        visible &&
+        visible && _language &&
         <>
-            <Header hideSearch />
+            <Header language={_language} hideSearch hideSignIn hideCart />
             <div className='content'>
                 <Paper className={styles.signupForm} elevation={10}>
                     <h1 className={styles.signupFormTitle}> {strings.SIGN_UP_HEADING} </h1>
@@ -331,3 +335,14 @@ export default function SignUp() {
         </>
     );
 }
+
+export async function getServerSideProps(context) {
+
+    const _language = await SettingService.getLanguage();
+
+    return {
+        props: {
+            _language
+        }
+    };
+};

@@ -16,10 +16,11 @@ import {
   FormHelperText
 } from '@mui/material';
 import CartService from '../services/CartService';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/change-password.module.css';
 
-export default function Settings({ _user, _signout }) {
+export default function Settings({ _user, _language, _signout }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -30,11 +31,13 @@ export default function Settings({ _user, _signout }) {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-    Helper.setLanguage(headerStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+      Helper.setLanguage(headerStrings, _language);
+    }
+  }, [_language]);
 
   useEffect(() => {
     if (_user) {
@@ -123,9 +126,9 @@ export default function Settings({ _user, _signout }) {
   };
 
   return (
-    !loading && _user &&
+    !loading && _user && _language &&
     <>
-      <Header user={_user} />
+      <Header user={_user} language={_language} />
       {
         _user.verified &&
         <div className={styles.content}>
@@ -256,7 +259,7 @@ export default function Settings({ _user, _signout }) {
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false;
+  let _user = null, _signout = false, _language = '';
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -272,7 +275,9 @@ export async function getServerSideProps(context) {
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
 
-        if (!_user) {
+        if (_user) {
+          _language = await SettingService.getLanguage();
+        } else {
           _signout = true;
         }
       } else {
@@ -290,6 +295,7 @@ export async function getServerSideProps(context) {
     props: {
       _user,
       _signout,
+      _language
     }
   };
 

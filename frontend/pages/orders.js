@@ -28,6 +28,7 @@ import PaymentTypeFilter from '../components/PaymentTypeFilter';
 import OrderStatusFilter from '../components/OrderStatusFilter';
 import OrderDateFilter from '../components/OrderDateFilter';
 import { useRouter } from 'next/router';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/orders.module.css';
 
@@ -35,6 +36,7 @@ export default function Orders({
   _user,
   _signout,
   _language,
+  _currency,
   _keyword,
   _page,
   _rowCount,
@@ -59,11 +61,13 @@ export default function Orders({
   const _locale = _fr ? fr : enUS;
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-    Helper.setLanguage(headerStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+      Helper.setLanguage(headerStrings, _language);
+    }
+  }, [_language]);
 
   useEffect(() => {
     if (_user) {
@@ -121,203 +125,206 @@ export default function Orders({
     }
   };
 
-  return !loading && _user &&
-  <>
-    <Header user={_user} />
-    {
-      _user.verified &&
-      <div className='content'>
+  return !loading && _user && _language &&
+    <>
+      <Header user={_user} language={_language} />
+      {
+        _user.verified &&
+        <div className='content'>
 
-        {_noMatch && <NoMatch />}
+          {_noMatch && <NoMatch language={_language} />}
 
-        {!_noMatch &&
-          <div className={styles.main}>
-            <div
-              ref={el => setLeftPanelRef(el)}
-              className={styles.leftPanel}
-            >
-              <PaymentTypeFilter
-                onChange={(paymentTypes) => {
-                  const pt = paymentTypes.join(',');
-                  const os = _statuses.join(',');
-                  const url = `/orders?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
-                  router.replace(url);
-                }}
-                selectedOptions={_paymentTypes}
-                className={styles.paymentTypeFilter}
-              />
+          {!_noMatch &&
+            <div className={styles.main}>
+              <div
+                ref={el => setLeftPanelRef(el)}
+                className={styles.leftPanel}
+              >
+                <PaymentTypeFilter
+                  onChange={(paymentTypes) => {
+                    const pt = paymentTypes.join(',');
+                    const os = _statuses.join(',');
+                    const url = `/orders?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    router.replace(url);
+                  }}
+                  selectedOptions={_paymentTypes}
+                  className={styles.paymentTypeFilter}
+                  language={_language}
+                />
 
-              <OrderStatusFilter
-                onChange={(statuses) => {
-                  const pt = _paymentTypes.join(',');
-                  const os = statuses.join(',');
-                  const url = `/orders?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
-                  router.replace(url);
-                }}
-                selectedOptions={_statuses}
-                className={styles.statusFilter}
-              />
+                <OrderStatusFilter
+                  onChange={(statuses) => {
+                    const pt = _paymentTypes.join(',');
+                    const os = statuses.join(',');
+                    const url = `/orders?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    router.replace(url);
+                  }}
+                  selectedOptions={_statuses}
+                  className={styles.statusFilter}
+                  language={_language}
+                />
 
-              <OrderDateFilter
-                language={_language}
-                from={from}
-                to={to}
-                onSubmit={(filter) => {
-                  const { from, to } = filter;
+                <OrderDateFilter
+                  from={from}
+                  to={to}
+                  onSubmit={(filter) => {
+                    const { from, to } = filter;
 
-                  const pt = _paymentTypes.join(',');
-                  const os = _statuses.join(',');
-                  const url = `/orders?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
-                  router.replace(url);
-                }}
-                className={styles.dateFilter}
-              />
-            </div>
+                    const pt = _paymentTypes.join(',');
+                    const os = _statuses.join(',');
+                    const url = `/orders?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    router.replace(url);
+                  }}
+                  className={styles.dateFilter}
+                  language={_language}
+                />
+              </div>
 
-            <div className={styles.orders}>
-              {
-                _totalRecords === 0 &&
-                <Card variant="outlined" className={styles.emptyList}>
-                  <CardContent>
-                    <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-                  </CardContent>
-                </Card>
-              }
+              <div className={styles.orders}>
+                {
+                  _totalRecords === 0 &&
+                  <Card variant="outlined" className={styles.emptyList}>
+                    <CardContent>
+                      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
+                    </CardContent>
+                  </Card>
+                }
 
-              {
-                _totalRecords > 0 &&
-                <>
-                  <div
-                    ref={el => setOrderListRef(el)}
-                    className={styles.orderList}
-                  >
-                    {
-                      _orders.map((order, index) => (
-                        <article key={order._id}>
-                          <div className={styles.order}>
-                            <div className={styles.orderContent}>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.ID}</span>
-                                <span>{order._id}</span>
-                              </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.STATUS}</span>
-                                <span>
-                                  {
-                                    <OrderStatus value={statuses[index]} />
-                                  }
-                                </span>
-                              </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
-                                <span><PaymentType value={order.paymentType} /></span>
-                              </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
-                                <div className={styles.orderItems}>
-                                  {
-                                    order.orderItems.map((orderItem) => (
-                                      <div key={orderItem._id} className={styles.orderItem}>
-                                        <div className={styles.orderItemInfo}>
-                                          <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
-                                          <span>
-                                            <Link
-                                              href={`/product?p=${orderItem.product._id}`}
-                                              className={styles.orderItemText}
-                                              title={orderItem.product.name}>
+                {
+                  _totalRecords > 0 &&
+                  <>
+                    <div
+                      ref={el => setOrderListRef(el)}
+                      className={styles.orderList}
+                    >
+                      {
+                        _orders.map((order, index) => (
+                          <article key={order._id}>
+                            <div className={styles.order}>
+                              <div className={styles.orderContent}>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.ID}</span>
+                                  <span>{order._id}</span>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.STATUS}</span>
+                                  <span>
+                                    {
+                                      <OrderStatus value={statuses[index]} language={_language} />
+                                    }
+                                  </span>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
+                                  <span><PaymentType value={order.paymentType} language={_language} /></span>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
+                                  <div className={styles.orderItems}>
+                                    {
+                                      order.orderItems.map((orderItem) => (
+                                        <div key={orderItem._id} className={styles.orderItem}>
+                                          <div className={styles.orderItemInfo}>
+                                            <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
+                                            <span>
+                                              <Link
+                                                href={`/product?p=${orderItem.product._id}`}
+                                                className={styles.orderItemText}
+                                                title={orderItem.product.name}>
 
-                                              {orderItem.product.name}
+                                                {orderItem.product.name}
 
-                                            </Link>
-                                          </span>
+                                              </Link>
+                                            </span>
+                                          </div>
+                                          <div className={styles.orderItemInfo}>
+                                            <span className={styles.orderItemLabel}>{commonStrings.PRICE}</span>
+                                            <span>{`${Helper.formatNumber(orderItem.product.price)} ${_currency}`}</span>
+                                          </div>
+                                          <div className={styles.orderItemInfo}>
+                                            <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
+                                            <span>{orderItem.quantity}</span>
+                                          </div>
                                         </div>
-                                        <div className={styles.orderItemInfo}>
-                                          <span className={styles.orderItemLabel}>{commonStrings.PRICE}</span>
-                                          <span>{`${Helper.formatNumber(orderItem.product.price)} ${commonStrings.CURRENCY}`}</span>
-                                        </div>
-                                        <div className={styles.orderItemInfo}>
-                                          <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
-                                          <span>{orderItem.quantity}</span>
-                                        </div>
-                                      </div>
-                                    ))
-                                  }
+                                      ))
+                                    }
+                                  </div>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.ORDERED_AT}</span>
+                                  <span>{Helper.capitalize(format(new Date(order.createdAt), _format, { locale: _locale }))}</span>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.TOTAL}</span>
+                                  <span>{`${Helper.formatNumber(order.total)} ${_currency}`}</span>
                                 </div>
                               </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.ORDERED_AT}</span>
-                                <span>{Helper.capitalize(format(new Date(order.createdAt), _format, { locale: _locale }))}</span>
-                              </div>
-                              <div className={styles.orderInfo}>
-                                <span className={styles.orderLabel}>{strings.TOTAL}</span>
-                                <span>{`${Helper.formatNumber(order.total)} ${commonStrings.CURRENCY}`}</span>
-                              </div>
                             </div>
-                          </div>
-                        </article>
-                      ))
-                    }
-                  </div>
-
-                  {
-                    (_page > 1 || _rowCount < _totalRecords) &&
-                    <div className={styles.footer}>
-
-                      <div className={styles.pager}>
-                        <div className={styles.rowCount}>
-                          {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
-                        </div>
-
-                        <div className={styles.actions}>
-
-                          <Link
-                            href={`/orders?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page - 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
-                            className={_page === 1 ? styles.disabled : ''}>
-
-                            <PreviousPageIcon className={styles.icon} />
-
-                          </Link>
-
-                          <Link
-                            href={`/orders?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page + 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
-                            className={_rowCount === _totalRecords ? styles.disabled : ''}>
-
-                            <NextPageIcon className={styles.icon} />
-
-                          </Link>
-                        </div>
-                      </div>
-
+                          </article>
+                        ))
+                      }
                     </div>
-                  }
-                </>
-              }
-            </div>
-          </div>
-        }
-      </div>
-    }
 
-    {
-      !_user.verified &&
-      <div className="validate-email">
-        <span>{masterStrings.VALIDATE_EMAIL}</span>
-        <Button
-          type="button"
-          variant="contained"
-          size="small"
-          className="btn-primary btn-resend"
-          onClick={handleResend}
-        >{masterStrings.RESEND}</Button>
-      </div>
-    }
-  </>;
+                    {
+                      (_page > 1 || _rowCount < _totalRecords) &&
+                      <div className={styles.footer}>
+
+                        <div className={styles.pager}>
+                          <div className={styles.rowCount}>
+                            {`${((_page - 1) * Env.PAGE_SIZE) + 1}-${_rowCount} ${commonStrings.OF} ${_totalRecords}`}
+                          </div>
+
+                          <div className={styles.actions}>
+
+                            <Link
+                              href={`/orders?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page - 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
+                              className={_page === 1 ? styles.disabled : ''}>
+
+                              <PreviousPageIcon className={styles.icon} />
+
+                            </Link>
+
+                            <Link
+                              href={`/orders?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page + 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
+                              className={_rowCount === _totalRecords ? styles.disabled : ''}>
+
+                              <NextPageIcon className={styles.icon} />
+
+                            </Link>
+                          </div>
+                        </div>
+
+                      </div>
+                    }
+                  </>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      {
+        !_user.verified &&
+        <div className="validate-email">
+          <span>{masterStrings.VALIDATE_EMAIL}</span>
+          <Button
+            type="button"
+            variant="contained"
+            size="small"
+            className="btn-primary btn-resend"
+            onClick={handleResend}
+          >{masterStrings.RESEND}</Button>
+        </div>
+      }
+    </>;
 };
 
 export async function getServerSideProps(context) {
   let _user = null, __user = null, _signout = false, _page = 1, _keyword = '',
-    _totalRecords = 0, _rowCount = 0, _orders = [], _noMatch = false, _paymentTypes = [], _statuses = [], _from = null, _to = null;
-  const _language = UserService.getLanguage(context);
+    _totalRecords = 0, _rowCount = 0, _orders = [], _noMatch = false,
+    _paymentTypes = [], _statuses = [], _from = null, _to = null, _language = '', _currency = '';
+
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -366,6 +373,9 @@ export async function getServerSideProps(context) {
               _statuses = Helper.getOrderStatuses();
             }
 
+            _language = await SettingService.getLanguage();
+            _currency = await SettingService.getCurrency();
+
             if (_page >= 1) {
               const data = await OrderService.getOrders(
                 context,
@@ -409,6 +419,7 @@ export async function getServerSideProps(context) {
       _user,
       _signout,
       _language,
+      _currency,
       _keyword,
       _page,
       _rowCount,

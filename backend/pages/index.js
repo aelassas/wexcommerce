@@ -141,7 +141,7 @@ export default function Home({
         _user.verified &&
         <div className='content'>
 
-          {_noMatch && <NoMatch />}
+          {_noMatch && <NoMatch language={_language} />}
 
           {!_noMatch &&
             <div className={styles.main}>

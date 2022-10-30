@@ -35,6 +35,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NoMatch from '../components/NoMatch';
 import CartService from '../services/CartService';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/notifications.module.css';
 
@@ -46,7 +47,8 @@ export default function Notifications({
     _totalRecords,
     _notifications,
     _notificationCount,
-    _noMatch
+    _noMatch,
+    _language
 }) {
     const router = useRouter();
 
@@ -59,16 +61,18 @@ export default function Notifications({
     const [selectedRows, setSelectedRows] = useState([]);
     const notificationsListRef = useRef(null);
 
-    const _fr = _user && _user.language === 'fr';
+    const _fr = _language === 'fr';
     const _locale = _fr ? fr : enUS;
     const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm';
 
     useEffect(() => {
-        Helper.setLanguage(strings);
-        Helper.setLanguage(commonStrings);
-        Helper.setLanguage(masterStrings);
-        Helper.setLanguage(headerStrings);
-    }, []);
+        if(_language){
+        Helper.setLanguage(strings,_language);
+        Helper.setLanguage(commonStrings,_language);
+        Helper.setLanguage(masterStrings,_language);
+        Helper.setLanguage(headerStrings,_language);
+        }
+    }, [_language]);
 
     useEffect(() => {
         if (_user) {
@@ -122,9 +126,9 @@ export default function Notifications({
     const allChecked = rows.length > 0 && checkedRows.length === rows.length;
     const indeterminate = checkedRows.length > 0 && checkedRows.length < rows.length;
 
-    return !loading && _user &&
+    return !loading && _user && _language&&
     <>
-        <Header user={_user} notificationCount={notificationCount} />
+        <Header user={_user} language={_language} notificationCount={notificationCount} />
 
         {
             _user.verified &&
@@ -428,7 +432,8 @@ export default function Notifications({
 }
 
 export async function getServerSideProps(context) {
-    let _user = null, _signout = false, _page = 1, _totalRecords = 0, _rowCount = 0, _notifications = [], _notificationCount = 0, _noMatch = false;
+    let _user = null, _signout = false, _page = 1, _totalRecords = 0, _rowCount = 0,
+     _notifications = [], _notificationCount = 0, _noMatch = false, _language='';
 
     try {
         const currentUser = UserService.getCurrentUser(context);
@@ -447,7 +452,10 @@ export async function getServerSideProps(context) {
                 if (_user) {
                     if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
 
+                    _language = await SettingService.getLanguage();
+                    
                     if (_page >= 1) {
+
                         const data = await NotificationService.getNotifications(context, _user._id, _page);
                         const _data = data[0];
                         _notifications = _data.resultData.map(row => ({ checked: false, ...row }));
@@ -486,7 +494,8 @@ export async function getServerSideProps(context) {
             _totalRecords,
             _notifications,
             _notificationCount,
-            _noMatch
+            _noMatch,
+            _language
         }
     };
 }

@@ -35,7 +35,7 @@ function App({ Component, pageProps }) {
   }, []);
 
   useEffect(() => {
-    const language = UserService.getLanguage();
+    // const language = UserService.getLanguage();
 
     const theme = createTheme({
       typography: {
@@ -120,7 +120,9 @@ function App({ Component, pageProps }) {
           },
         },
       },
-    }, language === 'fr' ? frFR : enUS);
+    }
+    // , language === 'fr' ? frFR : enUS
+    );
 
     setTheme(theme);
   }, []);

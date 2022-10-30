@@ -5,6 +5,7 @@ import Env from '../config/env.config';
 import Accordion from './Accordion';
 import { FormControl, Button } from '@mui/material';
 import DatePicker from './DatePicker';
+import * as Helper from '../common/Helper';
 
 import styles from '../styles/order-date-filter.module.css';
 
@@ -12,6 +13,12 @@ export default function OrderDateFilter({ language, from, to, onSubmit, classNam
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
     const [minDate, setMinDate] = useState();
+
+    useEffect(() => {
+        if (language) {
+            Helper.setLanguage(strings, language);
+        }
+    }, [language]);
 
     useEffect(() => {
         if (from) {

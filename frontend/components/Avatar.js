@@ -129,9 +129,12 @@ export const Avatar = (props) => {
     };
 
     useEffect(() => {
-        const language = UserService.getLanguage();
-        commonStrings.setLanguage(language);
-
+        if (props.language) {
+            commonStrings.setLanguage(props.language);
+        }
+    }, [props.language]);
+    
+    useEffect(() => {
         const currentUser = UserService.getCurrentUser();
         if (currentUser) {
             setUser(props.user);

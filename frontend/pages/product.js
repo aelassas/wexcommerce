@@ -20,10 +20,11 @@ import CartService from '../services/CartService';
 import Env from '../config/env.config';
 import ImageViewer from '../components/ImageViewer';
 import SoldOut from '../components/SoldOut';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/product.module.css';
 
-export default function Product({ _user, _language, _signout, _noMatch, _product }) {
+export default function Product({ _user, _language, _currency, _signout, _noMatch, _product }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -48,10 +49,12 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
   }, [_signout]);
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+    }
+  }, [_language]);
 
   useEffect(() => {
     const src = (image) => Helper.joinURL(Env.CDN_PRODUCTS, image);
@@ -97,8 +100,9 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
   };
 
   return (
+    _language &&
     <>
-      <Header user={_user} signout={_signout} cartCount={cartCount} />
+      <Header user={_user} language={_language} signout={_signout} cartCount={cartCount} />
       {
         ((_user && _user.verified) || !_user) &&
         <div className={'content'}>
@@ -131,7 +135,7 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
                   <div className={styles.rightPanel}>
                     <div className={styles.name}>
                       <span className={styles.name}>{product.name}</span>
-                      <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
+                      <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${_currency}`}</span>
                       {
                         product.soldOut
                           ? <SoldOut />
@@ -245,7 +249,7 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
             </>
           }
 
-          {_noMatch && <NoMatch />}
+          {_noMatch && <NoMatch language={_language} />}
         </div>
       }
 
@@ -267,10 +271,12 @@ export default function Product({ _user, _language, _signout, _noMatch, _product
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _noMatch = false, _product = null;
-  const _language = UserService.getLanguage(context);
+  let _user = null, _signout = false, _noMatch = false, _product = null, _language = '', _currency = '';
 
   try {
+    _language = await SettingService.getLanguage();
+    _currency = await SettingService.getCurrency();
+
     const currentUser = UserService.getCurrentUser(context);
 
     if (currentUser) {
@@ -321,6 +327,7 @@ export async function getServerSideProps(context) {
     props: {
       _user,
       _language,
+      _currency,
       _signout,
       _noMatch,
       _product
