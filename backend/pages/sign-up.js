@@ -276,12 +276,12 @@ export default function SignUp({ _language }) {
     );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
+    if (process.env.NODE_ENV === 'production') return { notFound: true };
+
     const _language = await SettingService.getLanguage();
 
     return {
-        // returns the default 404 page with a status code of 404 in production
-        notFound: process.env.NODE_ENV === 'production',
         props: {
             _language
         }
