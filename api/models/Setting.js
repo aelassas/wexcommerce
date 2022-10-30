@@ -5,14 +5,14 @@ const Schema = mongoose.Schema;
 const settingSchema = new Schema({
     language: { // ISO 639-1 (alpha-2 code)
         type: String,
-        default: process.env.SC_DEFAULT_LANGUAGE,
+        default: process.env.WC_DEFAULT_LANGUAGE,
         lowercase: true,
         minlength: 2,
         maxlength: 2
     },
     currency: {
         type: String,
-        default: process.env.SC_DEFAULT_CURRENCY,
+        default: process.env.WC_DEFAULT_CURRENCY,
     },
     bankName: {
         type: String,

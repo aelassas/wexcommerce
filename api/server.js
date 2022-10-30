@@ -16,18 +16,18 @@ import settingRoutes from './routes/settingRoutes.js';
 import * as paymentTypeController from './controllers/paymentTypeController.js';
 import * as settingController from './controllers/settingController.js';
 
-const DB_HOST = process.env.SC_DB_HOST;
-const DB_PORT = process.env.SC_DB_PORT;
-const DB_SSL = process.env.SC_DB_SSL.toLowerCase() === 'true';
-const DB_SSL_KEY = process.env.SC_DB_SSL_KEY;
-const DB_SSL_CERT = process.env.SC_DB_SSL_CERT;
-const DB_SSL_CA = process.env.SC_DB_SSL_CA;
-const DB_DEBUG = process.env.SC_DB_DEBUG.toLowerCase() === 'true';
-const DB_AUTH_SOURCE = process.env.SC_DB_AUTH_SOURCE;
-const DB_USERNAME = process.env.SC_DB_USERNAME;
-const DB_PASSWORD = process.env.SC_DB_PASSWORD;
-const DB_APP_NAME = process.env.SC_DB_APP_NAME;
-const DB_NAME = process.env.SC_DB_NAME;
+const DB_HOST = process.env.WC_DB_HOST;
+const DB_PORT = process.env.WC_DB_PORT;
+const DB_SSL = process.env.WC_DB_SSL.toLowerCase() === 'true';
+const DB_SSL_KEY = process.env.WC_DB_SSL_KEY;
+const DB_SSL_CERT = process.env.WC_DB_SSL_CERT;
+const DB_SSL_CA = process.env.WC_DB_SSL_CA;
+const DB_DEBUG = process.env.WC_DB_DEBUG.toLowerCase() === 'true';
+const DB_AUTH_SOURCE = process.env.WC_DB_AUTH_SOURCE;
+const DB_USERNAME = process.env.WC_DB_USERNAME;
+const DB_PASSWORD = process.env.WC_DB_PASSWORD;
+const DB_APP_NAME = process.env.WC_DB_APP_NAME;
+const DB_NAME = process.env.WC_DB_NAME;
 const DB_URI = `mongodb://${encodeURIComponent(DB_USERNAME)}:${encodeURIComponent(DB_PASSWORD)}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=${DB_AUTH_SOURCE}&appName=${DB_APP_NAME}`;
 
 const init = async () => {
@@ -95,6 +95,6 @@ app.use('/', notificationRoutes);
 app.use('/', paymentTypeRoutes);
 app.use('/', settingRoutes);
 
-strings.setLanguage(process.env.SC_DEFAULT_LANGUAGE);
+strings.setLanguage(process.env.WC_DEFAULT_LANGUAGE);
 
 export default app;

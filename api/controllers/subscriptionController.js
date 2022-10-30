@@ -11,13 +11,13 @@ import nodemailer from 'nodemailer';
 import { v1 as uuid } from 'uuid';
 import Helper from '../common/Helper.js';
 
-const SMTP_HOST = process.env.SC_SMTP_HOST;
-const SMTP_PORT = process.env.SC_SMTP_PORT;
-const SMTP_USER = process.env.SC_SMTP_USER;
-const SMTP_PASS = process.env.SC_SMTP_PASS;
-const SMTP_FROM = process.env.SC_SMTP_FROM;
-const FRONTEND_HOST = process.env.SC_FRONTEND_HOST;
-const ADMIN_EMAIL = process.env.SC_ADMIN_EMAIL;
+const SMTP_HOST = process.env.WC_SMTP_HOST;
+const SMTP_PORT = process.env.WC_SMTP_PORT;
+const SMTP_USER = process.env.WC_SMTP_USER;
+const SMTP_PASS = process.env.WC_SMTP_PASS;
+const SMTP_FROM = process.env.WC_SMTP_FROM;
+const FRONTEND_HOST = process.env.WC_FRONTEND_HOST;
+const ADMIN_EMAIL = process.env.WC_ADMIN_EMAIL;
 
 export const validate = async (req, res) => {
     const language = req.body.language;

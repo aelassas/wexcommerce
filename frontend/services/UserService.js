@@ -8,7 +8,7 @@ export default class UserService {
     static authHeader(context) {
         let user;
         const _context = context ? { req: context.req, res: context.res } : {};
-        if (hasCookie('sc-fe-user', _context)) user = JSON.parse(getCookie('sc-fe-user', _context));
+        if (hasCookie('wc-fe-user', _context)) user = JSON.parse(getCookie('wc-fe-user', _context));
 
         if (user && user.accessToken) {
             return { 'x-access-token': user.accessToken };
@@ -32,7 +32,7 @@ export default class UserService {
     static signin(data) {
         return axios.post(`${Env.API_HOST}/api/sign-in/${Env.APP_TYPE}`, data).then(res => {
             if (res.data.accessToken) {
-                setCookie('sc-fe-user', JSON.stringify(res.data), Env.COOCKIES_OPTIONS);
+                setCookie('wc-fe-user', JSON.stringify(res.data), Env.COOCKIES_OPTIONS);
             }
             return { status: res.status, data: res.data };
         });
@@ -40,7 +40,7 @@ export default class UserService {
 
     static signout(redirect = true, redirectSignIn = false, deleteCartId = false) {
 
-        deleteCookie('sc-fe-user');
+        deleteCookie('wc-fe-user');
         if (deleteCartId) CartService.deleteCartId();
 
         if (redirect) {
@@ -83,16 +83,15 @@ export default class UserService {
     }
 
     static getLanguage(context) {
-        console.log('user.getLanguage')
         let user;
         const _context = context ? { req: context.req, res: context.res } : {};
-        if (hasCookie('sc-fe-user', _context)) user = JSON.parse(getCookie('sc-fe-user', _context));
+        if (hasCookie('wc-fe-user', _context)) user = JSON.parse(getCookie('wc-fe-user', _context));
 
         if (user && user.language) {
             return user.language;
         } else {
             let lang;
-            if (hasCookie('sc-fe-language', _context)) lang = JSON.parse(getCookie('sc-fe-language', _context));
+            if (hasCookie('wc-fe-language', _context)) lang = JSON.parse(getCookie('wc-fe-language', _context));
 
             if (lang && lang.length === 2) {
                 return lang;
@@ -105,10 +104,10 @@ export default class UserService {
         return axios.post(`${Env.API_HOST}/api/update-language`, data, { headers: UserService.authHeader() }).then(res => {
             if (res.status === 200) {
                 let user;
-                if (hasCookie('sc-fe-user')) user = JSON.parse(getCookie('sc-fe-user'));
+                if (hasCookie('wc-fe-user')) user = JSON.parse(getCookie('wc-fe-user'));
                 if (user) {
                     user.language = data.language;
-                    setCookie('sc-fe-user', JSON.stringify(user), Env.COOCKIES_OPTIONS);
+                    setCookie('wc-fe-user', JSON.stringify(user), Env.COOCKIES_OPTIONS);
                 }
             }
             return res.status;
@@ -116,13 +115,13 @@ export default class UserService {
     }
 
     static setLanguage(lang) {
-        setCookie('sc-fe-language', JSON.stringify(lang), Env.COOCKIES_OPTIONS);
+        setCookie('wc-fe-language', JSON.stringify(lang), Env.COOCKIES_OPTIONS);
     }
 
     static getCurrentUser(context) {
         let user;
         const _context = context ? { req: context.req, res: context.res } : {};
-        if (hasCookie('sc-fe-user', _context)) user = JSON.parse(getCookie('sc-fe-user', _context));
+        if (hasCookie('wc-fe-user', _context)) user = JSON.parse(getCookie('wc-fe-user', _context));
 
         if (user && user.accessToken) {
             return user;

@@ -7,14 +7,14 @@ settings {
 
 sync {
   default.rsync,
-  source = "/opt/shopping-cart",
-  target = "/mnt/sdb/shopping-cart"
+  source = "/opt/weecommerce",
+  target = "/mnt/sdb/weecommerce"
 }
 
 sync {
   default.rsync,
-  source = "/home/aelassas/shopping-cart",
-  target = "/mnt/sdb/__shopping-cart__"
+  source = "/home/aelassas/weecommerce",
+  target = "/mnt/sdb/__weecommerce__"
  }
  
 sync {

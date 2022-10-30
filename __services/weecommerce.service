@@ -1,15 +1,15 @@
 [Unit]
-Description=ShoppingCart API
+Description=weeCommerce API
 Wants=mongod.service
 After=mongod.service
 
 [Service]
 ExecStart=/usr/bin/node -r dotenv/config app.js
-WorkingDirectory=/opt/shopping-cart/api
+WorkingDirectory=/opt/weecommerce/api
 Type=simple
 Restart=always
-StandardOutput=append:/var/log/shopping-cart.log
-StandardError=append:/var/log/shopping-cart.log
+StandardOutput=append:/var/log/weecommerce.log
+StandardError=append:/var/log/weecommerce.log
 User=aelassas
 Group=aelassas
 

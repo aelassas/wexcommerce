@@ -5,13 +5,13 @@ import User from '../models/User.js';
 import nodemailer from "nodemailer";
 import mongoose from 'mongoose';
 
-const HTTPS = process.env.SC_HTTPS.toLowerCase() === 'true';
-const APP_HOST = process.env.SC_FRONTEND_HOST;
-const SMTP_HOST = process.env.SC_SMTP_HOST;
-const SMTP_PORT = process.env.SC_SMTP_PORT;
-const SMTP_USER = process.env.SC_SMTP_USER;
-const SMTP_PASS = process.env.SC_SMTP_PASS;
-const SMTP_FROM = process.env.SC_SMTP_FROM;
+const HTTPS = process.env.WC_HTTPS.toLowerCase() === 'true';
+const APP_HOST = process.env.WC_FRONTEND_HOST;
+const SMTP_HOST = process.env.WC_SMTP_HOST;
+const SMTP_PORT = process.env.WC_SMTP_PORT;
+const SMTP_USER = process.env.WC_SMTP_USER;
+const SMTP_PASS = process.env.WC_SMTP_PASS;
+const SMTP_FROM = process.env.WC_SMTP_FROM;
 
 export const notificationCounter = (req, res) => {
     NotificationCounter.findOne({ user: req.params.userId })

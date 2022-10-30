@@ -119,8 +119,6 @@ export default function Home({
     }
   };
 
-  const _locale = _language === 'fr' ? fr : enUS;
-
   return (
     _language &&
     <>
@@ -416,7 +414,7 @@ export async function getServerSideProps(context) {
       if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
 
       _language = await SettingService.getLanguage();
-      
+
       if (_page >= 1) {
         _currency = await SettingService.getCurrency();
 

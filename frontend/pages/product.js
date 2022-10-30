@@ -8,7 +8,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import { AddShoppingCart as AddShoppingCartIcon } from '@mui/icons-material';
+import { AddShoppingCart as AddShoppingCart } from '@mui/icons-material';
 import { strings } from '../lang/product';
 import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
@@ -161,7 +161,7 @@ export default function Product({ _user, _language, _currency, _signout, _noMatc
                             <Button
                               variant="contained"
                               className={`${styles.button} btn-primary`}
-                              startIcon={<AddShoppingCartIcon />}
+                              startIcon={<AddShoppingCart />}
                               onClick={async (e) => {
                                 try {
                                   const cartId = CartService.getCartId();

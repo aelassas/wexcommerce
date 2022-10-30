@@ -1,0 +1,17 @@
+[Unit]
+Description=weeCommerce Frontend
+Wants=mongod.service
+After=mongod.service
+
+[Service]
+ExecStart=/usr/bin/npm run start
+WorkingDirectory=/opt/weecommerce/frontend
+Type=simple
+Restart=always
+StandardOutput=append:/var/log/weecommerce-frontend.log
+StandardError=append:/var/log/weecommerce-frontend.log
+User=aelassas
+Group=aelassas
+
+[Install]
+WantedBy=multi-user.target

@@ -11,8 +11,8 @@ import fs from 'fs';
 import path from 'path';
 import { v1 as uuid } from 'uuid';
 
-const CDN_PRODUCTS = process.env.SC_CDN_PRODUCTS;
-const CDN_TEMP_PRODUCTS = process.env.SC_CDN_TEMP_PRODUCTS;
+const CDN_PRODUCTS = process.env.WC_CDN_PRODUCTS;
+const CDN_TEMP_PRODUCTS = process.env.WC_CDN_TEMP_PRODUCTS;
 
 export const uploadImage = (req, res) => {
     try {

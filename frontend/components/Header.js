@@ -37,7 +37,6 @@ import {
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Backdrop from './SimpleBackdrop';
-import Image from 'next/image';
 
 import styles from '../styles/header.module.css';
 
@@ -542,7 +541,8 @@ export default function Header(props) {
                         >
                             {getLang(lang)}
                         </Button>} */}
-                    {isSignedIn && <IconButton
+                    {
+                    isSignedIn && <IconButton
                         edge="end"
                         aria-label="account"
                         aria-controls={menuId}
@@ -553,7 +553,8 @@ export default function Header(props) {
                         style={{ width: 52 }}
                     >
                         <Avatar loggedUser={props.user} language={props.language} user={props.user} size="small" readonly />
-                    </IconButton>}
+                    </IconButton>
+                    }
                 </div>
 
                 {isLoaded && !loading && !showMobileSearch &&

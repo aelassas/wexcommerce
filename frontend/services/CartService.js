@@ -34,12 +34,12 @@ export default class CartService {
     }
 
     static setCartId(id) {
-        setCookie('sc-fe-cart', id, Env.COOCKIES_OPTIONS);
+        setCookie('wc-fe-cart', id, Env.COOCKIES_OPTIONS);
     }
 
     static getCartId(context) {
         const _context = context ? { req: context.req, res: context.res } : {};
-        let key = 'sc-fe-cart';
+        let key = 'wc-fe-cart';
 
         if (hasCookie(key, _context)) return getCookie(key, _context);
         return '';
@@ -47,7 +47,7 @@ export default class CartService {
 
     static deleteCartId(context) {
         const _context = context ? { req: context.req, res: context.res } : {};
-        let key = 'sc-fe-cart';
+        let key = 'wc-fe-cart';
 
         if (hasCookie(key, _context)) return deleteCookie(key, _context);
         return '';

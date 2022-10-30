@@ -24,7 +24,7 @@ import styles from '../styles/signup.module.css';
 export default function SignUp({ _language }) {
     const router = useRouter();
 
-    const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
+    // const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE);
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -55,7 +55,6 @@ export default function SignUp({ _language }) {
         } else {
             setVisible(true);
             // setLanguage(UserService.getLanguage());
-            setLanguage(_language);
         }
     }, [router]);
 

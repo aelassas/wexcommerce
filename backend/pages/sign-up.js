@@ -24,7 +24,7 @@ import styles from '../styles/signup.module.css';
 export default function SignUp({ _language }) {
     const router = useRouter();
 
-    const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
+    // const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE);
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -51,9 +51,9 @@ export default function SignUp({ _language }) {
             router.replace('/');
         } else {
             setVisible(true);
-            setLanguage(UserService.getLanguage());
+            // setLanguage(UserService.getLanguage());
         }
-    }, [router]);
+    }, [router, _language]);
 
     const handleOnChangeFullName = (e) => {
         setFullName(e.target.value);

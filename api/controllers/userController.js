@@ -10,17 +10,17 @@ import Token from '../models/Token.js';
 import mongoose from 'mongoose';
 import Helper from '../common/Helper.js';
 
-const DEFAULT_LANGUAGE = process.env.SC_DEFAULT_LANGUAGE;
-const HTTPS = process.env.SC_HTTPS.toLowerCase() === 'true';
-const JWT_SECRET = process.env.SC_JWT_SECRET;
-const JWT_EXPIRE_AT = parseInt(process.env.SC_JWT_EXPIRE_AT);
-const SMTP_HOST = process.env.SC_SMTP_HOST;
-const SMTP_PORT = process.env.SC_SMTP_PORT;
-const SMTP_USER = process.env.SC_SMTP_USER;
-const SMTP_PASS = process.env.SC_SMTP_PASS;
-const SMTP_FROM = process.env.SC_SMTP_FROM;
-const BACKEND_HOST = process.env.SC_BACKEND_HOST;
-const FRONTEND_HOST = process.env.SC_FRONTEND_HOST;
+const DEFAULT_LANGUAGE = process.env.WC_DEFAULT_LANGUAGE;
+const HTTPS = process.env.WC_HTTPS.toLowerCase() === 'true';
+const JWT_SECRET = process.env.WC_JWT_SECRET;
+const JWT_EXPIRE_AT = parseInt(process.env.WC_JWT_EXPIRE_AT);
+const SMTP_HOST = process.env.WC_SMTP_HOST;
+const SMTP_PORT = process.env.WC_SMTP_PORT;
+const SMTP_USER = process.env.WC_SMTP_USER;
+const SMTP_PASS = process.env.WC_SMTP_PASS;
+const SMTP_FROM = process.env.WC_SMTP_FROM;
+const BACKEND_HOST = process.env.WC_BACKEND_HOST;
+const FRONTEND_HOST = process.env.WC_FRONTEND_HOST;
 
 const getStatusMessage = (lang, msg) => {
     if (lang === 'ar') {
@@ -655,7 +655,7 @@ export const getUsers = async (req, res) => {
         // for (let i = 1; i <= 45; i++) {
         //     await new User({
         //         fullName: `User ${i}`,
-        //         email: `user${i}@shopping-cart.ma`,
+        //         email: `user${i}@weecommerce.ma`,
         //         type: Env.USER_TYPE.USER,
         //         verified: true,
         //         active: true,

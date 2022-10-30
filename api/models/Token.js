@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
-const EXPIRE_AT = parseInt(process.env.SC_TOKEN_EXPIRE_AT);
+const EXPIRE_AT = parseInt(process.env.WC_TOKEN_EXPIRE_AT);
 
 const tokenSchema = new Schema({
     user: {

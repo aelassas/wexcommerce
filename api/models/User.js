@@ -58,7 +58,7 @@ const userSchema = new Schema({
     },
     language: { // ISO 639-1 (alpha-2 code)
         type: String,
-        default: process.env.SC_DEFAULT_LANGUAGE,
+        default: process.env.WC_DEFAULT_LANGUAGE,
         lowercase: true,
         minlength: 2,
         maxlength: 2

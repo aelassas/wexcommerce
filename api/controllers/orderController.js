@@ -13,14 +13,14 @@ import mongoose from 'mongoose';
 import Helper from '../common/Helper.js';
 import nodemailer from 'nodemailer';
 
-const SMTP_HOST = process.env.SC_SMTP_HOST;
-const SMTP_PORT = process.env.SC_SMTP_PORT;
-const SMTP_USER = process.env.SC_SMTP_USER;
-const SMTP_PASS = process.env.SC_SMTP_PASS;
-const SMTP_FROM = process.env.SC_SMTP_FROM;
-const ADMIN_EMAIL = process.env.SC_ADMIN_EMAIL;
-const BACKEND_HOST = process.env.SC_BACKEND_HOST;
-const FRONTEND_HOST = process.env.SC_FRONTEND_HOST;
+const SMTP_HOST = process.env.WC_SMTP_HOST;
+const SMTP_PORT = process.env.WC_SMTP_PORT;
+const SMTP_USER = process.env.WC_SMTP_USER;
+const SMTP_PASS = process.env.WC_SMTP_PASS;
+const SMTP_FROM = process.env.WC_SMTP_FROM;
+const ADMIN_EMAIL = process.env.WC_ADMIN_EMAIL;
+const BACKEND_HOST = process.env.WC_BACKEND_HOST;
+const FRONTEND_HOST = process.env.WC_FRONTEND_HOST;
 
 export const create = async (req, res) => {
     try {

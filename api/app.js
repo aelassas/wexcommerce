@@ -2,10 +2,10 @@ import app from './server.js';
 import fs from 'fs';
 import https from 'https';
 
-const PORT = parseInt(process.env.SC_PORT) || 4000;
-const HTTPS = process.env.SC_HTTPS.toLocaleLowerCase() === 'true';
-const PRIVATE_KEY = process.env.SC_PRIVATE_KEY;
-const CERTIFICATE = process.env.SC_CERTIFICATE;
+const PORT = parseInt(process.env.WC_PORT) || 4000;
+const HTTPS = process.env.WC_HTTPS.toLocaleLowerCase() === 'true';
+const PRIVATE_KEY = process.env.WC_PRIVATE_KEY;
+const CERTIFICATE = process.env.WC_CERTIFICATE;
 
 if (HTTPS) {
     https.globalAgent.maxSockets = Infinity;
