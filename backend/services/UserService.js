@@ -77,6 +77,7 @@ export default class UserService {
     }
 
     static getLanguage(context) {
+        console.log('UserService.getLanguage')
         let user;
         const _context = context ? { req: context.req, res: context.res } : {};
         if (hasCookie('sc-be-user', _context)) user = JSON.parse(getCookie('sc-be-user', _context));

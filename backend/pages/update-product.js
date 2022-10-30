@@ -28,6 +28,7 @@ import Env from '../config/env.config';
 import ImageEditor from '../components/ImageEditor';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/update-product.module.css';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -39,7 +40,7 @@ if (typeof window === 'object') {
   Editor = require('react-draft-wysiwyg').Editor;
 }
 
-export default function UpdateProduct({ _user, _signout, _noMatch, _product, _language }) {
+export default function UpdateProduct({ _user, _signout, _noMatch, _product, _language, _currency }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -74,11 +75,13 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
   }, [_signout]);
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(cpStrings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(cpStrings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+    }
+  }, [_language]);
 
   useEffect(() => {
     if (_product) {
@@ -338,7 +341,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
                 </FormControl>
 
                 <FormControl fullWidth margin="dense">
-                  <InputLabel className='required'>{`${cpStrings.PRICE} (${commonStrings.CURRENCY})`}</InputLabel>
+                  <InputLabel className='required'>{`${cpStrings.PRICE} (${_currency})`}</InputLabel>
                   <Input
                     type="number"
                     required
@@ -533,8 +536,7 @@ export default function UpdateProduct({ _user, _signout, _noMatch, _product, _la
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _noMatch = false, _product = null;
-  const _language = UserService.getLanguage(context);
+  let _user = null, _signout = false, _noMatch = false, _product = null, _language = '', _currency = '';
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -554,6 +556,8 @@ export async function getServerSideProps(context) {
           const { p: productId } = context.query;
           if (productId) {
             try {
+              _language = await SettingService.getLanguage();
+              _currency = await SettingService.getCurrency();
               _product = await ProductService.getProduct(productId, _language);
 
               if (!_product) {
@@ -587,7 +591,8 @@ export async function getServerSideProps(context) {
       _signout,
       _noMatch,
       _product,
-      _language
+      _language,
+      _currency
     }
   };
 }

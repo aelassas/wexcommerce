@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import UserService from '../services/UserService';
 import { strings as commonStrings } from '../lang/common';
 import { strings } from '../lang/forgot-password';
-import NoMatch from '../components/NoMatch';
 import {
     Input,
     InputLabel,
@@ -132,9 +131,9 @@ export default function ResetPassword() {
     <>
         <Header hideSearch hideSignIn />
         <div className='content'>
-            <div className={styles.resetPassword}>
-                <Paper className={styles.resetPasswordForm} elevation={10}>
-                    <h1 className={styles.resetPasswordTitle}> {strings.RESET_PASSWORD_HEADING} </h1>
+            <div className={styles.forgotPassword}>
+                <Paper className={styles.forgotPasswordForm} elevation={10}>
+                    <h1 className={styles.forgotPasswordTitle}> {strings.RESET_PASSWORD_HEADING} </h1>
                     {sent &&
                         <div>
                             <label>{strings.EMAIL_SENT}</label>

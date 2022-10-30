@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { strings as commonStrings } from '../lang/common';
 import { strings } from '../lang/order-date-filter';
 import Env from '../config/env.config';
 import Accordion from './Accordion';
 import { FormControl, Button } from '@mui/material';
 import DatePicker from './DatePicker';
+import * as Helper from '../common/Helper';
 
 import styles from '../styles/order-date-filter.module.css';
 
@@ -12,6 +13,12 @@ export default function OrderDateFilter({ language, from, to, onSubmit, classNam
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
     const [minDate, setMinDate] = useState();
+
+    useEffect(() => {
+        if (language) {
+            Helper.setLanguage(strings, language);
+        }
+    }, [language]);
 
     useEffect(() => {
         if (from) {

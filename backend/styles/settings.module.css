@@ -30,4 +30,5 @@ div.settings .form .formTitle {
     text-align: center;
     text-transform: none;
     color: #1d1d1b;
+    text-transform: capitalize;
 }

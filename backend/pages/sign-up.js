@@ -17,10 +17,11 @@ import * as Helper from '../common/Helper';
 import Env from '../config/env.config';
 import { useRouter } from "next/router";
 import Header from '../components/Header';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/signup.module.css';
 
-export default function SignUp() {
+export default function SignUp({ _language }) {
     const router = useRouter();
 
     const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
@@ -37,9 +38,11 @@ export default function SignUp() {
     const [emailValid, setEmailValid] = useState(true);
 
     useEffect(() => {
-        Helper.setLanguage(commonStrings);
-        Helper.setLanguage(strings);
-    }, []);
+        if (_language) {
+            Helper.setLanguage(commonStrings, _language);
+            Helper.setLanguage(strings, _language);
+        }
+    }, [_language]);
 
     useEffect(() => {
         const currentUser = UserService.getCurrentUser();
@@ -140,7 +143,7 @@ export default function SignUp() {
                 email,
                 password,
                 fullName,
-                language
+                language: _language
             };
 
             const status = await UserService.signup(data);
@@ -173,110 +176,114 @@ export default function SignUp() {
     };
 
     return (
-        visible &&
+        visible && _language &&
         <>
-            <Header />
+            <Header language={_language} />
             <div className='content'>
-                    <Paper className={styles.signupForm} elevation={10}>
-                        <h1 className={styles.signupFormTitle}> {strings.SIGN_UP_HEADING} </h1>
-                        <form onSubmit={handleSubmit}>
-                            <div>
-                                <FormControl fullWidth margin="dense">
-                                    <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
-                                    <Input
-                                        type="text"
-                                        label={commonStrings.FULL_NAME}
-                                        value={fullName}
-                                        required
-                                        onChange={handleOnChangeFullName}
-                                        autoComplete="off"
-                                    />
-                                </FormControl>
-                                <FormControl fullWidth margin="dense">
-                                    <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
-                                    <Input
-                                        type="text"
-                                        label={commonStrings.EMAIL}
-                                        error={!emailValid || emailError}
-                                        value={email}
-                                        onBlur={handleEmailBlur}
-                                        onChange={handleEmailChange}
-                                        required
-                                        autoComplete="off"
-                                    />
-                                    <FormHelperText error={!emailValid || emailError}>
-                                        {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
-                                        {(emailError && commonStrings.EMAIL_ALREADY_REGISTERED) || ''}
-                                    </FormHelperText>
-                                </FormControl>
-                                <FormControl fullWidth margin="dense">
-                                    <InputLabel className='required'>{commonStrings.PASSWORD}</InputLabel>
-                                    <Input
-                                        label={commonStrings.PASSWORD}
-                                        value={password}
-                                        onChange={handleOnChangePassword}
-                                        required
-                                        type="password"
-                                        inputProps={{
-                                            autoComplete: 'new-password',
-                                            form: {
-                                                autoComplete: 'off',
-                                            },
-                                        }}
-                                    />
-                                </FormControl>
-                                <FormControl fullWidth margin="dense">
-                                    <InputLabel className='required'>{commonStrings.CONFIRM_PASSWORD}</InputLabel>
-                                    <Input
-                                        label={commonStrings.CONFIRM_PASSWORD}
-                                        value={confirmPassword}
-                                        onChange={handleOnChangeConfirmPassword}
-                                        required
-                                        type="password"
-                                        inputProps={{
-                                            autoComplete: 'new-password',
-                                            form: {
-                                                autoComplete: 'off',
-                                            },
-                                        }}
-                                    />
-                                </FormControl>
-                                <div className="buttons">
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        className='btn-primary btn-margin-bottom'
-                                        size="small"
-                                    >
-                                        {strings.SIGN_UP}
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        className='btn-secondary btn-margin-bottom'
-                                        size="small"
-                                        onClick={() => {
-                                            router.replace('/')
-                                        }}> {commonStrings.CANCEL}
-                                    </Button>
-                                </div>
+                <Paper className={styles.signupForm} elevation={10}>
+                    <h1 className={styles.signupFormTitle}> {strings.SIGN_UP_HEADING} </h1>
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <FormControl fullWidth margin="dense">
+                                <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
+                                <Input
+                                    type="text"
+                                    label={commonStrings.FULL_NAME}
+                                    value={fullName}
+                                    required
+                                    onChange={handleOnChangeFullName}
+                                    autoComplete="off"
+                                />
+                            </FormControl>
+                            <FormControl fullWidth margin="dense">
+                                <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
+                                <Input
+                                    type="text"
+                                    label={commonStrings.EMAIL}
+                                    error={!emailValid || emailError}
+                                    value={email}
+                                    onBlur={handleEmailBlur}
+                                    onChange={handleEmailChange}
+                                    required
+                                    autoComplete="off"
+                                />
+                                <FormHelperText error={!emailValid || emailError}>
+                                    {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
+                                    {(emailError && commonStrings.EMAIL_ALREADY_REGISTERED) || ''}
+                                </FormHelperText>
+                            </FormControl>
+                            <FormControl fullWidth margin="dense">
+                                <InputLabel className='required'>{commonStrings.PASSWORD}</InputLabel>
+                                <Input
+                                    label={commonStrings.PASSWORD}
+                                    value={password}
+                                    onChange={handleOnChangePassword}
+                                    required
+                                    type="password"
+                                    inputProps={{
+                                        autoComplete: 'new-password',
+                                        form: {
+                                            autoComplete: 'off',
+                                        },
+                                    }}
+                                />
+                            </FormControl>
+                            <FormControl fullWidth margin="dense">
+                                <InputLabel className='required'>{commonStrings.CONFIRM_PASSWORD}</InputLabel>
+                                <Input
+                                    label={commonStrings.CONFIRM_PASSWORD}
+                                    value={confirmPassword}
+                                    onChange={handleOnChangeConfirmPassword}
+                                    required
+                                    type="password"
+                                    inputProps={{
+                                        autoComplete: 'new-password',
+                                        form: {
+                                            autoComplete: 'off',
+                                        },
+                                    }}
+                                />
+                            </FormControl>
+                            <div className="buttons">
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    className='btn-primary btn-margin-bottom'
+                                    size="small"
+                                >
+                                    {strings.SIGN_UP}
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    className='btn-secondary btn-margin-bottom'
+                                    size="small"
+                                    onClick={() => {
+                                        router.replace('/')
+                                    }}> {commonStrings.CANCEL}
+                                </Button>
                             </div>
-                            <div className="form-error">
-                                {passwordError && <Error message={commonStrings.PASSWORD_ERROR} />}
-                                {passwordsDontMatch && <Error message={commonStrings.PASSWORDS_DONT_MATCH} />}
-                                {error && <Error message={strings.SIGN_UP_ERROR} />}
-                            </div>
-                        </form>
-                    </Paper>
+                        </div>
+                        <div className="form-error">
+                            {passwordError && <Error message={commonStrings.PASSWORD_ERROR} />}
+                            {passwordsDontMatch && <Error message={commonStrings.PASSWORDS_DONT_MATCH} />}
+                            {error && <Error message={strings.SIGN_UP_ERROR} />}
+                        </div>
+                    </form>
+                </Paper>
             </div>
             {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
         </>
     );
 }
 
-export function getStaticProps() {
+export async function getStaticProps() {
+    const _language = await SettingService.getLanguage();
+
     return {
         // returns the default 404 page with a status code of 404 in production
         notFound: process.env.NODE_ENV === 'production',
-        props: {}
+        props: {
+            _language
+        }
     };
 };

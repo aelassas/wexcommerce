@@ -25,9 +25,9 @@ import {
 } from '@mui/icons-material';
 import Env from '../config/env.config';
 import Link from 'next/link';
-import { fr, enUS } from "date-fns/locale";
 import NoMatch from '../components/NoMatch';
 import { useRouter } from 'next/router';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/products.module.css';
 
@@ -35,6 +35,7 @@ export default function Products({
   _user,
   _signout,
   _language,
+  _currency,
   _categories,
   _categoryId,
   _keyword,
@@ -52,11 +53,13 @@ export default function Products({
   const [productsRef, setProductsRef] = useState();
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-    Helper.setLanguage(headerStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+      Helper.setLanguage(headerStrings, _language);
+    }
+  }, [_language]);
 
   useEffect(() => {
     if (_user) {
@@ -92,9 +95,9 @@ export default function Products({
     }
   };
 
-  return !loading && _user &&
+  return !loading && _user && _language &&
     <>
-      <Header user={_user} />
+      <Header user={_user} language={_language} />
       {
         _user.verified &&
         <div className='content'>
@@ -239,7 +242,7 @@ export default function Products({
                                   </div>
                                 }
                                 <span className={styles.name} title={product.name}>{product.name}</span>
-                                <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${commonStrings.CURRENCY}`}</span>
+                                <span className={styles.price}>{`${Helper.formatNumber(product.price)} ${_currency}`}</span>
 
                               </Link>
                             </article>
@@ -304,8 +307,9 @@ export default function Products({
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _categories = [], _page = 1, _categoryId = '', _keyword = '', _totalRecords = 0, _rowCount = 0, _products = [], _noMatch = false;
-  const _language = UserService.getLanguage(context);
+  let _user = null, _signout = false, _categories = [], _page = 1, _categoryId = '',
+    _keyword = '', _totalRecords = 0, _rowCount = 0, _products = [], _noMatch = false,
+    _language = '', _currency = '';
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -327,6 +331,9 @@ export async function getServerSideProps(context) {
             if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
 
             if (_page >= 1) {
+              _language = await SettingService.getLanguage();
+              _currency = await SettingService.getCurrency();
+
               if (typeof context.query.c !== 'undefined') _categoryId = context.query.c;
               if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
 
@@ -364,6 +371,7 @@ export async function getServerSideProps(context) {
       _user,
       _signout,
       _language,
+      _currency,
       _categories,
       _categoryId,
       _keyword,

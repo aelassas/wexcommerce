@@ -17,6 +17,8 @@ import {
   Checkbox,
   Button,
   Paper,
+  Select,
+  MenuItem,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -24,10 +26,11 @@ import {
 } from '@mui/material';
 import validator from 'validator';
 import Env from '../config/env.config';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/settings.module.css';
 
-export default function Settings({ _user, _signout, _paymentTypes }) {
+export default function Settings({ _user, _signout, _paymentTypes, _settings }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [fullName, setFullName] = useState('');
@@ -37,12 +40,28 @@ export default function Settings({ _user, _signout, _paymentTypes }) {
   const [paymentTypes, setPaymentTypes] = useState([]);
   const [paymentTypesWarning, setPaymentTypesWarning] = useState(false);
 
+  const [language, setLanguage] = useState('');
+  const [currency, setCurrency] = useState('');
+  const [bankName, setBankName] = useState('');
+  const [accountHolder, setAccountHolder] = useState('');
+  const [rib, setRib] = useState('');
+  const [iban, setIban] = useState('');
+
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-    Helper.setLanguage(headerStrings);
-  }, []);
+    if (_settings) {
+      Helper.setLanguage(strings, _settings.language);
+      Helper.setLanguage(commonStrings, _settings.language);
+      Helper.setLanguage(masterStrings, _settings.language);
+      Helper.setLanguage(headerStrings, _settings.language);
+
+      setLanguage(_settings.language);
+      setCurrency(_settings.currency);
+      setBankName(_settings.bankName || '');
+      setAccountHolder(_settings.accountHolder || '');
+      setRib(_settings.rib || '');
+      setIban(_settings.iban || '');
+    }
+  }, [_settings]);
 
   useEffect(() => {
     if (_user) {
@@ -119,6 +138,29 @@ export default function Settings({ _user, _signout, _paymentTypes }) {
     }
   };
 
+  const handleLocaleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const data = { language, currency };
+
+      const status = await SettingService.updateSettings(data);
+
+      if (status === 200) {
+        if (_settings.language !== language) {
+          router.reload();
+        } else {
+          Helper.info(commonStrings.UPDATED);
+        }
+      } else {
+        Helper.error();
+      }
+    }
+    catch (err) {
+      UserService.signout();
+    }
+  };
+
   const handlePaymentTypesSubmit = async (e) => {
     e.preventDefault();
 
@@ -143,17 +185,37 @@ export default function Settings({ _user, _signout, _paymentTypes }) {
     }
   };
 
+  const handleBankSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const data = { bankName, accountHolder, rib, iban };
+
+      const status = await SettingService.updateBankSettings(data);
+
+      if (status === 200) {
+        Helper.info(commonStrings.UPDATED);
+      } else {
+        Helper.error();
+      }
+    }
+    catch (err) {
+      UserService.signout();
+    }
+  };
+
   return (
-    !loading && _user &&
+    !loading && _user && _settings &&
     <>
-      <Header user={_user} />
+      <Header user={_user} language={_settings.language} />
       {
         _user.verified &&
         <div className={'content'}>
           <div className={styles.settings}>
             <Paper className={styles.form} elevation={10}>
               <form onSubmit={handleUserSubmit}>
-                <h1 className={styles.formTitle}>{headerStrings.SETTINGS}</h1>
+                <h1 className={styles.formTitle}>{strings.USER_SETTINGS}</h1>
+
                 <FormControl fullWidth margin="dense">
                   <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
                   <Input
@@ -246,8 +308,68 @@ export default function Settings({ _user, _signout, _paymentTypes }) {
             </Paper>
 
             <Paper className={styles.form} elevation={10}>
+              <form onSubmit={handleLocaleSubmit}>
+                <h1 className={styles.formTitle}>{strings.LOCALE_SETTINGS}</h1>
+
+                <FormControl fullWidth margin="dense">
+                  <InputLabel className='required'>{strings.LANGUAGE}</InputLabel>
+
+                  <Select
+                    variant="standard"
+                    value={language}
+                    onChange={(e) => {
+                      setLanguage(e.target.value);
+                    }}
+                  >
+                    {
+                      Env._LANGUAGES.map((lang) => (
+                        <MenuItem key={lang.code} value={lang.code} >{lang.label}</MenuItem>
+                      ))
+                    }
+                  </Select>
+
+                </FormControl>
+
+                <FormControl fullWidth margin="dense">
+                  <InputLabel className='required'>{strings.CURRENCY}</InputLabel>
+                  <Input
+                    type="text"
+                    value={currency}
+                    required
+                    onChange={(e) => {
+                      setCurrency(e.target.value);
+                    }}
+                    autoComplete="off"
+                  />
+                </FormControl>
+
+
+                <div className="buttons">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className='btn-primary btn-margin-bottom'
+                    size="small"
+                  >
+                    {commonStrings.SAVE}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className='btn-secondary btn-margin-bottom'
+                    size="small"
+                    onClick={() => {
+                      router.replace('/');
+                    }}
+                  >
+                    {commonStrings.CANCEL}
+                  </Button>
+                </div>
+              </form>
+            </Paper>
+
+            <Paper className={styles.form} elevation={10}>
               <form onSubmit={handlePaymentTypesSubmit}>
-                <h1 className={styles.formTitle}>{commonStrings.PAYMENT_TYPES}</h1>
+                <h1 className={styles.formTitle}>{strings.PAYMENT_SETTINGS}</h1>
 
                 {
                   paymentTypes.map((paymentType) => (
@@ -296,13 +418,93 @@ export default function Settings({ _user, _signout, _paymentTypes }) {
 
             </Paper>
 
+
+            <Paper className={styles.form} elevation={10}>
+              <form onSubmit={handleBankSubmit}>
+                <h1 className={styles.formTitle}>{strings.BANK_SETTINGS}</h1>
+
+                <FormControl fullWidth margin="dense">
+                  <InputLabel className='required'>{strings.BANK_NAME}</InputLabel>
+                  <Input
+                    type="text"
+                    value={bankName}
+                    required
+                    onChange={(e) => {
+                      setBankName(e.target.value);
+                    }}
+                    autoComplete="off"
+                  />
+                </FormControl>
+
+                <FormControl fullWidth margin="dense">
+                  <InputLabel className='required'>{strings.ACCOUNT_HOLDER}</InputLabel>
+                  <Input
+                    type="text"
+                    value={accountHolder}
+                    required
+                    onChange={(e) => {
+                      setAccountHolder(e.target.value);
+                    }}
+                    autoComplete="off"
+                  />
+                </FormControl>
+
+                <FormControl fullWidth margin="dense">
+                  <InputLabel className='required'>{strings.RIB}</InputLabel>
+                  <Input
+                    type="text"
+                    value={rib}
+                    required
+                    onChange={(e) => {
+                      setRib(e.target.value);
+                    }}
+                    autoComplete="off"
+                  />
+                </FormControl>
+
+                <FormControl fullWidth margin="dense">
+                  <InputLabel className='required'>{strings.IBAN}</InputLabel>
+                  <Input
+                    type="text"
+                    value={iban}
+                    required
+                    onChange={(e) => {
+                      setIban(e.target.value);
+                    }}
+                    autoComplete="off"
+                  />
+                </FormControl>
+
+                <div className="buttons">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className='btn-primary btn-margin-bottom'
+                    size="small"
+                  >
+                    {commonStrings.SAVE}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className='btn-secondary btn-margin-bottom'
+                    size="small"
+                    onClick={() => {
+                      router.replace('/');
+                    }}
+                  >
+                    {commonStrings.CANCEL}
+                  </Button>
+                </div>
+              </form>
+            </Paper>
+
             <Dialog
               disableEscapeKeyDown
               maxWidth="xs"
               open={paymentTypesWarning}
             >
               <DialogTitle className='dialog-header'>{commonStrings.INFO}</DialogTitle>
-              <DialogContent>{strings.PAYMENT_TYPES_WARNING}</DialogContent>
+              <DialogContent>{strings.PAYMENT_SETTINGS_WARNING}</DialogContent>
               <DialogActions className='dialog-actions'>
                 <Button onClick={() => setPaymentTypesWarning(false)} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
               </DialogActions>
@@ -329,7 +531,7 @@ export default function Settings({ _user, _signout, _paymentTypes }) {
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _paymentTypes = [];
+  let _user = null, _signout = false, _paymentTypes = [], _settings = null, _bankSettings = null;
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -346,6 +548,7 @@ export async function getServerSideProps(context) {
         _user = await UserService.getUser(context, currentUser.id);
 
         if (_user) {
+          _settings = await SettingService.getSettings(context);
           _paymentTypes = await PaymentTypeService.getPaymentTypes(context);
         } else {
           _signout = true;
@@ -365,7 +568,8 @@ export async function getServerSideProps(context) {
     props: {
       _user,
       _signout,
-      _paymentTypes
+      _paymentTypes,
+      _settings
     }
   };
 

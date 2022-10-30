@@ -23,6 +23,7 @@ import Env from '../config/env.config';
 import ImageEditor from '../components/ImageEditor';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/create-product.module.css';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -34,7 +35,7 @@ if (typeof window === 'object') {
   Editor = require('react-draft-wysiwyg').Editor;
 }
 
-export default function CreateProduct({ _user, _signout, _language }) {
+export default function CreateProduct({ _user, _signout, _language, _currency }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -66,10 +67,12 @@ export default function CreateProduct({ _user, _signout, _language }) {
   }, [_signout]);
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+    }
+  }, [_language]);
 
   useEffect(() => {
     const contentBlock = htmlToDraft('');
@@ -200,9 +203,9 @@ export default function CreateProduct({ _user, _signout, _language }) {
   };
 
   return (
-    !loading && _user &&
+    !loading && _user && _language &&
     <>
-      <Header user={_user} />
+      <Header user={_user} language={_language} />
       {
         _user.verified &&
         <div className={'content'}>
@@ -318,7 +321,7 @@ export default function CreateProduct({ _user, _signout, _language }) {
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <InputLabel className='required'>{`${strings.PRICE} (${commonStrings.CURRENCY})`}</InputLabel>
+                <InputLabel className='required'>{`${strings.PRICE} (${_currency})`}</InputLabel>
                 <Input
                   type="number"
                   required
@@ -434,8 +437,7 @@ export default function CreateProduct({ _user, _signout, _language }) {
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false;
-  const _language = UserService.getLanguage(context);
+  let _user = null, _signout = false, _language = '', _currency = '';
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -451,7 +453,10 @@ export async function getServerSideProps(context) {
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
 
-        if (!_user) {
+        if (_user) {
+          _language = await SettingService.getLanguage();
+          _currency = await SettingService.getCurrency();
+        } else {
           _signout = true;
         }
       } else {
@@ -470,7 +475,8 @@ export async function getServerSideProps(context) {
     props: {
       _user,
       _signout,
-      _language
+      _language,
+      _currency
     }
   };
 }

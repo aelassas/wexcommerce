@@ -16,10 +16,11 @@ import * as Helper from '../common/Helper';
 import CategoryService from '../services/CategoryService';
 import Env from '../config/env.config';
 import { useRouter } from 'next/router';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/create-category.module.css';
 
-export default function CreateCategory({ _user, _signout }) {
+export default function CreateCategory({ _user, _signout, _language }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -39,10 +40,12 @@ export default function CreateCategory({ _user, _signout }) {
   }, [_signout]);
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+    }
+  }, [_language]);
 
   const handleResend = async (e) => {
     try {
@@ -97,9 +100,9 @@ export default function CreateCategory({ _user, _signout }) {
   };
 
   return (
-    !loading && _user &&
+    !loading && _user && _language &&
     <>
-      <Header user={_user} />
+      <Header user={_user} language={_language} />
       {
         _user.verified &&
         <div className={'content'}>
@@ -174,7 +177,7 @@ export default function CreateCategory({ _user, _signout }) {
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false;
+  let _user = null, _signout = false, _language = '';
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -190,7 +193,9 @@ export async function getServerSideProps(context) {
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
 
-        if (!_user) {
+        if (_user) {
+          _language = await SettingService.getLanguage();
+        } else {
           _signout = true;
         }
       } else {
@@ -208,7 +213,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       _user,
-      _signout
+      _signout,
+      _language
     }
   };
 }

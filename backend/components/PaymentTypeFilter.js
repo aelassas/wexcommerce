@@ -7,7 +7,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/payment-type-filter.module.css';
 
-export default function PaymentTypeFilter({ selectedOptions, onChange, className }) {
+export default function PaymentTypeFilter({ selectedOptions, language, onChange, className }) {
     const paymentTypes = Helper.getPaymentTypes();
     const [checkedPaymentTypes, setCheckedPaymentTypes] = useState(paymentTypes);
     const [allChecked, setAllChecked] = useState(true);
@@ -101,7 +101,7 @@ export default function PaymentTypeFilter({ selectedOptions, onChange, className
                     paymentTypes.map((paymentType, index) => (
                         <li key={paymentType}>
                             <input ref={ref => refs.current[index] = ref} type='checkbox' data-value={paymentType} className={styles.paymentTypeCheckbox} onChange={handleCheckPaymentTypeChange} />
-                            <PaymentType value={paymentType} className={styles.paymentTypeLabel} onClick={handlePaymentTypeClick} />
+                            <PaymentType value={paymentType} language={language} className={styles.paymentTypeLabel} onClick={handlePaymentTypeClick} />
                         </li>
                     ))
                 }

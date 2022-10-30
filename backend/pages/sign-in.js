@@ -14,10 +14,11 @@ import {
 import * as Helper from '../common/Helper';
 import { useRouter } from "next/router";
 import Link from 'next/link';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/signin.module.css';
 
-export default function SignIn() {
+export default function SignIn({ _language }) {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -26,9 +27,11 @@ export default function SignIn() {
     const [stayConnected, setStayConnected] = useState(false);
 
     useEffect(() => {
-        Helper.setLanguage(commonStrings);
-        Helper.setLanguage(strings);
-    }, []);
+        if (_language) {
+            Helper.setLanguage(commonStrings, _language);
+            Helper.setLanguage(strings, _language);
+        }
+    }, [_language]);
 
     useEffect(() => {
         (async function () {
@@ -93,8 +96,9 @@ export default function SignIn() {
     };
 
     return (
+        _language &&
         <div>
-            <Header />
+            <Header language={_language} />
             {visible &&
                 <div className={styles.signin}>
                     <Paper className={styles.signinForm} elevation={10}>
@@ -155,3 +159,14 @@ export default function SignIn() {
         </div>
     );
 }
+
+export async function getServerSideProps(context) {
+
+    const _language = await SettingService.getLanguage();
+
+    return {
+        props: {
+            _language
+        }
+    };
+};

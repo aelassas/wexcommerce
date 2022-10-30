@@ -18,10 +18,11 @@ import Env from '../config/env.config';
 import CategoryService from '../services/CategoryService';
 import NoMatch from '../components/NoMatch';
 import { useRouter } from 'next/router';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/update-category.module.css';
 
-export default function UpdateCategory({ _user, _signout, _noMatch, _category }) {
+export default function UpdateCategory({ _user, _signout, _noMatch, _category, _language }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -42,10 +43,13 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category })
   }, [_signout]);
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(ccStrings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+    }
+  }, [_language]);
 
   useEffect(() => {
     if (_category) {
@@ -116,7 +120,7 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category })
         }
       }
 
-      setValueErrors(Helper.clone(valueErrors));
+      setValueErrors(Helper.cloneArray(valueErrors));
 
       if (isValid) {
         const status = await CategoryService.update(_category._id, values);
@@ -139,9 +143,9 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category })
   };
 
   return (
-    !loading && _user &&
+    !loading && _user && _language &&
     <>
-      <Header user={_user} />
+      <Header user={_user} language={_language} />
       {
         _user.verified &&
         <div className={'content'}>
@@ -161,8 +165,9 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category })
                         onChange={(e) => {
                           valueErrors[index] = false;
                           values[index].value = e.target.value;
-                          setValues(Helper.clone(values));
-                          setValueErrors(Helper.clone(valueErrors));
+                          setValues(Helper.cloneArray(values));
+                          setValueErrors(Helper.cloneArray(valueErrors));
+                          console.log(commonStrings.SAVE);
                         }}
                         autoComplete="off"
                       />
@@ -179,7 +184,7 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category })
                     variant="contained"
                     className='btn-primary btn-margin-bottom'
                     size="small"
-                    disabled={!valueChanged}
+                    // disabled={!valueChanged}
                   >
                     {commonStrings.SAVE}
                   </Button>
@@ -221,7 +226,7 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category })
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _noMatch = false, _category = null;
+  let _user = null, _signout = false, _noMatch = false, _category = null, _language = '';
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -241,8 +246,8 @@ export async function getServerSideProps(context) {
           const { c: categoryId } = context.query;
           if (categoryId) {
             try {
-              const language = UserService.getLanguage();
-              _category = await CategoryService.getCategory(context, language, categoryId);
+              _language = await SettingService.getLanguage();
+              _category = await CategoryService.getCategory(context, _language, categoryId);
 
               if (!_category) {
                 _noMatch = true;
@@ -274,7 +279,8 @@ export async function getServerSideProps(context) {
       _user,
       _signout,
       _noMatch,
-      _category
+      _category,
+      _language
     }
   };
 }

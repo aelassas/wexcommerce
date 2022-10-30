@@ -24,10 +24,11 @@ import { strings as masterStrings } from '../lang/master';
 import * as Helper from '../common/Helper';
 import CategoryService from '../services/CategoryService';
 import { useRouter } from 'next/router';
+import SettingService from '../services/SettingService';
 
 import styles from '../styles/categories.module.css';
 
-export default function Categories({ _user, _signout, _categories }) {
+export default function Categories({ _user, _signout, _categories, _language }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -49,10 +50,12 @@ export default function Categories({ _user, _signout, _categories }) {
   }, [_signout]);
 
   useEffect(() => {
-    Helper.setLanguage(strings);
-    Helper.setLanguage(commonStrings);
-    Helper.setLanguage(masterStrings);
-  }, []);
+    if (_language) {
+      Helper.setLanguage(strings, _language);
+      Helper.setLanguage(commonStrings, _language);
+      Helper.setLanguage(masterStrings, _language);
+    }
+  }, [_language]);
 
   const handleResend = async (e) => {
     try {
@@ -131,9 +134,9 @@ export default function Categories({ _user, _signout, _categories }) {
   };
 
   return (
-    !loading && _user &&
+    !loading && _user && _language &&
     <>
-      <Header user={_user} />
+      <Header user={_user} language={_language} />
       {
         _user.verified &&
         <div className='content'>
@@ -234,11 +237,11 @@ export default function Categories({ _user, _signout, _categories }) {
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _keyword = '', _categories = null;
+  let _user = null, _signout = false, _keyword = '', _categories = null, _language = '';
 
   try {
     const currentUser = UserService.getCurrentUser(context);
-    const language = UserService.getLanguage(context);
+
 
     if (currentUser) {
       let status;
@@ -252,9 +255,11 @@ export async function getServerSideProps(context) {
         _user = await UserService.getUser(context, currentUser.id);
 
         if (_user) {
+          _language = await SettingService.getLanguage();
+
           if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
 
-          _categories = await CategoryService.searchCategories(context, language, _keyword);
+          _categories = await CategoryService.searchCategories(context, _language, _keyword);
         } else {
           _signout = true;
         }
@@ -275,7 +280,8 @@ export async function getServerSideProps(context) {
       _user,
       _signout,
       _keyword,
-      _categories
+      _categories,
+      _language
     }
   };
 
