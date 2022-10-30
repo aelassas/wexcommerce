@@ -17,7 +17,7 @@ const Env = {
             label: 'English'
         }
     ],
-    DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_WC_DEFAULT_LANGUAGE || 'fr',
+    DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_WC_DEFAULT_LANGUAGE || 'en',
     PAGE_SIZE: parseInt(process.env.NEXT_PUBLIC_WC_PAGE_SIZE || 30),
     CDN_PRODUCTS: process.env.NEXT_PUBLIC_WC_CDN_PRODUCTS,
     CDN_TEMP_PRODUCTS: process.env.NEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS,
