@@ -9,7 +9,7 @@ export const init = async () => {
 
             if (!pt) {
                 await new PaymentType({ name: paymentType, enabled }).save();
-                console.log(`Payment Type ${paymentType} created and enabled.`)
+                console.log(`Payment Type ${paymentType} created.`)
             }
         };
 

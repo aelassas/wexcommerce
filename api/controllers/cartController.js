@@ -71,7 +71,6 @@ export const deleteItem = async (req, res) => {
 
         if (cart) {
             const cartItems = cart.cartItems.filter(ci => ci.product.equals(productId));
-            console.log('--------', cartItems)
 
             if (cartItems.length > 0) {
                 const cartItem = cartItems[0];
@@ -81,7 +80,6 @@ export const deleteItem = async (req, res) => {
                     const cartItems = cart.cartItems.filter(ci => !ci.product.equals(productId));
 
                     if (cartItems.length === 0) {
-                        console.log('!!!')
                         const result = await Cart.deleteOne({ _id: cart._id });
 
                         if (result.deletedCount === 1) {
