@@ -20,7 +20,7 @@ weeCommerce backend and frontend are built with Node.js, Next.js and React.
 
 # Installation
 
-You can find installation instructions in the [here](https://github.com/aelassas/weecommerce/wiki/Installation).
+You can find installation instructions [here](https://github.com/aelassas/weecommerce/wiki/Installation).
 
 # Run from code
 
