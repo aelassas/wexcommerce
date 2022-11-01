@@ -18,6 +18,7 @@ weeCommerce backend and frontend are built with Node.js, Next.js and React.
 * Multiple language support
 * Responsive backend and frontend
 
+<!--
 # Installation
 
 You can find installation instructions [here](https://github.com/aelassas/weecommerce/wiki/Installation).
@@ -25,6 +26,7 @@ You can find installation instructions [here](https://github.com/aelassas/weecom
 # Run from code
 
 You can find instructions to run weeCommerce from code [here](https://github.com/aelassas/weecommerce/wiki/Run-from-code).
+-->
 
 # Screenshots
 
@@ -334,7 +336,6 @@ Install git, Node.js, nginx on Linux or IIS on Windows, MongoDB and mongosh.
 Configure MongoDB:
 ```
 mongosh
-
 ```
 Create admin user:
 ```
