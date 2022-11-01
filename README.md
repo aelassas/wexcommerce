@@ -3,7 +3,7 @@
 
 ![Logo](__content/logo.png)
 
-weeCommerce is an Open Source eCommerce platform built on top of Next.js.
+weeCommerce is an eCommerce platform built on top of Next.js.
 
 weeCommerce API is built with Node.js, Express and MongoDB.
 
