@@ -11,8 +11,10 @@ import productRoutes from './routes/productRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import deliveryTypeRoutes from './routes/deliveryTypeRoutes.js';
 import paymentTypeRoutes from './routes/paymentTypeRoutes.js';
 import settingRoutes from './routes/settingRoutes.js';
+import * as deliveryTypeController from './controllers/deliveryTypeController.js';
 import * as paymentTypeController from './controllers/paymentTypeController.js';
 import * as settingController from './controllers/settingController.js';
 
@@ -31,7 +33,8 @@ const DB_NAME = process.env.WC_DB_NAME;
 const DB_URI = `mongodb://${encodeURIComponent(DB_USERNAME)}:${encodeURIComponent(DB_PASSWORD)}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=${DB_AUTH_SOURCE}&appName=${DB_APP_NAME}`;
 
 const init = async () => {
-    let done = await paymentTypeController.init();
+    let done = await deliveryTypeController.init();
+    done &= await paymentTypeController.init();
     done &= await settingController.init();
 
     if (done) {
@@ -92,6 +95,7 @@ app.use('/', productRoutes);
 app.use('/', cartRoutes);
 app.use('/', orderRoutes);
 app.use('/', notificationRoutes);
+app.use('/', deliveryTypeRoutes);
 app.use('/', paymentTypeRoutes);
 app.use('/', settingRoutes);
 

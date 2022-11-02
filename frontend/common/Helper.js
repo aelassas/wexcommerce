@@ -2,7 +2,6 @@ import { toast } from 'react-toastify';
 import Env from '../config/env.config';
 import { strings as commonStrings } from '../lang/common';
 import { strings as osStrings } from '../lang/order-status';
-import UserService from '../services/UserService';
 
 export const info = (msg) => {
     toast(msg, { type: 'info' });
@@ -103,4 +102,16 @@ export const formatNumber = (x) => {
     const parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     return parts.join(".");
+};
+
+export const getDeliveryTypes = () => {
+    return [Env.DELIVERY_TYPE.SHIPPING, Env.DELIVERY_TYPE.WITHDRAWAL];
+};
+
+export const getDeliveryType = (deliveryType, language) => {
+    setLanguage(commonStrings, language);
+
+    return deliveryType === Env.DELIVERY_TYPE.SHIPPING ? commonStrings.SHIPPING
+        : deliveryType === Env.DELIVERY_TYPE.WITHDRAWAL ? commonStrings.WITHDRAWAL
+            : '';
 };

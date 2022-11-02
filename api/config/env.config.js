@@ -20,6 +20,10 @@ const Env = {
         CREDIT_CARD: 'creditCard',
         COD: 'cod',
         WIRE_TRANSFER: 'wireTransfer'
+    },
+    DELIVERY_TYPE: {
+        SHIPPING: 'shipping',
+        WITHDRAWAL: 'withdrawal'
     }
 };
 

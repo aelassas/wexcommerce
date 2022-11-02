@@ -1,6 +1,5 @@
-span.creditCard,
-span.cod,
-span.wireTransfert {
+span.shipping,
+span.withdrawal {
     color: #fff;
     font-size: 11px;
     border-radius: 4px;
@@ -12,14 +11,10 @@ span.wireTransfert {
     align-items: center;
 }
 
-span.creditCard {
+span.shipping {
     background-color: #77bc23;
 }
 
-span.cod {
-    background-color: #e98003;
-}
-
-span.wireTransfert {
+span.withdrawal {
     background-color: #188ace;
 }

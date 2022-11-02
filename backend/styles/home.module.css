@@ -15,6 +15,7 @@
 
     div.leftPanel .paymentTypeFilter,
     div.leftPanel .statusFilter,
+    div.leftPanel .deliveryTypeFilter,
     div.leftPanel .dateFilter {
         margin-bottom: 10px;
         max-width: 650px;
@@ -46,7 +47,8 @@
     }
 
     div.leftPanel .paymentTypeFilter,
-    div.leftPanel .statusFilter {
+    div.leftPanel .statusFilter,
+    div.leftPanel .deliveryTypeFilter {
         margin-bottom: 20px;
     }
 
@@ -120,7 +122,7 @@ div.orderList article div.orderContent div.orderInfo {
 div.orderList article div.orderContent div.orderInfo span.orderLabel {
     font-weight: bold;
     margin-right: 15px;
-    min-width: 100px;
+    min-width: 120px;
 }
 
 div.orderList article div.orderContent div.orderItems {

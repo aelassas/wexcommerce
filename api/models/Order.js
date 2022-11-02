@@ -9,14 +9,15 @@ const orderSchema = new Schema({
         required: [true, "can't be blank"],
         ref: 'User'
     },
-    paymentType: {
-        type: String,
-        enum: [
-            Env.PAYMENT_TYPE.CREDIT_CARD,
-            Env.PAYMENT_TYPE.COD,
-            Env.PAYMENT_TYPE.WIRE_TRANSFER
-        ],
+    deliveryType: {
+        type: Schema.Types.ObjectId,
         required: [true, "can't be blank"],
+        ref: 'DeliveryType'
+    },
+    paymentType: {
+        type: Schema.Types.ObjectId,
+        required: [true, "can't be blank"],
+        ref: 'PaymentType'
     },
     total: {
         type: Number,

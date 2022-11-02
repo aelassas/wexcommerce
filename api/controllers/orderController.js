@@ -7,6 +7,8 @@ import OrderItem from '../models/OrderItem.js';
 import Notification from '../models/Notification.js';
 import NotificationCounter from '../models/NotificationCounter.js';
 import Setting from '../models/Setting.js';
+import PaymentType from '../models/PaymentType.js';
+import DeliveryType from '../models/DeliveryType.js';
 import { v1 as uuid } from 'uuid';
 import escapeStringRegexp from 'escape-string-regexp';
 import mongoose from 'mongoose';
@@ -80,15 +82,9 @@ export const create = async (req, res) => {
         // order
         _order.user = _user._id;
         _order.paymentType = order.paymentType;
+        _order.deliveryType = order.deliveryType;
         _order.total = order.total;
-
-        // order.status
-        if (order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD) {
-            // TODO CMI
-            _order.status = Env.ORDER_STATUS.PAID;
-        } else if ([Env.PAYMENT_TYPE.COD, Env.PAYMENT_TYPE.WIRE_TRANSFER].includes(order.paymentType)) {
-            _order.status = Env.ORDER_STATUS.PENDING;
-        }
+        _order.status = Env.ORDER_STATUS.PENDING;
 
         // order.orderItems
         const __orderItems = [];
@@ -305,59 +301,8 @@ export const deleteOrder = async (req, res) => {
     }
 };
 
-export const getOrder = async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        const order = await Order
-            .findById(id)
-            .populate('user')
-            .populate({
-                path: 'orderItems',
-                populate: {
-                    path: 'product',
-                    model: 'Product',
-                }
-            })
-            .lean();
-
-        if (order) {
-            return res.json(order);
-        } else {
-            return res.sendStatus(204);
-        }
-    } catch (err) {
-        console.error(`[order.getOrder]  ${strings.DB_ERROR} ${req.params.id}`, err);
-        return res.status(400).send(strings.DB_ERROR + err);
-    }
-};
-
 export const getOrders = async (req, res) => {
     try {
-
-        // let orderItem1 = new OrderItem({ product: '635c9ef7f0d1be5323e017ca', quantity: 1 }); // 779 DH
-        // await orderItem1.save();
-
-        // let orderItem2 = new OrderItem({ product: '635c9ea8f0d1be5323e017bf', quantity: 1 }); // 129 DH
-        // await orderItem2.save();
-
-        // let orderItem3 = new OrderItem({ product: '635c9ce6f0d1be5323e0176d', quantity: 1 }); // 259 DH
-        // await orderItem3.save();
-
-        // let orderItem4 = new OrderItem({ product: '635ba45ec385996e012c7fe3', quantity: 1 }); // 3749 DH
-        // await orderItem4.save();
-
-        // for (let i = 1; i <= 20; i++) {
-        //     const orderItems = i % 2 === 0 ? [orderItem1._id] : i % 3 === 0 ? [orderItem2._id] : [orderItem3._id, orderItem4._id];
-        //     const order = new Order({
-        //         user: '635a6e4b2c487867f759018b',
-        //         paymentType: i % 2 === 0 ? Env.PAYMENT_TYPE.CREDIT_CARD : Env.PAYMENT_TYPE.COD,
-        //         total: i % 2 === 0 ? 779 : i % 3 === 0 ? 129 : (259 + 3749),
-        //         status: i % 2 === 0 ? Env.ORDER_STATUS.PAID : Env.ORDER_STATUS.PENDING,
-        //         orderItems
-        //     });
-        //     await order.save();
-        // }
 
         // orderItem1 = new OrderItem({ product: '635ac292157b7d4b11a90763', quantity: 1 }); // 2799 DH
         // await orderItem1.save();
@@ -383,6 +328,23 @@ export const getOrders = async (req, res) => {
         //     await order.save();
         // }
 
+        // const shipping = await DeliveryType.findOne({ name: Env.DELIVERY_TYPE.SHIPPING });
+        // const withdrawal = await DeliveryType.findOne({ name: Env.DELIVERY_TYPE.WITHDRAWAL });
+
+        // const card = await PaymentType.findOne({ name: Env.PAYMENT_TYPE.CREDIT_CARD });
+        // const cod = await PaymentType.findOne({ name: Env.PAYMENT_TYPE.COD });
+
+        // const orders = await Order.find();
+
+        // let i = 1;
+        // for (const order of orders) {
+        //     const mod = i % 2 === 0;
+        //     order.paymentType = mod ? card._id : cod._id;
+        //     order.deliveryType = mod ? shipping._id : withdrawal._id;
+        //     await order.save();
+        //     i++;
+        // }
+
         const { user: userId } = req.params;
 
         const user = await User.findOne({ _id: userId });
@@ -398,20 +360,23 @@ export const getOrders = async (req, res) => {
         const keyword = escapeStringRegexp(req.query.s || '');
         const options = 'i';
 
-        const { paymentTypes, statuses } = req.body;
+        const { paymentTypes, deliveryTypes, statuses } = req.body;
+
         let $match;
         if (user.type === Env.USER_TYPE.USER) {
             $match = {
                 $and: [
                     { 'user._id': { $eq: mongoose.Types.ObjectId(userId) } },
-                    { paymentType: { $in: paymentTypes } },
+                    { 'paymentType.name': { $in: paymentTypes } },
+                    { 'deliveryType.name': { $in: deliveryTypes } },
                     { status: { $in: statuses } }
                 ]
             };
         } else if (user.type === Env.USER_TYPE.ADMIN) {
             $match = {
                 $and: [
-                    { paymentType: { $in: paymentTypes } },
+                    { 'paymentType.name': { $in: paymentTypes } },
+                    { 'deliveryType.name': { $in: deliveryTypes } },
                     { status: { $in: statuses } }
                 ]
             };
@@ -452,7 +417,6 @@ export const getOrders = async (req, res) => {
                 }
             },
             { $unwind: { path: '$user', preserveNullAndEmptyArrays: false } },
-            { $match },
             {
                 $lookup: {
                     from: 'OrderItem',
@@ -499,6 +463,37 @@ export const getOrders = async (req, res) => {
             {
                 $match: { 'orderItems': { $not: { $size: 0 } } }
             },
+            {
+                $lookup: {
+                    from: 'PaymentType',
+                    let: { paymentTypeId: '$paymentType' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ['$_id', '$$paymentTypeId'] }
+                            }
+                        }
+                    ],
+                    as: 'paymentType'
+                }
+            },
+            { $unwind: { path: '$paymentType', preserveNullAndEmptyArrays: false } },
+            {
+                $lookup: {
+                    from: 'DeliveryType',
+                    let: { deliveryTypeId: '$deliveryType' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ['$_id', '$$deliveryTypeId'] }
+                            }
+                        }
+                    ],
+                    as: 'deliveryType'
+                }
+            },
+            { $unwind: { path: '$deliveryType', preserveNullAndEmptyArrays: false } },
+            { $match },
             {
                 $facet: {
                     resultData: [

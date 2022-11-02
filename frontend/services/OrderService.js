@@ -10,12 +10,8 @@ export default class OrderService {
         return axios.post(`${Env.API_HOST}/api/create-order`, data).then(res => res.status);
     }
 
-    static getOrder(context, orderId) {
-        return axios.get(`${Env.API_HOST}/api/order/${orderId}`, { headers: UserService.authHeader(context) }).then(res => res.data);
-    }
-
-    static getOrders(context, userId, page, size, keyword, paymentTypes, statuses, from, to) {
-        const data = { paymentTypes, statuses, from: from || null, to: to || null };
+    static getOrders(context, userId, page, size, keyword, paymentTypes, deliveryTypes, statuses, from, to) {
+        const data = { paymentTypes, deliveryTypes, statuses, from: from || null, to: to || null };
 
         return axios.post(
             `${Env.API_HOST}/api/orders/${userId}/${page}/${size}${(keyword !== '' && `/?s=${encodeURIComponent(keyword)}` || '')}`

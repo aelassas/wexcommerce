@@ -27,16 +27,19 @@ import {
 import validator from 'validator';
 import Env from '../config/env.config';
 import SettingService from '../services/SettingService';
+import DeliveryTypeService from '../services/DeliveryTypeService';
 
 import styles from '../styles/settings.module.css';
 
-export default function Settings({ _user, _signout, _paymentTypes, _settings }) {
+export default function Settings({ _user, _signout, _deliveryTypes, _paymentTypes, _settings }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [phoneValid, setPhoneValid] = useState(true);
   const [address, setAddress] = useState('');
+  const [deliveryTypes, setDeliveryTypes] = useState([]);
+  const [deliveryTypesWarning, setDeliveryTypesWarning] = useState(false);
   const [paymentTypes, setPaymentTypes] = useState([]);
   const [paymentTypesWarning, setPaymentTypesWarning] = useState(false);
   const [wireTransferWarning, setWireTransferWarning] = useState(false);
@@ -84,6 +87,12 @@ export default function Settings({ _user, _signout, _paymentTypes, _settings }) 
       setPaymentTypes(_paymentTypes);
     }
   }, [_paymentTypes]);
+
+  useEffect(() => {
+    if (_deliveryTypes && _deliveryTypes.length > 0) {
+      setDeliveryTypes(_deliveryTypes);
+    }
+  }, [_deliveryTypes]);
 
   const handleResend = async (e) => {
     try {
@@ -383,6 +392,56 @@ export default function Settings({ _user, _signout, _paymentTypes, _settings }) 
             </Paper>
 
             <Paper className={styles.form} elevation={10}>
+              <form onSubmit={handleDeliveryTypesSubmit}>
+                <h1 className={styles.formTitle}>{strings.DELIVERY_SETTINGS}</h1>
+
+                {
+                  deliveryTypes.map((deliveryType) => (
+                    <FormControl key={deliveryType._id} fullWidth margin="dense">
+                      <FormControlLabel
+                        control={<Checkbox checked={deliveryType.enabled} />}
+                        label={
+                          deliveryType.name === Env.DELIVERY_TYPE.SHIPPING ? commonStrings.SHIPPING
+                            : deliveryType.name === Env.DELIVERY_TYPE.WITHDRAWAL ? commonStrings.WITHDRAWAL
+                              : ''
+                        }
+                        onChange={(e) => {
+                          const __deliveryTypes = Helper.clone(deliveryTypes);
+                          __deliveryTypes.filter(pt => pt.name === deliveryType.name)[0].enabled = e.target.checked;
+                          setDeliveryTypes(__deliveryTypes);
+                        }}
+                        className={styles.deliveryType}
+                      />
+                    </FormControl>
+                  ))
+                }
+
+
+                <div className="buttons">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className='btn-primary btn-margin-bottom'
+                    size="small"
+                  >
+                    {commonStrings.SAVE}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className='btn-secondary btn-margin-bottom'
+                    size="small"
+                    onClick={() => {
+                      router.replace('/');
+                    }}
+                  >
+                    {commonStrings.CANCEL}
+                  </Button>
+                </div>
+              </form>
+
+            </Paper>
+
+            <Paper className={styles.form} elevation={10}>
               <form onSubmit={handlePaymentTypesSubmit}>
                 <h1 className={styles.formTitle}>{strings.PAYMENT_SETTINGS}</h1>
 
@@ -549,7 +608,7 @@ export default function Settings({ _user, _signout, _paymentTypes, _settings }) 
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _paymentTypes = [], _settings = null, _bankSettings = null;
+  let _user = null, _signout = false, _deliveryTypes = [], _paymentTypes = [], _settings = null, _bankSettings = null;
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -567,6 +626,7 @@ export async function getServerSideProps(context) {
 
         if (_user) {
           _settings = await SettingService.getSettings(context);
+          _deliveryTypes = await DeliveryTypeService.getDeliveryTypes(context);
           _paymentTypes = await PaymentTypeService.getPaymentTypes(context);
         } else {
           _signout = true;
@@ -586,6 +646,7 @@ export async function getServerSideProps(context) {
     props: {
       _user,
       _signout,
+      _deliveryTypes,
       _paymentTypes,
       _settings
     }

@@ -18,6 +18,7 @@ const paymentTypeSchema = new Schema({
     enabled: {
         type: Boolean,
         required: [true, "can't be blank"],
+        index: true
     }
 }, {
     timestamps: true,

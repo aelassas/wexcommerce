@@ -55,6 +55,9 @@ export const strings = new LocalizedStrings({
         ARTICLES_IN_STOCK: 'articles en stock',
         ARTICLE_IN_STOCK: 'article en stock',
         SUBTOTAL: 'Sous-total',
+        DELIVERY_TYPE: 'Mode de livraison',
+        SHIPPING: 'Livraison à domicile',
+        WITHDRAWAL: 'Retrait en magasin',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -110,5 +113,8 @@ export const strings = new LocalizedStrings({
         ARTICLES_IN_STOCK: 'articles in stock',
         ARTICLE_IN_STOCK: 'article in stock',
         SUBTOTAL: 'Subtotal',
+        DELIVERY_TYPE: 'Delivery methods',
+        SHIPPING: 'Home delivery',
+        WITHDRAWAL: 'Store withdrawal',
     }
 });

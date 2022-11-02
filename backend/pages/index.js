@@ -28,8 +28,10 @@ import { fr, enUS } from "date-fns/locale";
 import NoMatch from '../components/NoMatch';
 import { format } from 'date-fns';
 import PaymentType from '../components/PaymentType';
+import DeliveryType from '../components/DeliveryType';
 import OrderStatus from '../components/OrderStatus';
 import PaymentTypeFilter from '../components/PaymentTypeFilter';
+import DeliveryTypeFilter from '../components/DeliveryTypeFilter';
 import OrderStatusFilter from '../components/OrderStatusFilter';
 import OrderDateFilter from '../components/OrderDateFilter';
 import { useRouter } from 'next/router';
@@ -51,7 +53,8 @@ export default function Home({
   _paymentTypes,
   _statuses,
   _from,
-  _to
+  _to,
+  _deliveryTypes
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -152,8 +155,9 @@ export default function Home({
                 <PaymentTypeFilter
                   onChange={(paymentTypes) => {
                     const pt = paymentTypes.join(',');
+                    const dt = _deliveryTypes.join(',');
                     const os = _statuses.join(',');
-                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    const url = `/?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
                     router.replace(url);
                   }}
                   selectedOptions={_paymentTypes}
@@ -164,12 +168,26 @@ export default function Home({
                 <OrderStatusFilter
                   onChange={(statuses) => {
                     const pt = _paymentTypes.join(',');
+                    const dt = _deliveryTypes.join(',');
                     const os = statuses.join(',');
-                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    const url = `/?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
                     router.replace(url);
                   }}
                   selectedOptions={_statuses}
                   className={styles.statusFilter}
+                  language={_language}
+                />
+
+                <DeliveryTypeFilter
+                  onChange={(deliveryTypes) => {
+                    const dt = deliveryTypes.join(',');
+                    const pt = _paymentTypes.join(',');
+                    const os = _statuses.join(',');
+                    const url = `/?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    router.replace(url);
+                  }}
+                  selectedOptions={_deliveryTypes}
+                  className={styles.deliveryTypeFilter}
                   language={_language}
                 />
 
@@ -182,7 +200,8 @@ export default function Home({
 
                     const pt = _paymentTypes.join(',');
                     const os = _statuses.join(',');
-                    const url = `/?pt=${encodeURIComponent(pt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    const dt = _deliveryTypes.join(',');
+                    const url = `/?pt=${encodeURIComponent(pt)}}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
                     router.replace(url);
                   }}
                   className={styles.dateFilter}
@@ -241,7 +260,11 @@ export default function Home({
                                 </div>
                                 <div className={styles.orderInfo}>
                                   <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
-                                  <span><PaymentType value={order.paymentType} language={_language} /></span>
+                                  <span><PaymentType value={order.paymentType.name} language={_language} /></span>
+                                </div>
+                                <div className={styles.orderInfo}>
+                                  <span className={styles.orderLabel}>{strings.DELIVERY_TYPE}</span>
+                                  <span><DeliveryType value={order.deliveryType.name} language={_language} /></span>
                                 </div>
                                 <div className={styles.orderInfo}>
                                   <span className={styles.orderLabel}>{strings.CLIENT}</span>
@@ -373,21 +396,16 @@ export default function Home({
                           </div>
 
                           <div className={styles.actions}>
-
                             <Link
-                              href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page - 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
+                              href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&dt=${encodeURIComponent(_deliveryTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page - 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
                               className={_page === 1 ? styles.disabled : ''}>
-
                               <PreviousPageIcon className={styles.icon} />
-
                             </Link>
 
                             <Link
-                              href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page + 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
+                              href={`/?pt=${encodeURIComponent(_paymentTypes.join(','))}&dt=${encodeURIComponent(_deliveryTypes.join(','))}&os=${encodeURIComponent(_statuses.join(','))}&${`p=${_page + 1}`}${(_from && `&from=${_from}`) || ''}${(_to && `&to=${_to}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`}
                               className={_rowCount === _totalRecords ? styles.disabled : ''}>
-
                               <NextPageIcon className={styles.icon} />
-
                             </Link>
                           </div>
                         </div>
@@ -421,7 +439,7 @@ export default function Home({
 export async function getServerSideProps(context) {
   let _user = null, __user = null, _signout = false, _page = 1, _keyword = '',
     _totalRecords = 0, _rowCount = 0, _orders = [], _noMatch = false,
-    _paymentTypes = [], _statuses = [], _from = null, _to = null, _language = '', _currency = '';
+    _paymentTypes = [], _deliveryTypes = [], _statuses = [], _from = null, _to = null, _language = '', _currency = '';
 
   try {
     const currentUser = UserService.getCurrentUser(context);
@@ -462,6 +480,18 @@ export async function getServerSideProps(context) {
               _paymentTypes = Helper.getPaymentTypes();
             }
 
+            if (typeof context.query.dt !== 'undefined') {
+              const allDeliveryTypes = Helper.getDeliveryTypes();
+              _deliveryTypes = [];
+              const dts = context.query.dt.split(',');
+
+              for (const dt of dts) {
+                if (allDeliveryTypes.includes(dt)) _deliveryTypes.push(dt);
+              }
+            } else {
+              _deliveryTypes = Helper.getDeliveryTypes();
+            }
+
             if (typeof context.query.os !== 'undefined') {
               const allStatuses = Helper.getOrderStatuses();
               _statuses = [];
@@ -481,6 +511,7 @@ export async function getServerSideProps(context) {
                 Env.PAGE_SIZE,
                 _keyword,
                 _paymentTypes,
+                _deliveryTypes,
                 _statuses,
                 _from,
                 _to);
@@ -524,6 +555,7 @@ export async function getServerSideProps(context) {
       _orders,
       _noMatch,
       _paymentTypes,
+      _deliveryTypes,
       _statuses,
       _from,
       _to

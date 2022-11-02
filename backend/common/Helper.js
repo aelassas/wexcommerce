@@ -81,3 +81,15 @@ export const formatNumber = (x) => {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     return parts.join(".");
 };
+
+export const getDeliveryTypes = () => {
+    return [Env.DELIVERY_TYPE.SHIPPING, Env.DELIVERY_TYPE.WITHDRAWAL];
+};
+
+export const getDeliveryType = (deliveryType, language) => {
+    setLanguage(commonStrings, language);
+
+    return deliveryType === Env.DELIVERY_TYPE.SHIPPING ? commonStrings.SHIPPING
+        : deliveryType === Env.DELIVERY_TYPE.WITHDRAWAL ? commonStrings.WITHDRAWAL
+            : '';
+};

@@ -32,13 +32,14 @@ import validator from 'validator';
 import Image from 'next/image';
 import Link from 'next/link';
 import PaymentTypeService from '../services/PaymentTypeService';
+import DeliveryTypeService from '../services/DeliveryTypeService';
 import Env from '../config/env.config';
 import Backdrop from '../components/SimpleBackdrop';
 import SettingService from '../services/SettingService';
 
 import styles from '../styles/checkout.module.css';
 
-export default function Checkout({ _user, _language, _currency, _signout, _noMatch, _cart, _paymentTypes }) {
+export default function Checkout({ _user, _language, _currency, _signout, _noMatch, _cart, _paymentTypes, _deliveryTypes }) {
     const router = useRouter();
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
@@ -49,6 +50,7 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
     const [phoneValid, setPhoneValid] = useState(true);
     const [address, setAddress] = useState('');
     const [paymentType, setPaymentType] = useState(Env.PAYMENT_TYPE.CREDIT_CARD);
+    const [deliveryType, setDeliveryType] = useState(Env.DELIVERY_TYPE.SHIPPING);
     const [total, setTotal] = useState(0);
     const [cardNumber, setCardNumber] = useState('');
     const [cardNumberValid, setCardNumberValid] = useState(true);
@@ -257,32 +259,32 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
             }
         }
 
-        if (paymentType === Env.PAYMENT_TYPE.CREDIT_CARD) {
-            const cardNumberValid = validateCardNumber(cardNumber);
-            if (!cardNumberValid) {
-                return;
-            }
+        // if (paymentType === Env.PAYMENT_TYPE.CREDIT_CARD) {
+        //     const cardNumberValid = validateCardNumber(cardNumber);
+        //     if (!cardNumberValid) {
+        //         return;
+        //     }
 
-            const cardMonthValid = validateCardMonth(cardMonth);
-            if (!cardMonthValid) {
-                return;
-            }
+        //     const cardMonthValid = validateCardMonth(cardMonth);
+        //     if (!cardMonthValid) {
+        //         return;
+        //     }
 
-            const cardYearValid = validateCardYear(cardYear);
-            if (!cardYearValid) {
-                return;
-            }
+        //     const cardYearValid = validateCardYear(cardYear);
+        //     if (!cardYearValid) {
+        //         return;
+        //     }
 
-            const cvvValid = validateCvv(cvv);
-            if (!cvvValid) {
-                return;
-            }
+        //     const cvvValid = validateCvv(cvv);
+        //     if (!cvvValid) {
+        //         return;
+        //     }
 
-            const cardDateValid = validateCardDate(cardMonth, cardYear);
-            if (!cardDateValid) {
-                return setCardDateError(true);
-            }
-        }
+        //     const cardDateValid = validateCardDate(cardMonth, cardYear);
+        //     if (!cardDateValid) {
+        //         return setCardDateError(true);
+        //     }
+        // }
 
         try {
             setLoading(true);
@@ -303,7 +305,8 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
             const orderItems = _cart.cartItems.filter(ci => !ci.soldOut).map(ci => ({ product: ci.product._id, quantity: ci.quantity }))
 
             const order = {
-                paymentType,
+                paymentType: _paymentTypes.find(pt => pt.name === paymentType)._id,
+                deliveryType: _deliveryTypes.find(dt => dt.name === deliveryType)._id,
                 total,
                 orderItems
             };
@@ -526,14 +529,14 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
                                 </div>
                             </div>
 
-                            {[Env.PAYMENT_TYPE.COD, Env.PAYMENT_TYPE.WIRE_TRANSFER].includes(paymentType) &&
+                            {[Env.PAYMENT_TYPE.CREDIT_CARD, Env.PAYMENT_TYPE.COD, Env.PAYMENT_TYPE.WIRE_TRANSFER].includes(paymentType) &&
                                 <div className={`${styles.box} ${styles.boxTotal}`}>
                                     <span className={styles.totalLabel}>{strings.TOTAL_LABEL}</span>
                                     <span className={styles.total}>{`${Helper.formatNumber(total)} ${_currency}`}</span>
                                 </div>
                             }
 
-                            {
+                            {/* {
                                 paymentType === Env.PAYMENT_TYPE.CREDIT_CARD &&
                                 <div className={styles.payment}>
 
@@ -656,7 +659,7 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
                                         <label>{strings.SECURE_PAYMENT_INFO}</label>
                                     </div>
                                 </div>
-                            }
+                            } */}
 
                             <div className={styles.buttons}>
                                 <Button
@@ -695,7 +698,7 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
 
 export async function getServerSideProps(context) {
     let _user = null, _signout = false, _noMatch = false,
-        _cart = null, _paymentTypes = [], _language = '', _currency = '';
+        _cart = null, _paymentTypes = [], _deliveryTypes = [], _language = '', _currency = '';
 
     try {
         _language = await SettingService.getLanguage();
@@ -731,6 +734,7 @@ export async function getServerSideProps(context) {
 
                     if (_cart) {
                         _paymentTypes = await PaymentTypeService.getPaymentTypes();
+                        _deliveryTypes = await DeliveryTypeService.getDeliveryTypes();
                     } else {
                         _noMatch = true;
                     }
@@ -755,6 +759,7 @@ export async function getServerSideProps(context) {
             _noMatch,
             _cart,
             _paymentTypes,
+            _deliveryTypes,
             _language,
             _currency
         }

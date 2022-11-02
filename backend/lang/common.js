@@ -39,7 +39,7 @@ export const strings = new LocalizedStrings({
         PHONE: 'Téléphone',
         PHONE_NOT_VALID: 'Numéro de téléphone non valide',
         ADDRESS: 'Adresse',
-        PAYMENT_TYPES: 'Types de paiement',
+        PAYMENT_TYPES: 'Modes de paiement',
         CREDIT_CARD: 'Carte bancaire',
         COD: 'Cash à la livraison',
         WIRE_TRANSFER: 'Virement bancaire',
@@ -51,6 +51,9 @@ export const strings = new LocalizedStrings({
         UNCHECK_ALL: 'Décocher tout',
         CHECK_ALL: 'Cocher tout',
         STATUS: 'Statut',
+        DELIVERY_TYPE: 'Mode de livraison',
+        SHIPPING: 'Livraison à domicile',
+        WITHDRAWAL: 'Retrait en magasin',
     },
     en: {
         GENERIC_ERROR: 'An unhandled error occurred.',
@@ -90,7 +93,7 @@ export const strings = new LocalizedStrings({
         PHONE: 'Phone',
         PHONE_NOT_VALID: 'Invalid phone number',
         ADDRESS: 'Address',
-        PAYMENT_TYPES: 'Payment types',
+        PAYMENT_TYPES: 'Payment methods',
         CREDIT_CARD: 'Credit card',
         COD: 'Cash on delivery',
         WIRE_TRANSFER: 'Wire transfer',
@@ -102,5 +105,8 @@ export const strings = new LocalizedStrings({
         UNCHECK_ALL: 'Uncheck all',
         CHECK_ALL: 'Check all',
         STATUS: 'Status',
+        DELIVERY_TYPE: 'Delivery methods',
+        SHIPPING: 'Home delivery',
+        WITHDRAWAL: 'Store withdrawal',
     }
 });

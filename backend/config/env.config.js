@@ -30,6 +30,10 @@ const Env = {
         COD: 'cod',
         WIRE_TRANSFER: 'wireTransfer'
     },
+    DELIVERY_TYPE: {
+        SHIPPING: 'shipping',
+        WITHDRAWAL: 'withdrawal'
+    },
     ORDER_STATUS: {
         PENDING: 'pending',
         PAID: 'paid',
