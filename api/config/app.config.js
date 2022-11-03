@@ -53,6 +53,10 @@ export default new LocalizedStrings.default({
         ACCOUNT_HOLDER: 'Titulaire',
         RIB: 'RIB',
         IBAN: 'IBAN',
+
+        DELIVERY_TYPE: 'Mode de livraison',
+        SHIPPING: 'Livraison à domicile',
+        WITHDRAWAL: 'Retrait en magasin',
     },
     en: {
         ERROR: 'Internal error: ',
@@ -106,5 +110,9 @@ export default new LocalizedStrings.default({
         ACCOUNT_HOLDER: 'Account holder',
         RIB: 'RIB',
         IBAN: 'IBAN',
+
+        DELIVERY_TYPE: 'Delivery method',
+        SHIPPING: 'Home delivery',
+        WITHDRAWAL: 'Store withdrawal',
     }
 });

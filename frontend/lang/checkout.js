@@ -25,7 +25,7 @@ export const strings = new LocalizedStrings({
         
         SIGN_IN: 'Vous êtes déjà inscrit ?',
         PRODUCTS: 'Articles',
-        PAYMENT_METHOD: 'Mode de paiement',
+        PAYMENT_TYPE: 'Mode de paiement',
         
         CREDIT_CARD: 'Paiement par carte bancaire',
         COD: 'Paiement cash à la livraison',
@@ -36,6 +36,9 @@ export const strings = new LocalizedStrings({
         WIRE_TRANSFER_INFO: 'Vous recevrez les informations bancaires par email pour effectuer le virement.',
         TOTAL_LABEL:'Total TTC',
         QUANTITY:'Quantité',
+
+        DELIVERY_TYPE: 'Mode de livraison',
+        FREE: 'Gratuit'
     },
     en: {
         USER_DETAILS: 'User information',
@@ -61,7 +64,7 @@ export const strings = new LocalizedStrings({
         
         SIGN_IN: 'You already have an account?',
         PRODUCTS: 'Articles',
-        PAYMENT_METHOD: 'Payment method',
+        PAYMENT_TYPE: 'Payment method',
 
         CREDIT_CARD: 'Pay by credit card',
         COD: 'Pay cash on delivery',
@@ -72,6 +75,9 @@ export const strings = new LocalizedStrings({
         WIRE_TRANSFER_INFO: 'You will receive banking information by email to make the transfer.',
         TOTAL_LABEL:'Total',
         QUANTITY:'Quantity',
+
+        DELIVERY_TYPE: 'Delivery method',
+        FREE: 'Free'
     }
 });
 

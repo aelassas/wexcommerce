@@ -101,11 +101,14 @@ export const create = async (req, res) => {
         const __order = new Order(_order);
         await __order.save();
 
+        const paymentType = (await PaymentType.findById(order.paymentType)).name;
+        const deliveryType = (await DeliveryType.findById(order.deliveryType)).name;
+
         // user confirmation email
         strings.setLanguage(_user.language);
 
         let settings;
-        if (__order.paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER) {
+        if (paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER) {
             settings = await Setting.findOne();
         }
 
@@ -124,20 +127,22 @@ export const create = async (req, res) => {
 
                 + '<br><b>' + strings.TOTAL + '</b> ' + Helper.formatNumber(__order.total) + ' ' + strings.CURRENCY + '<br><br>'
 
-                + '<b>' + strings.PAYMENT_TYPE + '</b> ' + (__order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.CREDIT_CARD
-                    : __order.paymentType === Env.PAYMENT_TYPE.COD ? strings.COD
-                        : __order.paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? strings.WIRE_TRANSFER
+                + '<b>' + strings.PAYMENT_TYPE + '</b> ' + (paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.CREDIT_CARD
+                    : paymentType === Env.PAYMENT_TYPE.COD ? strings.COD
+                        : paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? strings.WIRE_TRANSFER
                             : '') + '<br><br>'
 
-                + (__order.paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? (
+                + '<b>' + strings.DELIVERY_TYPE + '</b> ' + (deliveryType === Env.DELIVERY_TYPE.SHIPPING ? strings.SHIPPING
+                    : deliveryType === Env.DELIVERY_TYPE.WITHDRAWAL ? strings.WITHDRAWAL
+                            : '') + '<br><br>'
+
+                + (paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? (
                     strings.WIRE_TRANSFER_PART_1 + '<br><br>'
                     + '<b>' + strings.BANK_NAME + '</b> ' + settings.bankName + '<br>'
                     + '<b>' + strings.ACCOUNT_HOLDER + '</b> ' + settings.accountHolder + '<br>'
                     + '<b>' + strings.RIB + '</b> ' + settings.rib + '<br>'
                     + '<b>' + strings.IBAN + '</b> ' + settings.iban + '<br><br>'
                 ) : '')
-
-                + (__order.paymentType === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.PAID + '<br><br>' : '')
 
                 + strings.ORDER_CONFIRMED_PART_3 + '<br><br>'
                 + Helper.joinURL(FRONTEND_HOST, 'orders')

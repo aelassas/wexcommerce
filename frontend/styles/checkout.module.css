@@ -146,6 +146,22 @@
     font-size: 13px;
 }
 
+.checkoutForm .deliveryRadio label,
+.checkoutForm .deliveryRadio [class*="MuiFormControlLabel"] {
+    flex: 1;
+}
+
+.checkoutForm div.delivery {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.checkoutForm div.delivery span.deliveryPrice {
+    font-weight: 500;
+}
+
 .checkoutForm .boxTotal {
     display: flex;
     flex-direction: row;

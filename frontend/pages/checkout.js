@@ -15,6 +15,7 @@ import {
     Person as UserIcon,
     ShoppingBag as ProductsIcon,
     AttachMoney as PaymentIcon,
+    LocalShipping as DeliveryIcon,
 } from '@mui/icons-material';
 import { strings } from '../lang/checkout';
 import { strings as commonStrings } from '../lang/common';
@@ -82,16 +83,18 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
     }, [_signout]);
 
     useEffect(() => {
-        if (_cart) {
+        if (_cart && _deliveryTypes) {
+
             const total = Helper.total(_cart.cartItems);
 
             if (total === 0) {
                 router.replace('/');
             } else {
-                setTotal(total);
+                const _deliveryType = _deliveryTypes.find(dt => dt.name === deliveryType);
+                setTotal(total + _deliveryType.price);
             }
         }
-    }, [_cart, router]);
+    }, [_cart, _deliveryTypes, deliveryType, router]);
 
     useEffect(() => {
         (async function () {
@@ -489,7 +492,9 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
 
                                     <div className={styles.boxTotal}>
                                         <span className={styles.totalLabel}>{commonStrings.SUBTOTAL}</span>
-                                        <span className={styles.total}>{`${Helper.formatNumber(Helper.total(_cart.cartItems))} ${_currency}`}</span>
+                                        <span className={styles.total}>
+                                            {`${Helper.formatNumber(Helper.total(_cart.cartItems))} ${_currency}`}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -497,7 +502,7 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
                             <div className={styles.box}>
                                 <div className={styles.boxInfo}>
                                     <PaymentIcon />
-                                    <label>{strings.PAYMENT_METHOD}</label>
+                                    <label>{strings.PAYMENT_TYPE}</label>
                                 </div>
                                 <div className={styles.boxForm}>
                                     <RadioGroup
@@ -510,10 +515,7 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
                                                 <FormControlLabel key={paymentType.name} value={paymentType.name} control={<Radio />} label={
                                                     <span className={styles.paymentButton}>
                                                         <span>{
-                                                            paymentType.name === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.CREDIT_CARD
-                                                                : paymentType.name === Env.PAYMENT_TYPE.COD ? strings.COD
-                                                                    : paymentType.name === Env.PAYMENT_TYPE.WIRE_TRANSFER ? strings.WIRE_TRANSFER
-                                                                        : ''
+                                                            Helper.getPaymentType(paymentType.name, _language)
                                                         }</span>
                                                         <span className={styles.paymentInfo}>{
                                                             paymentType.name === Env.PAYMENT_TYPE.CREDIT_CARD ? strings.CREDIT_CARD_INFO
@@ -523,6 +525,37 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
                                                         }</span>
                                                     </span>
                                                 } />
+                                            ))
+                                        }
+                                    </RadioGroup>
+                                </div>
+                            </div>
+
+                            <div className={styles.box}>
+                                <div className={styles.boxInfo}>
+                                    <DeliveryIcon />
+                                    <label>{strings.DELIVERY_TYPE}</label>
+                                </div>
+                                <div className={styles.boxForm}>
+                                    <RadioGroup
+                                        value={deliveryType}
+                                        className={styles.deliveryRadio}
+                                        onChange={(event) => {
+                                            setDeliveryType(event.target.value);
+                                        }}>
+                                        {
+                                            _deliveryTypes.map((deliveryType) => (
+                                                <FormControlLabel
+                                                    key={deliveryType.name}
+                                                    value={deliveryType.name}
+                                                    control={<Radio />} label={
+                                                        <div className={styles.delivery}>
+                                                            <span>{Helper.getDeliveryType(deliveryType.name, _language)}</span>
+                                                            <span className={styles.deliveryPrice}>
+                                                                {deliveryType.price === 0 ? strings.FREE : `${deliveryType.price} ${_currency}`}
+                                                            </span>
+                                                        </div>
+                                                    } />
                                             ))
                                         }
                                     </RadioGroup>
