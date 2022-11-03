@@ -201,7 +201,7 @@ export default function Home({
                     const pt = _paymentTypes.join(',');
                     const os = _statuses.join(',');
                     const dt = _deliveryTypes.join(',');
-                    const url = `/?pt=${encodeURIComponent(pt)}}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
+                    const url = `/?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(_keyword !== '' && `&s=${encodeURIComponent(_keyword)}`) || ''}`;
                     router.replace(url);
                   }}
                   className={styles.dateFilter}
