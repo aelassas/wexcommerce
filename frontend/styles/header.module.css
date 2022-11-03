@@ -30,16 +30,16 @@
 
 a.logo {
     flex: 1;
-}
-
-div.logo {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 36px;
-    background-image: url(/logo.png);
-    background-repeat: no-repeat;
-    background-size: 100% auto;
+}
+
+img.logo {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .btnSignin {

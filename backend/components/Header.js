@@ -189,7 +189,7 @@ export default function Header(props) {
         if (code) {
             setLang(code);
             const currentLang = UserService.getLanguage();
-            
+
             if (isSignedIn) {
                 // Update user language
                 const data = {
@@ -360,7 +360,9 @@ export default function Header(props) {
                                     </IconButton>
                                 }
 
-                                <Link href='/' className={styles.logo}><div className={styles.logo}></div></Link>
+                                <Link href='/' className={styles.logo}>
+                                    <img className={styles.logo} src="/logo.png" alt="" />
+                                </Link>
                             </>
                         }
                     </div>

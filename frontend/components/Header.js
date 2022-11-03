@@ -357,180 +357,182 @@ export default function Header(props) {
     );
 
     return !props.hidden &&
-    <div style={classes.grow} className={styles.header}>
-        <AppBar position="relative" sx={{ bgcolor: '#fff', boxShadow: 'none', borderBottom: '1px solid #ddd', zIndex: showMobileSearch ? 1202 : 1 }}>
-            <Toolbar>
-                <div
-                    className={styles.headerLogo}
-                    style={{
-                        display: showMobileSearch ? 'none' : 'flex',
-                        minWidth: isSignedIn || Env.isMobile() ? 160 : 140
-                    }}>
-                    {
-                        isLoaded && !loading && !showMobileSearch &&
-                        <>
-                            {
-                                (isSignedIn || Env.isMobile()) &&
-                                <IconButton
-                                    edge="start"
-                                    sx={classes.menuButton}
-                                    color="inherit"
-                                    aria-label="open drawer"
-                                    onClick={handleSideMenuOpen}
-                                    className={styles.iconButton}
-                                >
-                                    <MenuIcon />
-                                </IconButton>
-                            }
-
-
-                            <Link href='/' className={styles.logo}><div className={styles.logo}></div></Link>
-                        </>
-                    }
-                </div>
-
-                {
-                    showMobileSearch &&
+        <div style={classes.grow} className={styles.header}>
+            <AppBar position="relative" sx={{ bgcolor: '#fff', boxShadow: 'none', borderBottom: '1px solid #ddd', zIndex: showMobileSearch ? 1202 : 1 }}>
+                <Toolbar>
                     <div
-                        className={styles.backIcon}
-                        onClick={() => {
-                            setSearchKeyword('');
-                            setShowMobileSearch(false);
+                        className={styles.headerLogo}
+                        style={{
+                            display: showMobileSearch ? 'none' : 'flex',
+                            minWidth: isSignedIn || Env.isMobile() ? 160 : 140
                         }}>
-                        <ArrowBackIcon />
+                        {
+                            isLoaded && !loading && !showMobileSearch &&
+                            <>
+                                {
+                                    (isSignedIn || Env.isMobile()) &&
+                                    <IconButton
+                                        edge="start"
+                                        sx={classes.menuButton}
+                                        color="inherit"
+                                        aria-label="open drawer"
+                                        onClick={handleSideMenuOpen}
+                                        className={styles.iconButton}
+                                    >
+                                        <MenuIcon />
+                                    </IconButton>
+                                }
+
+
+                                <Link href='/' className={styles.logo}>
+                                    <img className={styles.logo} src="/logo.png" alt="" />
+                                </Link>
+                            </>
+                        }
                     </div>
-                }
 
-                {!props.hideSearch &&
-                    <div className={styles.searchContainer}>
-                        <div className={`${styles.search}${(showMobileSearch && ` ${styles.mobileSearch}`) || ''}`}>
-                            <div className={`${styles.searchInput}${(showMobileSearch && ` ${styles.mobileSearchInput}`) || ''}`}>
-                                {showPlaceholder && !searchKeyword && (
-                                    <div className={styles.searchPlaceholder}>
-                                        <span>{
-                                            router.pathname.includes('/orders') ?
-                                                strings.SEARCH_ORDERS_PLACEHOLDER
-                                                : strings.SEARCH_PRODUCTS_PLACEHOLDER
-                                        }</span>
-                                    </div>
-                                )}
-                                <InputBase
-                                    ref={searchRef}
-                                    classes={{
-                                        root: styles.inputRoot,
-                                        input: styles.inputInput
-                                    }}
-                                    onKeyDown={handleSearch}
-                                    onChange={handleSearchChange}
-                                    value={searchKeyword}
-                                    onFocus={() => {
-                                        if (!Env.isMobile()) hidePlaceholder();
-                                    }}
-                                    onBlur={showPlacehoder}
-                                />
-                            </div>
-                            {
-                                searchKeyword && // showMobileSearch &&
-                                <div className={styles.clearIcon}
-                                    onClick={() => {
-                                        setSearchKeyword('');
+                    {
+                        showMobileSearch &&
+                        <div
+                            className={styles.backIcon}
+                            onClick={() => {
+                                setSearchKeyword('');
+                                setShowMobileSearch(false);
+                            }}>
+                            <ArrowBackIcon />
+                        </div>
+                    }
 
-                                        let input;
-                                        if (searchRef.current) {
-                                            input = searchRef.current.querySelector('input');
-                                        }
-
-                                        if (input) {
-                                            input.focus();
-                                        }
-                                    }}>
-                                    <ClearIcon />
+                    {!props.hideSearch &&
+                        <div className={styles.searchContainer}>
+                            <div className={`${styles.search}${(showMobileSearch && ` ${styles.mobileSearch}`) || ''}`}>
+                                <div className={`${styles.searchInput}${(showMobileSearch && ` ${styles.mobileSearchInput}`) || ''}`}>
+                                    {showPlaceholder && !searchKeyword && (
+                                        <div className={styles.searchPlaceholder}>
+                                            <span>{
+                                                router.pathname.includes('/orders') ?
+                                                    strings.SEARCH_ORDERS_PLACEHOLDER
+                                                    : strings.SEARCH_PRODUCTS_PLACEHOLDER
+                                            }</span>
+                                        </div>
+                                    )}
+                                    <InputBase
+                                        ref={searchRef}
+                                        classes={{
+                                            root: styles.inputRoot,
+                                            input: styles.inputInput
+                                        }}
+                                        onKeyDown={handleSearch}
+                                        onChange={handleSearchChange}
+                                        value={searchKeyword}
+                                        onFocus={() => {
+                                            if (!Env.isMobile()) hidePlaceholder();
+                                        }}
+                                        onBlur={showPlacehoder}
+                                    />
                                 </div>
-                            }
-                            <div className={`${styles.searchIcon}${(showMobileSearch && ` ${styles.mobileSearchIcon}`) || ''}`}
-                                onClick={() => {
-                                    if (Env.isMobile() && !showMobileSearch) {
-                                        return setShowMobileSearch(true);
-                                    }
+                                {
+                                    searchKeyword && // showMobileSearch &&
+                                    <div className={styles.clearIcon}
+                                        onClick={() => {
+                                            setSearchKeyword('');
 
-                                    setShowMobileSearch(false);
-                                    search(searchKeyword);
-                                }}>
-                                <SearchIcon />
+                                            let input;
+                                            if (searchRef.current) {
+                                                input = searchRef.current.querySelector('input');
+                                            }
+
+                                            if (input) {
+                                                input.focus();
+                                            }
+                                        }}>
+                                        <ClearIcon />
+                                    </div>
+                                }
+                                <div className={`${styles.searchIcon}${(showMobileSearch && ` ${styles.mobileSearchIcon}`) || ''}`}
+                                    onClick={() => {
+                                        if (Env.isMobile() && !showMobileSearch) {
+                                            return setShowMobileSearch(true);
+                                        }
+
+                                        setShowMobileSearch(false);
+                                        search(searchKeyword);
+                                    }}>
+                                    <SearchIcon />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
-
-                <React.Fragment>
-                    <Drawer open={isSideMenuOpen} onClose={handleSideMenuClose}>
-                        <ul className={styles.menu}>
-                            <li>
-                                <Link href="/" className={styles.menuItem}>
-
-                                    <HomeIcon className={styles.menuItemIcon} />
-                                    <span className={styles.menuItemText}>{strings.HOME}</span>
-
-                                </Link>
-                            </li>
-                            {isSignedIn &&
-                                <li>
-                                    <Link href="/orders" className={styles.menuItem}>
-
-                                        <OrdersIcon className={styles.menuItemIcon} />
-                                        <span className={styles.menuItemText}>{strings.ORDERS}</span>
-
-                                    </Link>
-                                </li>
-                            }
-                            {!isSignedIn && Env.isMobile() &&
-                                <li>
-                                    <Link href="/sign-in" className={styles.menuItem}>
-
-                                        <LoginIcon className={styles.menuItemIcon} />
-                                        <span className={styles.menuItemText}>{strings.SIGN_IN}</span>
-
-                                    </Link>
-                                </li>
-                            }
-                        </ul>
-                    </Drawer>
-                </React.Fragment>
-
-                <div style={classes.grow} />
-
-                <div
-                    className={styles.headerDesktop}
-                >
-                    {!props.hideCart &&
-                        <IconButton
-                            onClick={(e) => {
-                                router.replace('/cart');
-                            }}
-                            className={styles.iconButton}
-                        >
-                            <Badge badgeContent={cartCount > 0 ? cartCount : null} color="error">
-                                <CartIcon />
-                            </Badge>
-                        </IconButton>}
-                    {isSignedIn && !props.hideNotification &&
-                        <IconButton
-                            onClick={handleNotificationsClick}
-                            className={styles.iconButton}
-                        >
-                            <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>}
-                    {(!props.hideSignIn && !isSignedIn && isLoaded && !loading) &&
-                        <Link href='sign-in' className={styles.signin}>
-
-                            <LoginIcon className={styles.signinIcon} />
-                            <span>{strings.SIGN_IN}</span>
-
-                        </Link>
                     }
-                    {/* {(isLoaded && !loading) &&
+
+                    <React.Fragment>
+                        <Drawer open={isSideMenuOpen} onClose={handleSideMenuClose}>
+                            <ul className={styles.menu}>
+                                <li>
+                                    <Link href="/" className={styles.menuItem}>
+
+                                        <HomeIcon className={styles.menuItemIcon} />
+                                        <span className={styles.menuItemText}>{strings.HOME}</span>
+
+                                    </Link>
+                                </li>
+                                {isSignedIn &&
+                                    <li>
+                                        <Link href="/orders" className={styles.menuItem}>
+
+                                            <OrdersIcon className={styles.menuItemIcon} />
+                                            <span className={styles.menuItemText}>{strings.ORDERS}</span>
+
+                                        </Link>
+                                    </li>
+                                }
+                                {!isSignedIn && Env.isMobile() &&
+                                    <li>
+                                        <Link href="/sign-in" className={styles.menuItem}>
+
+                                            <LoginIcon className={styles.menuItemIcon} />
+                                            <span className={styles.menuItemText}>{strings.SIGN_IN}</span>
+
+                                        </Link>
+                                    </li>
+                                }
+                            </ul>
+                        </Drawer>
+                    </React.Fragment>
+
+                    <div style={classes.grow} />
+
+                    <div
+                        className={styles.headerDesktop}
+                    >
+                        {!props.hideCart &&
+                            <IconButton
+                                onClick={(e) => {
+                                    router.replace('/cart');
+                                }}
+                                className={styles.iconButton}
+                            >
+                                <Badge badgeContent={cartCount > 0 ? cartCount : null} color="error">
+                                    <CartIcon />
+                                </Badge>
+                            </IconButton>}
+                        {isSignedIn && !props.hideNotification &&
+                            <IconButton
+                                onClick={handleNotificationsClick}
+                                className={styles.iconButton}
+                            >
+                                <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">
+                                    <NotificationsIcon />
+                                </Badge>
+                            </IconButton>}
+                        {(!props.hideSignIn && !isSignedIn && isLoaded && !loading) &&
+                            <Link href='sign-in' className={styles.signin}>
+
+                                <LoginIcon className={styles.signinIcon} />
+                                <span>{strings.SIGN_IN}</span>
+
+                            </Link>
+                        }
+                        {/* {(isLoaded && !loading) &&
                         <Button
                             variant="contained"
                             startIcon={<LanguageIcon />}
@@ -541,35 +543,35 @@ export default function Header(props) {
                         >
                             {getLang(lang)}
                         </Button>} */}
-                    {
-                    isSignedIn && <IconButton
-                        edge="end"
-                        aria-label="account"
-                        aria-controls={menuId}
-                        aria-haspopup="true"
-                        onClick={handleAccountMenuOpen}
-                        color="inherit"
-                        className={styles.iconButton}
-                        style={{ width: 52 }}
-                    >
-                        <Avatar loggedUser={props.user} language={props.language} user={props.user} size="small" readonly />
-                    </IconButton>
-                    }
-                </div>
+                        {
+                            isSignedIn && <IconButton
+                                edge="end"
+                                aria-label="account"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleAccountMenuOpen}
+                                color="inherit"
+                                className={styles.iconButton}
+                                style={{ width: 52 }}
+                            >
+                                <Avatar loggedUser={props.user} language={props.language} user={props.user} size="small" readonly />
+                            </IconButton>
+                        }
+                    </div>
 
-                {isLoaded && !loading && !showMobileSearch &&
-                    <div className={styles.headerMobile}>
-                        {!props.hideCart && <IconButton
-                            onClick={(e) => {
-                                router.replace('/cart');
-                            }}
-                            className={styles.iconButton}
-                        >
-                            <Badge badgeContent={cartCount > 0 ? cartCount : null} color="error">
-                                <CartIcon />
-                            </Badge>
-                        </IconButton>}
-                        {/* {(!isSignedIn && !loading) &&
+                    {isLoaded && !loading && !showMobileSearch &&
+                        <div className={styles.headerMobile}>
+                            {!props.hideCart && <IconButton
+                                onClick={(e) => {
+                                    router.replace('/cart');
+                                }}
+                                className={styles.iconButton}
+                            >
+                                <Badge badgeContent={cartCount > 0 ? cartCount : null} color="error">
+                                    <CartIcon />
+                                </Badge>
+                            </IconButton>}
+                            {/* {(!isSignedIn && !loading) &&
                             <Button
                                 variant="contained"
                                 startIcon={<LanguageIcon />}
@@ -581,32 +583,32 @@ export default function Header(props) {
                                 {getLang(lang)}
                             </Button>
                         } */}
-                        {isSignedIn &&
-                            <IconButton color="inherit" onClick={handleNotificationsClick} className={styles.iconButton}>
-                                <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">
-                                    <NotificationsIcon />
-                                </Badge>
+                            {isSignedIn &&
+                                <IconButton color="inherit" onClick={handleNotificationsClick} className={styles.iconButton}>
+                                    <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">
+                                        <NotificationsIcon />
+                                    </Badge>
+                                </IconButton>
+                            }
+                            {isSignedIn && <IconButton
+                                aria-label="show more"
+                                aria-controls={mobileMenuId}
+                                aria-haspopup="true"
+                                onClick={handleMobileMenuOpen}
+                                color="inherit"
+                                className={styles.iconButton}
+                            >
+                                <MoreIcon />
                             </IconButton>
-                        }
-                        {isSignedIn && <IconButton
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                            className={styles.iconButton}
-                        >
-                            <MoreIcon />
-                        </IconButton>
-                        }
-                    </div>
-                }
-            </Toolbar>
-        </AppBar>
+                            }
+                        </div>
+                    }
+                </Toolbar>
+            </AppBar>
 
-        {showMobileSearch && <Backdrop />}
-        {renderMobileMenu}
-        {renderMenu}
-        {renderLanguageMenu}
-    </div >;
+            {showMobileSearch && <Backdrop />}
+            {renderMobileMenu}
+            {renderMenu}
+            {renderLanguageMenu}
+        </div >;
 };
