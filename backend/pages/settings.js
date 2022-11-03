@@ -209,6 +209,31 @@ export default function Settings({ _user, _signout, _deliveryTypes, _paymentType
     }
   };
 
+  const handleDeliveryTypesSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const count = deliveryTypes.filter(pt => pt.enabled).length;
+
+      if (count > 0) {
+
+        const status = await DeliveryTypeService.updateDeliveryTypes(deliveryTypes);
+
+        if (status === 200) {
+          Helper.info(commonStrings.UPDATED);
+        } else {
+          Helper.error();
+        }
+      } else {
+        setDeliveryTypesWarning(true);
+      }
+    }
+    catch (err) {
+      // UserService.signout();
+      console.log(err);
+    }
+  }
+
   const handleBankSubmit = async (e) => {
     e.preventDefault();
 
@@ -401,9 +426,34 @@ export default function Settings({ _user, _signout, _deliveryTypes, _paymentType
                       <FormControlLabel
                         control={<Checkbox checked={deliveryType.enabled} />}
                         label={
-                          deliveryType.name === Env.DELIVERY_TYPE.SHIPPING ? commonStrings.SHIPPING
-                            : deliveryType.name === Env.DELIVERY_TYPE.WITHDRAWAL ? commonStrings.WITHDRAWAL
-                              : ''
+                          <div className={styles.deliveryTypeControl}>
+                            <span>{
+                              deliveryType.name === Env.DELIVERY_TYPE.SHIPPING ? commonStrings.SHIPPING
+                                : deliveryType.name === Env.DELIVERY_TYPE.WITHDRAWAL ? commonStrings.WITHDRAWAL
+                                  : ''
+                            }</span>
+                            <div className={styles.price}>
+                              <span className={styles.priceLabel}>{`${strings.PRICE} (${currency})`}</span>
+                              <Input
+                                className={styles.priceInput}
+                                value={deliveryType.price}
+                                type="number"
+                                required
+                                onChange={(e) => {
+                                  const __deliveryTypes = Helper.cloneArray(deliveryTypes);
+                                  const __deliveryType = __deliveryTypes.find(dt => dt.name === deliveryType.name);
+
+                                  if (e.target.value) {
+                                    __deliveryType.price = parseFloat(e.target.value);
+                                  } else {
+                                    __deliveryType.price = '';
+                                  }
+                                  setDeliveryTypes(__deliveryTypes);
+                                }}
+                              >
+                              </Input>
+                            </div>
+                          </div>
                         }
                         onChange={(e) => {
                           const __deliveryTypes = Helper.clone(deliveryTypes);
@@ -575,12 +625,20 @@ export default function Settings({ _user, _signout, _deliveryTypes, _paymentType
             <Dialog
               disableEscapeKeyDown
               maxWidth="xs"
-              open={paymentTypesWarning || wireTransferWarning}
+              open={deliveryTypesWarning || paymentTypesWarning || wireTransferWarning}
             >
               <DialogTitle className='dialog-header'>{commonStrings.INFO}</DialogTitle>
-              <DialogContent>{paymentTypesWarning ? strings.PAYMENT_SETTINGS_WARNING : wireTransferWarning ? strings.WIRE_TRANSFER_WARNING : ''}</DialogContent>
+              <DialogContent>
+                {
+                  deliveryTypesWarning ? strings.DELIVERY_SETTINGS_WARNING
+                    : paymentTypesWarning ? strings.PAYMENT_SETTINGS_WARNING
+                      : wireTransferWarning ? strings.WIRE_TRANSFER_WARNING
+                        : ''
+                }
+              </DialogContent>
               <DialogActions className='dialog-actions'>
                 <Button onClick={() => {
+                  if (deliveryTypesWarning) setDeliveryTypesWarning(false);
                   if (paymentTypesWarning) setPaymentTypesWarning(false);
                   if (wireTransferWarning) setWireTransferWarning(false);
                 }} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
@@ -608,7 +666,8 @@ export default function Settings({ _user, _signout, _deliveryTypes, _paymentType
 };
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _deliveryTypes = [], _paymentTypes = [], _settings = null, _bankSettings = null;
+  let _user = null, _signout = false, _deliveryTypes = [],
+    _paymentTypes = [], _settings = null;
 
   try {
     const currentUser = UserService.getCurrentUser(context);

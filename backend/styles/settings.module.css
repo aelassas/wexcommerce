@@ -22,6 +22,16 @@ div.settings {
     margin-bottom: 45px;
 }
 
+div.settings .priceLabel {
+    margin-right: 5px;
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 13px;
+}
+
+div.settings .priceInput{
+    width: 64px;
+}
+
 div.settings .paymentType {
     height: 25px;
 }

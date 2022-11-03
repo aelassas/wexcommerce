@@ -83,6 +83,12 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
     }, [_signout]);
 
     useEffect(() => {
+        if (_deliveryTypes && !_deliveryTypes.some(dt => dt.name === Env.DELIVERY_TYPE.SHIPPING)) {
+            setDeliveryType(Env.DELIVERY_TYPE.WITHDRAWAL);
+        }
+    }, [_deliveryTypes]);
+
+    useEffect(() => {
         if (_cart && _deliveryTypes) {
 
             const total = Helper.total(_cart.cartItems);
@@ -91,7 +97,10 @@ export default function Checkout({ _user, _language, _currency, _signout, _noMat
                 router.replace('/');
             } else {
                 const _deliveryType = _deliveryTypes.find(dt => dt.name === deliveryType);
-                setTotal(total + _deliveryType.price);
+
+                if (_deliveryType) {
+                    setTotal(total + _deliveryType.price);
+                }
             }
         }
     }, [_cart, _deliveryTypes, deliveryType, router]);
