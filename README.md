@@ -412,6 +412,18 @@ WC_BACKEND_HOST
 WC_FRONTEND_HOST
 ```
 
+Install nodemon:
+```
+npm i -g nodemon
+```
+
+Run api:
+```
+cd ./api
+npm install
+npm run dev
+```
+
 3. Add backend/.env file:
 ```
 NEXT_PUBLIC_WC_API_HOST = http://localhost:4004
@@ -428,6 +440,12 @@ NEXT_PUBLIC_WC_CDN_PRODUCTS
 NEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS
 ```
 
+Run backend:
+```
+cd ./backend
+npm install
+npm run dev
+```
 
 4. Add frontend/.env file:
 ```
@@ -443,6 +461,13 @@ You must configure the following options:
 NEXT_PUBLIC_WC_API_HOST
 NEXT_PUBLIC_WC_CDN_PRODUCTS
 NEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS
+```
+
+Run frontend:
+```
+cd ./frontend
+npm install
+npm run dev
 ```
 
 5. Configure http://localhost/cdn
