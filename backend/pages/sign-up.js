@@ -278,7 +278,7 @@ export default function SignUp({ _language }) {
 
 export async function getServerSideProps(context) {
 
-    if (process.env.NODE_ENV === 'production') return { notFound: true };
+    // if (process.env.NODE_ENV === 'production') return { notFound: true };
 
     const _language = await SettingService.getLanguage();
 
