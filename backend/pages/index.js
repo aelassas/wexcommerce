@@ -456,9 +456,9 @@ export async function getServerSideProps(context) {
         _user = await UserService.getUser(context, currentUser.id);
 
         if (_user) {
-
+          _language = await SettingService.getLanguage();
+          
           if (_user.verified) {
-            _language = await SettingService.getLanguage();
             _currency = await SettingService.getCurrency();
 
             if (typeof context.query.u !== 'undefined') __user = context.query.u;

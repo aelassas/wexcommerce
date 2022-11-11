@@ -241,12 +241,12 @@ export async function getServerSideProps(context) {
 
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
-
+        _language = await SettingService.getLanguage();
+        
         if (_user) {
           const { c: categoryId } = context.query;
           if (categoryId) {
             try {
-              _language = await SettingService.getLanguage();
               _category = await CategoryService.getCategory(context, _language, categoryId);
 
               if (!_category) {

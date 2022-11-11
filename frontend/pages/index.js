@@ -410,10 +410,10 @@ export async function getServerSideProps(context) {
       _signout = true;
     }
 
+    _language = await SettingService.getLanguage();
+
     if (!_user || (_user && _user.verified)) {
       if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
-
-      _language = await SettingService.getLanguage();
 
       if (_page >= 1) {
         _currency = await SettingService.getCurrency();

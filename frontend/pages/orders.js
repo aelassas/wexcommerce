@@ -360,6 +360,9 @@ export async function getServerSideProps(context) {
 
         if (_user) {
 
+          _language = await SettingService.getLanguage();
+          _currency = await SettingService.getCurrency();
+
           if (_user.verified) {
             if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
             if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
@@ -402,9 +405,6 @@ export async function getServerSideProps(context) {
             } else {
               _statuses = Helper.getOrderStatuses();
             }
-
-            _language = await SettingService.getLanguage();
-            _currency = await SettingService.getCurrency();
 
             if (_page >= 1) {
               const data = await OrderService.getOrders(

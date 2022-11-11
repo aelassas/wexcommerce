@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { strings } from '../lang/notifications';
 import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/common';
+import { strings as masterStrings } from '../lang/master';
 import { strings as headerStrings } from '../lang/header';
 import UserService from '../services/UserService';
 import NotificationService from '../services/NotificationService';

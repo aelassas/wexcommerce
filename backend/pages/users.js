@@ -225,14 +225,13 @@ export async function getServerSideProps(context) {
 
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
+        _language = await SettingService.getLanguage();
 
         if (_user) {
 
           if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
 
           if (_page >= 1) {
-            _language = await SettingService.getLanguage();
-
             if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
             const data = await UserService.getUsers(context, _keyword, _page, Env.PAGE_SIZE);
             const _data = data[0];

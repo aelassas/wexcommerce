@@ -551,12 +551,12 @@ export async function getServerSideProps(context) {
 
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
-
+        _language = await SettingService.getLanguage();
+        
         if (_user) {
           const { p: productId } = context.query;
           if (productId) {
             try {
-              _language = await SettingService.getLanguage();
               _currency = await SettingService.getCurrency();
               _product = await ProductService.getProduct(productId, _language);
 
