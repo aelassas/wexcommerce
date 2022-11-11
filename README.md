@@ -1,7 +1,9 @@
 [![Backend](https://github.com/aelassas/weecommerce/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/weecommerce/actions/workflows/backend.yml)
 [![Frontend](https://github.com/aelassas/weecommerce/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/weecommerce/actions/workflows/frontend.yml)
 
-![Logo](__content/logo.png)
+<p align="center">
+<img alt="" src="https://weecommerce.github.io/content/weecommerce.png" />
+</p>
 
 weeCommerce is an eCommerce platform built on top of Next.js.
 
