@@ -42,7 +42,7 @@ const Env = {
         SHIPPED: 'shipped',
         CANCELLED: 'cancelled'
     },
-    COOCKIES_OPTIONS: { maxAge: 100 * 365 * 24 * 60 * 60, sameSite: true },
+    COOCKIES_OPTIONS: { maxAge: 100 * 365 * 24 * 60 * 60 },
 };
 
 export default Env;
