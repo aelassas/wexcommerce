@@ -5,9 +5,7 @@
 <img alt="" src="https://wexcommerce.github.io/content/wexcommerce.png" />
 </p>
 
-wexCommerce is an eCommerce platform built on top of Next.js.
-
-wexCommerce was built on top of Next.js to be optmized for SEO so that products can be indexed by search engines.
+wexCommerce is an eCommerce platform SEO optimized with multiple interesting features. wexCommerce is SEO optimized so that products can be indexed by search engines.
 
 # Features
 
