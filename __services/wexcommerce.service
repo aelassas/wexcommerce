@@ -1,15 +1,15 @@
 [Unit]
-Description=weeCommerce API
+Description=wexCommerce API
 Wants=mongod.service
 After=mongod.service
 
 [Service]
 ExecStart=/usr/bin/node -r dotenv/config app.js
-WorkingDirectory=/opt/weecommerce/api
+WorkingDirectory=/opt/wexcommerce/api
 Type=simple
 Restart=always
-StandardOutput=append:/var/log/weecommerce.log
-StandardError=append:/var/log/weecommerce.log
+StandardOutput=append:/var/log/wexcommerce.log
+StandardError=append:/var/log/wexcommerce.log
 User=aelassas
 Group=aelassas
 

@@ -1,13 +1,13 @@
-[![Backend](https://github.com/aelassas/weecommerce/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/weecommerce/actions/workflows/backend.yml)
-[![Frontend](https://github.com/aelassas/weecommerce/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/weecommerce/actions/workflows/frontend.yml)
+[![Backend](https://github.com/aelassas/wexcommerce/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/backend.yml)
+[![Frontend](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml)
 
 <p align="center">
-<img alt="" src="https://weecommerce.github.io/content/weecommerce.png" />
+<img alt="" src="https://wexcommerce.github.io/content/wexcommerce.png" />
 </p>
 
-weeCommerce is an eCommerce platform built on top of Next.js.
+wexCommerce is an eCommerce platform built on top of Next.js.
 
-weeCommerce was built on top of Next.js to be optmized for SEO so that products can be indexed by search engines.
+wexCommerce was built on top of Next.js to be optmized for SEO so that products can be indexed by search engines.
 
 # Features
 
@@ -20,19 +20,19 @@ weeCommerce was built on top of Next.js to be optmized for SEO so that products 
 * Responsive backend and frontend
 
 # Download
-You can download the latest release from [here](https://github.com/aelassas/weecommerce/releases/latest).
+You can download the latest release from [here](https://github.com/aelassas/wexcommerce/releases/latest).
 
 # Install
 
-You can find installation instructions [here](https://github.com/aelassas/weecommerce/wiki/Installation).
+You can find installation instructions [here](https://github.com/aelassas/wexcommerce/wiki/Installation).
 
 # Run from Code
 
-You can find instructions to run weeCommerce from code [here](https://github.com/aelassas/weecommerce/wiki/Run-from-code).
+You can find instructions to run wexCommerce from code [here](https://github.com/aelassas/wexcommerce/wiki/Run-from-code).
 
 # Documentation
 
-You can find documentation [here](https://github.com/aelassas/weecommerce/wiki).
+You can find documentation [here](https://github.com/aelassas/wexcommerce/wiki).
 
 # Overview
 

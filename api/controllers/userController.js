@@ -655,7 +655,7 @@ export const getUsers = async (req, res) => {
         // for (let i = 1; i <= 45; i++) {
         //     await new User({
         //         fullName: `User ${i}`,
-        //         email: `user${i}@weecommerce.ma`,
+        //         email: `user${i}@wexcommerce.ma`,
         //         type: Env.USER_TYPE.USER,
         //         verified: true,
         //         active: true,

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-tail -f /var/log/weecommerce.log
+tail -f /var/log/wexcommerce.log

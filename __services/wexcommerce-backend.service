@@ -1,15 +1,15 @@
 [Unit]
-Description=weeCommerce Backend
+Description=wexCommerce Backend
 Wants=mongod.service
 After=mongod.service
 
 [Service]
 ExecStart=/usr/bin/npm run start
-WorkingDirectory=/opt/weecommerce/backend
+WorkingDirectory=/opt/wexcommerce/backend
 Type=simple
 Restart=always
-StandardOutput=append:/var/log/weecommerce-backend.log
-StandardError=append:/var/log/weecommerce-backend.log
+StandardOutput=append:/var/log/wexcommerce-backend.log
+StandardError=append:/var/log/wexcommerce-backend.log
 User=aelassas
 Group=aelassas
 

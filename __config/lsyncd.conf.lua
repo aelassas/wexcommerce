@@ -7,14 +7,14 @@ settings {
 
 sync {
   default.rsync,
-  source = "/opt/weecommerce",
-  target = "/mnt/sdb/weecommerce"
+  source = "/opt/wexcommerce",
+  target = "/mnt/sdb/wexcommerce"
 }
 
 sync {
   default.rsync,
-  source = "/home/aelassas/weecommerce",
-  target = "/mnt/sdb/__weecommerce__"
+  source = "/home/aelassas/wexcommerce",
+  target = "/mnt/sdb/__wexcommerce__"
  }
  
 sync {

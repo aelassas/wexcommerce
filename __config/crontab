@@ -1,2 +1,2 @@
-* * * * * /opt/weecommerce/__scripts/noip.sh >> /var/log/noip.log 2>&1
-@reboot /opt/weecommerce/__scripts/noip.sh >> /var/log/noip.log 2>&1
+* * * * * /opt/wexcommerce/__scripts/noip.sh >> /var/log/noip.log 2>&1
+@reboot /opt/wexcommerce/__scripts/noip.sh >> /var/log/noip.log 2>&1
