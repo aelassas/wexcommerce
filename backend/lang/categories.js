@@ -5,7 +5,7 @@ export const strings = new LocalizedStrings({
         NEW_CATEGORY: 'Nouvelle Catégorie',
         EMPTY_LIST: 'Pas de catégories',
         DELETE_CATEGORY: 'Êtes-vous sûr de vouloir supprimer cette catégorie ?',
-        CANNOT_DELETE_CATEGORY: 'Cette catégorie ne peut pas être supprimé car il est lié à des produits.',
+        CANNOT_DELETE_CATEGORY: 'Cette catégorie ne peut pas être supprimé car elle est liée à des produits.',
     },
     en: {
         NEW_CATEGORY: 'New Category',
