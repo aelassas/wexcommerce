@@ -45,6 +45,9 @@ export const create = async (req, res) => {
             }
         });
 
+        const setting = await Setting.findOne();
+        strings.setLanguage(setting.language);
+
         if (user) {
             user.verified = false;
             user.blacklisted = false;
@@ -55,7 +58,7 @@ export const create = async (req, res) => {
             const token = new Token({ user: _user._id, token: uuid() });
             await token.save();
 
-            strings.setLanguage(_user.language);
+            // strings.setLanguage(_user.language);
 
             const mailOptions = {
                 from: SMTP_FROM,
@@ -105,7 +108,7 @@ export const create = async (req, res) => {
         const deliveryType = (await DeliveryType.findById(order.deliveryType)).name;
 
         // user confirmation email
-        strings.setLanguage(_user.language);
+        // strings.setLanguage(_user.language);
 
         let settings;
         if (paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER) {
@@ -134,7 +137,7 @@ export const create = async (req, res) => {
 
                 + '<b>' + strings.DELIVERY_TYPE + '</b> ' + (deliveryType === Env.DELIVERY_TYPE.SHIPPING ? strings.SHIPPING
                     : deliveryType === Env.DELIVERY_TYPE.WITHDRAWAL ? strings.WITHDRAWAL
-                            : '') + '<br><br>'
+                        : '') + '<br><br>'
 
                 + (paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER ? (
                     strings.WIRE_TRANSFER_PART_1 + '<br><br>'
@@ -155,7 +158,7 @@ export const create = async (req, res) => {
         await transporter.sendMail(mailOptions);
 
         // admin email
-        strings.setLanguage(admin.language);
+        // strings.setLanguage(admin.language);
 
         mailOptions = {
             from: SMTP_FROM,
