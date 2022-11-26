@@ -230,7 +230,11 @@ export const update = async (req, res) => {
             // user confirmation email
             const _user = order.user;
 
-            strings.setLanguage(_user.language);
+            // strings.setLanguage(_user.language);
+            
+            const setting = await Setting.findOne();
+            strings.setLanguage(setting.language);
+
 
             const message = strings.ORDER_UPDATED_PART_1 + order._id + strings.ORDER_UPDATED_PART_2;
 
