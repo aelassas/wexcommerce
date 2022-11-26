@@ -10,6 +10,7 @@ sudo chmod +x -R /opt/wexcommerce/__scripts
 
 cd /opt/wexcommerce/backend/
 npm ci
+sudo rm -rf .next
 npm run build
 
 sudo systemctl restart wexcommerce-backend
