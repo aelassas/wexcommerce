@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import CategoryService from '../services/CategoryService';
+import * as CategoryService from '../services/CategoryService';
 import * as Helper from '../common/Helper';
 import MultipleSelect from './MultipleSelect';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 
 export default function CategorySelectList(props) {
     const [loading, setLoading] = useState(false);

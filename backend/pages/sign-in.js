@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { strings as commonStrings } from '../lang/common';
 import { strings } from '../lang/sign-in';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import Header from '../components/Header';
 import Error from '../components/Error';
 import {
@@ -14,7 +14,7 @@ import {
 import * as Helper from '../common/Helper';
 import { useRouter } from "next/router";
 import Link from 'next/link';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/signin.module.css';
 

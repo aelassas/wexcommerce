@@ -5,7 +5,7 @@ import { strings as masterStrings } from '../lang/master';
 import { strings as commonStrings } from '../lang/common';
 import { strings as headerStrings } from '../lang/header';
 import * as Helper from '../common/Helper';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import {
   Button,
   Card,
@@ -25,7 +25,7 @@ import { format } from 'date-fns'
 import { fr, enUS } from "date-fns/locale";
 import NoMatch from '../components/NoMatch';
 import { useRouter } from 'next/router';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/users.module.css';
 

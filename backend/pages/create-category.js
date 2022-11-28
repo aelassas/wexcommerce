@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import Header from '../components/Header';
 import {
   Input,
@@ -13,10 +13,10 @@ import { strings } from '../lang/create-category';
 import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
 import * as Helper from '../common/Helper';
-import CategoryService from '../services/CategoryService';
+import * as CategoryService from '../services/CategoryService';
 import Env from '../config/env.config';
 import { useRouter } from 'next/router';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/create-category.module.css';
 

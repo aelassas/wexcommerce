@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import Header from '../components/Header';
 import {
   IconButton,
@@ -22,9 +22,9 @@ import { strings } from '../lang/categories';
 import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
 import * as Helper from '../common/Helper';
-import CategoryService from '../services/CategoryService';
+import * as CategoryService from '../services/CategoryService';
 import { useRouter } from 'next/router';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/categories.module.css';
 
@@ -103,7 +103,7 @@ const Categories = ({ _user, _signout, _categories, _language }) => {
   const handleConfirmDelete = async () => {
     try {
       if (categoryId !== '' && categoryIndex > -1) {
-        const status = await CategoryService.delete(categoryId);
+        const status = await CategoryService.deleteCategory(categoryId);
 
         if (status === 200) {
           _categories.splice(categoryIndex, 1);

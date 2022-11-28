@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { strings as commonStrings } from '../lang/common';
 import { strings } from '../lang/sign-up';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import Error from '../components/Error';
 import Backdrop from '../components/SimpleBackdrop';
 import {
@@ -16,7 +16,7 @@ import validator from 'validator';
 import * as Helper from '../common/Helper';
 import { useRouter } from "next/router";
 import Header from '../components/Header';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/signup.module.css';
 

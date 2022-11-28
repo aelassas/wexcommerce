@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import Header from '../components/Header';
 import {
   Input,
@@ -20,7 +20,7 @@ import { strings as cpStrings } from '../lang/create-product';
 import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
 import * as Helper from '../common/Helper';
-import ProductService from '../services/ProductService';
+import * as ProductService from '../services/ProductService';
 import NoMatch from '../components/NoMatch';
 import CategorySelectList from '../components/CategorySelectList';
 import { useRouter } from 'next/router';
@@ -28,7 +28,7 @@ import Env from '../config/env.config';
 import ImageEditor from '../components/ImageEditor';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/update-product.module.css';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";

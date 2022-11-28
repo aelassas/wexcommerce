@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import UserService from '../services/UserService';
-import PaymentTypeService from '../services/PaymentTypeService';
+import * as UserService from '../services/UserService';
+import * as PaymentTypeService from '../services/PaymentTypeService';
 import Header from '../components/Header';
 import { strings } from '../lang/settings';
 import { strings as commonStrings } from '../lang/common';
@@ -26,8 +26,8 @@ import {
 } from '@mui/material';
 import validator from 'validator';
 import Env from '../config/env.config';
-import SettingService from '../services/SettingService';
-import DeliveryTypeService from '../services/DeliveryTypeService';
+import * as SettingService from '../services/SettingService';
+import * as DeliveryTypeService from '../services/DeliveryTypeService';
 
 import styles from '../styles/settings.module.css';
 
