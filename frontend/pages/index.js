@@ -28,9 +28,7 @@ import {
 } from '@mui/icons-material';
 import Env from '../config/env.config';
 import Link from 'next/link';
-import { fr, enUS } from "date-fns/locale";
 import NoMatch from '../components/NoMatch';
-import { useRouter } from 'next/router';
 import SoldOut from '../components/SoldOut';
 import SettingService from '../services/SettingService';
 
@@ -50,9 +48,6 @@ const Home = ({
   _products,
   _noMatch
 }) => {
-  const router = useRouter();
-
-  const [loading, setLoading] = useState(true);
   const [leftPanelRef, setLeftPanelRef] = useState();
   const [closeIconRef, setCloseIconRef] = useState();
   const [productsRef, setProductsRef] = useState();
@@ -69,12 +64,6 @@ const Home = ({
       Helper.setLanguage(headerStrings, _language);
     }
   }, [_language]);
-
-  useEffect(() => {
-    if (_user) {
-      setLoading(false);
-    }
-  }, [_user]);
 
   useEffect(() => {
     if (_signout) {

@@ -15,7 +15,6 @@ import { strings as masterStrings } from '../lang/master';
 import * as Helper from '../common/Helper';
 import ProductService from '../services/ProductService';
 import NoMatch from '../components/NoMatch';
-import { useRouter } from 'next/router';
 import CartService from '../services/CartService';
 import Env from '../config/env.config';
 import ImageViewer from '../components/ImageViewer';
@@ -25,9 +24,6 @@ import SettingService from '../services/SettingService';
 import styles from '../styles/product.module.css';
 
 const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) => {
-  const router = useRouter();
-
-  const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState();
   const [image, setImage] = useState();
   const [images, setImages] = useState([]);
@@ -35,12 +31,6 @@ const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) 
   const [openImageDialog, setOpenImageDialog] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-
-  useEffect(() => {
-    if (_user) {
-      setLoading(false);
-    }
-  }, [_user]);
 
   useEffect(() => {
     if (_signout) {

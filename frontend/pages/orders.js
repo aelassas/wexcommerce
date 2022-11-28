@@ -53,7 +53,6 @@ const Orders = ({
 }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [leftPanelRef, setLeftPanelRef] = useState();
   const [orderListRef, setOrderListRef] = useState();
   const [statuses, setStatuses] = useState([]);
   const [from, setFrom] = useState(null);
@@ -140,7 +139,6 @@ const Orders = ({
           {!_noMatch &&
             <div className={styles.main}>
               <div
-                ref={el => setLeftPanelRef(el)}
                 className={styles.leftPanel}
               >
                 <PaymentTypeFilter

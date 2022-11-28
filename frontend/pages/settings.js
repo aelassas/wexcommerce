@@ -23,6 +23,7 @@ import styles from '../styles/settings.module.css';
 
 const Settings = ({ _user, _language, _signout }) => {
   const router = useRouter();
+  
   const [loading, setLoading] = useState(true);
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
