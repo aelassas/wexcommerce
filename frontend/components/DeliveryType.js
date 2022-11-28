@@ -4,13 +4,13 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/delivery-type.module.css';
 
-export default function DeliveryType({ value, className, language, onClick }) {
+const DeliveryType = ({ value, className, language, onClick }) => {
     return (
         <span
             className={(className ? className + ' ' : '') +
                 (value === Env.DELIVERY_TYPE.SHIPPING ? styles.shipping
                     : value === Env.DELIVERY_TYPE.WITHDRAWAL ? styles.withdrawal
-                            : '')}
+                        : '')}
             onClick={(e) => {
                 if (onClick) onClick(e);
             }}
@@ -20,4 +20,6 @@ export default function DeliveryType({ value, className, language, onClick }) {
             }
         </span>
     );
-}
+};
+
+export default DeliveryType;

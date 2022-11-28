@@ -7,7 +7,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/no-match.module.css';
 
-export default function NoMatch({ language }) {
+const NoMatch = ({ language }) => {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -25,4 +25,6 @@ export default function NoMatch({ language }) {
             <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
         </div>
     );
-}
+};
+
+export default NoMatch;

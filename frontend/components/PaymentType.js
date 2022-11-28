@@ -4,7 +4,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/payment-type.module.css';
 
-export default function PaymentType({ value, language, className, onClick }) {
+const PaymentType = ({ value, language, className, onClick }) => {
     return (
         <span
             className={(className ? className + ' ' : '') +
@@ -21,4 +21,6 @@ export default function PaymentType({ value, language, className, onClick }) {
             }
         </span>
     );
-}
+};
+
+export default PaymentType;

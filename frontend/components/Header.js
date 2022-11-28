@@ -6,7 +6,7 @@ import UserService from '../services/UserService';
 import NotificationService from '../services/NotificationService';
 import CartService from '../services/CartService';
 import * as Helper from '../common/Helper';
-import { Avatar } from './Avatar';
+import Avatar from './Avatar';
 import {
     AppBar,
     Toolbar,

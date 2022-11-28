@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import styles from '../styles/accordion.module.css';
 
-export default function Accordion({ title, collapse, children, className, offsetHeight }) {
+const Accordion = ({ title, collapse, children, className, offsetHeight }) => {
 
     const accordionRef = useRef();
 
@@ -38,4 +38,6 @@ export default function Accordion({ title, collapse, children, className, offset
             <div className={collapse ? styles.panelCollapse : styles.panel}>{children}</div>
         </div>
     );
-}
+};
+
+export default Accordion;

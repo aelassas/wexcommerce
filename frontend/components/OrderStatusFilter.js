@@ -7,7 +7,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/order-status-filter.module.css';
 
-export default function OrderStatusFilter({ language, selectedOptions, onChange, className }) {
+const OrderStatusFilter = ({ language, selectedOptions, onChange, className }) => {
     const statuses = Helper.getOrderStatuses();
     const [checkedStatuses, setCheckedStatuses] = useState(statuses);
     const [allChecked, setAllChecked] = useState(true);
@@ -113,4 +113,6 @@ export default function OrderStatusFilter({ language, selectedOptions, onChange,
             </div>
         </Accordion>
     );
-}
+};
+
+export default OrderStatusFilter;

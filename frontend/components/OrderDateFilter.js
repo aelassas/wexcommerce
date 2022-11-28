@@ -9,7 +9,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/order-date-filter.module.css';
 
-export default function OrderDateFilter({ language, from, to, onSubmit, className }) {
+const OrderDateFilter = ({ language, from, to, onSubmit, className }) => {
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
     const [minDate, setMinDate] = useState();
@@ -83,4 +83,6 @@ export default function OrderDateFilter({ language, from, to, onSubmit, classNam
 
         </Accordion>
     );
-}
+};
+
+export default OrderDateFilter;

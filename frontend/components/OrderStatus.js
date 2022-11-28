@@ -4,7 +4,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/order-status.module.css';
 
-export default function OrderStatus({ value, language, className, onClick }) {
+const OrderStatus = ({ value, language, className, onClick }) => {
     return (
         <span
             className={(className ? className + ' ' : '') +
@@ -24,4 +24,6 @@ export default function OrderStatus({ value, language, className, onClick }) {
             }
         </span>
     );
-}
+};
+
+export default OrderStatus;

@@ -7,7 +7,7 @@ import { TextField, IconButton, InputAdornment } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { fr, enUS } from "date-fns/locale";
 
-export default function DatePicker({ label, language, value, minDate, required, onChange }) {
+const DatePicker = ({ label, language, value, minDate, required, onChange }) => {
     const [date, setDate] = useState();
 
     useEffect(() => {
@@ -62,4 +62,6 @@ export default function DatePicker({ label, language, value, minDate, required, 
             />
         </LocalizationProvider>
     );
-}
+};
+
+export default DatePicker;

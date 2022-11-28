@@ -7,7 +7,7 @@ import * as Helper from '../common/Helper';
 
 import styles from '../styles/delivery-type-filter.module.css';
 
-export default function DeliveryTypeFilter({ selectedOptions, language, onChange, className }) {
+const DeliveryTypeFilter = ({ selectedOptions, language, onChange, className }) => {
     const deliveryTypes = Helper.getDeliveryTypes();
     const [checkedDeliveryTypes, setCheckedDeliveryTypes] = useState(deliveryTypes);
     const [allChecked, setAllChecked] = useState(true);
@@ -113,4 +113,6 @@ export default function DeliveryTypeFilter({ selectedOptions, language, onChange
             </div>
         </Accordion>
     );
-}
+};
+
+export default DeliveryTypeFilter;

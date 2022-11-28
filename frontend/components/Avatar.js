@@ -20,7 +20,7 @@ import {
     BrokenImageTwoTone as DeleteIcon
 } from '@mui/icons-material';
 
-export const Avatar = (props) => {
+const Avatar = (props) => {
     const [error, setError] = useState(false);
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState(null);
@@ -133,7 +133,7 @@ export const Avatar = (props) => {
             commonStrings.setLanguage(props.language);
         }
     }, [props.language]);
-    
+
     useEffect(() => {
         const currentUser = UserService.getCurrentUser();
         if (currentUser) {
@@ -232,4 +232,6 @@ export const Avatar = (props) => {
             :
             null
     );
-}
+};
+
+export default Avatar;
