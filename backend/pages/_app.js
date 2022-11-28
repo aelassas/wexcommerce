@@ -3,8 +3,6 @@ import Head from 'next/head';
 import { ToastContainer } from 'react-toastify';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { frFR, enUS } from '@mui/material/locale';
-import UserService from '../services/UserService';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
@@ -12,7 +10,7 @@ import 'nprogress/nprogress.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '../styles/globals.css';
 
-function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState();
 
   useEffect(() => {
@@ -35,7 +33,6 @@ function App({ Component, pageProps }) {
   }, []);
 
   useEffect(() => {
-    // const language = UserService.getLanguage();
 
     const theme = createTheme({
       typography: {
@@ -120,9 +117,7 @@ function App({ Component, pageProps }) {
           },
         },
       },
-    }
-      // , language === 'fr' ? frFR : enUS
-    );
+    });
 
     setTheme(theme);
   }, []);
@@ -158,6 +153,6 @@ function App({ Component, pageProps }) {
       </ThemeProvider>
     </>
   );
-}
+};
 
 export default App;
