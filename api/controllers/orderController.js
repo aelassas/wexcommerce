@@ -12,7 +12,7 @@ import DeliveryType from '../models/DeliveryType.js';
 import { v1 as uuid } from 'uuid';
 import escapeStringRegexp from 'escape-string-regexp';
 import mongoose from 'mongoose';
-import Helper from '../common/Helper.js';
+import * as Helper from '../common/Helper.js';
 import nodemailer from 'nodemailer';
 
 const SMTP_HOST = process.env.WC_SMTP_HOST;
@@ -57,8 +57,6 @@ export const create = async (req, res) => {
 
             const token = new Token({ user: _user._id, token: uuid() });
             await token.save();
-
-            // strings.setLanguage(_user.language);
 
             const mailOptions = {
                 from: SMTP_FROM,
@@ -108,8 +106,6 @@ export const create = async (req, res) => {
         const deliveryType = (await DeliveryType.findById(order.deliveryType)).name;
 
         // user confirmation email
-        // strings.setLanguage(_user.language);
-
         let settings;
         if (paymentType === Env.PAYMENT_TYPE.WIRE_TRANSFER) {
             settings = await Setting.findOne();
@@ -229,8 +225,6 @@ export const update = async (req, res) => {
 
             // user confirmation email
             const _user = order.user;
-
-            // strings.setLanguage(_user.language);
             
             const setting = await Setting.findOne();
             strings.setLanguage(setting.language);
@@ -315,48 +309,6 @@ export const deleteOrder = async (req, res) => {
 
 export const getOrders = async (req, res) => {
     try {
-
-        // orderItem1 = new OrderItem({ product: '635ac292157b7d4b11a90763', quantity: 1 }); // 2799 DH
-        // await orderItem1.save();
-
-        // orderItem2 = new OrderItem({ product: '635ac2f4157b7d4b11a9076e', quantity: 1 }); // 3599 DH
-        // await orderItem2.save();
-
-        // orderItem3 = new OrderItem({ product: '635ca003f0d1be5323e017fb', quantity: 1 }); // 1499 DH
-        // await orderItem3.save();
-
-        // orderItem4 = new OrderItem({ product: '635c9daff0d1be5323e0178e', quantity: 1 }); // 169 DH
-        // await orderItem4.save();
-
-        // for (let i = 1; i <= 20; i++) {
-        //     const orderItems = i % 2 === 0 ? [orderItem1._id] : i % 3 === 0 ? [orderItem2._id] : [orderItem3._id, orderItem4._id];
-        //     const order = new Order({
-        //         user: '635cff6c2c43b079ad9d25c8',
-        //         paymentType: i % 2 === 0 ? Env.PAYMENT_TYPE.WIRE_TRANSFER : Env.PAYMENT_TYPE.CREDIT_CARD,
-        //         total: i % 2 === 0 ? 2799 : i % 3 === 0 ? 3599 : (1499 + 169),
-        //         status: i % 2 === 0 ? Env.ORDER_STATUS.CONFIRMED : i % 3 === 0 ? Env.ORDER_STATUS.IN_PROGRESS : Env.ORDER_STATUS.PAID,
-        //         orderItems
-        //     });
-        //     await order.save();
-        // }
-
-        // const shipping = await DeliveryType.findOne({ name: Env.DELIVERY_TYPE.SHIPPING });
-        // const withdrawal = await DeliveryType.findOne({ name: Env.DELIVERY_TYPE.WITHDRAWAL });
-
-        // const card = await PaymentType.findOne({ name: Env.PAYMENT_TYPE.CREDIT_CARD });
-        // const cod = await PaymentType.findOne({ name: Env.PAYMENT_TYPE.COD });
-
-        // const orders = await Order.find();
-
-        // let i = 1;
-        // for (const order of orders) {
-        //     const mod = i % 2 === 0;
-        //     order.paymentType = mod ? card._id : cod._id;
-        //     order.deliveryType = mod ? shipping._id : withdrawal._id;
-        //     await order.save();
-        //     i++;
-        // }
-
         const { user: userId } = req.params;
 
         const user = await User.findOne({ _id: userId });
@@ -445,12 +397,6 @@ export const getOrders = async (req, res) => {
                                 let: { productId: '$product' },
                                 pipeline: [
                                     {
-                                        // $match: {
-                                        //     $and: [
-                                        //         { $expr: { $eq: ['$_id', '$$productId'] } },
-                                        //         isObjectId ? {} : { $expr: { $regexMatch: { input: '$name', regex: keyword, options } } }
-                                        //     ]
-                                        // }
                                         $match: { $expr: { $eq: ['$_id', '$$productId'] } }
                                     }
                                 ],

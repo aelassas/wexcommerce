@@ -161,18 +161,6 @@ export const getCategories = async (req, res) => {
     try {
         const language = req.params.language;
 
-        // for (let i = 1; i <= 30; i++) {
-        //     const fr = new Value({ language: 'fr', value: `Catégorie ${i}` });
-        //     await fr.save();
-        //     const en = new Value({ language: 'en', value: `Category ${i}` });
-        //     await en.save();
-        //     const c = new Category({ values: [fr._id, en._id] });
-        //     await c.save();
-        // }
-
-        // await Value.deleteMany({ value: { $regex: 'Cat' } });
-        // await Category.deleteMany();
-
         const categories = await Category.aggregate([
             {
                 $lookup: {

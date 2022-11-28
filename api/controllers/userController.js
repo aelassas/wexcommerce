@@ -8,7 +8,7 @@ import Env from '../config/env.config.js';
 import User from '../models/User.js';
 import Token from '../models/Token.js';
 import mongoose from 'mongoose';
-import Helper from '../common/Helper.js';
+import * as Helper from '../common/Helper.js';
 
 const DEFAULT_LANGUAGE = process.env.WC_DEFAULT_LANGUAGE;
 const HTTPS = process.env.WC_HTTPS.toLowerCase() === 'true';
@@ -651,18 +651,6 @@ export const getUsers = async (req, res) => {
         const page = parseInt(req.params.page);
         const size = parseInt(req.params.size);
         const language = req.params.language;
-
-        // for (let i = 1; i <= 45; i++) {
-        //     await new User({
-        //         fullName: `User ${i}`,
-        //         email: `user${i}@wexcommerce.ma`,
-        //         type: Env.USER_TYPE.USER,
-        //         verified: true,
-        //         active: true,
-        //         password: '$2b$10$dJz8zswefPu79UDobWzmkOyfm5KGjzuKByq0GDR11xqHJprhcoalW',
-        //         language: 'fr',
-        //     }).save();
-        // }
 
         let $match;
         if (keyword) {

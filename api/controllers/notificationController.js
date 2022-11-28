@@ -42,14 +42,6 @@ export const getNotifications = async (req, res) => {
         const page = parseInt(req.params.page);
         const size = parseInt(req.params.size);
 
-        // await Notification.deleteMany();
-        // await NotificationCounter.deleteMany();
-        // for (let i = 1; i <= 35; i++) {
-        //     // 635a6ddd2c487867f759015e (poweredge-840@hotmail.com) Nouvelle commande ${i} effectuée.
-        //     // 63497dc164b5af0b1d9971cb (akram.elassas@gmail.com) commande ${i} a été mis à jour.
-        //     await new Notification({ user: '635a6e4b2c487867f759018b', message: `commande ${i} a été mis à jour.`, order: '635d0172fe37050901839dd8' }).save();
-        // }
-
         const notifications = await Notification.aggregate([
             { $match: { user: userId } },
             {
