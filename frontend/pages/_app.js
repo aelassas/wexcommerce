@@ -12,7 +12,7 @@ import 'nprogress/nprogress.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '../styles/globals.css';
 
-function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState();
 
   useEffect(() => {
@@ -121,7 +121,7 @@ function App({ Component, pageProps }) {
         },
       },
     }
-    // , language === 'fr' ? frFR : enUS
+      // , language === 'fr' ? frFR : enUS
     );
 
     setTheme(theme);

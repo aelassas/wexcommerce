@@ -501,7 +501,6 @@ export default function Header(props) {
                                         <NotificationsIcon />
                                     </Badge>
                                 </IconButton>
-
                             </>
                         }
                         {/* {(isLoaded && !loading) &&

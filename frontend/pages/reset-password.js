@@ -23,7 +23,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/reset-password.module.css';
 
-export default function ResetPassword({
+const ResetPassword = ({
     _noMatch,
     _userId,
     _email,
@@ -32,7 +32,7 @@ export default function ResetPassword({
     _signout,
     _resend,
     _language
-}) {
+}) => {
     const router = useRouter();
 
     const [password, setPassword] = useState('');
@@ -244,7 +244,7 @@ export default function ResetPassword({
             </div>
         </>
     );
-}
+};
 
 export async function getServerSideProps(context) {
     const { u: userId, e: email, t: token } = context.query;
@@ -319,3 +319,5 @@ export async function getServerSideProps(context) {
         }
     };
 }
+
+export default ResetPassword;

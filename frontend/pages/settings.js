@@ -21,7 +21,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/settings.module.css';
 
-export default function Settings({ _user, _language, _signout }) {
+const Settings = ({ _user, _language, _signout }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [fullName, setFullName] = useState('');
@@ -270,5 +270,6 @@ export async function getServerSideProps(context) {
       _language
     }
   };
-
 }
+
+export default Settings;

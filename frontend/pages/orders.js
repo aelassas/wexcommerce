@@ -34,7 +34,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/orders.module.css';
 
-export default function Orders({
+const Orders = ({
   _user,
   _signout,
   _language,
@@ -50,7 +50,7 @@ export default function Orders({
   _from,
   _to,
   _deliveryTypes
-}) {
+}) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [leftPanelRef, setLeftPanelRef] = useState();
@@ -465,3 +465,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default Orders;

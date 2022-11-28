@@ -24,7 +24,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/product.module.css';
 
-export default function Product({ _user, _language, _currency, _signout, _noMatch, _product }) {
+const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -334,3 +334,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default Product;

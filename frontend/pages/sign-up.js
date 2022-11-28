@@ -21,7 +21,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/signup.module.css';
 
-export default function SignUp({ _language }) {
+const SignUp = ({ _language }) => {
     const router = useRouter();
 
     // const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE);
@@ -333,7 +333,7 @@ export default function SignUp({ _language }) {
             {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
         </>
     );
-}
+};
 
 export async function getServerSideProps(context) {
 
@@ -345,3 +345,5 @@ export async function getServerSideProps(context) {
         }
     };
 };
+
+export default SignUp;

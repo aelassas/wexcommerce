@@ -40,7 +40,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/checkout.module.css';
 
-export default function Checkout({ _user, _language, _currency, _signout, _noMatch, _cart, _paymentTypes, _deliveryTypes }) {
+const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _paymentTypes, _deliveryTypes }) => {
     const router = useRouter();
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
@@ -807,3 +807,5 @@ export async function getServerSideProps(context) {
         }
     };
 }
+
+export default Checkout;

@@ -36,7 +36,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/home.module.css';
 
-export default function Home({
+const Home = ({
   _user,
   _signout,
   _language,
@@ -49,7 +49,7 @@ export default function Home({
   _totalRecords,
   _products,
   _noMatch
-}) {
+}) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -459,3 +459,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default Home;

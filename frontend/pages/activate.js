@@ -23,7 +23,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/activate.module.css';
 
-export default function Activate({
+const Activate = ({
     _noMatch,
     _userId,
     _email,
@@ -31,7 +31,7 @@ export default function Activate({
     _user,
     _signout,
     _resend,
-    _language }) {
+    _language }) => {
     const router = useRouter();
 
     const [password, setPassword] = useState('');
@@ -240,7 +240,7 @@ export default function Activate({
             {_noMatch && <NoMatch language={_language} />}
         </div>
     </>;
-}
+};
 
 export async function getServerSideProps(context) {
     const { u: userId, e: email, t: token } = context.query;
@@ -316,3 +316,5 @@ export async function getServerSideProps(context) {
         }
     };
 }
+
+export default Activate;

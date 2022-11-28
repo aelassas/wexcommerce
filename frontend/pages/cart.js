@@ -30,7 +30,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/cart.module.css';
 
-export default function Cart({ _user, _language, _currency, _signout, _empty, _cart }) {
+const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -404,3 +404,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default Cart;
