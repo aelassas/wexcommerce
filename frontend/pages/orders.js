@@ -5,8 +5,8 @@ import { strings as masterStrings } from '../lang/master';
 import { strings as commonStrings } from '../lang/common';
 import { strings as headerStrings } from '../lang/header';
 import * as Helper from '../common/Helper';
-import UserService from '../services/UserService';
-import OrderService from '../services/OrderService';
+import * as UserService from '../services/UserService';
+import * as OrderService from '../services/OrderService';
 import {
   Button,
   Card,
@@ -30,7 +30,7 @@ import DeliveryTypeFilter from '../components/DeliveryTypeFilter';
 import OrderStatusFilter from '../components/OrderStatusFilter';
 import OrderDateFilter from '../components/OrderDateFilter';
 import { useRouter } from 'next/router';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/orders.module.css';
 

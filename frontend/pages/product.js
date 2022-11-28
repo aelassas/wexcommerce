@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import Header from '../components/Header';
 import {
   Button,
@@ -13,13 +13,13 @@ import { strings } from '../lang/product';
 import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
 import * as Helper from '../common/Helper';
-import ProductService from '../services/ProductService';
+import * as ProductService from '../services/ProductService';
 import NoMatch from '../components/NoMatch';
-import CartService from '../services/CartService';
+import * as CartService from '../services/CartService';
 import Env from '../config/env.config';
 import ImageViewer from '../components/ImageViewer';
 import SoldOut from '../components/SoldOut';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/product.module.css';
 

@@ -5,10 +5,10 @@ import { strings as masterStrings } from '../lang/master';
 import { strings as commonStrings } from '../lang/common';
 import { strings as headerStrings } from '../lang/header';
 import * as Helper from '../common/Helper';
-import UserService from '../services/UserService';
-import CategoryService from '../services/CategoryService';
-import ProductService from '../services/ProductService';
-import CartService from '../services/CartService';
+import * as UserService from '../services/UserService';
+import * as CategoryService from '../services/CategoryService';
+import * as ProductService from '../services/ProductService';
+import * as CartService from '../services/CartService';
 import {
   Button,
   Card,
@@ -30,7 +30,7 @@ import Env from '../config/env.config';
 import Link from 'next/link';
 import NoMatch from '../components/NoMatch';
 import SoldOut from '../components/SoldOut';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/home.module.css';
 

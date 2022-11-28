@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import Header from '../components/Header';
 import { strings } from '../lang/settings';
 import { strings as commonStrings } from '../lang/common';
@@ -16,8 +16,8 @@ import {
   Paper
 } from '@mui/material';
 import validator from 'validator';
-import CartService from '../services/CartService';
-import SettingService from '../services/SettingService';
+import * as CartService from '../services/CartService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/settings.module.css';
 

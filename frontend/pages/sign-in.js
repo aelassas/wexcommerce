@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { strings as commonStrings } from '../lang/common';
 import { strings } from '../lang/sign-in';
-import UserService from '../services/UserService';
-import CartService from '../services/CartService';
+import * as UserService from '../services/UserService';
+import * as CartService from '../services/CartService';
 import Header from '../components/Header';
 import Error from '../components/Error';
 import {
@@ -15,7 +15,7 @@ import {
 import Link from 'next/link';
 import * as Helper from '../common/Helper';
 import { useRouter } from "next/router";
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/signin.module.css';
 

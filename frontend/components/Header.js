@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import Env from '../config/env.config';
 import { strings as commonStrings } from '../lang/common';
 import { strings } from '../lang/header';
-import UserService from '../services/UserService';
-import NotificationService from '../services/NotificationService';
-import CartService from '../services/CartService';
+import * as UserService from '../services/UserService';
+import * as NotificationService from '../services/NotificationService';
+import * as CartService from '../services/CartService';
 import * as Helper from '../common/Helper';
 import Avatar from './Avatar';
 import {

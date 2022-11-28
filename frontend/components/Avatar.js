@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Env from '../config/env.config';
 import * as Helper from '../common/Helper';
 import { strings as commonStrings } from '../lang/common';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import { toast } from 'react-toastify';
 import {
     Button,

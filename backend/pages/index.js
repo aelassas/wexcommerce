@@ -36,6 +36,7 @@ import OrderStatusFilter from '../components/OrderStatusFilter';
 import OrderDateFilter from '../components/OrderDateFilter';
 import { useRouter } from 'next/router';
 import SettingService from '../services/SettingService';
+import Backdrop from '../components/SimpleBackdrop';
 
 import styles from '../styles/home.module.css';
 
@@ -58,13 +59,13 @@ export default function Home({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [leftPanelRef, setLeftPanelRef] = useState();
   const [orderListRef, setOrderListRef] = useState();
   const [edit, setEdit] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [previousStatuses, setPreviousStatuses] = useState([]);
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
+  const [showBackdrop, setShowBackdrop] = useState(false);
 
   const _fr = _language === 'fr';
   const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm';
@@ -148,10 +149,7 @@ export default function Home({
 
           {!_noMatch &&
             <div className={styles.main}>
-              <div
-                ref={el => setLeftPanelRef(el)}
-                className={styles.leftPanel}
-              >
+              <div className={styles.leftPanel}>
                 <PaymentTypeFilter
                   onChange={(paymentTypes) => {
                     const pt = paymentTypes.join(',');
@@ -338,6 +336,7 @@ export default function Home({
                                   size="small"
                                   onClick={async (e) => {
                                     try {
+                                      setShowBackdrop(true);
                                       const _status = statuses[index];
                                       const status = await OrderService.updateOrder(_user._id, order._id, _status);
 
@@ -357,6 +356,8 @@ export default function Home({
                                     } catch (err) {
                                       console.log(err);
                                       Helper.error();
+                                    } finally {
+                                      setShowBackdrop(false);
                                     }
                                   }}
                                 >
@@ -421,6 +422,10 @@ export default function Home({
       }
 
       {
+        showBackdrop && <Backdrop text={commonStrings.PLEASE_WAIT} />
+      }
+
+      {
         !_user.verified &&
         <div className="validate-email">
           <span>{masterStrings.VALIDATE_EMAIL}</span>
@@ -457,7 +462,7 @@ export async function getServerSideProps(context) {
 
         if (_user) {
           _language = await SettingService.getLanguage();
-          
+
           if (_user.verified) {
             _currency = await SettingService.getCurrency();
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import Header from '../components/Header';
 import { strings } from '../lang/change-password';
 import { strings as commonStrings } from '../lang/common';
@@ -15,8 +15,8 @@ import {
   Paper,
   FormHelperText
 } from '@mui/material';
-import CartService from '../services/CartService';
-import SettingService from '../services/SettingService';
+import * as CartService from '../services/CartService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/change-password.module.css';
 

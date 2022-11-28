@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import UserService from '../services/UserService';
+import * as UserService from '../services/UserService';
 import { strings as commonStrings } from '../lang/common';
 import { strings as cpStrings } from '../lang/change-password';
 import { strings as fpStrings } from '../lang/forgot-password';
@@ -18,8 +18,8 @@ import * as Helper from '../common/Helper';
 import { useRouter } from "next/router";
 import Header from '../components/Header';
 import Link from 'next/link';
-import CartService from '../services/CartService';
-import SettingService from '../services/SettingService';
+import * as CartService from '../services/CartService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/reset-password.module.css';
 

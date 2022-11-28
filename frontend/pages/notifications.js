@@ -3,8 +3,8 @@ import { strings } from '../lang/notifications';
 import { strings as commonStrings } from '../lang/common';
 import { strings as masterStrings } from '../lang/master';
 import { strings as headerStrings } from '../lang/header';
-import UserService from '../services/UserService';
-import NotificationService from '../services/NotificationService';
+import * as UserService from '../services/UserService';
+import * as NotificationService from '../services/NotificationService';
 import {
     Button,
     Card,
@@ -34,8 +34,8 @@ import Header from '../components/Header';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NoMatch from '../components/NoMatch';
-import CartService from '../services/CartService';
-import SettingService from '../services/SettingService';
+import * as CartService from '../services/CartService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/notifications.module.css';
 
@@ -385,7 +385,7 @@ const Notifications = ({
                                     <Button onClick={async () => {
                                         try {
                                             const ids = selectedRows.map(row => row._id);
-                                            const status = await NotificationService.delete(_user._id, ids);
+                                            const status = await NotificationService.deleteNotifications(_user._id, ids);
 
                                             if (status === 200) {
                                                 if (selectedRows.length === rows.length) {

@@ -25,18 +25,18 @@ import * as Helper from '../common/Helper';
 import NoMatch from '../components/NoMatch';
 import Error from '../components/Error';
 import Info from '../components/Info';
-import UserService from '../services/UserService';
-import CartService from '../services/CartService';
-import OrderService from '../services/OrderService';
+import * as UserService from '../services/UserService';
+import * as CartService from '../services/CartService';
+import * as OrderService from '../services/OrderService';
 import { useRouter } from 'next/router';
 import validator from 'validator';
 import Image from 'next/image';
 import Link from 'next/link';
-import PaymentTypeService from '../services/PaymentTypeService';
-import DeliveryTypeService from '../services/DeliveryTypeService';
+import * as PaymentTypeService from '../services/PaymentTypeService';
+import * as DeliveryTypeService from '../services/DeliveryTypeService';
 import Env from '../config/env.config';
 import Backdrop from '../components/SimpleBackdrop';
-import SettingService from '../services/SettingService';
+import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/checkout.module.css';
 
