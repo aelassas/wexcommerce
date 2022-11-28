@@ -19,7 +19,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/change-password.module.css';
 
-export default function Settings({ _user, _signout, _language }) {
+const ChangePassword = ({ _user, _signout, _language }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -296,5 +296,6 @@ export async function getServerSideProps(context) {
       _language
     }
   };
-
 }
+
+export default ChangePassword;

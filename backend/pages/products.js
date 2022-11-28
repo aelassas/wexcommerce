@@ -31,7 +31,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/products.module.css';
 
-export default function Products({
+const Products = ({
   _user,
   _signout,
   _language,
@@ -44,7 +44,7 @@ export default function Products({
   _totalRecords,
   _products,
   _noMatch
-}) {
+}) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -327,7 +327,7 @@ export async function getServerSideProps(context) {
 
         if (_user) {
           _language = await SettingService.getLanguage();
-          
+
           if (_user.verified) {
             if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
 
@@ -383,3 +383,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default Products;

@@ -31,7 +31,7 @@ import DeliveryTypeService from '../services/DeliveryTypeService';
 
 import styles from '../styles/settings.module.css';
 
-export default function Settings({ _user, _signout, _deliveryTypes, _paymentTypes, _settings }) {
+const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [fullName, setFullName] = useState('');
@@ -710,5 +710,6 @@ export async function getServerSideProps(context) {
       _settings
     }
   };
-
 }
+
+export default Settings;

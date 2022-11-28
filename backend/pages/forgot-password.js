@@ -19,7 +19,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/forgot-password.module.css';
 
-export default function ForgotPassword({ _language }) {
+const ForgotPassword = ({ _language }) => {
     const router = useRouter();
 
     const [email, setEmail] = useState('');
@@ -195,7 +195,7 @@ export default function ForgotPassword({ _language }) {
                 </div>
             </div>
         </>);
-}
+};
 
 export async function getServerSideProps(context) {
 
@@ -207,3 +207,5 @@ export async function getServerSideProps(context) {
         }
     };
 };
+
+export default ForgotPassword;

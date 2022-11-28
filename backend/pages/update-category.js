@@ -22,7 +22,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/update-category.module.css';
 
-export default function UpdateCategory({ _user, _signout, _noMatch, _category, _language }) {
+const UpdateCategory = ({ _user, _signout, _noMatch, _category, _language }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -184,7 +184,7 @@ export default function UpdateCategory({ _user, _signout, _noMatch, _category, _
                     variant="contained"
                     className='btn-primary btn-margin-bottom'
                     size="small"
-                    // disabled={!valueChanged}
+                  // disabled={!valueChanged}
                   >
                     {commonStrings.SAVE}
                   </Button>
@@ -242,7 +242,7 @@ export async function getServerSideProps(context) {
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
         _language = await SettingService.getLanguage();
-        
+
         if (_user) {
           const { c: categoryId } = context.query;
           if (categoryId) {
@@ -284,3 +284,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default UpdateCategory;

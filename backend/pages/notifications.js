@@ -38,7 +38,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/notifications.module.css';
 
-export default function Notifications({
+const Notifications = ({
     _user,
     _signout,
     _page,
@@ -48,7 +48,7 @@ export default function Notifications({
     _notificationCount,
     _noMatch,
     _language
-}) {
+}) => {
     const router = useRouter();
 
     const [loading, setLoading] = useState(true);
@@ -496,3 +496,5 @@ export async function getServerSideProps(context) {
         }
     };
 }
+
+export default Notifications;

@@ -35,7 +35,7 @@ if (typeof window === 'object') {
   Editor = require('react-draft-wysiwyg').Editor;
 }
 
-export default function CreateProduct({ _user, _signout, _language, _currency }) {
+const CreateProduct = ({ _user, _signout, _language, _currency }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -198,7 +198,6 @@ export default function CreateProduct({ _user, _signout, _language, _currency })
     }
     catch (err) {
       UserService.signout();
-      // Helper.error();
     }
   };
 
@@ -480,3 +479,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default CreateProduct;

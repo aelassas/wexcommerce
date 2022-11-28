@@ -28,7 +28,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/categories.module.css';
 
-export default function Categories({ _user, _signout, _categories, _language }) {
+const Categories = ({ _user, _signout, _categories, _language }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -284,5 +284,6 @@ export async function getServerSideProps(context) {
       _language
     }
   };
-
 }
+
+export default Categories;

@@ -14,17 +14,15 @@ import {
 } from '@mui/material';
 import validator from 'validator';
 import * as Helper from '../common/Helper';
-import Env from '../config/env.config';
 import { useRouter } from "next/router";
 import Header from '../components/Header';
 import SettingService from '../services/SettingService';
 
 import styles from '../styles/signup.module.css';
 
-export default function SignUp({ _language }) {
+const SignUp = ({ _language }) => {
     const router = useRouter();
 
-    // const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE);
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -274,7 +272,7 @@ export default function SignUp({ _language }) {
             {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
         </>
     );
-}
+};
 
 export async function getServerSideProps(context) {
 
@@ -288,3 +286,5 @@ export async function getServerSideProps(context) {
         }
     };
 };
+
+export default SignUp;

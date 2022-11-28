@@ -18,7 +18,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/signin.module.css';
 
-export default function SignIn({ _language }) {
+const SignIn = ({ _language }) => {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -158,7 +158,7 @@ export default function SignIn({ _language }) {
                 </div>}
         </div>
     );
-}
+};
 
 export async function getServerSideProps(context) {
 
@@ -170,3 +170,5 @@ export async function getServerSideProps(context) {
         }
     };
 };
+
+export default SignIn;

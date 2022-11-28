@@ -29,7 +29,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/users.module.css';
 
-export default function Home({
+const Users = ({
   _user,
   _signout,
   _keyword,
@@ -39,7 +39,7 @@ export default function Home({
   _users,
   _noMatch,
   _language
-}) {
+}) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const userListRef = useRef();
@@ -273,3 +273,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default Users;

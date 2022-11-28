@@ -22,7 +22,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/reset-password.module.css';
 
-export default function ResetUserPassword({
+const ResetPassword = ({
     _noMatch,
     _userId,
     _email,
@@ -31,7 +31,7 @@ export default function ResetUserPassword({
     _signout,
     _resend,
     _language
-}) {
+}) => {
     const router = useRouter();
 
     const [password, setPassword] = useState('');
@@ -139,108 +139,110 @@ export default function ResetUserPassword({
         }
     };
 
-    return <>
-        <Header user={_user} hideSearch hideSignIn />
-        <div className='content'>
-            {_resend && _email &&
-                <div className={styles.resend}>
-                    <Paper className={styles.resendForm} elevation={10}>
-                        <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
-                        <div className={styles.resendFormContent}>
-                            <label>{activateStrings.TOKEN_EXPIRED}</label>
-                            <Button
-                                type="button"
-                                variant="contained"
-                                size="small"
-                                className={`btn-primary ${styles.btnResend}`}
-                                onClick={async () => {
-                                    try {
-                                        const status = await UserService.resend(_email, true);
+    return (
+        <>
+            <Header user={_user} hideSearch hideSignIn />
+            <div className='content'>
+                {_resend && _email &&
+                    <div className={styles.resend}>
+                        <Paper className={styles.resendForm} elevation={10}>
+                            <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
+                            <div className={styles.resendFormContent}>
+                                <label>{activateStrings.TOKEN_EXPIRED}</label>
+                                <Button
+                                    type="button"
+                                    variant="contained"
+                                    size="small"
+                                    className={`btn-primary ${styles.btnResend}`}
+                                    onClick={async () => {
+                                        try {
+                                            const status = await UserService.resend(_email, true);
 
-                                        if (status === 200) {
-                                            Helper.info(commonStrings.RESET_PASSWORD_EMAIL_SENT);
-                                        } else {
+                                            if (status === 200) {
+                                                Helper.info(commonStrings.RESET_PASSWORD_EMAIL_SENT);
+                                            } else {
+                                                Helper.error();
+                                            }
+                                        } catch (err) {
                                             Helper.error();
                                         }
-                                    } catch (err) {
-                                        Helper.error();
-                                    }
-                                }}
-                            >{masterStrings.RESEND}</Button>
-                            <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
-                        </div>
-                    </Paper>
-                </div>
-            }
-
-            {_userId && _email && _token && !_user && !_noMatch && !_resend &&
-                <div className={styles.resetUserPassword}>
-                    <Paper className={styles.resetUserPasswordForm} elevation={10}>
-                        <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
-                        <form onSubmit={handleSubmit}>
-                            <FormControl fullWidth margin="dense">
-                                <InputLabel className='required' error={passwordLengthError}>
-                                    {cpStrings.NEW_PASSWORD}
-                                </InputLabel>
-                                <Input
-                                    onChange={handlePasswordChange}
-                                    onBlur={handlePasswordBlur}
-                                    type='password'
-                                    error={passwordLengthError}
-                                    required
-                                />
-                                <FormHelperText
-                                    error={passwordLengthError}
-                                >
-                                    {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
-                                </FormHelperText>
-                            </FormControl>
-                            <FormControl fullWidth margin="dense" error={confirmPasswordError}>
-                                <InputLabel error={confirmPasswordError} className='required'>
-                                    {commonStrings.CONFIRM_PASSWORD}
-                                </InputLabel>
-                                <Input
-                                    onChange={handleConfirmPasswordChange}
-                                    onKeyDown={handleConfirmPasswordKeyDown}
-                                    onBlur={handleConfirmPasswordBlur}
-                                    error={confirmPasswordError}
-                                    type='password'
-                                    required
-                                />
-                                <FormHelperText
-                                    error={confirmPasswordError}
-                                >
-                                    {(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
-                                </FormHelperText>
-                            </FormControl>
-                            <div className='buttons'>
-                                <Button
-                                    type="submit"
-                                    className='btn-primary btn-margin btn-margin-bottom'
-                                    size="small"
-                                    variant='contained'
-                                >
-                                    {commonStrings.UPDATE}
-                                </Button>
-                                <Button
-                                    className='btn-secondary btn-margin-bottom'
-                                    size="small"
-                                    variant='contained'
-                                    onClick={() => {
-                                        router.replace('/');
                                     }}
-                                >
-                                    {commonStrings.CANCEL}
-                                </Button>
+                                >{masterStrings.RESEND}</Button>
+                                <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
                             </div>
-                        </form>
-                    </Paper>
-                </div>
-            }
-            {_noMatch && <NoMatch language={_language} />}
-        </div>
-    </>;
-}
+                        </Paper>
+                    </div>
+                }
+
+                {_userId && _email && _token && !_user && !_noMatch && !_resend &&
+                    <div className={styles.resetUserPassword}>
+                        <Paper className={styles.resetUserPasswordForm} elevation={10}>
+                            <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
+                            <form onSubmit={handleSubmit}>
+                                <FormControl fullWidth margin="dense">
+                                    <InputLabel className='required' error={passwordLengthError}>
+                                        {cpStrings.NEW_PASSWORD}
+                                    </InputLabel>
+                                    <Input
+                                        onChange={handlePasswordChange}
+                                        onBlur={handlePasswordBlur}
+                                        type='password'
+                                        error={passwordLengthError}
+                                        required
+                                    />
+                                    <FormHelperText
+                                        error={passwordLengthError}
+                                    >
+                                        {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
+                                    </FormHelperText>
+                                </FormControl>
+                                <FormControl fullWidth margin="dense" error={confirmPasswordError}>
+                                    <InputLabel error={confirmPasswordError} className='required'>
+                                        {commonStrings.CONFIRM_PASSWORD}
+                                    </InputLabel>
+                                    <Input
+                                        onChange={handleConfirmPasswordChange}
+                                        onKeyDown={handleConfirmPasswordKeyDown}
+                                        onBlur={handleConfirmPasswordBlur}
+                                        error={confirmPasswordError}
+                                        type='password'
+                                        required
+                                    />
+                                    <FormHelperText
+                                        error={confirmPasswordError}
+                                    >
+                                        {(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
+                                    </FormHelperText>
+                                </FormControl>
+                                <div className='buttons'>
+                                    <Button
+                                        type="submit"
+                                        className='btn-primary btn-margin btn-margin-bottom'
+                                        size="small"
+                                        variant='contained'
+                                    >
+                                        {commonStrings.UPDATE}
+                                    </Button>
+                                    <Button
+                                        className='btn-secondary btn-margin-bottom'
+                                        size="small"
+                                        variant='contained'
+                                        onClick={() => {
+                                            router.replace('/');
+                                        }}
+                                    >
+                                        {commonStrings.CANCEL}
+                                    </Button>
+                                </div>
+                            </form>
+                        </Paper>
+                    </div>
+                }
+                {_noMatch && <NoMatch language={_language} />}
+            </div>
+        </>
+    );
+};
 
 export async function getServerSideProps(context) {
     const { u: userId, e: email, t: token } = context.query;
@@ -315,3 +317,5 @@ export async function getServerSideProps(context) {
         }
     };
 }
+
+export default ResetPassword;

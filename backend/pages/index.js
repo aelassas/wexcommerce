@@ -40,7 +40,7 @@ import Backdrop from '../components/SimpleBackdrop';
 
 import styles from '../styles/home.module.css';
 
-export default function Home({
+const Home = ({
   _user,
   _signout,
   _language,
@@ -56,7 +56,7 @@ export default function Home({
   _from,
   _to,
   _deliveryTypes
-}) {
+}) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [orderListRef, setOrderListRef] = useState();
@@ -567,3 +567,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default Home;

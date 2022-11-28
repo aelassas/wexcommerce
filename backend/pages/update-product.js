@@ -40,7 +40,7 @@ if (typeof window === 'object') {
   Editor = require('react-draft-wysiwyg').Editor;
 }
 
-export default function UpdateProduct({ _user, _signout, _noMatch, _product, _language, _currency }) {
+const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _currency }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -552,7 +552,7 @@ export async function getServerSideProps(context) {
       if (status === 200) {
         _user = await UserService.getUser(context, currentUser.id);
         _language = await SettingService.getLanguage();
-        
+
         if (_user) {
           const { p: productId } = context.query;
           if (productId) {
@@ -596,3 +596,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default UpdateProduct;

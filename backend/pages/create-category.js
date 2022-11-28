@@ -20,7 +20,7 @@ import SettingService from '../services/SettingService';
 
 import styles from '../styles/create-category.module.css';
 
-export default function CreateCategory({ _user, _signout, _language }) {
+const CreateCategory=({ _user, _signout, _language }) =>{
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -218,3 +218,5 @@ export async function getServerSideProps(context) {
     }
   };
 }
+
+export default CreateCategory;
