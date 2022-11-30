@@ -80,14 +80,14 @@ const CreateCategory = ({ _user, _signout, _language }) => {
         if (!_isValid) valueErrors[i] = true;
       }
 
-      setValueErrors(Helper.clone(valueErrors));
+      setValueErrors(Helper.cloneArray(valueErrors));
 
       if (isValid) {
         const status = await CategoryService.create(values);
 
         if (status === 200) {
           for (let i = 0; i < values.length; i++) values[i].value = '';
-          setValues(Helper.clone(values));
+          setValues(Helper.cloneArray(values));
           Helper.info(strings.CATEGORY_CREATED);
         } else {
           Helper.error();
