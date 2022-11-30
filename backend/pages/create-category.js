@@ -20,7 +20,7 @@ import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/create-category.module.css';
 
-const CreateCategory=({ _user, _signout, _language }) =>{
+const CreateCategory = ({ _user, _signout, _language }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -121,8 +121,8 @@ const CreateCategory=({ _user, _signout, _language }) =>{
                       onChange={(e) => {
                         values[index] = { language: language.code, value: e.target.value };
                         valueErrors[index] = false;
-                        setValues(Helper.clone(values));
-                        setValueErrors(Helper.clone(valueErrors));
+                        setValues(Helper.cloneArray(values));
+                        setValueErrors(Helper.cloneArray(valueErrors));
                       }}
                       autoComplete="off"
                     />
