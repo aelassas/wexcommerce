@@ -5,7 +5,7 @@ import { strings } from '../lang/header';
 import * as UserService from '../services/UserService';
 import * as NotificationService from '../services/NotificationService';
 import * as Helper from '../common/Helper';
-import { Avatar } from './Avatar';
+import Avatar from './Avatar';
 import {
     AppBar,
     Toolbar,
@@ -14,7 +14,6 @@ import {
     Badge,
     MenuItem,
     Menu,
-    Button,
     Drawer,
     InputBase
 } from '@mui/material';
@@ -36,7 +35,6 @@ import {
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Backdrop from './SimpleBackdrop';
-import * as SettingService from '../services/SettingService';
 
 import styles from '../styles/header.module.css';
 
