@@ -5,7 +5,7 @@
 <img alt="" src="https://wexcommerce.github.io/content/wexcommerce.png" />
 </p>
 
-[wexCommerce](https://wexcommerce.github.io/) is an eCommerce platform SEO optimized with multiple interesting features. wexCommerce is SEO optimized so that products can be indexed by search engines.
+wexCommerce is an eCommerce platform optimized for SEO with multiple interesting features. wexCommerce is optimized for SEO so that products can be indexed by search engines.
 
 # Features
 
