@@ -4,7 +4,7 @@ import {
     TextField
 } from '@mui/material';
 import {
-    Subscriptions as CategoryIcon
+    AccountTree as CategoryIcon
 } from '@mui/icons-material';
 
 import styles from '../styles/multiple-select.module.css';
