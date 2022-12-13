@@ -68,9 +68,6 @@ export const deleteImage = async (req, res) => {
         } else {
             return res.sendStatus(204);
         }
-
-
-        return res.sendStatus(200);
     } catch (err) {
         console.error(strings.ERROR, err);
         return res.status(400).send(strings.ERROR + err);
@@ -87,6 +84,10 @@ export const create = async (req, res) => {
         product = new Product(__product);
         await product.save();
 
+        if (!fs.existsSync(CDN_PRODUCTS)) {
+            fs.mkdirSync(CDN_PRODUCTS, { recursive: true });
+        }
+        
         // image
         const _image = path.join(CDN_TEMP_PRODUCTS, imageFile);
         if (fs.existsSync(_image)) {
