@@ -50,7 +50,7 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
     const [phone, setPhone] = useState('');
     const [phoneValid, setPhoneValid] = useState(true);
     const [address, setAddress] = useState('');
-    const [paymentType, setPaymentType] = useState(Env.PAYMENT_TYPE.CREDIT_CARD);
+    const [paymentType, setPaymentType] = useState(_paymentTypes.length === 1 ? _paymentTypes[0].name : Env.PAYMENT_TYPE.CREDIT_CARD);
     const [deliveryType, setDeliveryType] = useState(Env.DELIVERY_TYPE.SHIPPING);
     const [total, setTotal] = useState(0);
     const [cardNumber, setCardNumber] = useState('');
