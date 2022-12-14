@@ -11,7 +11,6 @@ import {
     FormControlLabel
 } from '@mui/material';
 import {
-    Lock as LockIcon,
     Person as UserIcon,
     ShoppingBag as ProductsIcon,
     AttachMoney as PaymentIcon,
@@ -30,13 +29,13 @@ import * as CartService from '../services/CartService';
 import * as OrderService from '../services/OrderService';
 import { useRouter } from 'next/router';
 import validator from 'validator';
-import Image from 'next/image';
 import Link from 'next/link';
 import * as PaymentTypeService from '../services/PaymentTypeService';
 import * as DeliveryTypeService from '../services/DeliveryTypeService';
 import Env from '../config/env.config';
 import Backdrop from '../components/SimpleBackdrop';
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/checkout.module.css';
 
@@ -53,15 +52,6 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
     const [paymentType, setPaymentType] = useState(_paymentTypes && _paymentTypes.length === 1 ? _paymentTypes[0].name : Env.PAYMENT_TYPE.CREDIT_CARD);
     const [deliveryType, setDeliveryType] = useState(Env.DELIVERY_TYPE.SHIPPING);
     const [total, setTotal] = useState(0);
-    const [cardNumber, setCardNumber] = useState('');
-    const [cardNumberValid, setCardNumberValid] = useState(true);
-    const [cardMonth, setCardMonth] = useState('');
-    const [cardMonthValid, setCardMonthValid] = useState(true);
-    const [cardYear, setCardYear] = useState('');
-    const [cardYearValid, setCardYearValid] = useState(true);
-    const [cvv, setCvv] = useState('');
-    const [cvvValid, setCvvValid] = useState(true);
-    const [cardDateError, setCardDateError] = useState(false);
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     const [formError, setFormError] = useState(false);
@@ -167,95 +157,6 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
         }
     };
 
-    const validateCardNumber = (_cardNumber) => {
-        if (_cardNumber) {
-            const _cardNumberValid = validator.isCreditCard(_cardNumber);
-            setCardNumberValid(_cardNumberValid);
-
-            return cardNumberValid;
-        } else {
-            setCardNumberValid(true);
-
-            return true;
-        }
-    };
-
-    const validateCardMonth = (_cardMonth) => {
-        if (_cardMonth) {
-
-            if (Helper.isInteger(_cardMonth)) {
-                const month = parseInt(_cardMonth);
-                const _cardMonthValid = month >= 1 && month <= 12;
-                setCardMonthValid(_cardMonthValid);
-                setCardDateError(false);
-
-                return _cardMonthValid;
-            } else {
-                setCardMonthValid(false);
-                setCardDateError(false);
-
-                return false;
-            }
-        } else {
-            setCardMonthValid(true);
-            setCardDateError(false);
-
-            return true;
-        }
-    };
-
-    const validateCardYear = (_cardYear) => {
-        if (_cardYear) {
-
-            if (Helper.isYear(_cardYear)) {
-                const year = parseInt(_cardYear);
-                const currentYear = parseInt(new Date().getFullYear().toString().slice(2));
-                const _cardYearValid = year >= currentYear;
-                setCardYearValid(_cardYearValid);
-                setCardDateError(false);
-
-                return _cardYearValid;
-            } else {
-                setCardYearValid(false);
-                setCardDateError(false);
-
-                return false;
-            }
-        } else {
-            setCardYearValid(true);
-            setCardDateError(false);
-
-            return true;
-        }
-    };
-
-    const validateCvv = (_cvv) => {
-        if (_cvv) {
-            const _cvvValid = Helper.isCvv(_cvv);
-            setCvvValid(_cvvValid);
-
-            return _cvvValid;
-        } else {
-            setCvvValid(true);
-
-            return true;
-        }
-    };
-
-    const validateCardDate = (_cardMonth, _cardYear) => {
-        const today = new Date(), cardDate = new Date();
-        const y = parseInt(today.getFullYear().toString().slice(0, 2)) * 100;
-        const year = y + parseInt(_cardYear);
-        const month = parseInt(_cardMonth);
-        cardDate.setFullYear(year, month - 1, 1);
-
-        if (cardDate < today) {
-            return false;
-        }
-
-        return true;
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -270,33 +171,6 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                 return setFormError(true);;
             }
         }
-
-        // if (paymentType === Env.PAYMENT_TYPE.CREDIT_CARD) {
-        //     const cardNumberValid = validateCardNumber(cardNumber);
-        //     if (!cardNumberValid) {
-        //         return;
-        //     }
-
-        //     const cardMonthValid = validateCardMonth(cardMonth);
-        //     if (!cardMonthValid) {
-        //         return;
-        //     }
-
-        //     const cardYearValid = validateCardYear(cardYear);
-        //     if (!cardYearValid) {
-        //         return;
-        //     }
-
-        //     const cvvValid = validateCvv(cvv);
-        //     if (!cvvValid) {
-        //         return;
-        //     }
-
-        //     const cardDateValid = validateCardDate(cardMonth, cardYear);
-        //     if (!cardDateValid) {
-        //         return setCardDateError(true);
-        //     }
-        // }
 
         try {
             setLoading(true);
@@ -322,7 +196,10 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                 total,
                 orderItems
             };
-            if (_user) order.user = _user._id;
+
+            if (_user) {
+                order.user = _user._id;
+            }
 
             // checkout
             const status = await OrderService.createOrder(user, order);
@@ -578,131 +455,6 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                                 </div>
                             }
 
-                            {/* {
-                                paymentType === Env.PAYMENT_TYPE.CREDIT_CARD &&
-                                <div className={styles.payment}>
-
-                                    <div className={styles.cost}>
-                                        <div className={styles.securePaymentLabel}>
-                                            <LockIcon className={styles.securePaymentLock} />
-                                            <label>{strings.PAYMENT}</label>
-                                        </div>
-                                        <div className={styles.securePaymentCost}>
-                                            <label className={styles.costTitle}>{strings.COST}</label>
-                                            <label className={styles.costValue}>{`${Helper.formatNumber(total)} ${_currency}`}</label>
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.securePaymentLogo}>
-                                        <img src='/secure-payment.png' alt='' className={styles.securePaymentLogo} />
-                                    </div>
-
-                                    <div className={styles.card}>
-                                        <FormControl margin="dense" className={styles.cardNumber} fullWidth>
-                                            <InputLabel className='required'>{strings.CARD_NUMBER}</InputLabel>
-                                            <Input
-                                                type="text"
-                                                label={strings.CARD_NUMBER}
-                                                error={!cardNumberValid}
-                                                onBlur={(e) => {
-                                                    validateCardNumber(e.target.value);
-                                                }}
-                                                onChange={(e) => {
-                                                    setCardNumber(e.target.value);
-
-                                                    if (!e.target.value) {
-                                                        setCardNumberValid(true);
-                                                    }
-                                                }}
-                                                required
-                                                autoComplete="off"
-                                            />
-                                            <FormHelperText error={!cardNumberValid}>
-                                                {(!cardNumberValid && strings.CARD_NUMBER_NOT_VALID) || ''}
-                                            </FormHelperText>
-                                        </FormControl>
-                                        <div className='card-date'>
-                                            <FormControl margin="dense" className={styles.cardMonth} fullWidth>
-                                                <InputLabel className='required'>{strings.CARD_MONTH}</InputLabel>
-                                                <Input
-                                                    type="text"
-                                                    label={strings.CARD_MONTH}
-                                                    error={!cardMonthValid}
-                                                    onBlur={(e) => {
-                                                        validateCardMonth(e.target.value);
-                                                    }}
-                                                    onChange={(e) => {
-                                                        setCardMonth(e.target.value);
-
-                                                        if (!e.target.value) {
-                                                            setCardMonthValid(true);
-                                                            setCardDateError(false);
-                                                        }
-                                                    }}
-                                                    required
-                                                    autoComplete="off"
-                                                />
-                                                <FormHelperText error={!cardMonthValid}>
-                                                    {(!cardMonthValid && strings.CARD_MONTH_NOT_VALID) || ''}
-                                                </FormHelperText>
-                                            </FormControl>
-                                            <FormControl margin="dense" className={styles.cardYear} fullWidth>
-                                                <InputLabel className='required'>{strings.CARD_YEAR}</InputLabel>
-                                                <Input
-                                                    type="text"
-                                                    label={strings.CARD_YEAR}
-                                                    error={!cardYearValid}
-                                                    onBlur={(e) => {
-                                                        validateCardYear(e.target.value);
-                                                    }}
-                                                    onChange={(e) => {
-                                                        setCardYear(e.target.value);
-
-                                                        if (!e.target.value) {
-                                                            setCardYearValid(true);
-                                                            setCardDateError(false);
-                                                        }
-                                                    }}
-                                                    required
-                                                    autoComplete="off"
-                                                />
-                                                <FormHelperText error={!cardYearValid}>
-                                                    {(!cardYearValid && strings.CARD_YEAR_NOT_VALID) || ''}
-                                                </FormHelperText>
-                                            </FormControl>
-                                        </div>
-                                        <FormControl margin="dense" className={styles.cvv} fullWidth>
-                                            <InputLabel className='required'>{strings.CVV}</InputLabel>
-                                            <Input
-                                                type="text"
-                                                label={strings.CVV}
-                                                error={!cvvValid}
-                                                onBlur={(e) => {
-                                                    validateCvv(e.target.value);
-                                                }}
-                                                onChange={(e) => {
-                                                    setCvv(e.target.value);
-
-                                                    if (!e.target.value) {
-                                                        setCvvValid(true);
-                                                    }
-                                                }}
-                                                required
-                                                autoComplete="off"
-                                            />
-                                            <FormHelperText error={!cvvValid}>
-                                                {(!cvvValid && strings.CVV_NOT_VALID) || ''}
-                                            </FormHelperText>
-                                        </FormControl>
-                                    </div>
-
-                                    <div className={styles.securePaymentInfo}>
-                                        <LockIcon className={styles.paymentIcon} />
-                                        <label>{strings.SECURE_PAYMENT_INFO}</label>
-                                    </div>
-                                </div>
-                            } */}
-
                             <div className={styles.buttons}>
                                 <Button
                                     type="submit"
@@ -715,7 +467,6 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                             </div>
 
                             <div className="form-error">
-                                {cardDateError && <Error message={strings.CARD_DATE_ERROR} />}
                                 {formError && <Error message={commonStrings.FORM_ERROR} />}
                                 {error && <Error message={commonStrings.GENERIC_ERROR} />}
                             </div>
@@ -735,7 +486,10 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                 {_noMatch && <NoMatch language={_language} />}
                 {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
             </div>
-        </>);
+
+            <Footer language={_language} />
+        </>
+    );
 };
 
 export async function getServerSideProps(context) {

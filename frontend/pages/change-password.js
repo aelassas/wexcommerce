@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import * as CartService from '../services/CartService';
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/change-password.module.css';
 
@@ -131,7 +132,7 @@ const ChangePassword = ({ _user, _language, _signout }) => {
       <Header user={_user} language={_language} />
       {
         _user.verified &&
-        <div className={styles.content}>
+        <div className="content">
           <Paper className={styles.form} elevation={10}>
             <form onSubmit={handleSubmit}>
               <h1 className={styles.formTitle}>{strings.CHANGE_PASSWORD_HEADING}</h1>
@@ -254,6 +255,8 @@ const ChangePassword = ({ _user, _language, _signout }) => {
           >{masterStrings.RESEND}</Button>
         </div>
       }
+
+      <Footer language={_language} />
     </>
   );
 };

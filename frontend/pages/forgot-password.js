@@ -16,6 +16,7 @@ import * as Helper from '../common/Helper';
 import Header from '../components/Header';
 import { useRouter } from "next/router";
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/forgot-password.module.css';
 
@@ -194,7 +195,10 @@ const ForgotPassword = ({ _language }) => {
                     </Paper>
                 </div>
             </div>
-        </>);
+
+            <Footer language={_language} />
+        </>
+    );
 };
 
 export async function getServerSideProps(context) {

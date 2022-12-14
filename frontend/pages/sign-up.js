@@ -17,6 +17,7 @@ import * as Helper from '../common/Helper';
 import { useRouter } from "next/router";
 import Header from '../components/Header';
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/signup.module.css';
 
@@ -328,6 +329,8 @@ const SignUp = ({ _language }) => {
                 </Paper>
             </div>
             {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
+
+            <Footer language={_language} />
         </>
     );
 };

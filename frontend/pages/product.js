@@ -20,6 +20,7 @@ import Env from '../config/env.config';
 import ImageViewer from '../components/ImageViewer';
 import SoldOut from '../components/SoldOut';
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/product.module.css';
 
@@ -256,6 +257,8 @@ const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) 
           >{masterStrings.RESEND}</Button>
         </div>
       }
+
+      <Footer language={_language} />
     </>
   );
 };

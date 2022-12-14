@@ -16,6 +16,7 @@ import Link from 'next/link';
 import * as Helper from '../common/Helper';
 import { useRouter } from "next/router";
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/signin.module.css';
 
@@ -131,7 +132,7 @@ const SignIn = ({ _language }) => {
 
     return (
         _language &&
-        <div>
+        <>
             <Header language={_language} hideSearch hideSignIn hideCart />
             {visible &&
                 <div className="content">
@@ -199,8 +200,11 @@ const SignIn = ({ _language }) => {
                             </div>
                         </form>
                     </Paper>
-                </div>}
-        </div>
+                </div>
+            }
+
+            <Footer language={_language} />
+        </>
     );
 };
 

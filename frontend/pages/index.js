@@ -31,6 +31,7 @@ import Link from 'next/link';
 import NoMatch from '../components/NoMatch';
 import SoldOut from '../components/SoldOut';
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/home.module.css';
 
@@ -368,7 +369,10 @@ const Home = ({
           >{masterStrings.RESEND}</Button>
         </div>
       }
-    </>);
+
+      <Footer language={_language} />
+    </>
+  );
 };
 
 export async function getServerSideProps(context) {

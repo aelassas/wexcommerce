@@ -20,6 +20,7 @@ import Header from '../components/Header';
 import Link from 'next/link';
 import * as CartService from '../services/CartService';
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/reset-password.module.css';
 
@@ -242,6 +243,8 @@ const ResetPassword = ({
                 }
                 {_noMatch && <NoMatch language={_language} />}
             </div>
+
+            <Footer language={_language} />
         </>
     );
 };

@@ -31,6 +31,7 @@ import OrderStatusFilter from '../components/OrderStatusFilter';
 import OrderDateFilter from '../components/OrderDateFilter';
 import { useRouter } from 'next/router';
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/orders.module.css';
 
@@ -333,6 +334,8 @@ const Orders = ({
           >{masterStrings.RESEND}</Button>
         </div>
       }
+
+      <Footer language={_language} />
     </>;
 };
 

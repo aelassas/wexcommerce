@@ -18,12 +18,13 @@ import {
 import validator from 'validator';
 import * as CartService from '../services/CartService';
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/settings.module.css';
 
 const Settings = ({ _user, _language, _signout }) => {
   const router = useRouter();
-  
+
   const [loading, setLoading] = useState(true);
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
@@ -227,6 +228,8 @@ const Settings = ({ _user, _language, _signout }) => {
           >{masterStrings.RESEND}</Button>
         </div>
       }
+
+      <Footer language={_language} />
     </>
   );
 };

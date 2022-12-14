@@ -27,6 +27,7 @@ import Env from '../config/env.config';
 import SoldOut from '../components/SoldOut';
 import Link from 'next/link';
 import * as SettingService from '../services/SettingService';
+import Footer from '../components/Footer';
 
 import styles from '../styles/cart.module.css';
 
@@ -331,6 +332,8 @@ const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
         >{masterStrings.RESEND}</Button>
       </div>
     }
+
+    <Footer language={_language} />
   </>;
 };
 
