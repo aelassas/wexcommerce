@@ -7,9 +7,8 @@ import styles from '../styles/footer.module.css';
 
 const Footer = ({ language }) => {
     const [load, setLoad] = useState(false);
-    
+
     useEffect(() => {
-        console.log(language)
         if (language) {
             Helper.setLanguage(strings, language);
             setLoad(true);
