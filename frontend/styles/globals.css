@@ -10,7 +10,7 @@ body,
   overflow-y: hidden; */
 }
 
-#__next{
+#__next {
   display: flex;
   flex-direction: column;
 }
@@ -46,12 +46,6 @@ a {
 
 .btn-margin-bottom {
   margin-bottom: 10px !important;
-}
-
-.validate-email {
-  position: absolute;
-  top: 65px;
-  margin: 15px;
 }
 
 .btn-resend {
@@ -220,15 +214,18 @@ a {
 }
 
 @media only screen and (max-width: 960px) {
+
+
   div.content {
-    /* position: absolute;
-    top: 55px;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    overflow: hidden; */
     margin: 0;
     padding: 0;
+    min-height: calc(100vh - 283px);
+  }
+
+  div.validate-email {
+    margin: 0;
+    padding: 10px;
+    min-height: calc(100vh - 283px);
   }
 
   .buttons {
@@ -258,14 +255,15 @@ a {
 @media only screen and (min-width: 960px) {
 
   div.content {
-    /* position: absolute;
-    top: 65px;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    overflow: hidden; */
     margin: 0;
     padding: 0;
+    min-height: calc(100vh - 290px);
+  }
+
+  div.validate-email {
+    margin: 0;
+    padding: 10px;
+    min-height: calc(100vh - 290px);
   }
 
   .buttons {

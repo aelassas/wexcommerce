@@ -5,13 +5,23 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Router from 'next/router';
 import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
+import Footer from '../components/Footer';
+import * as SettingService from '../services/SettingService';
 
+import 'nprogress/nprogress.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '../styles/globals.css';
 
 const App = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState();
+  const [language, setLanguage] = useState();
+
+  useEffect(() => {
+    (async function () {
+      const language = await SettingService.getLanguage();
+      setLanguage(language);
+    })();
+  }, []);
 
   useEffect(() => {
     NProgress.configure({ showSpinner: false });
@@ -136,6 +146,7 @@ const App = ({ Component, pageProps }) => {
       <ThemeProvider theme={theme}>
         <CssBaseline>
           <Component {...pageProps} />
+          {!Router.asPath.includes('notifications') && <Footer language={language} />}
           <ToastContainer
             position='bottom-left'
             autoClose={5000}

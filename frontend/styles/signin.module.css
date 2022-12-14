@@ -1,56 +1,44 @@
-/* Signin */
-div.signin {
-    position: absolute;
-    top: 55px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow-y: auto;
-}
-
-div.signin .signinFormTitle {
+.signinFormTitle {
     text-align: center;
     text-transform: none;
     margin-top: 35px;
     color: #1d1d1b;
 }
 
-div.signin div.signinButtons {
+div.signinButtons {
     float: right;
     margin-top: 20px;
 }
 
-div.signin .formError {
+.formError {
     clear: both;
     height: 65px;
     padding-top: 10px;
     text-align: center;
 }
 
-div.signin div.stayConnected {
+div.stayConnected {
     margin-top: 15px;
     display: flex;
     align-items: center;
 }
 
-div.signin div.stayConnected input[type='checkbox'] {
+div.stayConnected input[type='checkbox'] {
     margin-right: 5px;
 }
 
-div.signin div.stayConnected label {
+div.stayConnected label {
     cursor: pointer;
     color: rgba(0, 0, 0, 0.6);
 }
 
-div.signin div.resetPassword {
+div.resetPassword {
     margin-top: 15px;
 }
 
-/* Device width is less than or equal to 960px */
-
 @media only screen and (max-width: 960px) {
 
-    div.signin .signinForm {
+    .signinForm {
         align-items: center;
         justify-content: center;
         display: flex;
@@ -63,24 +51,22 @@ div.signin div.resetPassword {
         padding: 15px;
     }
 
-    div.signin div.signinButtons {
+    div.signinButtons {
         margin-top: 15px;
         margin-bottom: 5px;
         display: grid;
         width: 100%;
     }
 
-    div.signin div.signinButtons button {
+    div.signinButtons button {
         margin-right: 0;
     }
 
 }
 
-/* Device width is greater than or equal to 960px */
-
 @media only screen and (min-width: 960px) {
 
-    div.signin .signinForm {
+    .signinForm {
         align-items: center;
         justify-content: center;
         display: flex;

@@ -134,7 +134,7 @@ const SignIn = ({ _language }) => {
         <div>
             <Header language={_language} hideSearch hideSignIn hideCart />
             {visible &&
-                <div className={styles.signin}>
+                <div className="content">
                     <Paper className={styles.signinForm} elevation={10}>
                         <form onSubmit={handleSubmit}>
                             <h1 className={styles.signinFormTitle}>{strings.SIGN_IN_HEADING}</h1>
