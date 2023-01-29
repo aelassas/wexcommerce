@@ -1,5 +1,5 @@
 [![Backend](https://github.com/aelassas/wexcommerce/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/backend.yml)
-[![Frontend](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml)
+[![Frontend](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml) [![Open in vscode](https://img.shields.io/badge/Open%20in-vscode-1f425f.svg)](https://vscode.dev/github/aelassas/wexcommerce)
 
 <p align="center">
 <img alt="" src="https://wexcommerce.github.io/content/wexcommerce.png" />
