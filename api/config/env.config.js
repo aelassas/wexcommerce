@@ -25,6 +25,6 @@ const Env = {
         SHIPPING: 'shipping',
         WITHDRAWAL: 'withdrawal'
     }
-};
+}
 
-export default Env;
+export default Env

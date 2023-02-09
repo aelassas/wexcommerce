@@ -1,8 +1,8 @@
-import React from 'react';
-import Env from '../config/env.config';
-import * as Helper from '../common/Helper';
+import React from 'react'
+import Env from '../config/env.config'
+import * as Helper from '../common/Helper'
 
-import styles from '../styles/payment-type.module.css';
+import styles from '../styles/payment-type.module.css'
 
 const PaymentType = ({ value, language, className, onClick }) => {
     return (
@@ -13,14 +13,14 @@ const PaymentType = ({ value, language, className, onClick }) => {
                         : value === Env.PAYMENT_TYPE.WIRE_TRANSFER ? styles.wireTransfert
                             : '')}
             onClick={(e) => {
-                if (onClick) onClick(e);
+                if (onClick) onClick(e)
             }}
         >
             {
                 Helper.getPaymentType(value, language)
             }
         </span>
-    );
-};
+    )
+}
 
-export default PaymentType;
+export default PaymentType

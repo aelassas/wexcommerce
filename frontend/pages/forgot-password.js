@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import * as UserService from '../services/UserService';
-import { strings as commonStrings } from '../lang/common';
-import { strings } from '../lang/forgot-password';
+import React, { useEffect, useState } from 'react'
+import * as UserService from '../services/UserService'
+import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/forgot-password'
 import {
     Input,
     InputLabel,
@@ -9,56 +9,56 @@ import {
     FormHelperText,
     Button,
     Paper
-} from '@mui/material';
-import Link from 'next/link';
-import validator from 'validator';
-import * as Helper from '../common/Helper';
-import Header from '../components/Header';
-import { useRouter } from "next/router";
-import * as SettingService from '../services/SettingService';
-import Footer from '../components/Footer';
+} from '@mui/material'
+import Link from 'next/link'
+import validator from 'validator'
+import * as Helper from '../common/Helper'
+import Header from '../components/Header'
+import { useRouter } from "next/router"
+import * as SettingService from '../services/SettingService'
+import Footer from '../components/Footer'
 
-import styles from '../styles/forgot-password.module.css';
+import styles from '../styles/forgot-password.module.css'
 
 const ForgotPassword = ({ _language }) => {
-    const router = useRouter();
+    const router = useRouter()
 
-    const [email, setEmail] = useState('');
-    const [visible, setVisible] = useState(false);
-    const [error, setError] = useState(false);
-    const [emailValid, setEmailValid] = useState(true);
-    const [sent, setSent] = useState(false);
+    const [email, setEmail] = useState('')
+    const [visible, setVisible] = useState(false)
+    const [error, setError] = useState(false)
+    const [emailValid, setEmailValid] = useState(true)
+    const [sent, setSent] = useState(false)
 
     useEffect(() => {
         if (_language) {
-            Helper.setLanguage(commonStrings, _language);
-            Helper.setLanguage(strings, _language);
+            Helper.setLanguage(commonStrings, _language)
+            Helper.setLanguage(strings, _language)
         }
-    }, [_language]);
+    }, [_language])
 
     useEffect(() => {
-        const currentUser = UserService.getCurrentUser();
+        const currentUser = UserService.getCurrentUser()
 
         if (currentUser) {
-            router.replace('/');
+            router.replace('/')
         } else {
-            setVisible(true);
+            setVisible(true)
         }
-    }, [router]);
+    }, [router])
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
 
         if (!e.target.value) {
 
-            setError(false);
-            setEmailValid(true);
+            setError(false)
+            setEmailValid(true)
         }
-    };
+    }
 
     const handleEmailKeyDown = (e) => {
         if (e.key === 'Enter') {
-            handleSubmit(e);
+            handleSubmit(e)
         }
     }
 
@@ -66,70 +66,70 @@ const ForgotPassword = ({ _language }) => {
         if (email) {
             if (validator.isEmail(email)) {
                 try {
-                    const status = await UserService.validateEmail({ email });
+                    const status = await UserService.validateEmail({ email })
 
                     if (status === 200) { // user not found (error)
-                        setError(true);
-                        setEmailValid(true);
-                        return false;
+                        setError(true)
+                        setEmailValid(true)
+                        return false
                     } else {
-                        setError(false);
-                        setEmailValid(true);
-                        return true;
+                        setError(false)
+                        setEmailValid(true)
+                        return true
                     }
                 } catch (err) {
-                    Helper.error();
-                    setError(true);
-                    setEmailValid(true);
-                    return false;
+                    Helper.error()
+                    setError(true)
+                    setEmailValid(true)
+                    return false
                 }
             } else {
-                setError(false);
-                setEmailValid(false);
-                return false;
+                setError(false)
+                setEmailValid(false)
+                return false
             }
         } else {
 
-            setError(false);
-            setEmailValid(true);
-            return false;
+            setError(false)
+            setEmailValid(true)
+            return false
         }
-    };
+    }
 
     const handleEmailBlur = async (e) => {
-        await validateEmail(e.target.value);
-    };
+        await validateEmail(e.target.value)
+    }
 
     const handleSubmit = async (e) => {
         try {
-            e.preventDefault();
+            e.preventDefault()
 
-            const emailValid = await validateEmail(email);
+            const emailValid = await validateEmail(email)
             if (!emailValid) {
-                return;
+                return
             }
 
-            const isUser = (await UserService.isUser({ email })) === 200;
+            const isUser = (await UserService.isUser({ email })) === 200
             if (!isUser) {
-                setError(true);
-                return;
+                setError(true)
+                return
             }
 
-            const status = await UserService.resend(email, true);
+            const status = await UserService.resend(email, true)
 
             if (status === 200) {
-                setError(false);
-                setEmailValid(true);
-                setSent(true);
+                setError(false)
+                setEmailValid(true)
+                setSent(true)
             } else {
-                setError(true);
-                setEmailValid(true);
+                setError(true)
+                setEmailValid(true)
             }
         } catch (err) {
-            setError(true);
-            setEmailValid(true);
+            setError(true)
+            setEmailValid(true)
         }
-    };
+    }
 
     return (
         visible && _language &&
@@ -184,7 +184,7 @@ const ForgotPassword = ({ _language }) => {
                                         size="small"
                                         variant='contained'
                                         onClick={() => {
-                                            router.replace('/');
+                                            router.replace('/')
                                         }}
                                     >
                                         {commonStrings.CANCEL}
@@ -198,18 +198,18 @@ const ForgotPassword = ({ _language }) => {
 
             <Footer language={_language} />
         </>
-    );
-};
+    )
+}
 
 export async function getServerSideProps(context) {
 
-    const _language = await SettingService.getLanguage();
+    const _language = await SettingService.getLanguage()
 
     return {
         props: {
             _language
         }
-    };
-};
+    }
+}
 
-export default ForgotPassword;
+export default ForgotPassword

@@ -1,94 +1,94 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { strings as commonStrings } from '../lang/common';
-import Env from '../config/env.config';
-import Accordion from './Accordion';
-import DeliveryType from './DeliveryType';
-import * as Helper from '../common/Helper';
+import React, { useState, useRef, useEffect } from 'react'
+import { strings as commonStrings } from '../lang/common'
+import Env from '../config/env.config'
+import Accordion from './Accordion'
+import DeliveryType from './DeliveryType'
+import * as Helper from '../common/Helper'
 
-import styles from '../styles/delivery-type-filter.module.css';
+import styles from '../styles/delivery-type-filter.module.css'
 
 export default function DeliveryTypeFilter({ selectedOptions, language, onChange, className }) {
-    const deliveryTypes = Helper.getDeliveryTypes();
-    const [checkedDeliveryTypes, setCheckedDeliveryTypes] = useState(deliveryTypes);
-    const [allChecked, setAllChecked] = useState(true);
-    const refs = useRef([]);
+    const deliveryTypes = Helper.getDeliveryTypes()
+    const [checkedDeliveryTypes, setCheckedDeliveryTypes] = useState(deliveryTypes)
+    const [allChecked, setAllChecked] = useState(true)
+    const refs = useRef([])
 
     useEffect(() => {
-        const deliveryTypes = Helper.getDeliveryTypes();
+        const deliveryTypes = Helper.getDeliveryTypes()
 
         if (selectedOptions) {
             refs.current.forEach(checkbox => {
-                const deliveryType = checkbox.getAttribute('data-value');
+                const deliveryType = checkbox.getAttribute('data-value')
                 if (selectedOptions.includes(deliveryType)) {
-                    checkbox.checked = true;
+                    checkbox.checked = true
                 }
 
-                setAllChecked(selectedOptions.length === deliveryTypes.length);
-                setCheckedDeliveryTypes(selectedOptions);
-            });
+                setAllChecked(selectedOptions.length === deliveryTypes.length)
+                setCheckedDeliveryTypes(selectedOptions)
+            })
         } else {
             refs.current.forEach(checkbox => {
-                checkbox.checked = true;
+                checkbox.checked = true
 
-                setAllChecked(true);
-                setCheckedDeliveryTypes(deliveryTypes);
-            });
+                setAllChecked(true)
+                setCheckedDeliveryTypes(deliveryTypes)
+            })
         }
-    }, [selectedOptions]);
+    }, [selectedOptions])
 
     const handleDeliveryTypeClick = (e) => {
-        const checkbox = e.currentTarget.previousSibling;
-        checkbox.checked = !checkbox.checked;
-        const event = e;
-        event.currentTarget = checkbox;
-        handleCheckDeliveryTypeChange(event);
-    };
+        const checkbox = e.currentTarget.previousSibling
+        checkbox.checked = !checkbox.checked
+        const event = e
+        event.currentTarget = checkbox
+        handleCheckDeliveryTypeChange(event)
+    }
 
     const handleCheckDeliveryTypeChange = (e) => {
-        const deliveryType = e.currentTarget.getAttribute('data-value');
+        const deliveryType = e.currentTarget.getAttribute('data-value')
 
         if (e.currentTarget.checked) {
-            checkedDeliveryTypes.push(deliveryType);
+            checkedDeliveryTypes.push(deliveryType)
 
             if (checkedDeliveryTypes.length === deliveryTypes.length) {
-                setAllChecked(true);
+                setAllChecked(true)
             }
         } else {
-            const index = checkedDeliveryTypes.findIndex(s => s === deliveryType);
-            checkedDeliveryTypes.splice(index, 1);
+            const index = checkedDeliveryTypes.findIndex(s => s === deliveryType)
+            checkedDeliveryTypes.splice(index, 1)
 
             if (checkedDeliveryTypes.length === 0) {
-                setAllChecked(false);
+                setAllChecked(false)
             }
         }
 
-        setCheckedDeliveryTypes(checkedDeliveryTypes);
+        setCheckedDeliveryTypes(checkedDeliveryTypes)
         if (onChange) {
-            onChange(checkedDeliveryTypes);
+            onChange(checkedDeliveryTypes)
         }
-    };
+    }
 
     const handleUncheckAllChange = (e) => {
         if (allChecked) { // uncheck all
             refs.current.forEach(checkbox => {
-                checkbox.checked = false;
-            });
+                checkbox.checked = false
+            })
 
-            setAllChecked(false);
-            setCheckedDeliveryTypes([]);
+            setAllChecked(false)
+            setCheckedDeliveryTypes([])
         } else { // check all
             refs.current.forEach(checkbox => {
-                checkbox.checked = true;
-            });
+                checkbox.checked = true
+            })
 
-            setAllChecked(true);
-            setCheckedDeliveryTypes(deliveryTypes);
+            setAllChecked(true)
+            setCheckedDeliveryTypes(deliveryTypes)
 
             if (onChange) {
-                onChange(deliveryTypes);
+                onChange(deliveryTypes)
             }
         }
-    };
+    }
 
     return (
         <Accordion
@@ -112,5 +112,5 @@ export default function DeliveryTypeFilter({ selectedOptions, language, onChange
                 </span>
             </div>
         </Accordion>
-    );
+    )
 }

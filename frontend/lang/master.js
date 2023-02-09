@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -13,4 +13,4 @@ export const strings = new LocalizedStrings({
         VALIDATION_EMAIL_SENT: 'Validation email sent.',
         VALIDATION_EMAIL_ERROR: 'An error occurred while sending validation email.',
     }
-});
+})

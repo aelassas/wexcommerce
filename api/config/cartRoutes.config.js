@@ -7,4 +7,4 @@ export default {
     getCartCount: '/api/cart-count/:id',
     getCartId: '/api/cart-id/:user',
     update: '/api/update-cart/:id/:user'
-};
+}

@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const orderItemSchema = new Schema({
     product: {
@@ -20,16 +20,16 @@ const orderItemSchema = new Schema({
     timestamps: true,
     strict: true,
     collection: 'OrderItem'
-});
+})
 
-const orderItemModel = mongoose.model('OrderItem', orderItemSchema);
+const orderItemModel = mongoose.model('OrderItem', orderItemSchema)
 
 orderItemModel.on('index', (err) => {
     if (err) {
-        console.error('OrderItem index error: %s', err);
+        console.error('OrderItem index error: %s', err)
     } else {
-        console.info('OrderItem indexing complete');
+        console.info('OrderItem indexing complete')
     }
-});
+})
 
-export default orderItemModel;
+export default orderItemModel

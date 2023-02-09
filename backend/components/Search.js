@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import { strings as commonStrings } from '../lang/common';
-import { IconButton, TextField } from '@mui/material';
-import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
+import React, { useState } from 'react'
+import { strings as commonStrings } from '../lang/common'
+import { IconButton, TextField } from '@mui/material'
+import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material'
 
-import styles from '../styles/search.module.css';
+import styles from '../styles/search.module.css'
 
 export default function Search({ className, onSubmit }) {
-    const [keyword, setKeyword] = useState('');
+    const [keyword, setKeyword] = useState('')
 
     const handleSearchChange = (e) => {
-        setKeyword(e.target.value);
-    };
+        setKeyword(e.target.value)
+    }
 
     const handleSearchKeyDown = (e) => {
         if (e.key === 'Enter') {
-            handleSearch();
+            handleSearch()
         }
     }
 
     const handleSearch = (e) => {
-        if (onSubmit) onSubmit(keyword);
-    };
+        if (onSubmit) onSubmit(keyword)
+    }
 
     return (
         <div className={className}>

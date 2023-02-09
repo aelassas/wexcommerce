@@ -1,26 +1,26 @@
-import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react'
 import {
     Autocomplete,
     TextField
-} from '@mui/material';
+} from '@mui/material'
 import {
     AccountTree as CategoryIcon
-} from '@mui/icons-material';
+} from '@mui/icons-material'
 
-import styles from '../styles/multiple-select.module.css';
+import styles from '../styles/multiple-select.module.css'
 
 const ListBox =
     forwardRef(function ListBoxBase(props, ref) {
-        const { children, ...rest } = props;
+        const { children, ...rest } = props
 
-        const innerRef = useRef(null);
+        const innerRef = useRef(null)
 
-        useImperativeHandle(ref, () => innerRef.current);
+        useImperativeHandle(ref, () => innerRef.current)
         return (
             // eslint-disable-next-line
             <ul {...rest} ref={innerRef} role='list-box'>{children}</ul>
-        );
-    });
+        )
+    })
 
 export default function MultipleSelect({
     label,
@@ -44,15 +44,15 @@ export default function MultipleSelect({
     hidePopupIcon,
     customOpen
 }) {
-    const [init, setInit] = React.useState(selectedOptions && selectedOptions.length === 0);
-    const [open, setOpen] = React.useState(false);
-    const [values, setValues] = useState([]);
-    const [inputValue, setInputValue] = useState('');
+    const [init, setInit] = React.useState(selectedOptions && selectedOptions.length === 0)
+    const [open, setOpen] = React.useState(false)
+    const [values, setValues] = useState([])
+    const [inputValue, setInputValue] = useState('')
 
     useEffect(() => {
-        setValues(selectedOptions);
+        setValues(selectedOptions)
         if (selectedOptions && selectedOptions.length === 0) setInputValue('')
-    }, [selectedOptions, type]);
+    }, [selectedOptions, type])
 
     return (
         <Autocomplete
@@ -66,22 +66,22 @@ export default function MultipleSelect({
             onInputChange={(event, value) => {
                 if (init) {
                     if (!event) {
-                        setInputValue(value);
-                        setOpen(false);
-                        return;
+                        setInputValue(value)
+                        setOpen(false)
+                        return
                     }
 
                     if (value.length === 0) {
-                        if (open) setOpen(false);
+                        if (open) setOpen(false)
                     } else {
-                        if (!open) setOpen(true);
+                        if (!open) setOpen(true)
                     }
                 } else {
-                    setInit(true);
+                    setInit(true)
                 }
 
-                setInputValue(value);
-                if (onInputChange) onInputChange(event);
+                setInputValue(value)
+                if (onInputChange) onInputChange(event)
             }}
             onClose={() => {
                 setOpen(false)
@@ -89,29 +89,29 @@ export default function MultipleSelect({
             onChange={(event, newValue) => {
 
                 if (event && event.type === 'keydown' && event.key === 'Enter') {
-                    return;
+                    return
                 }
 
                 if (multiple) {
-                    setValues(newValue);
-                    callbackFromMultipleSelect(newValue, key, reference);
+                    setValues(newValue)
+                    callbackFromMultipleSelect(newValue, key, reference)
                     if (newValue.length === 0 && onClear) {
-                        onClear();
+                        onClear()
                     }
                 } else {
-                    const value = (newValue && [newValue]) || [];
-                    setValues(value);
-                    callbackFromMultipleSelect(value, key, reference);
+                    const value = (newValue && [newValue]) || []
+                    setValues(value)
+                    callbackFromMultipleSelect(value, key, reference)
                     if (!newValue) {
                         if (onClear) {
-                            onClear();
+                            onClear()
                         }
                     }
                 }
             }}
             onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                    e.preventDefault();
+                    e.preventDefault()
                 }
             }}
             clearOnBlur={false}
@@ -130,7 +130,7 @@ export default function MultipleSelect({
                         variant={variant || 'standard'}
                         required={required && values && values.length === 0}
                     />
-                );
+                )
             }}
             renderOption={(props, option, { selected }) => {
 
@@ -141,12 +141,12 @@ export default function MultipleSelect({
                         </span>
                         <span className={styles.optionName}>{option.name}</span>
                     </li>
-                );
+                )
             }}
             ListboxProps={ListboxProps || null}
             onFocus={onFocus || null}
             ListboxComponent={ListBox}
             onOpen={onOpen || null}
         />
-    );
+    )
 }

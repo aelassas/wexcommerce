@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -21,4 +21,4 @@ export const strings = new LocalizedStrings({
         PASSWORD_UPDATE_ERROR: 'An error occurred while updating password.',
         PASSWORD_UPDATE: 'Password changed successfully.'
     }
-});
+})

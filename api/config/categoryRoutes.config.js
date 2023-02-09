@@ -7,4 +7,4 @@ export default {
     getCategory: '/api/category/:id/:language',
     getCategories: '/api/categories/:language',
     searchCategories: '/api/search-categories/:language'
-};
+}

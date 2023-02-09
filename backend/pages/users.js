@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import Header from '../components/Header';
-import { strings } from '../lang/users';
-import { strings as masterStrings } from '../lang/master';
-import { strings as commonStrings } from '../lang/common';
-import { strings as headerStrings } from '../lang/header';
-import * as Helper from '../common/Helper';
-import * as UserService from '../services/UserService';
+import { useEffect, useRef, useState } from 'react'
+import Header from '../components/Header'
+import { strings } from '../lang/users'
+import { strings as masterStrings } from '../lang/master'
+import { strings as commonStrings } from '../lang/common'
+import { strings as headerStrings } from '../lang/header'
+import * as Helper from '../common/Helper'
+import * as UserService from '../services/UserService'
 import {
   Button,
   Card,
@@ -13,21 +13,21 @@ import {
   Typography,
   Tooltip,
   IconButton
-} from '@mui/material';
+} from '@mui/material'
 import {
   Inventory as OrdersIcon,
   ArrowBackIos as PreviousPageIcon,
   ArrowForwardIos as NextPageIcon
-} from '@mui/icons-material';
-import Env from '../config/env.config';
-import Link from 'next/link';
+} from '@mui/icons-material'
+import Env from '../config/env.config'
+import Link from 'next/link'
 import { format } from 'date-fns'
-import { fr, enUS } from "date-fns/locale";
-import NoMatch from '../components/NoMatch';
-import { useRouter } from 'next/router';
-import * as SettingService from '../services/SettingService';
+import { fr, enUS } from "date-fns/locale"
+import NoMatch from '../components/NoMatch'
+import { useRouter } from 'next/router'
+import * as SettingService from '../services/SettingService'
 
-import styles from '../styles/users.module.css';
+import styles from '../styles/users.module.css'
 
 const Users = ({
   _user,
@@ -40,56 +40,56 @@ const Users = ({
   _noMatch,
   _language
 }) => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const userListRef = useRef();
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+  const userListRef = useRef()
 
-  const _fr = _language === 'fr';
-  const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm';
-  const _locale = _fr ? fr : enUS;
+  const _fr = _language === 'fr'
+  const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm'
+  const _locale = _fr ? fr : enUS
 
   useEffect(() => {
     if (_language) {
-      Helper.setLanguage(strings, _language);
-      Helper.setLanguage(commonStrings, _language);
-      Helper.setLanguage(masterStrings, _language);
-      Helper.setLanguage(headerStrings, _language);
+      Helper.setLanguage(strings, _language)
+      Helper.setLanguage(commonStrings, _language)
+      Helper.setLanguage(masterStrings, _language)
+      Helper.setLanguage(headerStrings, _language)
     }
-  }, [_language]);
+  }, [_language])
 
   useEffect(() => {
     if (_user) {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [_user]);
+  }, [_user])
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      UserService.signout()
     }
-  }, [_signout]);
+  }, [_signout])
 
   useEffect(() => {
-    if (userListRef.current) userListRef.current.scrollTo(0, 0);
-  }, [_users, userListRef]);
+    if (userListRef.current) userListRef.current.scrollTo(0, 0)
+  }, [_users, userListRef])
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
   return !loading && _user && _language &&
     <>
@@ -143,7 +143,7 @@ const Users = ({
                           <div className={styles.userActions}>
                             <Tooltip title={strings.ORDERS}>
                               <IconButton onClick={() => {
-                                router.replace(`/?u=${user._id}`);
+                                router.replace(`/?u=${user._id}`)
                               }}
                               >
                                 <OrdersIcon />
@@ -206,57 +206,57 @@ const Users = ({
           >{masterStrings.RESEND}</Button>
         </div>
       }
-    </>;
-};
+    </>
+}
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _page = 1, _keyword = '', _totalRecords = 0, _rowCount = 0, _users = [], _noMatch = false, _language = '';
+  let _user = null, _signout = false, _page = 1, _keyword = '', _totalRecords = 0, _rowCount = 0, _users = [], _noMatch = false, _language = ''
 
   try {
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
-        _language = await SettingService.getLanguage();
+        _user = await UserService.getUser(context, currentUser.id)
+        _language = await SettingService.getLanguage()
 
         if (_user) {
 
-          if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
+          if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p)
 
           if (_page >= 1) {
-            if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
-            const data = await UserService.getUsers(context, _keyword, _page, Env.PAGE_SIZE);
-            const _data = data[0];
-            _users = _data.resultData;
-            _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _users.length;
-            _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0;
+            if (typeof context.query.s !== 'undefined') _keyword = context.query.s
+            const data = await UserService.getUsers(context, _keyword, _page, Env.PAGE_SIZE)
+            const _data = data[0]
+            _users = _data.resultData
+            _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _users.length
+            _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
             if (_totalRecords > 0 && _page > Math.ceil(_totalRecords / Env.PAGE_SIZE)) {
-              _noMatch = true;
+              _noMatch = true
             }
           } else {
-            _noMatch = true;
+            _noMatch = true
           }
         } else {
-          _signout = true;
+          _signout = true
         }
       } else {
-        _signout = true;
+        _signout = true
       }
     } else {
-      _signout = true;
+      _signout = true
     }
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -271,7 +271,7 @@ export async function getServerSideProps(context) {
       _noMatch,
       _language
     }
-  };
+  }
 }
 
-export default Users;
+export default Users

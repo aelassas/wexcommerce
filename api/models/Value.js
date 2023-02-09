@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const valueSchema = new Schema({
     language: {
@@ -22,16 +22,16 @@ const valueSchema = new Schema({
     timestamps: true,
     strict: true,
     collection: 'Value'
-});
+})
 
-const valueModel = mongoose.model('Value', valueSchema);
+const valueModel = mongoose.model('Value', valueSchema)
 
 valueModel.on('index', (err) => {
     if (err) {
-        console.error('Value index error: %s', err);
+        console.error('Value index error: %s', err)
     } else {
-        console.info('Value indexing complete');
+        console.info('Value indexing complete')
     }
-});
+})
 
-export default valueModel;
+export default valueModel

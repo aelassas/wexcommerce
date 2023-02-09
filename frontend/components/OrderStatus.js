@@ -1,8 +1,8 @@
-import React from 'react';
-import Env from '../config/env.config';
-import * as Helper from '../common/Helper';
+import React from 'react'
+import Env from '../config/env.config'
+import * as Helper from '../common/Helper'
 
-import styles from '../styles/order-status.module.css';
+import styles from '../styles/order-status.module.css'
 
 const OrderStatus = ({ value, language, className, onClick }) => {
     return (
@@ -16,14 +16,14 @@ const OrderStatus = ({ value, language, className, onClick }) => {
                                     : value === Env.ORDER_STATUS.CANCELLED ? styles.cancelled
                                         : '')}
             onClick={(e) => {
-                if (onClick) onClick(e);
+                if (onClick) onClick(e)
             }}
         >
             {
                 Helper.getOrderStatus(value, language)
             }
         </span>
-    );
-};
+    )
+}
 
-export default OrderStatus;
+export default OrderStatus

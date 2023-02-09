@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import Env from '../config/env.config.js';
+import mongoose from 'mongoose'
+import Env from '../config/env.config.js'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const paymentTypeSchema = new Schema({
     name: {
@@ -24,16 +24,16 @@ const paymentTypeSchema = new Schema({
     timestamps: true,
     strict: true,
     collection: 'PaymentType'
-});
+})
 
-const paymentTypeModel = mongoose.model('PaymentType', paymentTypeSchema);
+const paymentTypeModel = mongoose.model('PaymentType', paymentTypeSchema)
 
 paymentTypeModel.on('index', (err) => {
     if (err) {
-        console.error('PaymentType index error: %s', err);
+        console.error('PaymentType index error: %s', err)
     } else {
-        console.info('PaymentType indexing complete');
+        console.info('PaymentType indexing complete')
     }
-});
+})
 
-export default paymentTypeModel;
+export default paymentTypeModel

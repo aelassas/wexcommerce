@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -13,5 +13,5 @@ export const strings = new LocalizedStrings({
         DELETE_CATEGORY: 'Are you sure you want to delete this category?',
         CANNOT_DELETE_CATEGORY: 'This category cannot be deleted because it is related to products.',
     }
-});
+})
 

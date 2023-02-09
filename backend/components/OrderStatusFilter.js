@@ -1,94 +1,94 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { strings as commonStrings } from '../lang/common';
-import Env from '../config/env.config';
-import Accordion from './Accordion';
-import OrderStatus from './OrderStatus';
-import * as Helper from '../common/Helper';
+import React, { useState, useRef, useEffect } from 'react'
+import { strings as commonStrings } from '../lang/common'
+import Env from '../config/env.config'
+import Accordion from './Accordion'
+import OrderStatus from './OrderStatus'
+import * as Helper from '../common/Helper'
 
-import styles from '../styles/order-status-filter.module.css';
+import styles from '../styles/order-status-filter.module.css'
 
 export default function OrderStatusFilter({ selectedOptions, language, onChange, className }) {
-    const statuses = Helper.getOrderStatuses();
-    const [checkedStatuses, setCheckedStatuses] = useState(statuses);
-    const [allChecked, setAllChecked] = useState(true);
-    const refs = useRef([]);
+    const statuses = Helper.getOrderStatuses()
+    const [checkedStatuses, setCheckedStatuses] = useState(statuses)
+    const [allChecked, setAllChecked] = useState(true)
+    const refs = useRef([])
 
     useEffect(() => {
-        const statuses = Helper.getOrderStatuses();
+        const statuses = Helper.getOrderStatuses()
 
         if (selectedOptions) {
             refs.current.forEach(checkbox => {
-                const status = checkbox.getAttribute('data-value');
+                const status = checkbox.getAttribute('data-value')
                 if (selectedOptions.includes(status)) {
-                    checkbox.checked = true;
+                    checkbox.checked = true
                 }
 
-                setAllChecked(selectedOptions.length === statuses.length);
-                setCheckedStatuses(selectedOptions);
-            });
+                setAllChecked(selectedOptions.length === statuses.length)
+                setCheckedStatuses(selectedOptions)
+            })
         } else {
             refs.current.forEach(checkbox => {
-                checkbox.checked = true;
+                checkbox.checked = true
 
-                setAllChecked(true);
-                setCheckedStatuses(statuses);
-            });
+                setAllChecked(true)
+                setCheckedStatuses(statuses)
+            })
         }
-    }, [selectedOptions]);
+    }, [selectedOptions])
 
     const handleOrderStatusClick = (e) => {
-        const checkbox = e.currentTarget.previousSibling;
-        checkbox.checked = !checkbox.checked;
-        const event = e;
-        event.currentTarget = checkbox;
-        handleCheckOrderStatusChange(event);
-    };
+        const checkbox = e.currentTarget.previousSibling
+        checkbox.checked = !checkbox.checked
+        const event = e
+        event.currentTarget = checkbox
+        handleCheckOrderStatusChange(event)
+    }
 
     const handleCheckOrderStatusChange = (e) => {
-        const status = e.currentTarget.getAttribute('data-value');
+        const status = e.currentTarget.getAttribute('data-value')
 
         if (e.currentTarget.checked) {
-            checkedStatuses.push(status);
+            checkedStatuses.push(status)
 
             if (checkedStatuses.length === statuses.length) {
-                setAllChecked(true);
+                setAllChecked(true)
             }
         } else {
-            const index = checkedStatuses.findIndex(s => s === status);
-            checkedStatuses.splice(index, 1);
+            const index = checkedStatuses.findIndex(s => s === status)
+            checkedStatuses.splice(index, 1)
 
             if (checkedStatuses.length === 0) {
-                setAllChecked(false);
+                setAllChecked(false)
             }
         }
 
-        setCheckedStatuses(checkedStatuses);
+        setCheckedStatuses(checkedStatuses)
         if (onChange) {
-            onChange(checkedStatuses);
+            onChange(checkedStatuses)
         }
-    };
+    }
 
     const handleUncheckAllChange = (e) => {
         if (allChecked) { // uncheck all
             refs.current.forEach(checkbox => {
-                checkbox.checked = false;
-            });
+                checkbox.checked = false
+            })
 
-            setAllChecked(false);
-            setCheckedStatuses([]);
+            setAllChecked(false)
+            setCheckedStatuses([])
         } else { // check all
             refs.current.forEach(checkbox => {
-                checkbox.checked = true;
-            });
+                checkbox.checked = true
+            })
 
-            setAllChecked(true);
-            setCheckedStatuses(statuses);
+            setAllChecked(true)
+            setCheckedStatuses(statuses)
 
             if (onChange) {
-                onChange(statuses);
+                onChange(statuses)
             }
         }
-    };
+    }
 
     return (
         <Accordion
@@ -112,5 +112,5 @@ export default function OrderStatusFilter({ selectedOptions, language, onChange,
                 </span>
             </div>
         </Accordion>
-    );
+    )
 }

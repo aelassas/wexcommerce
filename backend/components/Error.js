@@ -1,8 +1,8 @@
-import React from 'react';
-import { strings as commonStrings } from '../lang/common';
-import Link from 'next/link';
+import React from 'react'
+import { strings as commonStrings } from '../lang/common'
+import Link from 'next/link'
 
-import styles from '../styles/error.module.css';
+import styles from '../styles/error.module.css'
 
 export default function Error({ message, style, className, homeLink }) {
 
@@ -13,5 +13,5 @@ export default function Error({ message, style, className, homeLink }) {
 			</div>
 			{homeLink && <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>}
 		</div>
-    );
+    )
 }

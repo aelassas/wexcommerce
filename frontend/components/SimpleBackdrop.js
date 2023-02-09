@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import {
     Backdrop,
     CircularProgress
-} from '@mui/material';
+} from '@mui/material'
 
 const SimpleBackdrop = (props) => (
     <div>
@@ -14,6 +14,6 @@ const SimpleBackdrop = (props) => (
             {props.progress ? <CircularProgress color="inherit" /> : null}
         </Backdrop>
     </div>
-);
+)
 
-export default SimpleBackdrop;
+export default SimpleBackdrop

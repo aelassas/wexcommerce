@@ -1,8 +1,8 @@
-import React from 'react';
-import Env from '../config/env.config';
-import * as Helper from '../common/Helper';
+import React from 'react'
+import Env from '../config/env.config'
+import * as Helper from '../common/Helper'
 
-import styles from '../styles/delivery-type.module.css';
+import styles from '../styles/delivery-type.module.css'
 
 export default function DeliveryType({ value, className, language, onClick }) {
     return (
@@ -12,12 +12,12 @@ export default function DeliveryType({ value, className, language, onClick }) {
                     : value === Env.DELIVERY_TYPE.WITHDRAWAL ? styles.withdrawal
                             : '')}
             onClick={(e) => {
-                if (onClick) onClick(e);
+                if (onClick) onClick(e)
             }}
         >
             {
                 Helper.getDeliveryType(value, language)
             }
         </span>
-    );
+    )
 }

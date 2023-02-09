@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import * as UserService from '../services/UserService';
-import { strings as commonStrings } from '../lang/common';
-import { strings as cpStrings } from '../lang/change-password';
-import { strings as fpStrings } from '../lang/forgot-password';
-import { strings as activateStrings } from '../lang/activate';
-import { strings as masterStrings } from '../lang/master';
-import NoMatch from '../components/NoMatch';
+import React, { useEffect, useState } from 'react'
+import * as UserService from '../services/UserService'
+import { strings as commonStrings } from '../lang/common'
+import { strings as cpStrings } from '../lang/change-password'
+import { strings as fpStrings } from '../lang/forgot-password'
+import { strings as activateStrings } from '../lang/activate'
+import { strings as masterStrings } from '../lang/master'
+import NoMatch from '../components/NoMatch'
 import {
     Input,
     InputLabel,
@@ -13,14 +13,14 @@ import {
     FormHelperText,
     Button,
     Paper
-} from '@mui/material';
-import * as Helper from '../common/Helper';
-import { useRouter } from "next/router";
-import Header from '../components/Header';
-import Link from 'next/link';
-import * as SettingService from '../services/SettingService';
+} from '@mui/material'
+import * as Helper from '../common/Helper'
+import { useRouter } from "next/router"
+import Header from '../components/Header'
+import Link from 'next/link'
+import * as SettingService from '../services/SettingService'
 
-import styles from '../styles/reset-password.module.css';
+import styles from '../styles/reset-password.module.css'
 
 const ResetPassword = ({
     _noMatch,
@@ -32,87 +32,87 @@ const ResetPassword = ({
     _resend,
     _language
 }) => {
-    const router = useRouter();
+    const router = useRouter()
 
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [confirmPasswordError, setConfirmPasswordError] = useState(false);
-    const [passwordLengthError, setPasswordLengthError] = useState(false);
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [confirmPasswordError, setConfirmPasswordError] = useState(false)
+    const [passwordLengthError, setPasswordLengthError] = useState(false)
 
     useEffect(() => {
         if (_language) {
-            Helper.setLanguage(commonStrings, _language);
-            Helper.setLanguage(cpStrings, _language);
-            Helper.setLanguage(fpStrings, _language);
+            Helper.setLanguage(commonStrings, _language)
+            Helper.setLanguage(cpStrings, _language)
+            Helper.setLanguage(fpStrings, _language)
         }
-    }, [_language]);
+    }, [_language])
 
     useEffect(() => {
         if (_signout) {
-            UserService.signout(false);
+            UserService.signout(false)
         }
-    }, [_signout]);
+    }, [_signout])
 
     const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
+        setPassword(e.target.value)
 
         if (!e.target.value) {
-            setPasswordLengthError(true);
+            setPasswordLengthError(true)
         }
-    };
+    }
 
     const handlePasswordBlur = (e) => {
         if (password && password.length < 6) {
-            setPasswordLengthError(true);
-            setConfirmPasswordError(false);
+            setPasswordLengthError(true)
+            setConfirmPasswordError(false)
         } else {
-            setPasswordLengthError(false);
-            setConfirmPasswordError(false);
+            setPasswordLengthError(false)
+            setConfirmPasswordError(false)
         }
-    };
+    }
 
     const handleConfirmPasswordChange = (e) => {
-        setConfirmPassword(e.target.value);
+        setConfirmPassword(e.target.value)
 
         if (!e.target.value) {
-            setConfirmPasswordError(false);
+            setConfirmPasswordError(false)
         }
-    };
+    }
 
     const handleConfirmPasswordBlur = (e) => {
         if (password && confirmPassword && password !== confirmPassword) {
-            setConfirmPasswordError(true);
+            setConfirmPasswordError(true)
         } else {
-            setConfirmPasswordError(false);
+            setConfirmPasswordError(false)
         }
-    };
+    }
 
     const handleConfirmPasswordKeyDown = (e) => {
         if (e.key === 'Enter') {
-            handleSubmit(e);
+            handleSubmit(e)
         }
-    };
+    }
 
     const handleSubmit = async (e) => {
         try {
-            e.preventDefault();
+            e.preventDefault()
 
             if (password.length < 6) {
-                setPasswordLengthError(true);
-                setConfirmPasswordError(false);
-                return;
+                setPasswordLengthError(true)
+                setConfirmPasswordError(false)
+                return
             } else {
-                setConfirmPasswordError(false);
+                setConfirmPasswordError(false)
             }
 
             if (password !== confirmPassword) {
-                setConfirmPasswordError(true);
-                return;
+                setConfirmPasswordError(true)
+                return
             } else {
-                setConfirmPasswordError(false);
+                setConfirmPasswordError(false)
             }
 
-            const data = { userId: _userId, token: _token, password };
+            const data = { userId: _userId, token: _token, password }
 
             const status = await UserService.activate(data)
 
@@ -120,24 +120,24 @@ const ResetPassword = ({
                 const res = await UserService.signin({ email: _email, password })
 
                 if (res.status === 200) {
-                    const status = await UserService.deleteTokens(_userId);
+                    const status = await UserService.deleteTokens(_userId)
 
                     if (status === 200) {
-                        router.replace('/');
+                        router.replace('/')
                     } else {
-                        Helper.error();
+                        Helper.error()
                     }
                 } else {
-                    Helper.error();
+                    Helper.error()
                 }
 
             } else {
-                Helper.error();
+                Helper.error()
             }
         } catch (err) {
-            Helper.error();
+            Helper.error()
         }
-    };
+    }
 
     return (
         <>
@@ -156,15 +156,15 @@ const ResetPassword = ({
                                     className={`btn-primary ${styles.btnResend}`}
                                     onClick={async () => {
                                         try {
-                                            const status = await UserService.resend(_email, true);
+                                            const status = await UserService.resend(_email, true)
 
                                             if (status === 200) {
-                                                Helper.info(commonStrings.RESET_PASSWORD_EMAIL_SENT);
+                                                Helper.info(commonStrings.RESET_PASSWORD_EMAIL_SENT)
                                             } else {
-                                                Helper.error();
+                                                Helper.error()
                                             }
                                         } catch (err) {
-                                            Helper.error();
+                                            Helper.error()
                                         }
                                     }}
                                 >{masterStrings.RESEND}</Button>
@@ -228,7 +228,7 @@ const ResetPassword = ({
                                         size="small"
                                         variant='contained'
                                         onClick={() => {
-                                            router.replace('/');
+                                            router.replace('/')
                                         }}
                                     >
                                         {commonStrings.CANCEL}
@@ -241,67 +241,67 @@ const ResetPassword = ({
                 {_noMatch && <NoMatch language={_language} />}
             </div>
         </>
-    );
-};
+    )
+}
 
 export async function getServerSideProps(context) {
-    const { u: userId, e: email, t: token } = context.query;
+    const { u: userId, e: email, t: token } = context.query
 
     let _noMatch = false, _userId = '', _email = '', _token = '',
         _user = null, isAdmin = false, _signout = false, _resend = false,
-        _language = '';
+        _language = ''
 
     try {
-        _language = await SettingService.getLanguage();
+        _language = await SettingService.getLanguage()
 
         if (userId && email && token) {
-            isAdmin = await UserService.isAdmin(email);
+            isAdmin = await UserService.isAdmin(email)
         }
 
-        const currentUser = UserService.getCurrentUser(context);
+        const currentUser = UserService.getCurrentUser(context)
 
         if (userId && email && token) {
             if (isAdmin) {
-                const status = await UserService.checkToken(userId, email, token);
-                _userId = userId;
-                _email = email;
-                _token = token;
+                const status = await UserService.checkToken(userId, email, token)
+                _userId = userId
+                _email = email
+                _token = token
 
                 if (status !== 200) {
-                    _resend = true;
+                    _resend = true
                 }
             } else {
-                _noMatch = true;
+                _noMatch = true
             }
         } else {
-            _noMatch = true;
+            _noMatch = true
         }
 
         if (currentUser) {
             if (isAdmin) {
-                let status;
+                let status
                 try {
-                    status = await UserService.validateAccessToken(context);
+                    status = await UserService.validateAccessToken(context)
                 } catch (err) {
-                    console.log('Unauthorized!');
+                    console.log('Unauthorized!')
                 }
 
                 if (status === 200) {
-                    _user = await UserService.getUser(context, userId);
+                    _user = await UserService.getUser(context, userId)
 
                     if (_user) {
-                        _noMatch = true;
+                        _noMatch = true
                     }
                 } else {
-                    _signout = true;
+                    _signout = true
                 }
             } else {
-                _noMatch = true;
+                _noMatch = true
             }
         }
     } catch (err) {
-        console.log(err);
-        _noMatch = true;
+        console.log(err)
+        _noMatch = true
     }
 
     return {
@@ -315,7 +315,7 @@ export async function getServerSideProps(context) {
             _resend,
             _language
         }
-    };
+    }
 }
 
-export default ResetPassword;
+export default ResetPassword

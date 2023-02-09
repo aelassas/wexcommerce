@@ -19,4 +19,4 @@ export default {
     getUsers: '/api/users/:page/:size/:language',
     delete: '/api/delete-users',
     checkPassword: '/api/check-password/:id/:password'
-};
+}

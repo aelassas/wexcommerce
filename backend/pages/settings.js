@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import * as UserService from '../services/UserService';
-import * as PaymentTypeService from '../services/PaymentTypeService';
-import Header from '../components/Header';
-import { strings } from '../lang/settings';
-import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
-import { strings as headerStrings } from '../lang/header';
-import * as Helper from '../common/Helper';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react'
+import * as UserService from '../services/UserService'
+import * as PaymentTypeService from '../services/PaymentTypeService'
+import Header from '../components/Header'
+import { strings } from '../lang/settings'
+import { strings as commonStrings } from '../lang/common'
+import { strings as masterStrings } from '../lang/master'
+import { strings as headerStrings } from '../lang/header'
+import * as Helper from '../common/Helper'
+import { useRouter } from 'next/router'
 import {
   Input,
   InputLabel,
@@ -23,235 +23,235 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-} from '@mui/material';
-import validator from 'validator';
-import Env from '../config/env.config';
-import * as SettingService from '../services/SettingService';
-import * as DeliveryTypeService from '../services/DeliveryTypeService';
+} from '@mui/material'
+import validator from 'validator'
+import Env from '../config/env.config'
+import * as SettingService from '../services/SettingService'
+import * as DeliveryTypeService from '../services/DeliveryTypeService'
 
-import styles from '../styles/settings.module.css';
+import styles from '../styles/settings.module.css'
 
 const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings }) => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [fullName, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [phoneValid, setPhoneValid] = useState(true);
-  const [address, setAddress] = useState('');
-  const [deliveryTypes, setDeliveryTypes] = useState([]);
-  const [deliveryTypesWarning, setDeliveryTypesWarning] = useState(false);
-  const [paymentTypes, setPaymentTypes] = useState([]);
-  const [paymentTypesWarning, setPaymentTypesWarning] = useState(false);
-  const [wireTransferWarning, setWireTransferWarning] = useState(false);
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [phoneValid, setPhoneValid] = useState(true)
+  const [address, setAddress] = useState('')
+  const [deliveryTypes, setDeliveryTypes] = useState([])
+  const [deliveryTypesWarning, setDeliveryTypesWarning] = useState(false)
+  const [paymentTypes, setPaymentTypes] = useState([])
+  const [paymentTypesWarning, setPaymentTypesWarning] = useState(false)
+  const [wireTransferWarning, setWireTransferWarning] = useState(false)
 
-  const [language, setLanguage] = useState('');
-  const [currency, setCurrency] = useState('');
-  const [bankName, setBankName] = useState('');
-  const [accountHolder, setAccountHolder] = useState('');
-  const [rib, setRib] = useState('');
-  const [iban, setIban] = useState('');
+  const [language, setLanguage] = useState('')
+  const [currency, setCurrency] = useState('')
+  const [bankName, setBankName] = useState('')
+  const [accountHolder, setAccountHolder] = useState('')
+  const [rib, setRib] = useState('')
+  const [iban, setIban] = useState('')
 
   useEffect(() => {
     if (_settings) {
-      Helper.setLanguage(strings, _settings.language);
-      Helper.setLanguage(commonStrings, _settings.language);
-      Helper.setLanguage(masterStrings, _settings.language);
-      Helper.setLanguage(headerStrings, _settings.language);
+      Helper.setLanguage(strings, _settings.language)
+      Helper.setLanguage(commonStrings, _settings.language)
+      Helper.setLanguage(masterStrings, _settings.language)
+      Helper.setLanguage(headerStrings, _settings.language)
 
-      setLanguage(_settings.language);
-      setCurrency(_settings.currency);
-      setBankName(_settings.bankName || '');
-      setAccountHolder(_settings.accountHolder || '');
-      setRib(_settings.rib || '');
-      setIban(_settings.iban || '');
+      setLanguage(_settings.language)
+      setCurrency(_settings.currency)
+      setBankName(_settings.bankName || '')
+      setAccountHolder(_settings.accountHolder || '')
+      setRib(_settings.rib || '')
+      setIban(_settings.iban || '')
     }
-  }, [_settings]);
+  }, [_settings])
 
   useEffect(() => {
     if (_user) {
-      setLoading(false);
-      setFullName(_user.fullName);
-      setPhone(_user.phone || '');
-      setAddress(_user.address || '');
+      setLoading(false)
+      setFullName(_user.fullName)
+      setPhone(_user.phone || '')
+      setAddress(_user.address || '')
     }
-  }, [_user]);
+  }, [_user])
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      UserService.signout()
     }
-  }, [_signout]);
+  }, [_signout])
 
   useEffect(() => {
     if (_paymentTypes && _paymentTypes.length > 0) {
-      setPaymentTypes(_paymentTypes);
+      setPaymentTypes(_paymentTypes)
     }
-  }, [_paymentTypes]);
+  }, [_paymentTypes])
 
   useEffect(() => {
     if (_deliveryTypes && _deliveryTypes.length > 0) {
-      setDeliveryTypes(_deliveryTypes);
+      setDeliveryTypes(_deliveryTypes)
     }
-  }, [_deliveryTypes]);
+  }, [_deliveryTypes])
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
   const validatePhone = (phone) => {
     if (phone) {
-      const phoneValid = validator.isMobilePhone(phone);
-      setPhoneValid(phoneValid);
+      const phoneValid = validator.isMobilePhone(phone)
+      setPhoneValid(phoneValid)
 
-      return phoneValid;
+      return phoneValid
     } else {
-      setPhoneValid(true);
+      setPhoneValid(true)
 
-      return true;
+      return true
     }
-  };
+  }
 
   const handleUserSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      const phoneValid = await validatePhone(phone);
+      const phoneValid = await validatePhone(phone)
       if (!phoneValid) {
-        return;
+        return
       }
 
-      const payload = { _id: _user._id, fullName, phone, address };
-      const status = await UserService.updateUser(payload);
+      const payload = { _id: _user._id, fullName, phone, address }
+      const status = await UserService.updateUser(payload)
 
       if (status === 200) {
-        Helper.info(commonStrings.UPDATED);
+        Helper.info(commonStrings.UPDATED)
       } else {
-        Helper.error();
+        Helper.error()
       }
     }
     catch (err) {
-      UserService.signout();
+      UserService.signout()
     }
-  };
+  }
 
   const handleLocaleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      const data = { language, currency };
+      const data = { language, currency }
 
-      const status = await SettingService.updateSettings(data);
+      const status = await SettingService.updateSettings(data)
 
       if (status === 200) {
         if (_settings.language !== language) {
-          router.reload();
+          router.reload()
         } else {
-          Helper.info(commonStrings.UPDATED);
+          Helper.info(commonStrings.UPDATED)
         }
       } else {
-        Helper.error();
+        Helper.error()
       }
     }
     catch (err) {
-      UserService.signout();
+      UserService.signout()
     }
-  };
+  }
 
   const handlePaymentTypesSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
 
-      const count = paymentTypes.filter(pt => pt.enabled).length;
+      const count = paymentTypes.filter(pt => pt.enabled).length
 
       if (count > 0) {
 
-        const index = paymentTypes.findIndex(pt => pt.enabled && pt.name === Env.PAYMENT_TYPE.WIRE_TRANSFER);
+        const index = paymentTypes.findIndex(pt => pt.enabled && pt.name === Env.PAYMENT_TYPE.WIRE_TRANSFER)
 
         if (index > -1) {
-          const setting = await SettingService.getSettings();
+          const setting = await SettingService.getSettings()
 
           if (!setting.bankName || !setting.accountHolder || !setting.rib || !setting.iban) {
-            const _paymentTypes = Helper.cloneArray(paymentTypes);
-            paymentTypes[index].enabled = false;
-            setPaymentTypes(_paymentTypes);
-            return setWireTransferWarning(true);
+            const _paymentTypes = Helper.cloneArray(paymentTypes)
+            paymentTypes[index].enabled = false
+            setPaymentTypes(_paymentTypes)
+            return setWireTransferWarning(true)
           }
         }
 
-        const status = await PaymentTypeService.updatePaymentTypes(paymentTypes);
+        const status = await PaymentTypeService.updatePaymentTypes(paymentTypes)
 
         if (status === 200) {
-          Helper.info(commonStrings.UPDATED);
+          Helper.info(commonStrings.UPDATED)
         } else {
-          Helper.error();
+          Helper.error()
         }
       } else {
-        setPaymentTypesWarning(true);
+        setPaymentTypesWarning(true)
       }
     }
     catch (err) {
-      UserService.signout();
+      UserService.signout()
     }
-  };
+  }
 
   const handleDeliveryTypesSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      const count = deliveryTypes.filter(pt => pt.enabled).length;
+      const count = deliveryTypes.filter(pt => pt.enabled).length
 
       if (count > 0) {
 
-        const status = await DeliveryTypeService.updateDeliveryTypes(deliveryTypes);
+        const status = await DeliveryTypeService.updateDeliveryTypes(deliveryTypes)
 
         if (status === 200) {
-          Helper.info(commonStrings.UPDATED);
+          Helper.info(commonStrings.UPDATED)
         } else {
-          Helper.error();
+          Helper.error()
         }
       } else {
-        setDeliveryTypesWarning(true);
+        setDeliveryTypesWarning(true)
       }
     }
     catch (err) {
-      // UserService.signout();
-      console.log(err);
+      // UserService.signout()
+      console.log(err)
     }
   }
 
   const handleBankSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      const data = { bankName, accountHolder, rib, iban };
+      const data = { bankName, accountHolder, rib, iban }
 
-      const status = await SettingService.updateBankSettings(data);
+      const status = await SettingService.updateBankSettings(data)
 
       if (status === 200) {
-        Helper.info(commonStrings.UPDATED);
+        Helper.info(commonStrings.UPDATED)
       } else {
-        Helper.error();
+        Helper.error()
       }
     }
     catch (err) {
-      UserService.signout();
+      UserService.signout()
     }
-  };
+  }
 
   return (
     !loading && _user && _settings &&
@@ -272,7 +272,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     value={fullName}
                     required
                     onChange={(e) => {
-                      setFullName(e.target.value);
+                      setFullName(e.target.value)
                     }}
                     autoComplete="off"
                   />
@@ -296,11 +296,11 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     error={!phoneValid}
                     value={phone}
                     onBlur={(e) => {
-                      validatePhone(e.target.value);
+                      validatePhone(e.target.value)
                     }}
                     onChange={(e) => {
-                      setPhone(e.target.value);
-                      setPhoneValid(true);
+                      setPhone(e.target.value)
+                      setPhoneValid(true)
                     }}
                     autoComplete="off"
                   />
@@ -314,7 +314,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                   <Input
                     type="text"
                     onChange={(e) => {
-                      setAddress(e.target.value);
+                      setAddress(e.target.value)
                     }}
                     multiline
                     minRows={5}
@@ -346,7 +346,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     className='btn-secondary btn-margin-bottom'
                     size="small"
                     onClick={() => {
-                      router.replace('/');
+                      router.replace('/')
                     }}
                   >
                     {commonStrings.CANCEL}
@@ -367,7 +367,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     variant="standard"
                     value={language}
                     onChange={(e) => {
-                      setLanguage(e.target.value);
+                      setLanguage(e.target.value)
                     }}
                   >
                     {
@@ -386,7 +386,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     value={currency}
                     required
                     onChange={(e) => {
-                      setCurrency(e.target.value);
+                      setCurrency(e.target.value)
                     }}
                     autoComplete="off"
                   />
@@ -407,7 +407,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     className='btn-secondary btn-margin-bottom'
                     size="small"
                     onClick={() => {
-                      router.replace('/');
+                      router.replace('/')
                     }}
                   >
                     {commonStrings.CANCEL}
@@ -440,15 +440,15 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                                 type="number"
                                 required
                                 onChange={(e) => {
-                                  const __deliveryTypes = Helper.cloneArray(deliveryTypes);
-                                  const __deliveryType = __deliveryTypes.find(dt => dt.name === deliveryType.name);
+                                  const __deliveryTypes = Helper.cloneArray(deliveryTypes)
+                                  const __deliveryType = __deliveryTypes.find(dt => dt.name === deliveryType.name)
 
                                   if (e.target.value) {
-                                    __deliveryType.price = parseFloat(e.target.value);
+                                    __deliveryType.price = parseFloat(e.target.value)
                                   } else {
-                                    __deliveryType.price = '';
+                                    __deliveryType.price = ''
                                   }
-                                  setDeliveryTypes(__deliveryTypes);
+                                  setDeliveryTypes(__deliveryTypes)
                                 }}
                               >
                               </Input>
@@ -456,9 +456,9 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                           </div>
                         }
                         onChange={(e) => {
-                          const __deliveryTypes = Helper.clone(deliveryTypes);
-                          __deliveryTypes.filter(pt => pt.name === deliveryType.name)[0].enabled = e.target.checked;
-                          setDeliveryTypes(__deliveryTypes);
+                          const __deliveryTypes = Helper.clone(deliveryTypes)
+                          __deliveryTypes.filter(pt => pt.name === deliveryType.name)[0].enabled = e.target.checked
+                          setDeliveryTypes(__deliveryTypes)
                         }}
                         className={styles.deliveryType}
                       />
@@ -481,7 +481,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     className='btn-secondary btn-margin-bottom'
                     size="small"
                     onClick={() => {
-                      router.replace('/');
+                      router.replace('/')
                     }}
                   >
                     {commonStrings.CANCEL}
@@ -507,9 +507,9 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                                 : ''
                         }
                         onChange={(e) => {
-                          const __paymentTypes = Helper.clone(paymentTypes);
-                          __paymentTypes.filter(pt => pt.name === paymentType.name)[0].enabled = e.target.checked;
-                          setPaymentTypes(__paymentTypes);
+                          const __paymentTypes = Helper.clone(paymentTypes)
+                          __paymentTypes.filter(pt => pt.name === paymentType.name)[0].enabled = e.target.checked
+                          setPaymentTypes(__paymentTypes)
                         }}
                         className={styles.paymentType}
                       />
@@ -532,7 +532,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     className='btn-secondary btn-margin-bottom'
                     size="small"
                     onClick={() => {
-                      router.replace('/');
+                      router.replace('/')
                     }}
                   >
                     {commonStrings.CANCEL}
@@ -554,7 +554,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     value={bankName}
                     required
                     onChange={(e) => {
-                      setBankName(e.target.value);
+                      setBankName(e.target.value)
                     }}
                     autoComplete="off"
                   />
@@ -567,7 +567,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     value={accountHolder}
                     required
                     onChange={(e) => {
-                      setAccountHolder(e.target.value);
+                      setAccountHolder(e.target.value)
                     }}
                     autoComplete="off"
                   />
@@ -580,7 +580,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     value={rib}
                     required
                     onChange={(e) => {
-                      setRib(e.target.value);
+                      setRib(e.target.value)
                     }}
                     autoComplete="off"
                   />
@@ -593,7 +593,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     value={iban}
                     required
                     onChange={(e) => {
-                      setIban(e.target.value);
+                      setIban(e.target.value)
                     }}
                     autoComplete="off"
                   />
@@ -613,7 +613,7 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
                     className='btn-secondary btn-margin-bottom'
                     size="small"
                     onClick={() => {
-                      router.replace('/');
+                      router.replace('/')
                     }}
                   >
                     {commonStrings.CANCEL}
@@ -638,9 +638,9 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
               </DialogContent>
               <DialogActions className='dialog-actions'>
                 <Button onClick={() => {
-                  if (deliveryTypesWarning) setDeliveryTypesWarning(false);
-                  if (paymentTypesWarning) setPaymentTypesWarning(false);
-                  if (wireTransferWarning) setWireTransferWarning(false);
+                  if (deliveryTypesWarning) setDeliveryTypesWarning(false)
+                  if (paymentTypesWarning) setPaymentTypesWarning(false)
+                  if (wireTransferWarning) setWireTransferWarning(false)
                 }} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
               </DialogActions>
             </Dialog>
@@ -662,43 +662,43 @@ const Settings = ({ _user, _signout, _deliveryTypes, _paymentTypes, _settings })
         </div>
       }
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(context) {
   let _user = null, _signout = false, _deliveryTypes = [],
-    _paymentTypes = [], _settings = null;
+    _paymentTypes = [], _settings = null
 
   try {
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
+        _user = await UserService.getUser(context, currentUser.id)
 
         if (_user) {
-          _settings = await SettingService.getSettings(context);
-          _deliveryTypes = await DeliveryTypeService.getDeliveryTypes(context);
-          _paymentTypes = await PaymentTypeService.getPaymentTypes(context);
+          _settings = await SettingService.getSettings(context)
+          _deliveryTypes = await DeliveryTypeService.getDeliveryTypes(context)
+          _paymentTypes = await PaymentTypeService.getPaymentTypes(context)
         } else {
-          _signout = true;
+          _signout = true
         }
       } else {
-        _signout = true;
+        _signout = true
       }
     } else {
-      _signout = true;
+      _signout = true
     }
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -709,7 +709,7 @@ export async function getServerSideProps(context) {
       _paymentTypes,
       _settings
     }
-  };
+  }
 }
 
-export default Settings;
+export default Settings

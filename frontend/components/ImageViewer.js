@@ -1,103 +1,103 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import styles from '../styles/image-viewer.module.css';
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import styles from '../styles/image-viewer.module.css'
 
 const ImageViewer = (props) => {
-    const [currentIndex, setCurrentIndex] = useState(props.currentIndex ?? 0);
-    const thumbnails = useMemo(() => [], []);
+    const [currentIndex, setCurrentIndex] = useState(props.currentIndex ?? 0)
+    const thumbnails = useMemo(() => [], [])
 
     const scrollToThumbnail = (el, index) => {
         if (index === 0) {
-            el.parentNode.parentNode.scrollLeft = 0;
+            el.parentNode.parentNode.scrollLeft = 0
         } else {
-            const offset = 15;
-            const elLeft = el.offsetLeft + el.offsetWidth + offset;
-            const elParentLeft = el.parentNode.parentNode.offsetLeft + el.parentNode.parentNode.offsetWidth;
+            const offset = 15
+            const elLeft = el.offsetLeft + el.offsetWidth + offset
+            const elParentLeft = el.parentNode.parentNode.offsetLeft + el.parentNode.parentNode.offsetWidth
 
             // check if element not in view
             if (elLeft >= elParentLeft + el.parentNode.parentNode.scrollLeft) {
-                el.parentNode.parentNode.scrollLeft = elLeft - elParentLeft;
+                el.parentNode.parentNode.scrollLeft = elLeft - elParentLeft
             } else if (elLeft <= el.parentNode.parentNode.offsetLeft + el.parentNode.parentNode.scrollLeft) {
-                el.parentNode.parentNode.scrollLeft = el.offsetLeft - el.parentNode.parentNode.offsetLeft;
+                el.parentNode.parentNode.scrollLeft = el.offsetLeft - el.parentNode.parentNode.offsetLeft
             }
         }
-    };
+    }
 
     const changeImage = useCallback(
         (delta) => {
-            let nextIndex = (currentIndex + delta) % props.src.length;
-            if (nextIndex < 0) nextIndex = props.src.length - 1;
-            setCurrentIndex(nextIndex);
+            let nextIndex = (currentIndex + delta) % props.src.length
+            if (nextIndex < 0) nextIndex = props.src.length - 1
+            setCurrentIndex(nextIndex)
 
             if (props.src.length > 1) {
-                const thumbnail = thumbnails[nextIndex];
-                scrollToThumbnail(thumbnail, nextIndex);
+                const thumbnail = thumbnails[nextIndex]
+                scrollToThumbnail(thumbnail, nextIndex)
             }
         },
         [currentIndex, props, thumbnails]
-    );
+    )
 
     const handleClick = useCallback(
         (event) => {
             if (!event.target || !props.closeOnClickOutside) {
-                return;
+                return
             }
 
-            const checkId = event.target.id === 'ReactSimpleImageViewer';
-            const checkClass = event.target.classList.contains('react-simple-image-viewer__slide');
+            const checkId = event.target.id === 'ReactSimpleImageViewer'
+            const checkClass = event.target.classList.contains('react-simple-image-viewer__slide')
 
             if (checkId || checkClass) {
-                event.stopPropagation();
-                props.onClose?.();
+                event.stopPropagation()
+                props.onClose?.()
             }
         },
         [props]
-    );
+    )
 
     const handleKeyDown = useCallback(
         (event) => {
-            event.preventDefault();
+            event.preventDefault()
 
             if (event.key === 'Escape') {
-                props.onClose?.();
+                props.onClose?.()
             }
 
             if (['ArrowLeft', 'h'].includes(event.key)) {
-                changeImage(-1);
+                changeImage(-1)
             }
 
             if (['ArrowRight', 'l'].includes(event.key)) {
-                changeImage(1);
+                changeImage(1)
             }
         },
         [props, changeImage]
-    );
+    )
 
     const handleWheel = useCallback(
         (event) => {
             if (event.wheelDeltaY > 0) {
-                changeImage(-1);
+                changeImage(-1)
             } else {
-                changeImage(1);
+                changeImage(1)
             }
         },
         [changeImage]
-    );
+    )
 
     useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keydown', handleKeyDown)
 
         if (!props.disableScroll) {
-            document.addEventListener('wheel', handleWheel);
+            document.addEventListener('wheel', handleWheel)
         }
 
         return () => {
-            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keydown', handleKeyDown)
 
             if (!props.disableScroll) {
-                document.removeEventListener('wheel', handleWheel);
+                document.removeEventListener('wheel', handleWheel)
             }
-        };
-    }, [handleKeyDown, handleWheel, props.disableScroll]);
+        }
+    }, [handleKeyDown, handleWheel, props.disableScroll])
 
     return (
         <div
@@ -163,7 +163,7 @@ const ImageViewer = (props) => {
                 }
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ImageViewer;
+export default ImageViewer

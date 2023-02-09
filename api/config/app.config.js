@@ -1,4 +1,4 @@
-import LocalizedStrings from 'localized-strings';
+import LocalizedStrings from 'localized-strings'
 
 export default new LocalizedStrings.default({
     fr: {
@@ -115,4 +115,4 @@ export default new LocalizedStrings.default({
         SHIPPING: 'Home delivery',
         WITHDRAWAL: 'Store withdrawal',
     }
-});
+})

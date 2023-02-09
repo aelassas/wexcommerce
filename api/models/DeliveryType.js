@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import Env from '../config/env.config.js';
+import mongoose from 'mongoose'
+import Env from '../config/env.config.js'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const deliveryTypeSchema = new Schema({
     name: {
@@ -27,16 +27,16 @@ const deliveryTypeSchema = new Schema({
     timestamps: true,
     strict: true,
     collection: 'DeliveryType'
-});
+})
 
-const deliveryTypeModel = mongoose.model('DeliveryType', deliveryTypeSchema);
+const deliveryTypeModel = mongoose.model('DeliveryType', deliveryTypeSchema)
 
 deliveryTypeModel.on('index', (err) => {
     if (err) {
-        console.error('DeliveryType index error: %s', err);
+        console.error('DeliveryType index error: %s', err)
     } else {
-        console.info('DeliveryType indexing complete');
+        console.info('DeliveryType indexing complete')
     }
-});
+})
 
-export default deliveryTypeModel;
+export default deliveryTypeModel

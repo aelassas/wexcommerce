@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import Header from '../components/Header';
-import { strings } from '../lang/products';
-import { strings as masterStrings } from '../lang/master';
-import { strings as commonStrings } from '../lang/common';
-import { strings as headerStrings } from '../lang/header';
-import * as Helper from '../common/Helper';
-import * as UserService from '../services/UserService';
-import * as CategoryService from '../services/CategoryService';
-import * as ProductService from '../services/ProductService';
+import { useEffect, useState } from 'react'
+import Header from '../components/Header'
+import { strings } from '../lang/products'
+import { strings as masterStrings } from '../lang/master'
+import { strings as commonStrings } from '../lang/common'
+import { strings as headerStrings } from '../lang/header'
+import * as Helper from '../common/Helper'
+import * as UserService from '../services/UserService'
+import * as CategoryService from '../services/CategoryService'
+import * as ProductService from '../services/ProductService'
 import {
   Button,
   Card,
   CardContent,
   Typography,
-} from '@mui/material';
+} from '@mui/material'
 import {
   ShoppingBag as CategoryIcon,
   Home as HomeIcon,
@@ -22,14 +22,14 @@ import {
   Clear as CloseIcon,
   Block as SoldOutIcon,
   VisibilityOff as HiddenIcon
-} from '@mui/icons-material';
-import Env from '../config/env.config';
-import Link from 'next/link';
-import NoMatch from '../components/NoMatch';
-import { useRouter } from 'next/router';
-import * as SettingService from '../services/SettingService';
+} from '@mui/icons-material'
+import Env from '../config/env.config'
+import Link from 'next/link'
+import NoMatch from '../components/NoMatch'
+import { useRouter } from 'next/router'
+import * as SettingService from '../services/SettingService'
 
-import styles from '../styles/products.module.css';
+import styles from '../styles/products.module.css'
 
 const Products = ({
   _user,
@@ -45,55 +45,55 @@ const Products = ({
   _products,
   _noMatch
 }) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [loading, setLoading] = useState(true);
-  const [leftPanelRef, setLeftPanelRef] = useState();
-  const [closeIconRef, setCloseIconRef] = useState();
-  const [productsRef, setProductsRef] = useState();
+  const [loading, setLoading] = useState(true)
+  const [leftPanelRef, setLeftPanelRef] = useState()
+  const [closeIconRef, setCloseIconRef] = useState()
+  const [productsRef, setProductsRef] = useState()
 
   useEffect(() => {
     if (_language) {
-      Helper.setLanguage(strings, _language);
-      Helper.setLanguage(commonStrings, _language);
-      Helper.setLanguage(masterStrings, _language);
-      Helper.setLanguage(headerStrings, _language);
+      Helper.setLanguage(strings, _language)
+      Helper.setLanguage(commonStrings, _language)
+      Helper.setLanguage(masterStrings, _language)
+      Helper.setLanguage(headerStrings, _language)
     }
-  }, [_language]);
+  }, [_language])
 
   useEffect(() => {
     if (_user) {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [_user]);
+  }, [_user])
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      UserService.signout()
     }
-  }, [_signout]);
+  }, [_signout])
 
   useEffect(() => {
-    if (productsRef) productsRef.scrollTo(0, 0);
-  }, [_products, productsRef]);
+    if (productsRef) productsRef.scrollTo(0, 0)
+  }, [_products, productsRef])
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
   return !loading && _user && _language &&
     <>
@@ -114,7 +114,7 @@ const Products = ({
                     className={`btn-primary ${styles.newProduct}`}
                     size="small"
                     onClick={() => {
-                      router.replace('/create-product');
+                      router.replace('/create-product')
                     }}
                   >
                     {strings.NEW_PRODUCT}
@@ -125,20 +125,20 @@ const Products = ({
                     onClick={() => {
                       if (leftPanelRef) {
                         if (leftPanelRef.style.display === 'none') {
-                          leftPanelRef.style.display = 'block';
+                          leftPanelRef.style.display = 'block'
                           if (productsRef) {
-                            productsRef.style.display = 'none';
+                            productsRef.style.display = 'none'
                           }
                           if (closeIconRef) {
-                            closeIconRef.style.visibility = 'visible';
+                            closeIconRef.style.visibility = 'visible'
                           }
                         } else {
-                          leftPanelRef.style.display = 'none';
+                          leftPanelRef.style.display = 'none'
                           if (productsRef) {
-                            productsRef.style.display = 'block';
+                            productsRef.style.display = 'block'
                           }
                           if (closeIconRef) {
-                            closeIconRef.style.visibility = 'hidden';
+                            closeIconRef.style.visibility = 'hidden'
                           }
                         }
                       }
@@ -168,7 +168,7 @@ const Products = ({
                       className={`btn-primary ${styles.newProduct}`}
                       size="small"
                       onClick={() => {
-                        router.replace('/create-product');
+                        router.replace('/create-product')
                       }}
                     >
                       {strings.NEW_PRODUCT}
@@ -303,67 +303,67 @@ const Products = ({
           >{masterStrings.RESEND}</Button>
         </div>
       }
-    </>;
-};
+    </>
+}
 
 export async function getServerSideProps(context) {
   let _user = null, _signout = false, _categories = [], _page = 1, _categoryId = '',
     _keyword = '', _totalRecords = 0, _rowCount = 0, _products = [], _noMatch = false,
-    _language = '', _currency = '';
+    _language = '', _currency = ''
 
   try {
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
+        _user = await UserService.getUser(context, currentUser.id)
 
         if (_user) {
-          _language = await SettingService.getLanguage();
+          _language = await SettingService.getLanguage()
 
           if (_user.verified) {
-            if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
+            if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p)
 
             if (_page >= 1) {
-              _currency = await SettingService.getCurrency();
+              _currency = await SettingService.getCurrency()
 
-              if (typeof context.query.c !== 'undefined') _categoryId = context.query.c;
-              if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
+              if (typeof context.query.c !== 'undefined') _categoryId = context.query.c
+              if (typeof context.query.s !== 'undefined') _keyword = context.query.s
 
-              _categories = await CategoryService.getCategories(_language);
-              const data = await ProductService.getProducts(context, _user._id, _keyword, _page, Env.PAGE_SIZE, _categoryId);
-              const _data = data[0];
-              _products = _data.resultData;
-              _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _products.length;
-              _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0;
+              _categories = await CategoryService.getCategories(_language)
+              const data = await ProductService.getProducts(context, _user._id, _keyword, _page, Env.PAGE_SIZE, _categoryId)
+              const _data = data[0]
+              _products = _data.resultData
+              _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _products.length
+              _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
               if (_totalRecords > 0 && _page > Math.ceil(_totalRecords / Env.PAGE_SIZE)) {
-                _noMatch = true;
+                _noMatch = true
               }
             } else {
-              _noMatch = true;
+              _noMatch = true
             }
           }
 
         } else {
-          _signout = true;
+          _signout = true
         }
       } else {
-        _signout = true;
+        _signout = true
       }
     } else {
-      _signout = true;
+      _signout = true
     }
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -381,7 +381,7 @@ export async function getServerSideProps(context) {
       _products,
       _noMatch
     }
-  };
+  }
 }
 
-export default Products;
+export default Products

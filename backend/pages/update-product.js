@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
-import * as UserService from '../services/UserService';
-import Header from '../components/Header';
+import { useEffect, useState, useRef } from 'react'
+import * as UserService from '../services/UserService'
+import Header from '../components/Header'
 import {
   Input,
   InputLabel,
@@ -13,178 +13,178 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-} from '@mui/material';
-import { PhotoCamera as ImageIcon } from '@mui/icons-material';
-import { strings } from '../lang/update-product';
-import { strings as cpStrings } from '../lang/create-product';
-import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
-import * as Helper from '../common/Helper';
-import * as ProductService from '../services/ProductService';
-import NoMatch from '../components/NoMatch';
-import CategorySelectList from '../components/CategorySelectList';
-import { useRouter } from 'next/router';
-import Env from '../config/env.config';
-import ImageEditor from '../components/ImageEditor';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import * as SettingService from '../services/SettingService';
+} from '@mui/material'
+import { PhotoCamera as ImageIcon } from '@mui/icons-material'
+import { strings } from '../lang/update-product'
+import { strings as cpStrings } from '../lang/create-product'
+import { strings as commonStrings } from '../lang/common'
+import { strings as masterStrings } from '../lang/master'
+import * as Helper from '../common/Helper'
+import * as ProductService from '../services/ProductService'
+import NoMatch from '../components/NoMatch'
+import CategorySelectList from '../components/CategorySelectList'
+import { useRouter } from 'next/router'
+import Env from '../config/env.config'
+import ImageEditor from '../components/ImageEditor'
+import { EditorState, convertToRaw, ContentState } from 'draft-js'
+import draftToHtml from 'draftjs-to-html'
+import * as SettingService from '../services/SettingService'
 
-import styles from '../styles/update-product.module.css';
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import styles from '../styles/update-product.module.css'
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 
-let htmlToDraft = null;
-let Editor = null;
+let htmlToDraft = null
+let Editor = null
 if (typeof window === 'object') {
-  htmlToDraft = require('html-to-draftjs').default;
-  Editor = require('react-draft-wysiwyg').Editor;
+  htmlToDraft = require('html-to-draftjs').default
+  Editor = require('react-draft-wysiwyg').Editor
 }
 
 const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _currency }) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [loading, setLoading] = useState(true);
-  const [name, setName] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [soldOut, setSoldOut] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [tempImage, setTempImage] = useState('');
-  const [openInfoDialog, setOpenInfoDialog] = useState(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [editorState, setEditorState] = useState();
-  const [descriptionRequired, setDescriptionRequired] = useState(false);
-  const [fileNames, setFileNames] = useState([]);
-  const [images, setImages] = useState([]);
-  const [tempImages, setTempImages] = useState([]);
+  const [loading, setLoading] = useState(true)
+  const [name, setName] = useState('')
+  const [categories, setCategories] = useState([])
+  const [price, setPrice] = useState('')
+  const [quantity, setQuantity] = useState('')
+  const [soldOut, setSoldOut] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const [tempImage, setTempImage] = useState('')
+  const [openInfoDialog, setOpenInfoDialog] = useState(false)
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+  const [editorState, setEditorState] = useState()
+  const [descriptionRequired, setDescriptionRequired] = useState(false)
+  const [fileNames, setFileNames] = useState([])
+  const [images, setImages] = useState([])
+  const [tempImages, setTempImages] = useState([])
 
-  const uploadImageRef = useRef(null);
-  const uploadImagesRef = useRef(null);
+  const uploadImageRef = useRef(null)
+  const uploadImagesRef = useRef(null)
 
   useEffect(() => {
     if (_user) {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [_user]);
+  }, [_user])
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      UserService.signout()
     }
-  }, [_signout]);
+  }, [_signout])
 
   useEffect(() => {
     if (_language) {
-      Helper.setLanguage(strings, _language);
-      Helper.setLanguage(cpStrings, _language);
-      Helper.setLanguage(commonStrings, _language);
-      Helper.setLanguage(masterStrings, _language);
+      Helper.setLanguage(strings, _language)
+      Helper.setLanguage(cpStrings, _language)
+      Helper.setLanguage(commonStrings, _language)
+      Helper.setLanguage(masterStrings, _language)
     }
-  }, [_language]);
+  }, [_language])
 
   useEffect(() => {
     if (_product) {
-      setName(_product.name);
-      setCategories(_product.categories);
-      setPrice(_product.price.toString());
-      setQuantity(_product.quantity.toString());
-      setSoldOut(_product.soldOut);
-      setHidden(_product.hidden);
-      if (_product.images) setImages(_product.images.map(i => ({ temp: false, src: i })));
+      setName(_product.name)
+      setCategories(_product.categories)
+      setPrice(_product.price.toString())
+      setQuantity(_product.quantity.toString())
+      setSoldOut(_product.soldOut)
+      setHidden(_product.hidden)
+      if (_product.images) setImages(_product.images.map(i => ({ temp: false, src: i })))
 
-      const contentBlock = htmlToDraft(_product.description);
-      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-      const editorState = EditorState.createWithContent(contentState);
-      setEditorState(editorState);
+      const contentBlock = htmlToDraft(_product.description)
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks)
+      const editorState = EditorState.createWithContent(contentState)
+      setEditorState(editorState)
     }
-  }, [_product]);
+  }, [_product])
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
   const handleChangeImage = (e) => {
-    const reader = new FileReader();
-    const file = e.target.files[0];
+    const reader = new FileReader()
+    const file = e.target.files[0]
 
     reader.onloadend = async () => {
       try {
         if (tempImage) {
-          const status = await ProductService.deleteTempImage(tempImage);
+          const status = await ProductService.deleteTempImage(tempImage)
 
           if (status !== 200) {
-            Helper.error();
+            Helper.error()
           }
         }
-        const filename = await ProductService.uploadImage(file);
-        setTempImage(filename);
+        const filename = await ProductService.uploadImage(file)
+        setTempImage(filename)
       } catch (err) {
-        Helper.error();
+        Helper.error()
       }
-    };
+    }
 
-    reader.readAsDataURL(file);
-  };
+    reader.readAsDataURL(file)
+  }
 
   const handleChangeImages = (e) => {
 
-    const files = e.target.files;
+    const files = e.target.files
 
     for (const file of files) {
-      const reader = new FileReader();
+      const reader = new FileReader()
 
       reader.onloadend = async () => {
         try {
           if (!fileNames.includes(file.name)) {
-            const filename = await ProductService.uploadImage(file);
-            fileNames.push(file.name);
-            images.push({ temp: true, src: filename });
-            tempImages.push(filename);
-            setImages(Helper.cloneArray(images));
-            setTempImages(Helper.cloneArray(tempImages));
+            const filename = await ProductService.uploadImage(file)
+            fileNames.push(file.name)
+            images.push({ temp: true, src: filename })
+            tempImages.push(filename)
+            setImages(Helper.cloneArray(images))
+            setTempImages(Helper.cloneArray(tempImages))
             setFileNames(Helper.cloneArray(fileNames))
           }
         } catch (err) {
-          Helper.error();
+          Helper.error()
         }
-      };
-
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const onEditorStateChange = (state) => {
-    setEditorState(state);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-
-      if (description.trim().toLowerCase() === '<p></p>') {
-        return setDescriptionRequired(true);
       }
 
-      const _categories = categories.map(c => c._id);
-      const _price = parseFloat(price);
-      const _quantity = parseInt(quantity);
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const onEditorStateChange = (state) => {
+    setEditorState(state)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      const description = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+
+      if (description.trim().toLowerCase() === '<p></p>') {
+        return setDescriptionRequired(true)
+      }
+
+      const _categories = categories.map(c => c._id)
+      const _price = parseFloat(price)
+      const _quantity = parseInt(quantity)
 
       const data = {
         _id: _product._id,
@@ -197,23 +197,23 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
         hidden,
         images: images.filter(i => !i.temp).map(i => i.src),
         tempImages
-      };
-      if (tempImage) data.image = tempImage;
-      const res = await ProductService.updateProduct(data);
+      }
+      if (tempImage) data.image = tempImage
+      const res = await ProductService.updateProduct(data)
 
       if (res.status === 200) {
-        setTempImage('');
-        _product.image = res.data.image;
-        Helper.info(strings.PRODUCT_UPDATED);
+        setTempImage('')
+        _product.image = res.data.image
+        Helper.info(strings.PRODUCT_UPDATED)
       } else {
-        UserService.signout();
-        // Helper.error();
+        UserService.signout()
+        // Helper.error()
       }
     }
     catch (err) {
-      Helper.error();
+      Helper.error()
     }
-  };
+  }
 
   return (
     !loading && _user &&
@@ -234,11 +234,11 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                   <div>
                     <a onClick={(e) => {
                       if (uploadImageRef.current) {
-                        uploadImageRef.current.value = '';
+                        uploadImageRef.current.value = ''
 
                         setTimeout(() => {
-                          uploadImageRef.current.click(e);
-                        }, 0);
+                          uploadImageRef.current.click(e)
+                        }, 0)
                       }
                     }}
                       className={styles.action}
@@ -249,11 +249,11 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     <input ref={uploadImageRef} type="file" accept="image/*" hidden onChange={handleChangeImage} />
                     <a onClick={(e) => {
                       if (uploadImagesRef.current) {
-                        uploadImagesRef.current.value = '';
+                        uploadImagesRef.current.value = ''
 
                         setTimeout(() => {
-                          uploadImagesRef.current.click(e);
-                        }, 0);
+                          uploadImagesRef.current.click(e)
+                        }, 0)
                       }
                     }}
                       className={styles.action}
@@ -271,28 +271,28 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     images={images}
                     onDelete={async (image, index) => {
                       try {
-                        const _images = Helper.cloneArray(images);
-                        _images.splice(index, 1);
-                        setImages(_images);
+                        const _images = Helper.cloneArray(images)
+                        _images.splice(index, 1)
+                        setImages(_images)
 
                         if (image.temp) {
-                          const status = await ProductService.deleteTempImage(image.src);
+                          const status = await ProductService.deleteTempImage(image.src)
 
                           if (status === 200) {
-                            const _tempImages = Helper.cloneArray(tempImages);
-                            _tempImages.splice(index, 1);
-                            setTempImages(_tempImages);
+                            const _tempImages = Helper.cloneArray(tempImages)
+                            _tempImages.splice(index, 1)
+                            setTempImages(_tempImages)
 
-                            const _fileNames = Helper.cloneArray(fileNames);
-                            _fileNames.splice(index, 1);
-                            setFileNames(_fileNames);
+                            const _fileNames = Helper.cloneArray(fileNames)
+                            _fileNames.splice(index, 1)
+                            setFileNames(_fileNames)
                           } else {
-                            Helper.error();
+                            Helper.error()
                           }
                         }
 
                       } catch (err) {
-                        Helper.error();
+                        Helper.error()
                       }
                     }} />
                 </FormControl>
@@ -304,7 +304,7 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     value={name}
                     required
                     onChange={(e) => {
-                      setName(e.target.value);
+                      setName(e.target.value)
                     }}
                     autoComplete="off"
                   />
@@ -335,7 +335,7 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     variant='standard'
                     selectedOptions={categories}
                     onChange={(values) => {
-                      setCategories(values);
+                      setCategories(values)
                     }}
                   />
                 </FormControl>
@@ -347,7 +347,7 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     required
                     value={price}
                     onChange={(e) => {
-                      setPrice(e.target.value);
+                      setPrice(e.target.value)
                     }}
                   />
                 </FormControl>
@@ -360,7 +360,7 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     required
                     value={quantity}
                     onChange={(e) => {
-                      setQuantity(e.target.value);
+                      setQuantity(e.target.value)
                     }}
                   />
                 </FormControl>
@@ -370,7 +370,7 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     control={
                       <Switch checked={soldOut}
                         onChange={(e) => {
-                          setSoldOut(e.target.checked);
+                          setSoldOut(e.target.checked)
                         }}
                         color="primary" />
                     }
@@ -383,7 +383,7 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     control={
                       <Switch checked={hidden}
                         onChange={(e) => {
-                          setHidden(e.target.checked);
+                          setHidden(e.target.checked)
                         }}
                         color="primary" />
                     }
@@ -409,18 +409,18 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     size="small"
                     onClick={async () => {
                       try {
-                        const status = await ProductService.checkProduct(_product._id);
+                        const status = await ProductService.checkProduct(_product._id)
 
                         if (status === 204) {
-                          setOpenDeleteDialog(true);
+                          setOpenDeleteDialog(true)
                         } else if (status === 200) {
-                          setOpenInfoDialog(true);
+                          setOpenInfoDialog(true)
                         } else {
-                          Helper.error();
+                          Helper.error()
                         }
                       } catch (err) {
-                        UserService.signout();
-                        // Helper.error();
+                        UserService.signout()
+                        // Helper.error()
                       }
                     }}
                   >
@@ -434,24 +434,24 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                     onClick={async () => {
                       try {
                         if (tempImage) {
-                          const status = await ProductService.deleteTempImage(tempImage);
+                          const status = await ProductService.deleteTempImage(tempImage)
 
                           if (status !== 200) {
-                            Helper.error();
+                            Helper.error()
                           }
                         }
 
                         for (const image of tempImages) {
-                          const status = await ProductService.deleteTempImage(image);
+                          const status = await ProductService.deleteTempImage(image)
 
                           if (status !== 200) {
-                            Helper.error();
+                            Helper.error()
                           }
                         }
 
-                        router.replace('/products');
+                        router.replace('/products')
                       } catch (err) {
-                        Helper.error();
+                        Helper.error()
                       }
                     }}
                   >
@@ -483,18 +483,18 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
                   <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
                   <Button onClick={async () => {
                     try {
-                      const status = await ProductService.deleteProduct(_product._id);
+                      const status = await ProductService.deleteProduct(_product._id)
 
                       if (status === 200) {
-                        setOpenDeleteDialog(false);
-                        router.replace('/products');
+                        setOpenDeleteDialog(false)
+                        router.replace('/products')
                       } else {
-                        Helper.error();
-                        setOpenDeleteDialog(false);
+                        Helper.error()
+                        setOpenDeleteDialog(false)
                       }
                     } catch (err) {
-                      UserService.signout();
-                      // Helper.error();
+                      UserService.signout()
+                      // Helper.error()
                     }
                   }} variant='contained' color='error'>{commonStrings.DELETE}</Button>
                 </DialogActions>
@@ -532,57 +532,57 @@ const UpdateProduct = ({ _user, _signout, _noMatch, _product, _language, _curren
         </div>
       }
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _noMatch = false, _product = null, _language = '', _currency = '';
+  let _user = null, _signout = false, _noMatch = false, _product = null, _language = '', _currency = ''
 
   try {
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
-        _language = await SettingService.getLanguage();
+        _user = await UserService.getUser(context, currentUser.id)
+        _language = await SettingService.getLanguage()
 
         if (_user) {
-          const { p: productId } = context.query;
+          const { p: productId } = context.query
           if (productId) {
             try {
-              _currency = await SettingService.getCurrency();
-              _product = await ProductService.getProduct(productId, _language);
+              _currency = await SettingService.getCurrency()
+              _product = await ProductService.getProduct(productId, _language)
 
               if (!_product) {
-                _noMatch = true;
+                _noMatch = true
               }
             } catch (err) {
-              console.log(err);
-              _noMatch = true;
+              console.log(err)
+              _noMatch = true
             }
           } else {
-            _noMatch = true;
+            _noMatch = true
           }
         } else {
-          _signout = true;
+          _signout = true
         }
       } else {
-        _signout = true;
+        _signout = true
       }
 
     } else {
-      _signout = true;
+      _signout = true
     }
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -594,7 +594,7 @@ export async function getServerSideProps(context) {
       _language,
       _currency
     }
-  };
+  }
 }
 
-export default UpdateProduct;
+export default UpdateProduct

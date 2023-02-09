@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -23,4 +23,4 @@ export const strings = new LocalizedStrings({
         DELETE_NOTIFICATION: 'Are you sure you want to delete this notification?',
         DELETE_NOTIFICATIONS: 'Are you sure you want to delete these notifications?'
     }
-});
+})

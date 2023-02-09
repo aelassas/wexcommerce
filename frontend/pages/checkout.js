@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import Header from '../components/Header';
+import { useEffect, useState } from 'react'
+import Header from '../components/Header'
 import {
     Button,
     FormControl,
@@ -9,174 +9,174 @@ import {
     RadioGroup,
     Radio,
     FormControlLabel
-} from '@mui/material';
+} from '@mui/material'
 import {
     Person as UserIcon,
     ShoppingBag as ProductsIcon,
     AttachMoney as PaymentIcon,
     LocalShipping as DeliveryIcon,
-} from '@mui/icons-material';
-import { strings } from '../lang/checkout';
-import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
-import { strings as headerStrings } from '../lang/header';
-import * as Helper from '../common/Helper';
-import NoMatch from '../components/NoMatch';
-import Error from '../components/Error';
-import Info from '../components/Info';
-import * as UserService from '../services/UserService';
-import * as CartService from '../services/CartService';
-import * as OrderService from '../services/OrderService';
-import { useRouter } from 'next/router';
-import validator from 'validator';
-import Link from 'next/link';
-import * as PaymentTypeService from '../services/PaymentTypeService';
-import * as DeliveryTypeService from '../services/DeliveryTypeService';
-import Env from '../config/env.config';
-import Backdrop from '../components/SimpleBackdrop';
-import * as SettingService from '../services/SettingService';
-import Footer from '../components/Footer';
+} from '@mui/icons-material'
+import { strings } from '../lang/checkout'
+import { strings as commonStrings } from '../lang/common'
+import { strings as masterStrings } from '../lang/master'
+import { strings as headerStrings } from '../lang/header'
+import * as Helper from '../common/Helper'
+import NoMatch from '../components/NoMatch'
+import Error from '../components/Error'
+import Info from '../components/Info'
+import * as UserService from '../services/UserService'
+import * as CartService from '../services/CartService'
+import * as OrderService from '../services/OrderService'
+import { useRouter } from 'next/router'
+import validator from 'validator'
+import Link from 'next/link'
+import * as PaymentTypeService from '../services/PaymentTypeService'
+import * as DeliveryTypeService from '../services/DeliveryTypeService'
+import Env from '../config/env.config'
+import Backdrop from '../components/SimpleBackdrop'
+import * as SettingService from '../services/SettingService'
+import Footer from '../components/Footer'
 
-import styles from '../styles/checkout.module.css';
+import styles from '../styles/checkout.module.css'
 
 const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _paymentTypes, _deliveryTypes }) => {
-    const router = useRouter();
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [emailInfo, setEmailInfo] = useState(true);
-    const [emailValid, setEmailValid] = useState(true);
-    const [emailRegistered, setEmailRegistered] = useState(false);
-    const [phone, setPhone] = useState('');
-    const [phoneValid, setPhoneValid] = useState(true);
-    const [address, setAddress] = useState('');
-    const [paymentType, setPaymentType] = useState(_paymentTypes && _paymentTypes.length === 1 ? _paymentTypes[0].name : Env.PAYMENT_TYPE.CREDIT_CARD);
-    const [deliveryType, setDeliveryType] = useState(Env.DELIVERY_TYPE.SHIPPING);
-    const [total, setTotal] = useState(0);
-    const [error, setError] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [formError, setFormError] = useState(false);
-    const [cartCount, setCartCount] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const router = useRouter()
+    const [fullName, setFullName] = useState('')
+    const [email, setEmail] = useState('')
+    const [emailInfo, setEmailInfo] = useState(true)
+    const [emailValid, setEmailValid] = useState(true)
+    const [emailRegistered, setEmailRegistered] = useState(false)
+    const [phone, setPhone] = useState('')
+    const [phoneValid, setPhoneValid] = useState(true)
+    const [address, setAddress] = useState('')
+    const [paymentType, setPaymentType] = useState(_paymentTypes && _paymentTypes.length === 1 ? _paymentTypes[0].name : Env.PAYMENT_TYPE.CREDIT_CARD)
+    const [deliveryType, setDeliveryType] = useState(Env.DELIVERY_TYPE.SHIPPING)
+    const [total, setTotal] = useState(0)
+    const [error, setError] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [formError, setFormError] = useState(false)
+    const [cartCount, setCartCount] = useState(0)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         if (_language) {
-            Helper.setLanguage(strings, _language);
-            Helper.setLanguage(commonStrings, _language);
-            Helper.setLanguage(masterStrings, _language);
+            Helper.setLanguage(strings, _language)
+            Helper.setLanguage(commonStrings, _language)
+            Helper.setLanguage(masterStrings, _language)
         }
-    }, [_language]);
+    }, [_language])
 
     useEffect(() => {
         if (_signout) {
-            UserService.signout(false);
+            UserService.signout(false)
         }
-    }, [_signout]);
+    }, [_signout])
 
     useEffect(() => {
         if (_deliveryTypes && !_deliveryTypes.some(dt => dt.name === Env.DELIVERY_TYPE.SHIPPING)) {
-            setDeliveryType(Env.DELIVERY_TYPE.WITHDRAWAL);
+            setDeliveryType(Env.DELIVERY_TYPE.WITHDRAWAL)
         }
-    }, [_deliveryTypes]);
+    }, [_deliveryTypes])
 
     useEffect(() => {
         if (_cart && _deliveryTypes) {
 
-            const total = Helper.total(_cart.cartItems);
+            const total = Helper.total(_cart.cartItems)
 
             if (total === 0) {
-                router.replace('/');
+                router.replace('/')
             } else {
-                const _deliveryType = _deliveryTypes.find(dt => dt.name === deliveryType);
+                const _deliveryType = _deliveryTypes.find(dt => dt.name === deliveryType)
 
                 if (_deliveryType) {
-                    setTotal(total + _deliveryType.price);
+                    setTotal(total + _deliveryType.price)
                 }
             }
         }
-    }, [_cart, _deliveryTypes, deliveryType, router]);
+    }, [_cart, _deliveryTypes, deliveryType, router])
 
     useEffect(() => {
         (async function () {
-            const cartId = CartService.getCartId();
+            const cartId = CartService.getCartId()
 
             if (cartId) {
-                const cartCount = await CartService.getCartCount(cartId);
-                setCartCount(cartCount);
+                const cartCount = await CartService.getCartCount(cartId)
+                setCartCount(cartCount)
             }
-        })();
-    }, []);
+        })()
+    }, [])
 
     const validateEmail = async (_email) => {
         if (_email) {
             if (validator.isEmail(_email)) {
                 try {
-                    const status = await UserService.validateEmail({ email: _email });
+                    const status = await UserService.validateEmail({ email: _email })
 
                     if (status === 200) {
-                        setEmailRegistered(false);
-                        setEmailValid(true);
-                        setEmailInfo(true);
-                        return true;
+                        setEmailRegistered(false)
+                        setEmailValid(true)
+                        setEmailInfo(true)
+                        return true
                     } else {
-                        setEmailRegistered(true);
-                        setEmailValid(true);
-                        setEmailInfo(false);
-                        return false;
+                        setEmailRegistered(true)
+                        setEmailValid(true)
+                        setEmailInfo(false)
+                        return false
                     }
                 } catch (err) {
-                    Helper.error();
-                    setEmailRegistered(false);
-                    setEmailValid(true);
-                    setEmailInfo(false);
-                    return false;
+                    Helper.error()
+                    setEmailRegistered(false)
+                    setEmailValid(true)
+                    setEmailInfo(false)
+                    return false
                 }
             } else {
-                setEmailRegistered(false);
-                setEmailValid(false);
-                setEmailInfo(false);
-                return false;
+                setEmailRegistered(false)
+                setEmailValid(false)
+                setEmailInfo(false)
+                return false
             }
         } else {
-            setEmailRegistered(false);
-            setEmailValid(true);
-            setEmailInfo(true);
-            return false;
+            setEmailRegistered(false)
+            setEmailValid(true)
+            setEmailInfo(true)
+            return false
         }
-    };
+    }
 
     const validatePhone = (phone) => {
         if (phone) {
-            const phoneValid = validator.isMobilePhone(phone);
-            setPhoneValid(phoneValid);
+            const phoneValid = validator.isMobilePhone(phone)
+            setPhoneValid(phoneValid)
 
-            return phoneValid;
+            return phoneValid
         } else {
-            setPhoneValid(true);
+            setPhoneValid(true)
 
-            return true;
+            return true
         }
-    };
+    }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         if (!_user) {
-            const emailValid = await validateEmail(email);
+            const emailValid = await validateEmail(email)
             if (!emailValid) {
-                return setFormError(true);
+                return setFormError(true)
             }
 
-            const phoneValid = await validatePhone(phone);
+            const phoneValid = await validatePhone(phone)
             if (!phoneValid) {
-                return setFormError(true);;
+                return setFormError(true)
             }
         }
 
         try {
-            setLoading(true);
+            setLoading(true)
 
             // user
-            let user;
+            let user
             if (!_user) {
                 user = {
                     email,
@@ -195,36 +195,36 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                 deliveryType: _deliveryTypes.find(dt => dt.name === deliveryType)._id,
                 total,
                 orderItems
-            };
+            }
 
             if (_user) {
-                order.user = _user._id;
+                order.user = _user._id
             }
 
             // checkout
-            const status = await OrderService.createOrder(user, order);
+            const status = await OrderService.createOrder(user, order)
 
             if (status === 200) {
-                const _status = await CartService.clearCart(_cart._id);
+                const _status = await CartService.clearCart(_cart._id)
 
                 if (_status === 200) {
-                    CartService.deleteCartId();
-                    setCartCount(0);
-                    setSuccess(true);
+                    CartService.deleteCartId()
+                    setCartCount(0)
+                    setSuccess(true)
                 } else {
-                    Helper.error();
+                    Helper.error()
                 }
             } else {
-                Helper.error();
+                Helper.error()
             }
 
         } catch (err) {
-            console.log(err);
-            setError(true);
+            console.log(err)
+            setError(true)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
     return (
         _language &&
@@ -246,7 +246,7 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                                             size='small'
                                             className='btn-primary'
                                             onClick={() => {
-                                                router.replace('/sign-in?from=checkout');
+                                                router.replace('/sign-in?from=checkout')
                                             }}
                                         >{headerStrings.SIGN_IN}</Button>
                                     </div>
@@ -264,7 +264,7 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                                                     label={commonStrings.FULL_NAME}
                                                     required
                                                     onChange={(e) => {
-                                                        setFullName(e.target.value);
+                                                        setFullName(e.target.value)
                                                     }}
                                                     autoComplete="off"
                                                 />
@@ -276,17 +276,17 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                                                     label={commonStrings.EMAIL}
                                                     error={!emailValid || emailRegistered}
                                                     onChange={(e) => {
-                                                        setEmail(e.target.value);
-                                                        setFormError(false);
+                                                        setEmail(e.target.value)
+                                                        setFormError(false)
 
                                                         if (!e.target.value) {
-                                                            setEmailRegistered(false);
-                                                            setEmailValid(true);
-                                                            setEmailInfo(true);
+                                                            setEmailRegistered(false)
+                                                            setEmailValid(true)
+                                                            setEmailInfo(true)
                                                         }
                                                     }}
                                                     onBlur={async (e) => {
-                                                        await validateEmail(e.target.value);
+                                                        await validateEmail(e.target.value)
                                                     }}
                                                     required
                                                     autoComplete="off"
@@ -311,11 +311,11 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                                                     error={!phoneValid}
                                                     value={phone}
                                                     onBlur={(e) => {
-                                                        validatePhone(e.target.value);
+                                                        validatePhone(e.target.value)
                                                     }}
                                                     onChange={(e) => {
-                                                        setPhone(e.target.value);
-                                                        setPhoneValid(true);
+                                                        setPhone(e.target.value)
+                                                        setPhoneValid(true)
                                                     }}
                                                     required
                                                     autoComplete="off"
@@ -329,7 +329,7 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                                                 <Input
                                                     type="text"
                                                     onChange={(e) => {
-                                                        setAddress(e.target.value);
+                                                        setAddress(e.target.value)
                                                     }}
                                                     required
                                                     multiline
@@ -394,7 +394,7 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                                     <RadioGroup
                                         value={paymentType}
                                         onChange={(event) => {
-                                            setPaymentType(event.target.value);
+                                            setPaymentType(event.target.value)
                                         }}>
                                         {
                                             _paymentTypes.map((paymentType) => (
@@ -427,7 +427,7 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
                                         value={deliveryType}
                                         className={styles.deliveryRadio}
                                         onChange={(event) => {
-                                            setDeliveryType(event.target.value);
+                                            setDeliveryType(event.target.value)
                                         }}>
                                         {
                                             _deliveryTypes.map((deliveryType) => (
@@ -489,63 +489,63 @@ const Checkout = ({ _user, _language, _currency, _signout, _noMatch, _cart, _pay
 
             <Footer language={_language} />
         </>
-    );
-};
+    )
+}
 
 export async function getServerSideProps(context) {
     let _user = null, _signout = false, _noMatch = false,
-        _cart = null, _paymentTypes = [], _deliveryTypes = [], _language = '', _currency = '';
+        _cart = null, _paymentTypes = [], _deliveryTypes = [], _language = '', _currency = ''
 
     try {
-        _language = await SettingService.getLanguage();
-        _currency = await SettingService.getCurrency();
+        _language = await SettingService.getLanguage()
+        _currency = await SettingService.getCurrency()
 
-        const currentUser = UserService.getCurrentUser(context);
+        const currentUser = UserService.getCurrentUser(context)
 
         if (currentUser) {
-            let status;
+            let status
             try {
-                status = await UserService.validateAccessToken(context);
+                status = await UserService.validateAccessToken(context)
             } catch (err) {
-                console.log('Unauthorized!');
+                console.log('Unauthorized!')
             }
 
             if (status === 200) {
-                _user = await UserService.getUser(context, currentUser.id);
+                _user = await UserService.getUser(context, currentUser.id)
             }
 
             if (!_user || status !== 200) {
-                _signout = true;
-                CartService.deleteCartId(context);
+                _signout = true
+                CartService.deleteCartId(context)
             }
         } else {
-            _signout = true;
+            _signout = true
         }
 
         if (!_noMatch) {
             try {
-                const cartId = CartService.getCartId(context);
+                const cartId = CartService.getCartId(context)
                 if (cartId) {
-                    _cart = await CartService.getCart(cartId);
+                    _cart = await CartService.getCart(cartId)
 
                     if (_cart) {
-                        _paymentTypes = await PaymentTypeService.getPaymentTypes();
-                        _deliveryTypes = await DeliveryTypeService.getDeliveryTypes();
+                        _paymentTypes = await PaymentTypeService.getPaymentTypes()
+                        _deliveryTypes = await DeliveryTypeService.getDeliveryTypes()
                     } else {
-                        _noMatch = true;
+                        _noMatch = true
                     }
                 } else {
-                    _noMatch = true;
+                    _noMatch = true
                 }
             } catch (err) {
-                console.log(err);
-                _noMatch = true;
+                console.log(err)
+                _noMatch = true
             }
         }
 
     } catch (err) {
-        console.log(err);
-        _signout = true;
+        console.log(err)
+        _signout = true
     }
 
     return {
@@ -559,7 +559,7 @@ export async function getServerSideProps(context) {
             _language,
             _currency
         }
-    };
+    }
 }
 
-export default Checkout;
+export default Checkout

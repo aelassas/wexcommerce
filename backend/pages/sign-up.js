@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { strings as commonStrings } from '../lang/common';
-import { strings } from '../lang/sign-up';
-import * as UserService from '../services/UserService';
-import Error from '../components/Error';
-import Backdrop from '../components/SimpleBackdrop';
+import React, { useState, useEffect } from 'react'
+import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/sign-up'
+import * as UserService from '../services/UserService'
+import Error from '../components/Error'
+import Backdrop from '../components/SimpleBackdrop'
 import {
     Input,
     InputLabel,
@@ -11,167 +11,167 @@ import {
     FormHelperText,
     Button,
     Paper
-} from '@mui/material';
-import validator from 'validator';
-import * as Helper from '../common/Helper';
-import { useRouter } from "next/router";
-import Header from '../components/Header';
-import * as SettingService from '../services/SettingService';
+} from '@mui/material'
+import validator from 'validator'
+import * as Helper from '../common/Helper'
+import { useRouter } from "next/router"
+import Header from '../components/Header'
+import * as SettingService from '../services/SettingService'
 
-import styles from '../styles/signup.module.css';
+import styles from '../styles/signup.module.css'
 
 const SignUp = ({ _language }) => {
-    const router = useRouter();
+    const router = useRouter()
 
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
-    const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
-    const [emailError, setEmailError] = useState(false);
-    const [visible, setVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [emailValid, setEmailValid] = useState(true);
+    const [fullName, setFullName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [error, setError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const [passwordsDontMatch, setPasswordsDontMatch] = useState(false)
+    const [emailError, setEmailError] = useState(false)
+    const [visible, setVisible] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [emailValid, setEmailValid] = useState(true)
 
     useEffect(() => {
         if (_language) {
-            Helper.setLanguage(commonStrings, _language);
-            Helper.setLanguage(strings, _language);
+            Helper.setLanguage(commonStrings, _language)
+            Helper.setLanguage(strings, _language)
         }
-    }, [_language]);
+    }, [_language])
 
     useEffect(() => {
-        const currentUser = UserService.getCurrentUser();
+        const currentUser = UserService.getCurrentUser()
 
         if (currentUser) {
-            router.replace('/');
+            router.replace('/')
         } else {
-            setVisible(true);
-            // setLanguage(UserService.getLanguage());
+            setVisible(true)
+            // setLanguage(UserService.getLanguage())
         }
-    }, [router, _language]);
+    }, [router, _language])
 
     const handleOnChangeFullName = (e) => {
-        setFullName(e.target.value);
-    };
+        setFullName(e.target.value)
+    }
 
     const handleEmailChange = (e) => {
-        setEmail(e.target.value);
+        setEmail(e.target.value)
 
         if (!e.target.value) {
-            setEmailError(false);
-            setEmailValid(true);
+            setEmailError(false)
+            setEmailValid(true)
         }
-    };
+    }
 
     const validateEmail = async (email) => {
         if (email) {
             if (validator.isEmail(email)) {
                 try {
-                    const status = await UserService.validateEmail({ email });
+                    const status = await UserService.validateEmail({ email })
                     if (status === 200) {
-                        setEmailError(false);
-                        setEmailValid(true);
-                        return true;
+                        setEmailError(false)
+                        setEmailValid(true)
+                        return true
                     } else {
-                        setEmailError(true);
-                        setEmailValid(true);
-                        setError(false);
-                        return false;
+                        setEmailError(true)
+                        setEmailValid(true)
+                        setError(false)
+                        return false
                     }
                 } catch (err) {
-                    Helper.error();
-                    setError(true);
-                    setEmailError(false);
-                    setEmailValid(true);
-                    return false;
+                    Helper.error()
+                    setError(true)
+                    setEmailError(false)
+                    setEmailValid(true)
+                    return false
                 }
             } else {
-                setEmailError(false);
-                setEmailValid(false);
-                return false;
+                setEmailError(false)
+                setEmailValid(false)
+                return false
             }
         } else {
-            setEmailError(false);
-            setEmailValid(true);
-            return false;
+            setEmailError(false)
+            setEmailValid(true)
+            return false
         }
-    };
+    }
 
     const handleEmailBlur = async (e) => {
-        await validateEmail(e.target.value);
-    };
+        await validateEmail(e.target.value)
+    }
 
     const handleOnChangePassword = (e) => {
-        setPassword(e.target.value);
-    };
+        setPassword(e.target.value)
+    }
 
     const handleOnChangeConfirmPassword = (e) => {
-        setConfirmPassword(e.target.value);
-    };
+        setConfirmPassword(e.target.value)
+    }
 
     const handleSubmit = async (e) => {
         try {
-            e.preventDefault();
+            e.preventDefault()
 
-            const emailValid = await validateEmail(email);
+            const emailValid = await validateEmail(email)
             if (!emailValid) {
-                return;
+                return
             }
 
             if (password.length < 6) {
-                setPasswordError(true);
-                setPasswordsDontMatch(false);
-                setError(false);
-                return;
+                setPasswordError(true)
+                setPasswordsDontMatch(false)
+                setError(false)
+                return
             }
 
             if (password !== confirmPassword) {
-                setPasswordsDontMatch(true);
-                setError(false);
-                setPasswordError(false);
-                return;
+                setPasswordsDontMatch(true)
+                setError(false)
+                setPasswordError(false)
+                return
             }
 
-            setLoading(true);
+            setLoading(true)
 
             const data = {
                 email,
                 password,
                 fullName,
                 language: _language
-            };
+            }
 
-            const status = await UserService.signup(data);
+            const status = await UserService.signup(data)
 
             if (status === 200) {
-                const res = await UserService.signin({ email, password });
+                const res = await UserService.signin({ email, password })
 
                 if (res.status === 200) {
-                    router.replace('/');
+                    router.replace('/')
                 } else {
-                    setError(true);
-                    setPasswordError(false);
-                    setPasswordsDontMatch(false);
-                    setLoading(false);
+                    setError(true)
+                    setPasswordError(false)
+                    setPasswordsDontMatch(false)
+                    setLoading(false)
                 }
             } else {
-                setError(true);
-                setPasswordError(false);
-                setPasswordsDontMatch(false);
-                setLoading(false);
+                setError(true)
+                setPasswordError(false)
+                setPasswordsDontMatch(false)
+                setLoading(false)
             }
 
 
         } catch (err) {
-            setError(true);
-            setPasswordError(false);
-            setPasswordsDontMatch(false);
-            setLoading(false);
+            setError(true)
+            setPasswordError(false)
+            setPasswordsDontMatch(false)
+            setLoading(false)
         }
-    };
+    }
 
     return (
         visible && _language &&
@@ -271,20 +271,20 @@ const SignUp = ({ _language }) => {
             </div>
             {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
         </>
-    );
-};
+    )
+}
 
 export async function getServerSideProps(context) {
 
-    // if (process.env.NODE_ENV === 'production') return { notFound: true };
+    // if (process.env.NODE_ENV === 'production') return { notFound: true }
 
-    const _language = await SettingService.getLanguage();
+    const _language = await SettingService.getLanguage()
 
     return {
         props: {
             _language
         }
-    };
-};
+    }
+}
 
-export default SignUp;
+export default SignUp

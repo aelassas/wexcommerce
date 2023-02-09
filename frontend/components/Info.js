@@ -1,6 +1,6 @@
-import React from 'react';
-import { strings as commonStrings } from '../lang/common';
-import Link from 'next/link';
+import React from 'react'
+import { strings as commonStrings } from '../lang/common'
+import Link from 'next/link'
 
 const Info = ({ message, style, className }) => {
 
@@ -9,7 +9,7 @@ const Info = ({ message, style, className }) => {
 			<p>{message}</p>
 			<Link href='/'>{commonStrings.GO_TO_HOME}</Link>
 		</div>
-	);
-};
+	)
+}
 
-export default Info;
+export default Info

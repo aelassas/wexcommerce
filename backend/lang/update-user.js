@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -9,4 +9,4 @@ export const strings = new LocalizedStrings({
         UPDATE_USER_HEADING: 'User update',
         USER_UPDATED: 'User updated successfully.'
     }
-});
+})

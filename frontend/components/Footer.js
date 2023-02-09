@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { strings } from '../lang/footer';
-import { Phone, Email } from '@mui/icons-material';
-import * as Helper from '../common/Helper';
+import React, { useEffect, useState } from "react"
+import { strings } from '../lang/footer'
+import { Phone, Email } from '@mui/icons-material'
+import * as Helper from '../common/Helper'
 
-import styles from '../styles/footer.module.css';
+import styles from '../styles/footer.module.css'
 
 const Footer = ({ language }) => {
-    const [load, setLoad] = useState(false);
+    const [load, setLoad] = useState(false)
 
     useEffect(() => {
         if (language) {
-            Helper.setLanguage(strings, language);
-            setLoad(true);
+            Helper.setLanguage(strings, language)
+            setLoad(true)
         }
-    }, [language]);
+    }, [language])
 
     return (
         load &&
@@ -39,7 +39,7 @@ const Footer = ({ language }) => {
                 <div className={styles.copyright}>{strings.COPYRIGHT}</div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Footer;
+export default Footer

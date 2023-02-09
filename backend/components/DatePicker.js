@@ -1,18 +1,18 @@
 
-import React, { useEffect, useState } from 'react';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TextField, IconButton, InputAdornment } from '@mui/material';
-import { Clear as ClearIcon } from '@mui/icons-material';
-import { fr, enUS } from "date-fns/locale";
+import React, { useEffect, useState } from 'react'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker'
+import { TextField, IconButton, InputAdornment } from '@mui/material'
+import { Clear as ClearIcon } from '@mui/icons-material'
+import { fr, enUS } from "date-fns/locale"
 
 export default function DatePicker({ label, language, value, minDate, required, onChange }) {
-    const [date, setDate] = useState();
+    const [date, setDate] = useState()
 
     useEffect(() => {
-        setDate(value);
-    }, [value]);
+        setDate(value)
+    }, [value])
 
     return (
         <LocalizationProvider adapterLocale={language === 'fr' ? fr : enUS} dateAdapter={AdapterDateFns}>
@@ -23,8 +23,8 @@ export default function DatePicker({ label, language, value, minDate, required, 
                 mask='__-__-____'
                 value={date}
                 onChange={(value) => {
-                    setDate(value);
-                    if (onChange) onChange(value);
+                    setDate(value)
+                    if (onChange) onChange(value)
                 }}
                 minDate={minDate}
                 defaultCalendarMonth={minDate}
@@ -46,8 +46,8 @@ export default function DatePicker({ label, language, value, minDate, required, 
                                                 <IconButton
                                                     size='small'
                                                     onClick={() => {
-                                                        setDate(null);
-                                                        if (onChange) onChange(null);
+                                                        setDate(null)
+                                                        if (onChange) onChange(null)
                                                     }}>
                                                     <ClearIcon className='d-adornment-icon' />
                                                 </IconButton>
@@ -61,5 +61,5 @@ export default function DatePicker({ label, language, value, minDate, required, 
                 }
             />
         </LocalizationProvider>
-    );
+    )
 }

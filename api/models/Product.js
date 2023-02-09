@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const productSchema = new Schema({
     name: {
@@ -46,16 +46,16 @@ const productSchema = new Schema({
     timestamps: true,
     strict: true,
     collection: 'Product'
-});
+})
 
-const productModel = mongoose.model('Product', productSchema);
+const productModel = mongoose.model('Product', productSchema)
 
 productModel.on('index', (err) => {
     if (err) {
-        console.error('Product index error: %s', err);
+        console.error('Product index error: %s', err)
     } else {
-        console.info('Product indexing complete');
+        console.info('Product indexing complete')
     }
-});
+})
 
-export default productModel;
+export default productModel

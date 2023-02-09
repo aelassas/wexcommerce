@@ -1,94 +1,94 @@
-import { useEffect, useState } from 'react';
-import * as UserService from '../services/UserService';
-import Header from '../components/Header';
+import { useEffect, useState } from 'react'
+import * as UserService from '../services/UserService'
+import Header from '../components/Header'
 import {
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-} from '@mui/material';
-import { AddShoppingCart as AddShoppingCart } from '@mui/icons-material';
-import { strings } from '../lang/product';
-import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
-import * as Helper from '../common/Helper';
-import * as ProductService from '../services/ProductService';
-import NoMatch from '../components/NoMatch';
-import * as CartService from '../services/CartService';
-import Env from '../config/env.config';
-import ImageViewer from '../components/ImageViewer';
-import SoldOut from '../components/SoldOut';
-import * as SettingService from '../services/SettingService';
-import Footer from '../components/Footer';
+} from '@mui/material'
+import { AddShoppingCart as AddShoppingCart } from '@mui/icons-material'
+import { strings } from '../lang/product'
+import { strings as commonStrings } from '../lang/common'
+import { strings as masterStrings } from '../lang/master'
+import * as Helper from '../common/Helper'
+import * as ProductService from '../services/ProductService'
+import NoMatch from '../components/NoMatch'
+import * as CartService from '../services/CartService'
+import Env from '../config/env.config'
+import ImageViewer from '../components/ImageViewer'
+import SoldOut from '../components/SoldOut'
+import * as SettingService from '../services/SettingService'
+import Footer from '../components/Footer'
 
-import styles from '../styles/product.module.css';
+import styles from '../styles/product.module.css'
 
 const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) => {
-  const [product, setProduct] = useState();
-  const [image, setImage] = useState();
-  const [images, setImages] = useState([]);
-  const [currentImage, setCurrentImage] = useState(0);
-  const [openImageDialog, setOpenImageDialog] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [product, setProduct] = useState()
+  const [image, setImage] = useState()
+  const [images, setImages] = useState([])
+  const [currentImage, setCurrentImage] = useState(0)
+  const [openImageDialog, setOpenImageDialog] = useState(false)
+  const [cartCount, setCartCount] = useState(0)
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout(false);
+      UserService.signout(false)
     }
-  }, [_signout]);
+  }, [_signout])
 
   useEffect(() => {
     if (_language) {
-      Helper.setLanguage(strings, _language);
-      Helper.setLanguage(commonStrings, _language);
-      Helper.setLanguage(masterStrings, _language);
+      Helper.setLanguage(strings, _language)
+      Helper.setLanguage(commonStrings, _language)
+      Helper.setLanguage(masterStrings, _language)
     }
-  }, [_language]);
+  }, [_language])
 
   useEffect(() => {
-    const src = (image) => Helper.joinURL(Env.CDN_PRODUCTS, image);
+    const src = (image) => Helper.joinURL(Env.CDN_PRODUCTS, image)
 
     if (_product) {
-      setProduct(_product);
-      const image = src(_product.image);
+      setProduct(_product)
+      const image = src(_product.image)
       setImage(image)
-      const _images = _product.images ? _product.images.map(src) : [];
-      const images = [image, ..._images];
-      setImages(images);
+      const _images = _product.images ? _product.images.map(src) : []
+      const images = [image, ..._images]
+      setImages(images)
     }
-  }, [_product]);
+  }, [_product])
 
   useEffect(() => {
     (async function () {
-      const cartId = CartService.getCartId();
+      const cartId = CartService.getCartId()
 
       if (cartId) {
-        const cartCount = await CartService.getCartCount(cartId);
-        setCartCount(cartCount);
+        const cartCount = await CartService.getCartCount(cartId)
+        setCartCount(cartCount)
       }
-    })();
-  }, []);
+    })()
+  }, [])
 
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
   return (
     _language &&
@@ -113,8 +113,8 @@ const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) 
                             key={index}
                             className={`${styles.image}${currentImage === index ? ` ${styles.selected}` : ''}`}
                             onClick={() => {
-                              setCurrentImage(index);
-                              setImage(image);
+                              setCurrentImage(index)
+                              setImage(image)
                             }}>
                             <img alt='' className={styles.image} src={image} />
                           </div>
@@ -143,7 +143,7 @@ const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) 
                               color='error'
                               className={styles.button}
                               onClick={async (e) => {
-                                setOpenDeleteDialog(true);
+                                setOpenDeleteDialog(true)
                               }}
                             >
                               {commonStrings.REMOVE_FROM_CART}
@@ -155,25 +155,25 @@ const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) 
                               startIcon={<AddShoppingCart />}
                               onClick={async (e) => {
                                 try {
-                                  const cartId = CartService.getCartId();
-                                  const userId = (_user && _user._id) || '';
+                                  const cartId = CartService.getCartId()
+                                  const userId = (_user && _user._id) || ''
 
-                                  const res = await CartService.addItem(cartId, userId, product._id);
+                                  const res = await CartService.addItem(cartId, userId, product._id)
 
                                   if (res.status === 200) {
                                     if (!cartId) {
-                                      CartService.setCartId(res.data);
+                                      CartService.setCartId(res.data)
                                     }
-                                    product.inCart = true;
-                                    setProduct(product);
-                                    setCartCount(cartCount + 1);
-                                    Helper.info(commonStrings.ARTICLE_ADDED);
+                                    product.inCart = true
+                                    setProduct(product)
+                                    setCartCount(cartCount + 1)
+                                    Helper.info(commonStrings.ARTICLE_ADDED)
                                   } else {
-                                    Helper.error();
+                                    Helper.error()
                                   }
                                 } catch (err) {
-                                  console.log(err);
-                                  Helper.error();
+                                  console.log(err)
+                                  Helper.error()
                                 }
                               }}
                             >
@@ -197,7 +197,7 @@ const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) 
                   closeOnClickOutside={true}
                   title={product.name}
                   onClose={() => {
-                    setOpenImageDialog(false);
+                    setOpenImageDialog(false)
                   }}
                 />
               }
@@ -213,26 +213,26 @@ const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) 
                   <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
                   <Button onClick={async () => {
                     try {
-                      const cartId = CartService.getCartId();
-                      const res = await CartService.deleteItem(cartId, product._id);
+                      const cartId = CartService.getCartId()
+                      const res = await CartService.deleteItem(cartId, product._id)
 
                       if (res.status === 200) {
-                        product.inCart = false;
-                        setProduct(product);
-                        setCartCount(cartCount - 1);
+                        product.inCart = false
+                        setProduct(product)
+                        setCartCount(cartCount - 1)
 
                         if (res.data.cartDeleted) {
-                          CartService.deleteCartId();
+                          CartService.deleteCartId()
                         }
 
-                        setOpenDeleteDialog(false);
-                        Helper.info(commonStrings.ARTICLE_REMOVED);
+                        setOpenDeleteDialog(false)
+                        Helper.info(commonStrings.ARTICLE_REMOVED)
                       } else {
-                        Helper.error();
+                        Helper.error()
                       }
                     } catch (err) {
-                      console.log(err);
-                      Helper.error();
+                      console.log(err)
+                      Helper.error()
                     }
                   }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
                 </DialogActions>
@@ -260,60 +260,60 @@ const Product = ({ _user, _language, _currency, _signout, _noMatch, _product }) 
 
       <Footer language={_language} />
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _noMatch = false, _product = null, _language = '', _currency = '';
+  let _user = null, _signout = false, _noMatch = false, _product = null, _language = '', _currency = ''
 
   try {
-    _language = await SettingService.getLanguage();
-    _currency = await SettingService.getCurrency();
+    _language = await SettingService.getLanguage()
+    _currency = await SettingService.getCurrency()
 
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
+        _user = await UserService.getUser(context, currentUser.id)
       }
 
       if (!_user || status !== 200) {
-        CartService.deleteCartId(context);
-        _signout = true;
+        CartService.deleteCartId(context)
+        _signout = true
       }
     } else {
-      _signout = true;
+      _signout = true
     }
 
     if (!_user || (_user && _user.verified)) {
-      const { p: productId } = context.query;
+      const { p: productId } = context.query
 
       if (productId) {
         try {
-          const cartId = CartService.getCartId(context);
-          _product = await ProductService.getProduct(productId, _language, cartId);
+          const cartId = CartService.getCartId(context)
+          _product = await ProductService.getProduct(productId, _language, cartId)
 
           if (!_product) {
-            _noMatch = true;
+            _noMatch = true
           }
         } catch (err) {
-          console.log(err);
-          _noMatch = true;
+          console.log(err)
+          _noMatch = true
         }
       } else {
-        _noMatch = true;
+        _noMatch = true
       }
     }
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -325,7 +325,7 @@ export async function getServerSideProps(context) {
       _noMatch,
       _product
     }
-  };
+  }
 }
 
-export default Product;
+export default Product

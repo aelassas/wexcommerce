@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -79,5 +79,5 @@ export const strings = new LocalizedStrings({
         DELIVERY_TYPE: 'Delivery method',
         FREE: 'Free'
     }
-});
+})
 

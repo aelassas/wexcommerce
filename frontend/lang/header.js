@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -27,4 +27,4 @@ export const strings = new LocalizedStrings({
         SEARCH_PRODUCTS_PLACEHOLDER: 'Search products...',
         SEARCH_ORDERS_PLACEHOLDER: 'Search orders...',
     }
-});
+})

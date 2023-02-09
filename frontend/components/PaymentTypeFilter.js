@@ -1,94 +1,94 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { strings as commonStrings } from '../lang/common';
-import Env from '../config/env.config';
-import Accordion from './Accordion';
-import PaymentType from './PaymentType';
-import * as Helper from '../common/Helper';
+import React, { useState, useRef, useEffect } from 'react'
+import { strings as commonStrings } from '../lang/common'
+import Env from '../config/env.config'
+import Accordion from './Accordion'
+import PaymentType from './PaymentType'
+import * as Helper from '../common/Helper'
 
-import styles from '../styles/payment-type-filter.module.css';
+import styles from '../styles/payment-type-filter.module.css'
 
 const PaymentTypeFilter = ({ selectedOptions, language, onChange, className }) => {
-    const paymentTypes = Helper.getPaymentTypes();
-    const [checkedPaymentTypes, setCheckedPaymentTypes] = useState(paymentTypes);
-    const [allChecked, setAllChecked] = useState(true);
-    const refs = useRef([]);
+    const paymentTypes = Helper.getPaymentTypes()
+    const [checkedPaymentTypes, setCheckedPaymentTypes] = useState(paymentTypes)
+    const [allChecked, setAllChecked] = useState(true)
+    const refs = useRef([])
 
     useEffect(() => {
-        const paymentTypes = Helper.getPaymentTypes();
+        const paymentTypes = Helper.getPaymentTypes()
 
         if (selectedOptions) {
             refs.current.forEach(checkbox => {
-                const paymentType = checkbox.getAttribute('data-value');
+                const paymentType = checkbox.getAttribute('data-value')
                 if (selectedOptions.includes(paymentType)) {
-                    checkbox.checked = true;
+                    checkbox.checked = true
                 }
 
-                setAllChecked(selectedOptions.length === paymentTypes.length);
-                setCheckedPaymentTypes(selectedOptions);
-            });
+                setAllChecked(selectedOptions.length === paymentTypes.length)
+                setCheckedPaymentTypes(selectedOptions)
+            })
         } else {
             refs.current.forEach(checkbox => {
-                checkbox.checked = true;
+                checkbox.checked = true
 
-                setAllChecked(true);
-                setCheckedPaymentTypes(paymentTypes);
-            });
+                setAllChecked(true)
+                setCheckedPaymentTypes(paymentTypes)
+            })
         }
-    }, [selectedOptions]);
+    }, [selectedOptions])
 
     const handlePaymentTypeClick = (e) => {
-        const checkbox = e.currentTarget.previousSibling;
-        checkbox.checked = !checkbox.checked;
-        const event = e;
-        event.currentTarget = checkbox;
-        handleCheckPaymentTypeChange(event);
-    };
+        const checkbox = e.currentTarget.previousSibling
+        checkbox.checked = !checkbox.checked
+        const event = e
+        event.currentTarget = checkbox
+        handleCheckPaymentTypeChange(event)
+    }
 
     const handleCheckPaymentTypeChange = (e) => {
-        const paymentType = e.currentTarget.getAttribute('data-value');
+        const paymentType = e.currentTarget.getAttribute('data-value')
 
         if (e.currentTarget.checked) {
-            checkedPaymentTypes.push(paymentType);
+            checkedPaymentTypes.push(paymentType)
 
             if (checkedPaymentTypes.length === paymentTypes.length) {
-                setAllChecked(true);
+                setAllChecked(true)
             }
         } else {
-            const index = checkedPaymentTypes.findIndex(s => s === paymentType);
-            checkedPaymentTypes.splice(index, 1);
+            const index = checkedPaymentTypes.findIndex(s => s === paymentType)
+            checkedPaymentTypes.splice(index, 1)
 
             if (checkedPaymentTypes.length === 0) {
-                setAllChecked(false);
+                setAllChecked(false)
             }
         }
 
-        setCheckedPaymentTypes(checkedPaymentTypes);
+        setCheckedPaymentTypes(checkedPaymentTypes)
         if (onChange) {
-            onChange(checkedPaymentTypes);
+            onChange(checkedPaymentTypes)
         }
-    };
+    }
 
     const handleUncheckAllChange = (e) => {
         if (allChecked) { // uncheck all
             refs.current.forEach(checkbox => {
-                checkbox.checked = false;
-            });
+                checkbox.checked = false
+            })
 
-            setAllChecked(false);
-            setCheckedPaymentTypes([]);
+            setAllChecked(false)
+            setCheckedPaymentTypes([])
         } else { // check all
             refs.current.forEach(checkbox => {
-                checkbox.checked = true;
-            });
+                checkbox.checked = true
+            })
 
-            setAllChecked(true);
-            setCheckedPaymentTypes(paymentTypes);
+            setAllChecked(true)
+            setCheckedPaymentTypes(paymentTypes)
 
             if (onChange) {
-                onChange(paymentTypes);
+                onChange(paymentTypes)
             }
         }
-    };
+    }
 
     return (
         <Accordion
@@ -112,7 +112,7 @@ const PaymentTypeFilter = ({ selectedOptions, language, onChange, className }) =
                 </span>
             </div>
         </Accordion>
-    );
-};
+    )
+}
 
-export default PaymentTypeFilter;
+export default PaymentTypeFilter

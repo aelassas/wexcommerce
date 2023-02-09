@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import {
     Backdrop,
     CircularProgress
-} from '@mui/material';
+} from '@mui/material'
 
 export default function SimpleBackdrop(props) {
 
@@ -16,5 +16,5 @@ export default function SimpleBackdrop(props) {
                 {props.progress ? <CircularProgress color="inherit" /> : null}
             </Backdrop>
         </div>
-    );
+    )
 }

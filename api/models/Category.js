@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const categorySchema = new Schema({
     values: {
@@ -12,16 +12,16 @@ const categorySchema = new Schema({
     timestamps: true,
     strict: true,
     collection: 'Category'
-});
+})
 
-const categoryModel = mongoose.model('Category', categorySchema);
+const categoryModel = mongoose.model('Category', categorySchema)
 
 categoryModel.on('index', (err) => {
     if (err) {
-        console.error('Category index error: %s', err);
+        console.error('Category index error: %s', err)
     } else {
-        console.info('Category indexing complete');
+        console.info('Category indexing complete')
     }
-});
+})
 
-export default categoryModel;
+export default categoryModel

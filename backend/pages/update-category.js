@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import * as UserService from '../services/UserService';
-import Header from '../components/Header';
+import { useEffect, useState } from 'react'
+import * as UserService from '../services/UserService'
+import Header from '../components/Header'
 import {
   Input,
   InputLabel,
@@ -8,139 +8,139 @@ import {
   FormHelperText,
   Button,
   Paper
-} from '@mui/material';
-import { strings } from '../lang/update-category';
-import { strings as ccStrings } from '../lang/create-category';
-import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
-import * as Helper from '../common/Helper';
-import Env from '../config/env.config';
-import * as CategoryService from '../services/CategoryService';
-import NoMatch from '../components/NoMatch';
-import { useRouter } from 'next/router';
-import * as SettingService from '../services/SettingService';
+} from '@mui/material'
+import { strings } from '../lang/update-category'
+import { strings as ccStrings } from '../lang/create-category'
+import { strings as commonStrings } from '../lang/common'
+import { strings as masterStrings } from '../lang/master'
+import * as Helper from '../common/Helper'
+import Env from '../config/env.config'
+import * as CategoryService from '../services/CategoryService'
+import NoMatch from '../components/NoMatch'
+import { useRouter } from 'next/router'
+import * as SettingService from '../services/SettingService'
 
-import styles from '../styles/update-category.module.css';
+import styles from '../styles/update-category.module.css'
 
 const UpdateCategory = ({ _user, _signout, _noMatch, _category, _language }) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [loading, setLoading] = useState(true);
-  const [values, setValues] = useState([]);
-  const [valueErrors, setValueErrors] = useState([]);
-  const [valueChanged, setValueChanged] = useState(false);
+  const [loading, setLoading] = useState(true)
+  const [values, setValues] = useState([])
+  const [valueErrors, setValueErrors] = useState([])
+  const [valueChanged, setValueChanged] = useState(false)
 
   useEffect(() => {
     if (_user) {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [_user]);
+  }, [_user])
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      UserService.signout()
     }
-  }, [_signout]);
+  }, [_signout])
 
   useEffect(() => {
     if (_language) {
-      Helper.setLanguage(strings, _language);
-      Helper.setLanguage(ccStrings, _language);
-      Helper.setLanguage(commonStrings, _language);
-      Helper.setLanguage(masterStrings, _language);
+      Helper.setLanguage(strings, _language)
+      Helper.setLanguage(ccStrings, _language)
+      Helper.setLanguage(commonStrings, _language)
+      Helper.setLanguage(masterStrings, _language)
     }
-  }, [_language]);
+  }, [_language])
 
   useEffect(() => {
     if (_category) {
       Env._LANGUAGES.forEach(lang => {
         if (!_category.values.some(value => value.language === lang.code)) {
-          _category.values.push({ language: lang.code, value: '' });
+          _category.values.push({ language: lang.code, value: '' })
         }
-      });
+      })
 
-      const _values = _category.values.map(value => ({ language: value.language, value: value.value }));
-      setValues(_values);
+      const _values = _category.values.map(value => ({ language: value.language, value: value.value }))
+      setValues(_values)
 
-      const _valueErrors = _category.values.map(value => false);
-      setValueErrors(_valueErrors);
+      const _valueErrors = _category.values.map(value => false)
+      setValueErrors(_valueErrors)
     }
-  }, [_category]);
+  }, [_category])
 
   useEffect(() => {
     const checkValue = () => {
-      let _valueChanged = false;
+      let _valueChanged = false
       for (let i = 0; i < values.length; i++) {
-        const value = values[i];
+        const value = values[i]
         if (value.value !== _category.values[i].value) {
-          _valueChanged = true;
-          break;
+          _valueChanged = true
+          break
         }
       }
 
-      setValueChanged(_valueChanged);
-      return _valueChanged;
-    };
+      setValueChanged(_valueChanged)
+      return _valueChanged
+    }
 
-    checkValue();
-  }, [_category, values]);
+    checkValue()
+  }, [_category, values])
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      let isValid = true;
+      let isValid = true
 
-      for (let i = 0; i < valueErrors.length; i++) valueErrors[i] = false;
+      for (let i = 0; i < valueErrors.length; i++) valueErrors[i] = false
 
       for (let i = 0; i < values.length; i++) {
-        const value = values[i];
+        const value = values[i]
         if (value.value !== _category.values[i].value) {
-          const _isValid = (await CategoryService.validate(value)) === 200;
-          isValid = isValid && _isValid;
-          if (!_isValid) valueErrors[i] = true;
+          const _isValid = (await CategoryService.validate(value)) === 200
+          isValid = isValid && _isValid
+          if (!_isValid) valueErrors[i] = true
         }
       }
 
-      setValueErrors(Helper.cloneArray(valueErrors));
+      setValueErrors(Helper.cloneArray(valueErrors))
 
       if (isValid) {
-        const status = await CategoryService.update(_category._id, values);
+        const status = await CategoryService.update(_category._id, values)
 
         if (status === 200) {
           for (let i = 0; i < values.length; i++) {
-            const value = values[i];
-            _category.values[i].value = value.value;
+            const value = values[i]
+            _category.values[i].value = value.value
           }
-          Helper.info(strings.CATEGORY_UPDATED);
-          setValueChanged(false);
+          Helper.info(strings.CATEGORY_UPDATED)
+          setValueChanged(false)
         } else {
-          Helper.error();
+          Helper.error()
         }
       }
     }
     catch (err) {
-      UserService.signout();
+      UserService.signout()
     }
-  };
+  }
 
   return (
     !loading && _user && _language &&
@@ -163,11 +163,11 @@ const UpdateCategory = ({ _user, _signout, _noMatch, _category, _language }) => 
                         error={valueErrors[index]}
                         required
                         onChange={(e) => {
-                          valueErrors[index] = false;
-                          values[index].value = e.target.value;
-                          setValues(Helper.cloneArray(values));
-                          setValueErrors(Helper.cloneArray(valueErrors));
-                          console.log(commonStrings.SAVE);
+                          valueErrors[index] = false
+                          values[index].value = e.target.value
+                          setValues(Helper.cloneArray(values))
+                          setValueErrors(Helper.cloneArray(valueErrors))
+                          console.log(commonStrings.SAVE)
                         }}
                         autoComplete="off"
                       />
@@ -193,7 +193,7 @@ const UpdateCategory = ({ _user, _signout, _noMatch, _category, _language }) => 
                     className='btn-secondary btn-margin-bottom'
                     size="small"
                     onClick={() => {
-                      router.replace('/categories');
+                      router.replace('/categories')
                     }}
                   >
                     {commonStrings.CANCEL}
@@ -222,56 +222,56 @@ const UpdateCategory = ({ _user, _signout, _noMatch, _category, _language }) => 
         </div>
       }
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _noMatch = false, _category = null, _language = '';
+  let _user = null, _signout = false, _noMatch = false, _category = null, _language = ''
 
   try {
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
-        _language = await SettingService.getLanguage();
+        _user = await UserService.getUser(context, currentUser.id)
+        _language = await SettingService.getLanguage()
 
         if (_user) {
-          const { c: categoryId } = context.query;
+          const { c: categoryId } = context.query
           if (categoryId) {
             try {
-              _category = await CategoryService.getCategory(context, _language, categoryId);
+              _category = await CategoryService.getCategory(context, _language, categoryId)
 
               if (!_category) {
-                _noMatch = true;
+                _noMatch = true
               }
             } catch (err) {
-              console.log(err);
-              _noMatch = true;
+              console.log(err)
+              _noMatch = true
             }
           } else {
-            _noMatch = true;
+            _noMatch = true
           }
         } else {
-          _signout = true;
+          _signout = true
         }
       } else {
-        _signout = true;
+        _signout = true
       }
 
     } else {
-      _signout = true;
+      _signout = true
     }
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -282,7 +282,7 @@ export async function getServerSideProps(context) {
       _category,
       _language
     }
-  };
+  }
 }
 
-export default UpdateCategory;
+export default UpdateCategory

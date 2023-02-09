@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -37,5 +37,5 @@ export const strings = new LocalizedStrings({
         DELIVERY_SETTINGS_WARNING: 'Please select at least one delivery method.',
         PRICE: 'Price',
     }
-});
+})
 

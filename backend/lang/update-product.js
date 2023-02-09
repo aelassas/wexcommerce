@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -13,5 +13,5 @@ export const strings = new LocalizedStrings({
         CANNOT_DELETE_PRODUCT: 'This product cannot be deleted because it is related to orders. However, you can hide it.',
         DESCRIPTION_REQUIRED: 'Please add a description.'
     }
-});
+})
 

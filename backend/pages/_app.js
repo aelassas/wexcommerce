@@ -1,36 +1,36 @@
-import { useEffect, useState } from 'react';
-import Head from 'next/head';
-import { ToastContainer } from 'react-toastify';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Router from 'next/router';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
+import { useEffect, useState } from 'react'
+import Head from 'next/head'
+import { ToastContainer } from 'react-toastify'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import Router from 'next/router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
-import 'react-toastify/dist/ReactToastify.min.css';
-import '../styles/globals.css';
+import 'react-toastify/dist/ReactToastify.min.css'
+import '../styles/globals.css'
 
 const App = ({ Component, pageProps }) => {
-  const [theme, setTheme] = useState();
+  const [theme, setTheme] = useState()
 
   useEffect(() => {
-    NProgress.configure({ showSpinner: false });
+    NProgress.configure({ showSpinner: false })
 
     const start = () => {
-      NProgress.start();
-    };
+      NProgress.start()
+    }
     const end = () => {
-      NProgress.done();
-    };
-    Router.events.on('routeChangeStart', start);
-    Router.events.on('routeChangeComplete', end);
-    Router.events.on('routeChangeError', end);
+      NProgress.done()
+    }
+    Router.events.on('routeChangeStart', start)
+    Router.events.on('routeChangeComplete', end)
+    Router.events.on('routeChangeError', end)
     return () => {
-      Router.events.off('routeChangeStart', start);
-      Router.events.off('routeChangeComplete', end);
-      Router.events.off('routeChangeError', end);
-    };
-  }, []);
+      Router.events.off('routeChangeStart', start)
+      Router.events.off('routeChangeComplete', end)
+      Router.events.off('routeChangeError', end)
+    }
+  }, [])
 
   useEffect(() => {
 
@@ -117,13 +117,13 @@ const App = ({ Component, pageProps }) => {
           },
         },
       },
-    });
+    })
 
-    setTheme(theme);
-  }, []);
+    setTheme(theme)
+  }, [])
 
   if (!theme) {
-    return null;
+    return null
   }
 
   return (
@@ -152,7 +152,7 @@ const App = ({ Component, pageProps }) => {
         </CssBaseline>
       </ThemeProvider>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App

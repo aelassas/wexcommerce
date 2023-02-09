@@ -4,4 +4,4 @@ export default {
     delete: '/api/delete-order/:user/:id',
     getOrder: '/api/order/:id',
     getOrders: '/api/orders/:user/:page/:size'
-};
+}

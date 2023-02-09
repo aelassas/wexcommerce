@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -15,5 +15,5 @@ export const strings = new LocalizedStrings({
         CLEAR_CART: 'Clear cart',
         CLEAR_CART_CONFIRM:'Are you sure you want to clear cart?',
     }
-});
+})
 

@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -9,5 +9,5 @@ export const strings = new LocalizedStrings({
         SOLD_OUT: 'Sold out',
         SOLD_OUT_INFO: 'This product is sold out.',
     }
-});
+})
 

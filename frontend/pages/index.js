@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import Header from '../components/Header';
-import { strings } from '../lang/home';
-import { strings as masterStrings } from '../lang/master';
-import { strings as commonStrings } from '../lang/common';
-import { strings as headerStrings } from '../lang/header';
-import * as Helper from '../common/Helper';
-import * as UserService from '../services/UserService';
-import * as CategoryService from '../services/CategoryService';
-import * as ProductService from '../services/ProductService';
-import * as CartService from '../services/CartService';
+import { useEffect, useState } from 'react'
+import Header from '../components/Header'
+import { strings } from '../lang/home'
+import { strings as masterStrings } from '../lang/master'
+import { strings as commonStrings } from '../lang/common'
+import { strings as headerStrings } from '../lang/header'
+import * as Helper from '../common/Helper'
+import * as UserService from '../services/UserService'
+import * as CategoryService from '../services/CategoryService'
+import * as ProductService from '../services/ProductService'
+import * as CartService from '../services/CartService'
 import {
   Button,
   Card,
@@ -18,22 +18,22 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-} from '@mui/material';
+} from '@mui/material'
 import {
   ShoppingBag as CategoryIcon,
   Home as HomeIcon,
   ArrowBackIos as PreviousPageIcon,
   ArrowForwardIos as NextPageIcon,
   Clear as CloseIcon,
-} from '@mui/icons-material';
-import Env from '../config/env.config';
-import Link from 'next/link';
-import NoMatch from '../components/NoMatch';
-import SoldOut from '../components/SoldOut';
-import * as SettingService from '../services/SettingService';
-import Footer from '../components/Footer';
+} from '@mui/icons-material'
+import Env from '../config/env.config'
+import Link from 'next/link'
+import NoMatch from '../components/NoMatch'
+import SoldOut from '../components/SoldOut'
+import * as SettingService from '../services/SettingService'
+import Footer from '../components/Footer'
 
-import styles from '../styles/home.module.css';
+import styles from '../styles/home.module.css'
 
 const Home = ({
   _user,
@@ -49,65 +49,65 @@ const Home = ({
   _products,
   _noMatch
 }) => {
-  const [leftPanelRef, setLeftPanelRef] = useState();
-  const [closeIconRef, setCloseIconRef] = useState();
-  const [productsRef, setProductsRef] = useState();
-  const [products, setProducts] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
-  const [productId, setProductId] = useState();
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [leftPanelRef, setLeftPanelRef] = useState()
+  const [closeIconRef, setCloseIconRef] = useState()
+  const [productsRef, setProductsRef] = useState()
+  const [products, setProducts] = useState([])
+  const [cartCount, setCartCount] = useState(0)
+  const [productId, setProductId] = useState()
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
 
   useEffect(() => {
     if (_language) {
-      Helper.setLanguage(strings, _language);
-      Helper.setLanguage(commonStrings, _language);
-      Helper.setLanguage(masterStrings, _language);
-      Helper.setLanguage(headerStrings, _language);
+      Helper.setLanguage(strings, _language)
+      Helper.setLanguage(commonStrings, _language)
+      Helper.setLanguage(masterStrings, _language)
+      Helper.setLanguage(headerStrings, _language)
     }
-  }, [_language]);
+  }, [_language])
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout(false);
+      UserService.signout(false)
     }
-  }, [_signout]);
+  }, [_signout])
 
   useEffect(() => {
-    if (productsRef) productsRef.scrollTo(0, 0);
-  }, [_products, productsRef]);
+    if (productsRef) productsRef.scrollTo(0, 0)
+  }, [_products, productsRef])
 
   useEffect(() => {
-    if (_products) setProducts(_products);
-  }, [_products]);
+    if (_products) setProducts(_products)
+  }, [_products])
 
   useEffect(() => {
     (async function () {
-      const cartId = CartService.getCartId();
+      const cartId = CartService.getCartId()
 
       if (cartId) {
-        const cartCount = await CartService.getCartCount(cartId);
-        setCartCount(cartCount);
+        const cartCount = await CartService.getCartCount(cartId)
+        setCartCount(cartCount)
       }
-    })();
-  }, []);
+    })()
+  }, [])
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
   return (
     _language &&
@@ -129,20 +129,20 @@ const Home = ({
                   onClick={() => {
                     if (leftPanelRef) {
                       if (leftPanelRef.style.display === 'none') {
-                        leftPanelRef.style.display = 'block';
+                        leftPanelRef.style.display = 'block'
                         if (productsRef) {
-                          productsRef.style.display = 'none';
+                          productsRef.style.display = 'none'
                         }
                         if (closeIconRef) {
-                          closeIconRef.style.visibility = 'visible';
+                          closeIconRef.style.visibility = 'visible'
                         }
                       } else {
-                        leftPanelRef.style.display = 'none';
+                        leftPanelRef.style.display = 'none'
                         if (productsRef) {
-                          productsRef.style.display = 'block';
+                          productsRef.style.display = 'block'
                         }
                         if (closeIconRef) {
-                          closeIconRef.style.visibility = 'hidden';
+                          closeIconRef.style.visibility = 'hidden'
                         }
                       }
                     }
@@ -233,8 +233,8 @@ const Home = ({
                                         color='error'
                                         className={styles.removeButton}
                                         onClick={async (e) => {
-                                          setProductId(product._id);
-                                          setOpenDeleteDialog(true);
+                                          setProductId(product._id)
+                                          setOpenDeleteDialog(true)
                                         }}
                                       >
                                         {commonStrings.REMOVE_FROM_CART}
@@ -245,26 +245,26 @@ const Home = ({
                                         className={`${styles.button} btn-primary`}
                                         onClick={async (e) => {
                                           try {
-                                            const cartId = CartService.getCartId();
-                                            const userId = (_user && _user._id) || '';
+                                            const cartId = CartService.getCartId()
+                                            const userId = (_user && _user._id) || ''
 
-                                            const res = await CartService.addItem(cartId, userId, product._id);
+                                            const res = await CartService.addItem(cartId, userId, product._id)
 
                                             if (res.status === 200) {
                                               if (!cartId) {
-                                                CartService.setCartId(res.data);
+                                                CartService.setCartId(res.data)
                                               }
-                                              const __products = Helper.cloneArray(products);
-                                              __products.filter(p => p._id === product._id)[0].inCart = true;
-                                              setProducts(__products);
-                                              setCartCount(cartCount + 1);
-                                              Helper.info(commonStrings.ARTICLE_ADDED);
+                                              const __products = Helper.cloneArray(products)
+                                              __products.filter(p => p._id === product._id)[0].inCart = true
+                                              setProducts(__products)
+                                              setCartCount(cartCount + 1)
+                                              Helper.info(commonStrings.ARTICLE_ADDED)
                                             } else {
-                                              Helper.error();
+                                              Helper.error()
                                             }
                                           } catch (err) {
-                                            console.log(err);
-                                            Helper.error();
+                                            console.log(err)
+                                            Helper.error()
                                           }
                                         }}
                                       >
@@ -325,27 +325,27 @@ const Home = ({
                   <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
                   <Button onClick={async () => {
                     try {
-                      const cartId = CartService.getCartId();
-                      const res = await CartService.deleteItem(cartId, productId);
+                      const cartId = CartService.getCartId()
+                      const res = await CartService.deleteItem(cartId, productId)
 
                       if (res.status === 200) {
-                        const __products = Helper.cloneArray(products);
-                        __products.filter(p => p._id === productId)[0].inCart = false;
-                        setProducts(__products);
-                        setCartCount(cartCount - 1);
+                        const __products = Helper.cloneArray(products)
+                        __products.filter(p => p._id === productId)[0].inCart = false
+                        setProducts(__products)
+                        setCartCount(cartCount - 1)
 
                         if (res.data.cartDeleted) {
-                          CartService.deleteCartId();
+                          CartService.deleteCartId()
                         }
 
-                        setOpenDeleteDialog(false);
-                        Helper.info(commonStrings.ARTICLE_REMOVED);
+                        setOpenDeleteDialog(false)
+                        Helper.info(commonStrings.ARTICLE_REMOVED)
                       } else {
-                        Helper.error();
+                        Helper.error()
                       }
                     } catch (err) {
-                      console.log(err);
-                      Helper.error();
+                      console.log(err)
+                      Helper.error()
                     }
                   }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
                 </DialogActions>
@@ -372,67 +372,67 @@ const Home = ({
 
       <Footer language={_language} />
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(context) {
   let _user = null, _signout = false, _categories = [], _page = 1, _categoryId = '',
     _keyword = '', _totalRecords = 0, _rowCount = 0, _products = [], _noMatch = false,
-    _language = '', _currency = '';
+    _language = '', _currency = ''
 
   try {
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
+        _user = await UserService.getUser(context, currentUser.id)
       }
 
       if (!_user || status !== 200) {
-        CartService.deleteCartId(context);
-        _signout = true;
+        CartService.deleteCartId(context)
+        _signout = true
       }
     } else {
-      _signout = true;
+      _signout = true
     }
 
-    _language = await SettingService.getLanguage();
+    _language = await SettingService.getLanguage()
 
     if (!_user || (_user && _user.verified)) {
-      if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
+      if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p)
 
       if (_page >= 1) {
-        _currency = await SettingService.getCurrency();
+        _currency = await SettingService.getCurrency()
 
-        if (typeof context.query.c !== 'undefined') _categoryId = context.query.c;
-        if (typeof context.query.s !== 'undefined') _keyword = context.query.s;
-        const cartId = CartService.getCartId(context);
+        if (typeof context.query.c !== 'undefined') _categoryId = context.query.c
+        if (typeof context.query.s !== 'undefined') _keyword = context.query.s
+        const cartId = CartService.getCartId(context)
 
-        _categories = await CategoryService.getCategories(_language);
-        const data = await ProductService.getProducts(_keyword, _page, Env.PAGE_SIZE, _categoryId, cartId);
+        _categories = await CategoryService.getCategories(_language)
+        const data = await ProductService.getProducts(_keyword, _page, Env.PAGE_SIZE, _categoryId, cartId)
 
-        const _data = data[0];
-        _products = _data.resultData;
-        _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _products.length;
-        _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0;
+        const _data = data[0]
+        _products = _data.resultData
+        _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _products.length
+        _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
         if (_totalRecords > 0 && _page > Math.ceil(_totalRecords / Env.PAGE_SIZE)) {
-          _noMatch = true;
+          _noMatch = true
         }
       } else {
-        _noMatch = true;
+        _noMatch = true
       }
     }
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -450,7 +450,7 @@ export async function getServerSideProps(context) {
       _products,
       _noMatch
     }
-  };
+  }
 }
 
-export default Home;
+export default Home

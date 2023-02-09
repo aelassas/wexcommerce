@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import * as UserService from '../services/UserService';
-import Header from '../components/Header';
-import { strings } from '../lang/settings';
-import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
-import { strings as headerStrings } from '../lang/header';
-import * as Helper from '../common/Helper';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react'
+import * as UserService from '../services/UserService'
+import Header from '../components/Header'
+import { strings } from '../lang/settings'
+import { strings as commonStrings } from '../lang/common'
+import { strings as masterStrings } from '../lang/master'
+import { strings as headerStrings } from '../lang/header'
+import * as Helper from '../common/Helper'
+import { useRouter } from 'next/router'
 import {
   Input,
   InputLabel,
@@ -14,101 +14,101 @@ import {
   FormHelperText,
   Button,
   Paper
-} from '@mui/material';
-import validator from 'validator';
-import * as CartService from '../services/CartService';
-import * as SettingService from '../services/SettingService';
-import Footer from '../components/Footer';
+} from '@mui/material'
+import validator from 'validator'
+import * as CartService from '../services/CartService'
+import * as SettingService from '../services/SettingService'
+import Footer from '../components/Footer'
 
-import styles from '../styles/settings.module.css';
+import styles from '../styles/settings.module.css'
 
 const Settings = ({ _user, _language, _signout }) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [loading, setLoading] = useState(true);
-  const [fullName, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [phoneValid, setPhoneValid] = useState(true);
-  const [address, setAddress] = useState('');
+  const [loading, setLoading] = useState(true)
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [phoneValid, setPhoneValid] = useState(true)
+  const [address, setAddress] = useState('')
 
   useEffect(() => {
     if (_language) {
-      Helper.setLanguage(strings, _language);
-      Helper.setLanguage(commonStrings, _language);
-      Helper.setLanguage(masterStrings, _language);
-      Helper.setLanguage(headerStrings, _language);
+      Helper.setLanguage(strings, _language)
+      Helper.setLanguage(commonStrings, _language)
+      Helper.setLanguage(masterStrings, _language)
+      Helper.setLanguage(headerStrings, _language)
     }
-  }, [_language]);
+  }, [_language])
 
   useEffect(() => {
     if (_user) {
-      setLoading(false);
-      setFullName(_user.fullName);
-      setPhone(_user.phone || '');
-      setAddress(_user.address || '');
+      setLoading(false)
+      setFullName(_user.fullName)
+      setPhone(_user.phone || '')
+      setAddress(_user.address || '')
     }
-  }, [_user]);
+  }, [_user])
 
   useEffect(() => {
     if (_signout) {
-      CartService.deleteCartId();
-      UserService.signout(false, true);
+      CartService.deleteCartId()
+      UserService.signout(false, true)
     }
-  }, [_signout]);
+  }, [_signout])
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
   const validatePhone = (phone) => {
     if (phone) {
-      const phoneValid = validator.isMobilePhone(phone);
-      setPhoneValid(phoneValid);
+      const phoneValid = validator.isMobilePhone(phone)
+      setPhoneValid(phoneValid)
 
-      return phoneValid;
+      return phoneValid
     } else {
-      setPhoneValid(true);
+      setPhoneValid(true)
 
-      return true;
+      return true
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      const phoneValid = await validatePhone(phone);
+      const phoneValid = await validatePhone(phone)
       if (!phoneValid) {
-        return;
+        return
       }
 
-      const payload = { _id: _user._id, fullName, phone, address };
-      const status = await UserService.updateUser(payload);
+      const payload = { _id: _user._id, fullName, phone, address }
+      const status = await UserService.updateUser(payload)
 
       if (status === 200) {
-        Helper.info(commonStrings.UPDATED);
+        Helper.info(commonStrings.UPDATED)
       } else {
-        Helper.error();
+        Helper.error()
       }
     }
     catch (err) {
-      UserService.signout();
+      UserService.signout()
     }
-  };
+  }
 
   return (
     !loading && _user && _language &&
@@ -127,7 +127,7 @@ const Settings = ({ _user, _language, _signout }) => {
                   value={fullName}
                   required
                   onChange={(e) => {
-                    setFullName(e.target.value);
+                    setFullName(e.target.value)
                   }}
                   autoComplete="off"
                 />
@@ -151,11 +151,11 @@ const Settings = ({ _user, _language, _signout }) => {
                   error={!phoneValid}
                   value={phone}
                   onBlur={(e) => {
-                    validatePhone(e.target.value);
+                    validatePhone(e.target.value)
                   }}
                   onChange={(e) => {
-                    setPhone(e.target.value);
-                    setPhoneValid(true);
+                    setPhone(e.target.value)
+                    setPhoneValid(true)
                   }}
                   required
                   autoComplete="off"
@@ -170,7 +170,7 @@ const Settings = ({ _user, _language, _signout }) => {
                 <Input
                   type="text"
                   onChange={(e) => {
-                    setAddress(e.target.value);
+                    setAddress(e.target.value)
                   }}
                   required
                   multiline
@@ -203,7 +203,7 @@ const Settings = ({ _user, _language, _signout }) => {
                   className='btn-secondary btn-margin-bottom'
                   size="small"
                   onClick={() => {
-                    router.replace('/');
+                    router.replace('/')
                   }}
                 >
                   {commonStrings.CANCEL}
@@ -231,40 +231,40 @@ const Settings = ({ _user, _language, _signout }) => {
 
       <Footer language={_language} />
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _language = '';
+  let _user = null, _signout = false, _language = ''
 
   try {
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
+        _user = await UserService.getUser(context, currentUser.id)
 
         if (_user) {
-          _language = await SettingService.getLanguage();
+          _language = await SettingService.getLanguage()
         } else {
-          _signout = true;
+          _signout = true
         }
       } else {
-        _signout = true;
+        _signout = true
       }
     } else {
-      _signout = true;
+      _signout = true
     }
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -273,7 +273,7 @@ export async function getServerSideProps(context) {
       _signout,
       _language
     }
-  };
+  }
 }
 
-export default Settings;
+export default Settings

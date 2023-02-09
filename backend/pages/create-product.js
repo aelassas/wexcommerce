@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
-import * as UserService from '../services/UserService';
-import Header from '../components/Header';
+import { useEffect, useState, useRef, useMemo } from 'react'
+import * as UserService from '../services/UserService'
+import Header from '../components/Header'
 import {
   Input,
   InputLabel,
@@ -9,162 +9,162 @@ import {
   Button,
   Paper,
   Switch
-} from '@mui/material';
-import { PhotoCamera as ImageIcon } from '@mui/icons-material';
-import { strings } from '../lang/create-product';
-import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
-import * as Helper from '../common/Helper';
-import * as ProductService from '../services/ProductService';
-import CategorySelectList from '../components/CategorySelectList';
-import { useRouter } from 'next/router';
-import Error from '../components/Error';
-import Env from '../config/env.config';
-import ImageEditor from '../components/ImageEditor';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import * as SettingService from '../services/SettingService';
+} from '@mui/material'
+import { PhotoCamera as ImageIcon } from '@mui/icons-material'
+import { strings } from '../lang/create-product'
+import { strings as commonStrings } from '../lang/common'
+import { strings as masterStrings } from '../lang/master'
+import * as Helper from '../common/Helper'
+import * as ProductService from '../services/ProductService'
+import CategorySelectList from '../components/CategorySelectList'
+import { useRouter } from 'next/router'
+import Error from '../components/Error'
+import Env from '../config/env.config'
+import ImageEditor from '../components/ImageEditor'
+import { EditorState, convertToRaw, ContentState } from 'draft-js'
+import draftToHtml from 'draftjs-to-html'
+import * as SettingService from '../services/SettingService'
 
-import styles from '../styles/create-product.module.css';
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import styles from '../styles/create-product.module.css'
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 
-let htmlToDraft = null;
-let Editor = null;
+let htmlToDraft = null
+let Editor = null
 if (typeof window === 'object') {
-  htmlToDraft = require('html-to-draftjs').default;
-  Editor = require('react-draft-wysiwyg').Editor;
+  htmlToDraft = require('html-to-draftjs').default
+  Editor = require('react-draft-wysiwyg').Editor
 }
 
 const CreateProduct = ({ _user, _signout, _language, _currency }) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [loading, setLoading] = useState(true);
-  const [name, setName] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [soldOut, setSoldOut] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [tempImage, setTempImage] = useState('');
-  const [tempImages, setTempImages] = useState([]);
-  const [imageError, setImageError] = useState(false);
-  const [fileNames, setFileNames] = useState([]);
-  const [editorState, setEditorState] = useState();
+  const [loading, setLoading] = useState(true)
+  const [name, setName] = useState('')
+  const [categories, setCategories] = useState([])
+  const [price, setPrice] = useState('')
+  const [quantity, setQuantity] = useState('')
+  const [soldOut, setSoldOut] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const [tempImage, setTempImage] = useState('')
+  const [tempImages, setTempImages] = useState([])
+  const [imageError, setImageError] = useState(false)
+  const [fileNames, setFileNames] = useState([])
+  const [editorState, setEditorState] = useState()
 
-  const uploadImageRef = useRef(null);
-  const uploadImagesRef = useRef(null);
+  const uploadImageRef = useRef(null)
+  const uploadImagesRef = useRef(null)
 
   useEffect(() => {
     if (_user) {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [_user]);
+  }, [_user])
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout();
+      UserService.signout()
     }
-  }, [_signout]);
+  }, [_signout])
 
   useEffect(() => {
     if (_language) {
-      Helper.setLanguage(strings, _language);
-      Helper.setLanguage(commonStrings, _language);
-      Helper.setLanguage(masterStrings, _language);
+      Helper.setLanguage(strings, _language)
+      Helper.setLanguage(commonStrings, _language)
+      Helper.setLanguage(masterStrings, _language)
     }
-  }, [_language]);
+  }, [_language])
 
   useEffect(() => {
-    const contentBlock = htmlToDraft('');
-    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-    const editorState = EditorState.createWithContent(contentState);
-    setEditorState(editorState);
-  }, []);
+    const contentBlock = htmlToDraft('')
+    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks)
+    const editorState = EditorState.createWithContent(contentState)
+    setEditorState(editorState)
+  }, [])
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
   const handleChangeImage = (e) => {
-    const reader = new FileReader();
-    const file = e.target.files[0];
+    const reader = new FileReader()
+    const file = e.target.files[0]
 
     reader.onloadend = async () => {
       try {
         if (tempImage) {
-          const status = await ProductService.deleteTempImage(tempImage);
+          const status = await ProductService.deleteTempImage(tempImage)
 
           if (status !== 200) {
-            Helper.error();
+            Helper.error()
           }
         }
-        const filename = await ProductService.uploadImage(file);
-        setTempImage(filename);
-        setImageError(false);
+        const filename = await ProductService.uploadImage(file)
+        setTempImage(filename)
+        setImageError(false)
       } catch (err) {
-        Helper.error();
+        Helper.error()
       }
-    };
+    }
 
-    reader.readAsDataURL(file);
-  };
+    reader.readAsDataURL(file)
+  }
 
   const handleChangeImages = (e) => {
 
-    const files = e.target.files;
+    const files = e.target.files
 
     for (const file of files) {
-      const reader = new FileReader();
+      const reader = new FileReader()
 
       reader.onloadend = async () => {
         try {
           if (!fileNames.includes(file.name)) {
-            const filename = await ProductService.uploadImage(file);
-            fileNames.push(file.name);
-            tempImages.push({ temp: true, src: filename });
-            setTempImages(Helper.cloneArray(tempImages));
+            const filename = await ProductService.uploadImage(file)
+            fileNames.push(file.name)
+            tempImages.push({ temp: true, src: filename })
+            setTempImages(Helper.cloneArray(tempImages))
             setFileNames(Helper.cloneArray(fileNames))
           }
         } catch (err) {
-          Helper.error();
+          Helper.error()
         }
-      };
+      }
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const onEditorStateChange = (state) => {
-    setEditorState(state);
-  };
+    setEditorState(state)
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
 
       if (!tempImage) {
-        return setImageError(true);
+        return setImageError(true)
       }
 
-      const _categories = categories.map(c => c._id);
-      const _price = parseFloat(price);
-      const _quantity = parseInt(quantity);
-      const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+      const _categories = categories.map(c => c._id)
+      const _price = parseFloat(price)
+      const _quantity = parseInt(quantity)
+      const description = draftToHtml(convertToRaw(editorState.getCurrentContent()))
 
       const data = {
         name,
@@ -176,30 +176,30 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
         hidden,
         image: tempImage,
         images: tempImages.map(image => image.src)
-      };
+      }
 
-      const res = await ProductService.createProduct(data);
+      const res = await ProductService.createProduct(data)
 
       if (res.status === 200) {
-        // Helper.info(strings.PRODUCT_CREATED);
+        // Helper.info(strings.PRODUCT_CREATED)
 
-        // setName('');
-        // setDescription('');
-        // setCategories([]);
-        // setPrice('');
-        // setQuantity('');
-        // setSoldOut(false);
-        // setHidden(false);
-        // setTempImage('');
-        router.replace('/products');
+        // setName('')
+        // setDescription('')
+        // setCategories([])
+        // setPrice('')
+        // setQuantity('')
+        // setSoldOut(false)
+        // setHidden(false)
+        // setTempImage('')
+        router.replace('/products')
       } else {
-        Helper.error();
+        Helper.error()
       }
     }
     catch (err) {
-      UserService.signout();
+      UserService.signout()
     }
-  };
+  }
 
   return (
     !loading && _user && _language &&
@@ -220,11 +220,11 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                 <div>
                   <a onClick={(e) => {
                     if (uploadImageRef.current) {
-                      uploadImageRef.current.value = '';
+                      uploadImageRef.current.value = ''
 
                       setTimeout(() => {
-                        uploadImageRef.current.click(e);
-                      }, 0);
+                        uploadImageRef.current.click(e)
+                      }, 0)
                     }
                   }}
                     className={styles.action}
@@ -235,11 +235,11 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                   <input ref={uploadImageRef} type="file" accept="image/*" hidden onChange={handleChangeImage} />
                   <a onClick={(e) => {
                     if (uploadImagesRef.current) {
-                      uploadImagesRef.current.value = '';
+                      uploadImagesRef.current.value = ''
 
                       setTimeout(() => {
-                        uploadImagesRef.current.click(e);
-                      }, 0);
+                        uploadImagesRef.current.click(e)
+                      }, 0)
                     }
                   }}
                     className={styles.action}
@@ -257,21 +257,21 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                   images={tempImages}
                   onDelete={async (image, index) => {
                     try {
-                      const status = await ProductService.deleteTempImage(image.src);
+                      const status = await ProductService.deleteTempImage(image.src)
 
                       if (status === 200) {
-                        const _tempImages = Helper.cloneArray(tempImages);
-                        _tempImages.splice(index, 1);
-                        setTempImages(_tempImages);
+                        const _tempImages = Helper.cloneArray(tempImages)
+                        _tempImages.splice(index, 1)
+                        setTempImages(_tempImages)
 
-                        const _fileNames = Helper.cloneArray(fileNames);
-                        _fileNames.splice(index, 1);
-                        setFileNames(_fileNames);
+                        const _fileNames = Helper.cloneArray(fileNames)
+                        _fileNames.splice(index, 1)
+                        setFileNames(_fileNames)
                       } else {
-                        Helper.error();
+                        Helper.error()
                       }
                     } catch (err) {
-                      Helper.error();
+                      Helper.error()
                     }
                   }} />
               </FormControl>
@@ -283,7 +283,7 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                   value={name}
                   required
                   onChange={(e) => {
-                    setName(e.target.value);
+                    setName(e.target.value)
                   }}
                   autoComplete="off"
                 />
@@ -314,7 +314,7 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                   variant='standard'
                   selectedOptions={categories}
                   onChange={(values) => {
-                    setCategories(values);
+                    setCategories(values)
                   }}
                 />
               </FormControl>
@@ -326,7 +326,7 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                   required
                   value={price}
                   onChange={(e) => {
-                    setPrice(e.target.value);
+                    setPrice(e.target.value)
                   }}
                 />
               </FormControl>
@@ -339,7 +339,7 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                   required
                   value={quantity}
                   onChange={(e) => {
-                    setQuantity(e.target.value);
+                    setQuantity(e.target.value)
                   }}
                 />
               </FormControl>
@@ -349,7 +349,7 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                   control={
                     <Switch checked={soldOut}
                       onChange={(e) => {
-                        setSoldOut(e.target.checked);
+                        setSoldOut(e.target.checked)
                       }}
                       color="primary" />
                   }
@@ -362,7 +362,7 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                   control={
                     <Switch checked={hidden}
                       onChange={(e) => {
-                        setHidden(e.target.checked);
+                        setHidden(e.target.checked)
                       }}
                       color="primary" />
                   }
@@ -386,24 +386,24 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
                   onClick={async () => {
                     try {
                       if (tempImage) {
-                        const status = await ProductService.deleteTempImage(tempImage);
+                        const status = await ProductService.deleteTempImage(tempImage)
 
                         if (status !== 200) {
-                          Helper.error();
+                          Helper.error()
                         }
                       }
 
                       for (const image of tempImages) {
-                        const status = await ProductService.deleteTempImage(image.src);
+                        const status = await ProductService.deleteTempImage(image.src)
 
                         if (status !== 200) {
-                          Helper.error();
+                          Helper.error()
                         }
                       }
 
-                      router.replace('/products');
+                      router.replace('/products')
                     } catch (err) {
-                      Helper.error();
+                      Helper.error()
                     }
                   }}
                 >
@@ -432,42 +432,42 @@ const CreateProduct = ({ _user, _signout, _language, _currency }) => {
         </div>
       }
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _language = '', _currency = '';
+  let _user = null, _signout = false, _language = '', _currency = ''
 
   try {
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
+        _user = await UserService.getUser(context, currentUser.id)
 
         if (_user) {
-          _language = await SettingService.getLanguage();
-          _currency = await SettingService.getCurrency();
+          _language = await SettingService.getLanguage()
+          _currency = await SettingService.getCurrency()
         } else {
-          _signout = true;
+          _signout = true
         }
       } else {
-        _signout = true;
+        _signout = true
       }
 
     } else {
-      _signout = true;
+      _signout = true
     }
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -477,7 +477,7 @@ export async function getServerSideProps(context) {
       _language,
       _currency
     }
-  };
+  }
 }
 
-export default CreateProduct;
+export default CreateProduct

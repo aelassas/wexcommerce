@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { strings } from '../lang/notifications';
-import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
-import { strings as headerStrings } from '../lang/header';
-import * as UserService from '../services/UserService';
-import * as NotificationService from '../services/NotificationService';
+import React, { useEffect, useRef, useState } from 'react'
+import { strings } from '../lang/notifications'
+import { strings as commonStrings } from '../lang/common'
+import { strings as masterStrings } from '../lang/master'
+import { strings as headerStrings } from '../lang/header'
+import * as UserService from '../services/UserService'
+import * as NotificationService from '../services/NotificationService'
 import {
     Button,
     Card,
@@ -17,7 +17,7 @@ import {
     IconButton,
     Tooltip,
     Typography
-} from '@mui/material';
+} from '@mui/material'
 import {
     Drafts as MarkReadIcon,
     Markunread as MarkUnreadIcon,
@@ -25,19 +25,19 @@ import {
     ArrowBackIos as PreviousPageIcon,
     ArrowForwardIos as NextPageIcon,
     Visibility as ViewIcon
-} from '@mui/icons-material';
-import * as Helper from '../common/Helper';
-import Env from '../config/env.config';
-import { format } from 'date-fns';
-import { fr, enUS } from "date-fns/locale";
-import Header from '../components/Header';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import NoMatch from '../components/NoMatch';
-import * as CartService from '../services/CartService';
-import * as SettingService from '../services/SettingService';
+} from '@mui/icons-material'
+import * as Helper from '../common/Helper'
+import Env from '../config/env.config'
+import { format } from 'date-fns'
+import { fr, enUS } from "date-fns/locale"
+import Header from '../components/Header'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import NoMatch from '../components/NoMatch'
+import * as CartService from '../services/CartService'
+import * as SettingService from '../services/SettingService'
 
-import styles from '../styles/notifications.module.css';
+import styles from '../styles/notifications.module.css'
 
 const Notifications = ({
     _user,
@@ -50,81 +50,81 @@ const Notifications = ({
     _noMatch,
     _language
 }) => {
-    const router = useRouter();
+    const router = useRouter()
 
-    const [loading, setLoading] = useState(true);
-    const [rows, setRows] = useState([]);
-    const [rowCount, setRowCount] = useState(-1);
-    const [totalRecords, setTotalRecords] = useState(-1);
-    const [notificationCount, setNotificationCount] = useState(0);
-    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-    const [selectedRows, setSelectedRows] = useState([]);
-    const notificationsListRef = useRef(null);
+    const [loading, setLoading] = useState(true)
+    const [rows, setRows] = useState([])
+    const [rowCount, setRowCount] = useState(-1)
+    const [totalRecords, setTotalRecords] = useState(-1)
+    const [notificationCount, setNotificationCount] = useState(0)
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+    const [selectedRows, setSelectedRows] = useState([])
+    const notificationsListRef = useRef(null)
 
-    const _fr = _language === 'fr';
-    const _locale = _fr ? fr : enUS;
-    const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm';
+    const _fr = _language === 'fr'
+    const _locale = _fr ? fr : enUS
+    const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm'
 
     useEffect(() => {
         if (_language) {
-            Helper.setLanguage(strings, _language);
-            Helper.setLanguage(commonStrings, _language);
-            Helper.setLanguage(masterStrings, _language);
-            Helper.setLanguage(headerStrings, _language);
+            Helper.setLanguage(strings, _language)
+            Helper.setLanguage(commonStrings, _language)
+            Helper.setLanguage(masterStrings, _language)
+            Helper.setLanguage(headerStrings, _language)
         }
-    }, [_language]);
+    }, [_language])
 
     useEffect(() => {
         if (_user) {
-            setLoading(false);
+            setLoading(false)
         }
-    }, [_user]);
+    }, [_user])
 
     useEffect(() => {
-        setRows(_notifications);
-        if (notificationsListRef.current) notificationsListRef.current.scrollTo(0, 0);
-    }, [notificationsListRef, _notifications]);
+        setRows(_notifications)
+        if (notificationsListRef.current) notificationsListRef.current.scrollTo(0, 0)
+    }, [notificationsListRef, _notifications])
 
     useEffect(() => {
-        setRowCount(_rowCount);
-    }, [_rowCount]);
+        setRowCount(_rowCount)
+    }, [_rowCount])
 
     useEffect(() => {
-        setTotalRecords(_totalRecords);
-    }, [_totalRecords]);
+        setTotalRecords(_totalRecords)
+    }, [_totalRecords])
 
     useEffect(() => {
-        setNotificationCount(_notificationCount);
-    }, [_notificationCount]);
+        setNotificationCount(_notificationCount)
+    }, [_notificationCount])
 
     useEffect(() => {
         if (_signout) {
-            CartService.deleteCartId();
-            UserService.signout(false, true);
+            CartService.deleteCartId()
+            UserService.signout(false, true)
         }
-    }, [_signout]);
+    }, [_signout])
 
     const handleResend = async (e) => {
         try {
-            e.preventDefault();
-            const data = { email: _user.email };
+            e.preventDefault()
+            const data = { email: _user.email }
 
-            const status = await UserService.resendLink(data);
+            const status = await UserService.resendLink(data)
 
             if (status === 200) {
-                Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+                Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
             } else {
-                Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+                Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
             }
 
         } catch (err) {
-            Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+            Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
         }
-    };
+    }
 
-    const checkedRows = rows.filter(row => row.checked);
-    const allChecked = rows.length > 0 && checkedRows.length === rows.length;
-    const indeterminate = checkedRows.length > 0 && checkedRows.length < rows.length;
+    const checkedRows = rows.filter(row => row.checked)
+    const allChecked = rows.length > 0 && checkedRows.length === rows.length
+    const indeterminate = checkedRows.length > 0 && checkedRows.length < rows.length
 
     return !loading && _user && _language &&
         <>
@@ -158,14 +158,14 @@ const Notifications = ({
                                             onChange={(event) => {
                                                 if (indeterminate) {
                                                     rows.forEach(row => {
-                                                        row.checked = false;
-                                                    });
+                                                        row.checked = false
+                                                    })
                                                 } else {
                                                     rows.forEach(row => {
-                                                        row.checked = event.target.checked;
-                                                    });
+                                                        row.checked = event.target.checked
+                                                    })
                                                 }
-                                                setRows(Helper.clone(rows));
+                                                setRows(Helper.clone(rows))
                                             }} />
                                     </div>
                                     {
@@ -176,22 +176,22 @@ const Notifications = ({
                                                 <Tooltip title={strings.MARK_ALL_AS_READ}>
                                                     <IconButton onClick={async () => {
                                                         try {
-                                                            const _rows = checkedRows.filter(row => !row.isRead);
-                                                            const ids = _rows.map(row => row._id);
-                                                            const status = await NotificationService.markAsRead(_user._id, ids);
+                                                            const _rows = checkedRows.filter(row => !row.isRead)
+                                                            const ids = _rows.map(row => row._id)
+                                                            const status = await NotificationService.markAsRead(_user._id, ids)
 
                                                             if (status === 200) {
                                                                 _rows.forEach(row => {
-                                                                    row.isRead = true;
-                                                                });
-                                                                setRows(Helper.clone(rows));
-                                                                setNotificationCount(notificationCount - _rows.length);
+                                                                    row.isRead = true
+                                                                })
+                                                                setRows(Helper.clone(rows))
+                                                                setNotificationCount(notificationCount - _rows.length)
                                                             } else {
-                                                                Helper.error();
+                                                                Helper.error()
                                                             }
                                                         }
                                                         catch (err) {
-                                                            UserService.signout();
+                                                            UserService.signout()
                                                         }
                                                     }}>
                                                         <MarkReadIcon />
@@ -203,22 +203,22 @@ const Notifications = ({
                                                 <Tooltip title={strings.MARK_ALL_AS_UNREAD}>
                                                     <IconButton onClick={async () => {
                                                         try {
-                                                            const _rows = checkedRows.filter(row => row.isRead);
-                                                            const ids = _rows.map(row => row._id);
-                                                            const status = await NotificationService.markAsUnread(_user._id, ids);
+                                                            const _rows = checkedRows.filter(row => row.isRead)
+                                                            const ids = _rows.map(row => row._id)
+                                                            const status = await NotificationService.markAsUnread(_user._id, ids)
 
                                                             if (status === 200) {
                                                                 _rows.forEach(row => {
-                                                                    row.isRead = false;
-                                                                });
-                                                                setRows(Helper.clone(rows));
-                                                                setNotificationCount(notificationCount + _rows.length);
+                                                                    row.isRead = false
+                                                                })
+                                                                setRows(Helper.clone(rows))
+                                                                setNotificationCount(notificationCount + _rows.length)
                                                             } else {
-                                                                Helper.error();
+                                                                Helper.error()
                                                             }
                                                         }
                                                         catch (err) {
-                                                            UserService.signout();
+                                                            UserService.signout()
                                                         }
                                                     }}>
                                                         <MarkUnreadIcon />
@@ -227,8 +227,8 @@ const Notifications = ({
                                             }
                                             <Tooltip title={strings.DELETE_ALL}>
                                                 <IconButton onClick={() => {
-                                                    setSelectedRows(checkedRows);
-                                                    setOpenDeleteDialog(true);
+                                                    setSelectedRows(checkedRows)
+                                                    setOpenDeleteDialog(true)
                                                 }}>
                                                     <DeleteIcon />
                                                 </IconButton>
@@ -243,8 +243,8 @@ const Notifications = ({
                                         <div key={row._id} className={styles.notificationContainer}>
                                             <div className={styles.notificationCheckbox}>
                                                 <Checkbox checked={row.checked} onChange={(event) => {
-                                                    row.checked = event.target.checked;
-                                                    setRows(Helper.clone(rows));
+                                                    row.checked = event.target.checked
+                                                    setRows(Helper.clone(rows))
                                                 }} />
                                             </div>
                                             <div className={`${styles.notification}${!row.isRead ? ` ${styles.unread}` : ''}`}>
@@ -260,23 +260,23 @@ const Notifications = ({
                                                             row.order &&
                                                             <Tooltip title={strings.VIEW}>
                                                                 <IconButton onClick={async () => {
-                                                                    const redirect = () => router.replace(`/orders?o=${row.order}`);
+                                                                    const redirect = () => router.replace(`/orders?o=${row.order}`)
 
                                                                     try {
                                                                         if (!row.isRead) {
-                                                                            const status = await NotificationService.markAsRead(_user._id, [row._id]);
+                                                                            const status = await NotificationService.markAsRead(_user._id, [row._id])
 
                                                                             if (status === 200) {
-                                                                                redirect();
+                                                                                redirect()
                                                                             } else {
-                                                                                Helper.error();
+                                                                                Helper.error()
                                                                             }
                                                                         } else {
-                                                                            redirect();
+                                                                            redirect()
                                                                         }
                                                                     }
                                                                     catch (err) {
-                                                                        UserService.signout();
+                                                                        UserService.signout()
                                                                     }
                                                                 }}>
                                                                     <ViewIcon />
@@ -288,18 +288,18 @@ const Notifications = ({
                                                                 <Tooltip title={strings.MARK_AS_READ}>
                                                                     <IconButton onClick={async () => {
                                                                         try {
-                                                                            const status = await NotificationService.markAsRead(_user._id, [row._id]);
+                                                                            const status = await NotificationService.markAsRead(_user._id, [row._id])
 
                                                                             if (status === 200) {
-                                                                                row.isRead = true;
-                                                                                setRows(Helper.clone(rows));
-                                                                                setNotificationCount(notificationCount - 1);
+                                                                                row.isRead = true
+                                                                                setRows(Helper.clone(rows))
+                                                                                setNotificationCount(notificationCount - 1)
                                                                             } else {
-                                                                                Helper.error();
+                                                                                Helper.error()
                                                                             }
                                                                         }
                                                                         catch (err) {
-                                                                            UserService.signout();
+                                                                            UserService.signout()
                                                                         }
                                                                     }}>
                                                                         <MarkReadIcon />
@@ -309,18 +309,18 @@ const Notifications = ({
                                                                 <Tooltip title={strings.MARK_AS_UNREAD}>
                                                                     <IconButton onClick={async () => {
                                                                         try {
-                                                                            const status = await NotificationService.markAsUnread(_user._id, [row._id]);
+                                                                            const status = await NotificationService.markAsUnread(_user._id, [row._id])
 
                                                                             if (status === 200) {
-                                                                                row.isRead = false;
-                                                                                setRows(Helper.clone(rows));
-                                                                                setNotificationCount(notificationCount + 1);
+                                                                                row.isRead = false
+                                                                                setRows(Helper.clone(rows))
+                                                                                setNotificationCount(notificationCount + 1)
                                                                             } else {
-                                                                                Helper.error();
+                                                                                Helper.error()
                                                                             }
                                                                         }
                                                                         catch (err) {
-                                                                            UserService.signout();
+                                                                            UserService.signout()
                                                                         }
                                                                     }}>
                                                                         <MarkUnreadIcon />
@@ -329,8 +329,8 @@ const Notifications = ({
                                                         }
                                                         <Tooltip title={commonStrings.DELETE}>
                                                             <IconButton onClick={() => {
-                                                                setSelectedRows([row]);
-                                                                setOpenDeleteDialog(true);
+                                                                setSelectedRows([row])
+                                                                setOpenDeleteDialog(true)
                                                             }}>
                                                                 <DeleteIcon />
                                                             </IconButton>
@@ -380,32 +380,32 @@ const Notifications = ({
                                 <DialogContent>{selectedRows.length > 1 ? strings.DELETE_NOTIFICATIONS : strings.DELETE_NOTIFICATION}</DialogContent>
                                 <DialogActions className='dialog-actions'>
                                     <Button onClick={() => {
-                                        setOpenDeleteDialog(false);
+                                        setOpenDeleteDialog(false)
                                     }} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
                                     <Button onClick={async () => {
                                         try {
-                                            const ids = selectedRows.map(row => row._id);
-                                            const status = await NotificationService.deleteNotifications(_user._id, ids);
+                                            const ids = selectedRows.map(row => row._id)
+                                            const status = await NotificationService.deleteNotifications(_user._id, ids)
 
                                             if (status === 200) {
                                                 if (selectedRows.length === rows.length) {
-                                                    router.replace('/notifications');
+                                                    router.replace('/notifications')
                                                 } else {
                                                     selectedRows.forEach(row => {
-                                                        rows.splice(rows.findIndex(_row => _row._id === row._id), 1);
-                                                    });
-                                                    setRows(Helper.clone(rows));
-                                                    setRowCount(rowCount - selectedRows.length);
-                                                    setTotalRecords(totalRecords - selectedRows.length);
+                                                        rows.splice(rows.findIndex(_row => _row._id === row._id), 1)
+                                                    })
+                                                    setRows(Helper.clone(rows))
+                                                    setRowCount(rowCount - selectedRows.length)
+                                                    setTotalRecords(totalRecords - selectedRows.length)
                                                 }
-                                                setNotificationCount(notificationCount - selectedRows.length);
-                                                setOpenDeleteDialog(false);
+                                                setNotificationCount(notificationCount - selectedRows.length)
+                                                setOpenDeleteDialog(false)
                                             } else {
-                                                Helper.error();
+                                                Helper.error()
                                             }
                                         }
                                         catch (err) {
-                                            UserService.signout();
+                                            UserService.signout()
                                         }
                                     }} variant='contained' color='error'>{commonStrings.DELETE}</Button>
                                 </DialogActions>
@@ -428,61 +428,61 @@ const Notifications = ({
                     >{masterStrings.RESEND}</Button>
                 </div>
             }
-        </>;
-};
+        </>
+}
 
 export async function getServerSideProps(context) {
     let _user = null, _signout = false, _page = 1, _totalRecords = 0, _rowCount = 0,
-        _notifications = [], _notificationCount = 0, _noMatch = false, _language = '';
+        _notifications = [], _notificationCount = 0, _noMatch = false, _language = ''
 
     try {
-        const currentUser = UserService.getCurrentUser(context);
+        const currentUser = UserService.getCurrentUser(context)
 
         if (currentUser) {
-            let status;
+            let status
             try {
-                status = await UserService.validateAccessToken(context);
+                status = await UserService.validateAccessToken(context)
             } catch (err) {
-                console.log('Unauthorized!');
+                console.log('Unauthorized!')
             }
 
             if (status === 200) {
-                _user = await UserService.getUser(context, currentUser.id);
+                _user = await UserService.getUser(context, currentUser.id)
 
                 if (_user) {
-                    if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p);
+                    if (typeof context.query.p !== 'undefined') _page = parseInt(context.query.p)
 
-                    _language = await SettingService.getLanguage();
+                    _language = await SettingService.getLanguage()
 
                     if (_page >= 1) {
 
-                        const data = await NotificationService.getNotifications(context, _user._id, _page);
-                        const _data = data[0];
-                        _notifications = _data.resultData.map(row => ({ checked: false, ...row }));
-                        _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _notifications.length;
-                        _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0;
+                        const data = await NotificationService.getNotifications(context, _user._id, _page)
+                        const _data = data[0]
+                        _notifications = _data.resultData.map(row => ({ checked: false, ...row }))
+                        _rowCount = ((_page - 1) * Env.PAGE_SIZE) + _notifications.length
+                        _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
-                        const notificationCounter = await NotificationService.getNotificationCounter(context, _user._id);
-                        _notificationCount = notificationCounter.count;
+                        const notificationCounter = await NotificationService.getNotificationCounter(context, _user._id)
+                        _notificationCount = notificationCounter.count
 
                         if (_totalRecords > 0 && _page > Math.ceil(_totalRecords / Env.PAGE_SIZE)) {
-                            _noMatch = true;
+                            _noMatch = true
                         }
                     } else {
-                        _noMatch = true;
+                        _noMatch = true
                     }
                 } else {
-                    _signout = true;
+                    _signout = true
                 }
             } else {
-                _signout = true;
+                _signout = true
             }
         } else {
-            _signout = true;
+            _signout = true
         }
     } catch (err) {
-        console.log(err);
-        _signout = true;
+        console.log(err)
+        _signout = true
     }
 
     return {
@@ -497,7 +497,7 @@ export async function getServerSideProps(context) {
             _noMatch,
             _language
         }
-    };
+    }
 }
 
-export default Notifications;
+export default Notifications

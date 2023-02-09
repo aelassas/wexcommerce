@@ -1,46 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { strings as commonStrings } from '../lang/common';
-import { strings } from '../lang/order-date-filter';
-import Env from '../config/env.config';
-import Accordion from './Accordion';
-import { FormControl, Button } from '@mui/material';
-import DatePicker from './DatePicker';
-import * as Helper from '../common/Helper';
+import React, { useState, useEffect } from 'react'
+import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/order-date-filter'
+import Env from '../config/env.config'
+import Accordion from './Accordion'
+import { FormControl, Button } from '@mui/material'
+import DatePicker from './DatePicker'
+import * as Helper from '../common/Helper'
 
-import styles from '../styles/order-date-filter.module.css';
+import styles from '../styles/order-date-filter.module.css'
 
 export default function OrderDateFilter({ language, from, to, onSubmit, className }) {
-    const [fromDate, setFromDate] = useState(null);
-    const [toDate, setToDate] = useState(null);
-    const [minDate, setMinDate] = useState();
+    const [fromDate, setFromDate] = useState(null)
+    const [toDate, setToDate] = useState(null)
+    const [minDate, setMinDate] = useState()
 
     useEffect(() => {
         if (language) {
-            Helper.setLanguage(strings, language);
+            Helper.setLanguage(strings, language)
         }
-    }, [language]);
+    }, [language])
 
     useEffect(() => {
         if (from) {
-            setFromDate(from);
+            setFromDate(from)
         } else {
-            setFromDate(null);
+            setFromDate(null)
         }
-    }, [from]);
+    }, [from])
 
     useEffect(() => {
         if (to) {
-            setToDate(to);
+            setToDate(to)
         } else {
-            setToDate(null);
+            setToDate(null)
         }
-    }, [to]);
+    }, [to])
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        if (onSubmit) onSubmit({ from: fromDate, to: toDate });
-    };
+        if (onSubmit) onSubmit({ from: fromDate, to: toDate })
+    }
 
     return (
         <Accordion
@@ -54,8 +54,8 @@ export default function OrderDateFilter({ language, from, to, onSubmit, classNam
                         label={strings.FROM}
                         value={fromDate}
                         onChange={(from) => {
-                            setFromDate(from);
-                            setMinDate(from);
+                            setFromDate(from)
+                            setMinDate(from)
                         }}
                         language={language}
                     />
@@ -66,7 +66,7 @@ export default function OrderDateFilter({ language, from, to, onSubmit, classNam
                         value={toDate}
                         minDate={minDate}
                         onChange={(to) => {
-                            setToDate(to);
+                            setToDate(to)
                         }}
                         language={language}
                     />
@@ -82,5 +82,5 @@ export default function OrderDateFilter({ language, from, to, onSubmit, classNam
             </form>
 
         </Accordion>
-    );
+    )
 }

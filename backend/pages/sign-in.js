@@ -1,99 +1,99 @@
-import React, { useEffect, useState } from 'react';
-import { strings as commonStrings } from '../lang/common';
-import { strings } from '../lang/sign-in';
-import * as UserService from '../services/UserService';
-import Header from '../components/Header';
-import Error from '../components/Error';
+import React, { useEffect, useState } from 'react'
+import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/sign-in'
+import * as UserService from '../services/UserService'
+import Header from '../components/Header'
+import Error from '../components/Error'
 import {
     Paper,
     FormControl,
     InputLabel,
     Input,
     Button
-} from '@mui/material';
-import * as Helper from '../common/Helper';
-import { useRouter } from "next/router";
-import Link from 'next/link';
-import * as SettingService from '../services/SettingService';
+} from '@mui/material'
+import * as Helper from '../common/Helper'
+import { useRouter } from "next/router"
+import Link from 'next/link'
+import * as SettingService from '../services/SettingService'
 
-import styles from '../styles/signin.module.css';
+import styles from '../styles/signin.module.css'
 
 const SignIn = ({ _language }) => {
-    const router = useRouter();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(false);
-    const [visible, setVisible] = useState(false);
-    const [stayConnected, setStayConnected] = useState(false);
+    const router = useRouter()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState(false)
+    const [visible, setVisible] = useState(false)
+    const [stayConnected, setStayConnected] = useState(false)
 
     useEffect(() => {
         if (_language) {
-            Helper.setLanguage(commonStrings, _language);
-            Helper.setLanguage(strings, _language);
+            Helper.setLanguage(commonStrings, _language)
+            Helper.setLanguage(strings, _language)
         }
-    }, [_language]);
+    }, [_language])
 
     useEffect(() => {
         (async function () {
             try {
-                const currentUser = UserService.getCurrentUser();
+                const currentUser = UserService.getCurrentUser()
 
                 if (currentUser) {
-                    const status = await UserService.validateAccessToken();
+                    const status = await UserService.validateAccessToken()
 
                     if (status === 200) {
-                        const user = await UserService.getUser(currentUser.id);
+                        const user = await UserService.getUser(currentUser.id)
                         if (user) {
-                            router.replace('/');
+                            router.replace('/')
                         } else {
-                            UserService.signout();
+                            UserService.signout()
                         }
                     }
                 } else {
-                    setVisible(true);
+                    setVisible(true)
                 }
             } catch (err) {
-                UserService.signout();
+                UserService.signout()
             }
-        })();
-    }, [router]);
+        })()
+    }, [router])
 
     const handleOnChangeEmail = (e) => {
-        setEmail(e.target.value);
-    };
+        setEmail(e.target.value)
+    }
 
     const handleOnChangePassword = (e) => {
-        setPassword(e.target.value);
-    };
+        setPassword(e.target.value)
+    }
 
     const handleOnPasswordKeyDown = (e) => {
         if (e.key === 'Enter') {
-            handleSubmit(e);
+            handleSubmit(e)
         }
-    };
+    }
 
     const handleSubmit = async (e) => {
         try {
-            e.preventDefault();
+            e.preventDefault()
 
-            const data = { email, password, stayConnected };
+            const data = { email, password, stayConnected }
 
-            const res = await UserService.signin(data);
+            const res = await UserService.signin(data)
 
             if (res.status === 200) {
                 if (router.query.o) {
-                    router.replace(`/?o=${router.query.o}`);
+                    router.replace(`/?o=${router.query.o}`)
                 } else {
-                    router.replace('/');
+                    router.replace('/')
                 }
             } else {
-                setError(true);
+                setError(true)
             }
         }
         catch (err) {
-            setError(true);
+            setError(true)
         }
-    };
+    }
 
     return (
         _language &&
@@ -126,13 +126,13 @@ const SignIn = ({ _language }) => {
 
                             <div className={styles.stayConnected}>
                                 <input type='checkbox' onChange={(e) => {
-                                    setStayConnected(e.currentTarget.checked);
+                                    setStayConnected(e.currentTarget.checked)
                                 }} />
                                 <label onClick={(e) => {
-                                    const checkbox = e.currentTarget.previousSibling;
-                                    const checked = !checkbox.checked;
-                                    checkbox.checked = checked;
-                                    setStayConnected(checked);
+                                    const checkbox = e.currentTarget.previousSibling
+                                    const checked = !checkbox.checked
+                                    checkbox.checked = checked
+                                    setStayConnected(checked)
                                 }}>{strings.STAY_CONNECTED}</label>
                             </div>
 
@@ -157,18 +157,18 @@ const SignIn = ({ _language }) => {
                     </Paper>
                 </div>}
         </div>
-    );
-};
+    )
+}
 
 export async function getServerSideProps(context) {
 
-    const _language = await SettingService.getLanguage();
+    const _language = await SettingService.getLanguage()
 
     return {
         props: {
             _language
         }
-    };
-};
+    }
+}
 
-export default SignIn;
+export default SignIn

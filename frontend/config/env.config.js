@@ -45,6 +45,6 @@ const Env = {
         CANCELLED: 'cancelled'
     },
     COOCKIES_OPTIONS: { maxAge: 100 * 365 * 24 * 60 * 60 },
-};
+}
 
-export default Env;
+export default Env

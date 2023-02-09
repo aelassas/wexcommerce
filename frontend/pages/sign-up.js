@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { strings as commonStrings } from '../lang/common';
-import { strings } from '../lang/sign-up';
-import * as UserService from '../services/UserService';
-import Error from '../components/Error';
-import Backdrop from '../components/SimpleBackdrop';
+import React, { useState, useEffect } from 'react'
+import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/sign-up'
+import * as UserService from '../services/UserService'
+import Error from '../components/Error'
+import Backdrop from '../components/SimpleBackdrop'
 import {
     Input,
     InputLabel,
@@ -11,152 +11,152 @@ import {
     FormHelperText,
     Button,
     Paper
-} from '@mui/material';
-import validator from 'validator';
-import * as Helper from '../common/Helper';
-import { useRouter } from "next/router";
-import Header from '../components/Header';
-import * as SettingService from '../services/SettingService';
-import Footer from '../components/Footer';
+} from '@mui/material'
+import validator from 'validator'
+import * as Helper from '../common/Helper'
+import { useRouter } from "next/router"
+import Header from '../components/Header'
+import * as SettingService from '../services/SettingService'
+import Footer from '../components/Footer'
 
-import styles from '../styles/signup.module.css';
+import styles from '../styles/signup.module.css'
 
 const SignUp = ({ _language }) => {
-    const router = useRouter();
+    const router = useRouter()
 
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
-    const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
-    const [emailError, setEmailError] = useState(false);
-    const [visible, setVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [emailValid, setEmailValid] = useState(true);
-    const [phone, setPhone] = useState('');
-    const [phoneValid, setPhoneValid] = useState(true);
-    const [address, setAddress] = useState('');
+    const [fullName, setFullName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [error, setError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const [passwordsDontMatch, setPasswordsDontMatch] = useState(false)
+    const [emailError, setEmailError] = useState(false)
+    const [visible, setVisible] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [emailValid, setEmailValid] = useState(true)
+    const [phone, setPhone] = useState('')
+    const [phoneValid, setPhoneValid] = useState(true)
+    const [address, setAddress] = useState('')
 
     useEffect(() => {
         if (_language) {
-            Helper.setLanguage(commonStrings, _language);
-            Helper.setLanguage(strings, _language);
+            Helper.setLanguage(commonStrings, _language)
+            Helper.setLanguage(strings, _language)
         }
-    }, [_language]);
+    }, [_language])
 
     useEffect(() => {
-        const currentUser = UserService.getCurrentUser();
+        const currentUser = UserService.getCurrentUser()
 
         if (currentUser) {
-            router.replace('/');
+            router.replace('/')
         } else {
-            setVisible(true);
+            setVisible(true)
         }
-    }, [router]);
+    }, [router])
 
     const handleOnChangeFullName = (e) => {
-        setFullName(e.target.value);
-    };
+        setFullName(e.target.value)
+    }
 
     const handleEmailChange = (e) => {
-        setEmail(e.target.value);
+        setEmail(e.target.value)
 
         if (!e.target.value) {
-            setEmailError(false);
-            setEmailValid(true);
+            setEmailError(false)
+            setEmailValid(true)
         }
-    };
+    }
 
     const validateEmail = async (email) => {
         if (email) {
             if (validator.isEmail(email)) {
                 try {
-                    const status = await UserService.validateEmail({ email });
+                    const status = await UserService.validateEmail({ email })
                     if (status === 200) {
-                        setEmailError(false);
-                        setEmailValid(true);
-                        return true;
+                        setEmailError(false)
+                        setEmailValid(true)
+                        return true
                     } else {
-                        setEmailError(true);
-                        setEmailValid(true);
-                        setError(false);
-                        return false;
+                        setEmailError(true)
+                        setEmailValid(true)
+                        setError(false)
+                        return false
                     }
                 } catch (err) {
-                    Helper.error();
-                    setError(true);
-                    setEmailError(false);
-                    setEmailValid(true);
-                    return false;
+                    Helper.error()
+                    setError(true)
+                    setEmailError(false)
+                    setEmailValid(true)
+                    return false
                 }
             } else {
-                setEmailError(false);
-                setEmailValid(false);
-                return false;
+                setEmailError(false)
+                setEmailValid(false)
+                return false
             }
         } else {
-            setEmailError(false);
-            setEmailValid(true);
-            return false;
+            setEmailError(false)
+            setEmailValid(true)
+            return false
         }
-    };
+    }
 
     const handleEmailBlur = async (e) => {
-        await validateEmail(e.target.value);
-    };
+        await validateEmail(e.target.value)
+    }
 
     const handleOnChangePassword = (e) => {
-        setPassword(e.target.value);
-    };
+        setPassword(e.target.value)
+    }
 
     const handleOnChangeConfirmPassword = (e) => {
-        setConfirmPassword(e.target.value);
-    };
+        setConfirmPassword(e.target.value)
+    }
 
     const validatePhone = (phone) => {
         if (phone) {
-            const phoneValid = validator.isMobilePhone(phone);
-            setPhoneValid(phoneValid);
+            const phoneValid = validator.isMobilePhone(phone)
+            setPhoneValid(phoneValid)
 
-            return phoneValid;
+            return phoneValid
         } else {
-            setPhoneValid(true);
+            setPhoneValid(true)
 
-            return true;
+            return true
         }
-    };
+    }
 
     const handleSubmit = async (e) => {
         try {
-            e.preventDefault();
+            e.preventDefault()
 
-            const emailValid = await validateEmail(email);
+            const emailValid = await validateEmail(email)
             if (!emailValid) {
-                return;
+                return
             }
 
-            const phoneValid = await validatePhone(phone);
+            const phoneValid = await validatePhone(phone)
             if (!phoneValid) {
-                return;
+                return
             }
 
             if (password.length < 6) {
-                setPasswordError(true);
-                setPasswordsDontMatch(false);
-                setError(false);
-                return;
+                setPasswordError(true)
+                setPasswordsDontMatch(false)
+                setError(false)
+                return
             }
 
             if (password !== confirmPassword) {
-                setPasswordsDontMatch(true);
-                setError(false);
-                setPasswordError(false);
-                return;
+                setPasswordsDontMatch(true)
+                setError(false)
+                setPasswordError(false)
+                return
             }
 
-            setLoading(true);
+            setLoading(true)
 
             const data = {
                 email,
@@ -165,36 +165,36 @@ const SignUp = ({ _language }) => {
                 password,
                 fullName,
                 language: _language
-            };
+            }
 
-            const status = await UserService.signup(data);
+            const status = await UserService.signup(data)
 
             if (status === 200) {
-                const res = await UserService.signin({ email, password });
+                const res = await UserService.signin({ email, password })
 
                 if (res.status === 200) {
-                    router.replace('/');
+                    router.replace('/')
                 } else {
-                    setError(true);
-                    setPasswordError(false);
-                    setPasswordsDontMatch(false);
-                    setLoading(false);
+                    setError(true)
+                    setPasswordError(false)
+                    setPasswordsDontMatch(false)
+                    setLoading(false)
                 }
             } else {
-                setError(true);
-                setPasswordError(false);
-                setPasswordsDontMatch(false);
-                setLoading(false);
+                setError(true)
+                setPasswordError(false)
+                setPasswordsDontMatch(false)
+                setLoading(false)
             }
 
 
         } catch (err) {
-            setError(true);
-            setPasswordError(false);
-            setPasswordsDontMatch(false);
-            setLoading(false);
+            setError(true)
+            setPasswordError(false)
+            setPasswordsDontMatch(false)
+            setLoading(false)
         }
-    };
+    }
 
     return (
         visible && _language &&
@@ -241,11 +241,11 @@ const SignUp = ({ _language }) => {
                                     error={!phoneValid}
                                     value={phone}
                                     onBlur={(e) => {
-                                        validatePhone(e.target.value);
+                                        validatePhone(e.target.value)
                                     }}
                                     onChange={(e) => {
-                                        setPhone(e.target.value);
-                                        setPhoneValid(true);
+                                        setPhone(e.target.value)
+                                        setPhoneValid(true)
                                     }}
                                     required
                                     autoComplete="off"
@@ -259,7 +259,7 @@ const SignUp = ({ _language }) => {
                                 <Input
                                     type="text"
                                     onChange={(e) => {
-                                        setAddress(e.target.value);
+                                        setAddress(e.target.value)
                                     }}
                                     required
                                     multiline
@@ -313,7 +313,7 @@ const SignUp = ({ _language }) => {
                                     className='btn-secondary btn-margin-bottom'
                                     size="small"
                                     onClick={() => {
-                                        router.replace('/');
+                                        router.replace('/')
                                     }}
                                 >
                                     {commonStrings.CANCEL}
@@ -332,18 +332,18 @@ const SignUp = ({ _language }) => {
 
             <Footer language={_language} />
         </>
-    );
-};
+    )
+}
 
 export async function getServerSideProps(context) {
 
-    const _language = await SettingService.getLanguage();
+    const _language = await SettingService.getLanguage()
 
     return {
         props: {
             _language
         }
-    };
-};
+    }
+}
 
-export default SignUp;
+export default SignUp

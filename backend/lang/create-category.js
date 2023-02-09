@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization';
+import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -11,5 +11,5 @@ export const strings = new LocalizedStrings({
         INVALID_CATEGORY: 'This category already exists.',
         CATEGORY_CREATED: 'Category created successfully.'
     }
-});
+})
 

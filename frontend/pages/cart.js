@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import * as UserService from '../services/UserService';
-import Header from '../components/Header';
+import { useEffect, useState } from 'react'
+import * as UserService from '../services/UserService'
+import Header from '../components/Header'
 import {
   Button,
   IconButton,
@@ -11,94 +11,94 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-} from '@mui/material';
+} from '@mui/material'
 import {
   Add as IncrementIcon,
   Remove as DecrementIcon,
   ShoppingCartCheckout as CheckoutIcon,
-} from '@mui/icons-material';
-import { strings } from '../lang/cart';
-import { strings as commonStrings } from '../lang/common';
-import { strings as masterStrings } from '../lang/master';
-import * as Helper from '../common/Helper';
-import * as CartService from '../services/CartService';
-import { useRouter } from 'next/router';
-import Env from '../config/env.config';
-import SoldOut from '../components/SoldOut';
-import Link from 'next/link';
-import * as SettingService from '../services/SettingService';
-import Footer from '../components/Footer';
+} from '@mui/icons-material'
+import { strings } from '../lang/cart'
+import { strings as commonStrings } from '../lang/common'
+import { strings as masterStrings } from '../lang/master'
+import * as Helper from '../common/Helper'
+import * as CartService from '../services/CartService'
+import { useRouter } from 'next/router'
+import Env from '../config/env.config'
+import SoldOut from '../components/SoldOut'
+import Link from 'next/link'
+import * as SettingService from '../services/SettingService'
+import Footer from '../components/Footer'
 
-import styles from '../styles/cart.module.css';
+import styles from '../styles/cart.module.css'
 
 const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [loading, setLoading] = useState(true);
-  const [cartItems, setCartItems] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
-  const [productId, setProductId] = useState();
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openClearDialog, setOpenClearDialog] = useState(false);
-  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true)
+  const [cartItems, setCartItems] = useState([])
+  const [cartCount, setCartCount] = useState(0)
+  const [productId, setProductId] = useState()
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+  const [openClearDialog, setOpenClearDialog] = useState(false)
+  const [total, setTotal] = useState(0)
 
   useEffect(() => {
     if (_cart || _empty) {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [_cart, _empty]);
+  }, [_cart, _empty])
 
   useEffect(() => {
     if (_signout) {
-      UserService.signout(false);
+      UserService.signout(false)
     }
-  }, [_signout]);
+  }, [_signout])
 
   useEffect(() => {
     if (_language) {
-      Helper.setLanguage(strings, _language);
-      Helper.setLanguage(commonStrings, _language);
-      Helper.setLanguage(masterStrings, _language);
+      Helper.setLanguage(strings, _language)
+      Helper.setLanguage(commonStrings, _language)
+      Helper.setLanguage(masterStrings, _language)
     }
-  }, [_language]);
+  }, [_language])
 
   useEffect(() => {
     if (_cart) {
-      setCartItems(_cart.cartItems);
-      setTotal(Helper.total(_cart.cartItems));
+      setCartItems(_cart.cartItems)
+      setTotal(Helper.total(_cart.cartItems))
     }
-  }, [_cart]);
+  }, [_cart])
 
   useEffect(() => {
     (async function () {
-      const cartId = CartService.getCartId();
+      const cartId = CartService.getCartId()
 
       if (cartId) {
-        const cartCount = await CartService.getCartCount(cartId);
-        setCartCount(cartCount);
+        const cartCount = await CartService.getCartCount(cartId)
+        setCartCount(cartCount)
       }
-    })();
-  }, []);
+    })()
+  }, [])
 
   const handleResend = async (e) => {
     try {
-      e.preventDefault();
-      const data = { email: _user.email };
+      e.preventDefault()
+      const data = { email: _user.email }
 
-      const status = await UserService.resendLink(data);
+      const status = await UserService.resendLink(data)
 
       if (status === 200) {
-        Helper.info(masterStrings.VALIDATION_EMAIL_SENT);
+        Helper.info(masterStrings.VALIDATION_EMAIL_SENT)
       } else {
-        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+        Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
       }
 
     } catch (err) {
-      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR);
+      Helper.error(masterStrings.VALIDATION_EMAIL_ERROR)
     }
-  };
+  }
 
-  const iconStyle = { borderRadius: 1 };
+  const iconStyle = { borderRadius: 1 }
 
   return <>
     <Header user={_user} language={_language} signout={_signout} cartCount={cartCount} />
@@ -135,8 +135,8 @@ const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
                         variant="outlined"
                         color='error'
                         onClick={async (e) => {
-                          setProductId(cartItem.product._id);
-                          setOpenDeleteDialog(true);
+                          setProductId(cartItem.product._id)
+                          setOpenDeleteDialog(true)
                         }}
                       >
                         {commonStrings.REMOVE_FROM_CART}
@@ -150,22 +150,22 @@ const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
                               disabled={cartItem.quantity === 1}
                               sx={iconStyle}
                               onClick={async (e) => {
-                                const __cartItems = Helper.clone(cartItems);
-                                const __cartItem = __cartItems.find(item => item._id === cartItem._id);
-                                const quantity = __cartItem.quantity - 1;
+                                const __cartItems = Helper.clone(cartItems)
+                                const __cartItem = __cartItems.find(item => item._id === cartItem._id)
+                                const quantity = __cartItem.quantity - 1
 
                                 if (quantity >= 1) {
-                                  const status = await CartService.updateQuantity(__cartItem._id, quantity);
+                                  const status = await CartService.updateQuantity(__cartItem._id, quantity)
                                   if (status === 200) {
-                                    __cartItem.quantity = quantity;
-                                    setCartItems(__cartItems);
-                                    setTotal(Helper.total(__cartItems));
-                                    setCartCount(cartCount - 1);
+                                    __cartItem.quantity = quantity
+                                    setCartItems(__cartItems)
+                                    setTotal(Helper.total(__cartItems))
+                                    setCartCount(cartCount - 1)
                                   } else {
-                                    Helper.error();
+                                    Helper.error()
                                   }
                                 } else {
-                                  Helper.error();
+                                  Helper.error()
                                 }
                               }}
                             >
@@ -177,22 +177,22 @@ const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
                               disabled={cartItem.quantity >= cartItem.product.quantity}
                               sx={iconStyle}
                               onClick={async (e) => {
-                                const __cartItems = Helper.clone(cartItems);
-                                const __cartItem = __cartItems.find(item => item._id === cartItem._id);
-                                const quantity = __cartItem.quantity + 1;
+                                const __cartItems = Helper.clone(cartItems)
+                                const __cartItem = __cartItems.find(item => item._id === cartItem._id)
+                                const quantity = __cartItem.quantity + 1
 
                                 if (quantity <= __cartItem.product.quantity) {
-                                  const status = await CartService.updateQuantity(__cartItem._id, quantity);
+                                  const status = await CartService.updateQuantity(__cartItem._id, quantity)
                                   if (status === 200) {
-                                    __cartItem.quantity = quantity;
-                                    setCartItems(__cartItems);
-                                    setTotal(Helper.total(__cartItems));
-                                    setCartCount(cartCount + 1);
+                                    __cartItem.quantity = quantity
+                                    setCartItems(__cartItems)
+                                    setTotal(Helper.total(__cartItems))
+                                    setCartCount(cartCount + 1)
                                   } else {
-                                    Helper.error();
+                                    Helper.error()
                                   }
                                 } else {
-                                  Helper.error();
+                                  Helper.error()
                                 }
                               }}
                             >
@@ -218,7 +218,7 @@ const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
                   startIcon={<CheckoutIcon />}
                   disabled={total === 0}
                   onClick={async (e) => {
-                    router.replace('/checkout');
+                    router.replace('/checkout')
                   }}
                 >
                   {strings.CHECKOUT}
@@ -228,7 +228,7 @@ const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
                   color="error"
                   className={styles.btn}
                   onClick={async (e) => {
-                    setOpenClearDialog(true);
+                    setOpenClearDialog(true)
                   }}
                 >
                   {strings.CLEAR_CART}
@@ -247,30 +247,30 @@ const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
                 <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
                 <Button onClick={async () => {
                   try {
-                    const cartId = _cart._id;
-                    const res = await CartService.deleteItem(cartId, productId);
+                    const cartId = _cart._id
+                    const res = await CartService.deleteItem(cartId, productId)
 
                     if (res.status === 200) {
-                      const __cartItems = Helper.cloneArray(cartItems);
-                      const cartItem = __cartItems.find(item => item.product._id === productId);
-                      const index = __cartItems.findIndex(item => item.product._id === productId);
-                      __cartItems.splice(index, 1);
-                      setCartItems(__cartItems);
-                      setCartCount(cartCount - cartItem.quantity);
-                      setTotal(Helper.total(__cartItems));
+                      const __cartItems = Helper.cloneArray(cartItems)
+                      const cartItem = __cartItems.find(item => item.product._id === productId)
+                      const index = __cartItems.findIndex(item => item.product._id === productId)
+                      __cartItems.splice(index, 1)
+                      setCartItems(__cartItems)
+                      setCartCount(cartCount - cartItem.quantity)
+                      setTotal(Helper.total(__cartItems))
 
                       if (res.data.cartDeleted) {
-                        CartService.deleteCartId();
+                        CartService.deleteCartId()
                       }
 
-                      Helper.info(commonStrings.ARTICLE_REMOVED);
-                      setOpenDeleteDialog(false);
+                      Helper.info(commonStrings.ARTICLE_REMOVED)
+                      setOpenDeleteDialog(false)
                     } else {
-                      Helper.error();
+                      Helper.error()
                     }
                   } catch (err) {
-                    console.log(err);
-                    Helper.error();
+                    console.log(err)
+                    Helper.error()
                   }
                 }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
               </DialogActions>
@@ -287,22 +287,22 @@ const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
                 <Button onClick={() => setOpenClearDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
                 <Button onClick={async () => {
                   try {
-                    const cartId = _cart._id;
-                    const status = await CartService.clearCart(cartId);
+                    const cartId = _cart._id
+                    const status = await CartService.clearCart(cartId)
 
                     if (status === 200) {
-                      CartService.deleteCartId();
-                      setCartItems([]);
-                      setCartCount(0);
-                      setTotal(0);
+                      CartService.deleteCartId()
+                      setCartItems([])
+                      setCartCount(0)
+                      setTotal(0)
                     } else {
-                      Helper.error();
+                      Helper.error()
                     }
                   } catch (err) {
-                    console.log(err);
-                    Helper.error();
+                    console.log(err)
+                    Helper.error()
                   }
-                  setOpenDeleteDialog(false);
+                  setOpenDeleteDialog(false)
                 }} variant='contained' color='error'>{strings.CLEAR_CART}</Button>
               </DialogActions>
             </Dialog>
@@ -334,66 +334,66 @@ const Cart = ({ _user, _language, _currency, _signout, _empty, _cart }) => {
     }
 
     <Footer language={_language} />
-  </>;
-};
+  </>
+}
 
 export async function getServerSideProps(context) {
-  let _user = null, _signout = false, _empty = false, _cart = null, _language = '', _currency = '';
+  let _user = null, _signout = false, _empty = false, _cart = null, _language = '', _currency = ''
 
   try {
-    _language = await SettingService.getLanguage();
-    _currency = await SettingService.getCurrency();
+    _language = await SettingService.getLanguage()
+    _currency = await SettingService.getCurrency()
 
-    const currentUser = UserService.getCurrentUser(context);
+    const currentUser = UserService.getCurrentUser(context)
 
     if (currentUser) {
-      let status;
+      let status
       try {
-        status = await UserService.validateAccessToken(context);
+        status = await UserService.validateAccessToken(context)
       } catch (err) {
-        console.log('Unauthorized!');
+        console.log('Unauthorized!')
       }
 
       if (status === 200) {
-        _user = await UserService.getUser(context, currentUser.id);
+        _user = await UserService.getUser(context, currentUser.id)
       }
 
       if (!_user || status !== 200) {
-        CartService.deleteCartId(context);
-        _signout = true;
+        CartService.deleteCartId(context)
+        _signout = true
       }
 
     } else {
-      _signout = true;
+      _signout = true
     }
 
     if (!_user || (_user && _user.verified)) {
       try {
-        const cartId = CartService.getCartId(context);
+        const cartId = CartService.getCartId(context)
 
         if (cartId) {
           try {
-            _cart = await CartService.getCart(cartId);
+            _cart = await CartService.getCart(cartId)
 
             if (!_cart) {
-              _empty = true;
+              _empty = true
             }
           } catch (err) {
-            console.log(err);
-            _empty = true;
+            console.log(err)
+            _empty = true
           }
         } else {
-          _empty = true;
+          _empty = true
         }
       } catch (err) {
-        console.log(err);
-        _empty = true;
+        console.log(err)
+        _empty = true
       }
     }
 
   } catch (err) {
-    console.log(err);
-    _signout = true;
+    console.log(err)
+    _signout = true
   }
 
   return {
@@ -405,7 +405,7 @@ export async function getServerSideProps(context) {
       _language,
       _currency
     }
-  };
+  }
 }
 
-export default Cart;
+export default Cart

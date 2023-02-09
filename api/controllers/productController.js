@@ -1,267 +1,267 @@
-import strings from '../config/app.config.js';
-import Product from '../models/Product.js';
-import OrderItem from '../models/OrderItem.js';
-import Cart from '../models/Cart.js';
-import CartItem from '../models/CartItem.js';
-import User from '../models/User.js';
-import mongoose from 'mongoose';
-import Env from '../config/env.config.js';
-import escapeStringRegexp from 'escape-string-regexp';
-import fs from 'fs';
-import path from 'path';
-import { v1 as uuid } from 'uuid';
+import strings from '../config/app.config.js'
+import Product from '../models/Product.js'
+import OrderItem from '../models/OrderItem.js'
+import Cart from '../models/Cart.js'
+import CartItem from '../models/CartItem.js'
+import User from '../models/User.js'
+import mongoose from 'mongoose'
+import Env from '../config/env.config.js'
+import escapeStringRegexp from 'escape-string-regexp'
+import fs from 'fs'
+import path from 'path'
+import { v1 as uuid } from 'uuid'
 
-const CDN_PRODUCTS = process.env.WC_CDN_PRODUCTS;
-const CDN_TEMP_PRODUCTS = process.env.WC_CDN_TEMP_PRODUCTS;
+const CDN_PRODUCTS = process.env.WC_CDN_PRODUCTS
+const CDN_TEMP_PRODUCTS = process.env.WC_CDN_TEMP_PRODUCTS
 
 export const uploadImage = (req, res) => {
     try {
         if (!fs.existsSync(CDN_TEMP_PRODUCTS)) {
-            fs.mkdirSync(CDN_TEMP_PRODUCTS, { recursive: true });
+            fs.mkdirSync(CDN_TEMP_PRODUCTS, { recursive: true })
         }
 
-        const filename = `${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`;
-        const filepath = path.join(CDN_TEMP_PRODUCTS, filename);
+        const filename = `${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+        const filepath = path.join(CDN_TEMP_PRODUCTS, filename)
 
-        fs.writeFileSync(filepath, req.file.buffer);
-        return res.json(filename);
+        fs.writeFileSync(filepath, req.file.buffer)
+        return res.json(filename)
     } catch (err) {
-        console.error(strings.ERROR, err);
-        return res.status(400).send(strings.ERROR + err);
+        console.error(strings.ERROR, err)
+        return res.status(400).send(strings.ERROR + err)
     }
-};
+}
 
 export const deleteTempImage = (req, res) => {
     try {
-        const _image = path.join(CDN_TEMP_PRODUCTS, req.params.fileName);
+        const _image = path.join(CDN_TEMP_PRODUCTS, req.params.fileName)
         if (fs.existsSync(_image)) {
-            fs.unlinkSync(_image);
+            fs.unlinkSync(_image)
         }
-        return res.sendStatus(200);
+        return res.sendStatus(200)
     } catch (err) {
-        console.error(strings.ERROR, err);
-        return res.status(400).send(strings.ERROR + err);
+        console.error(strings.ERROR, err)
+        return res.status(400).send(strings.ERROR + err)
     }
-};
+}
 
 export const deleteImage = async (req, res) => {
     try {
-        const { product: productId, image: imageFileName } = req.params;
+        const { product: productId, image: imageFileName } = req.params
 
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId)
 
         if (product) {
-            const index = product.images.findIndex(i => i === imageFileName);
+            const index = product.images.findIndex(i => i === imageFileName)
 
             if (index > -1) {
-                const _image = path.join(CDN_PRODUCTS, imageFileName);
+                const _image = path.join(CDN_PRODUCTS, imageFileName)
                 if (fs.existsSync(_image)) {
-                    fs.unlinkSync(_image);
+                    fs.unlinkSync(_image)
                 }
-                product.images.splice(index, 1);
-                await product.save();
-                return res.sendStatus(200);
+                product.images.splice(index, 1)
+                await product.save()
+                return res.sendStatus(200)
             } else {
-                return res.sendStatus(204);
+                return res.sendStatus(204)
             }
 
         } else {
-            return res.sendStatus(204);
+            return res.sendStatus(204)
         }
     } catch (err) {
-        console.error(strings.ERROR, err);
-        return res.status(400).send(strings.ERROR + err);
+        console.error(strings.ERROR, err)
+        return res.status(400).send(strings.ERROR + err)
     }
-};
+}
 
 export const create = async (req, res) => {
 
-    let product;
+    let product
     try {
-        const { name, description, categories, image: imageFile, price, quantity, soldOut, hidden, images } = req.body;
-        const __product = { name, description, categories, price, quantity, soldOut, hidden };
+        const { name, description, categories, image: imageFile, price, quantity, soldOut, hidden, images } = req.body
+        const __product = { name, description, categories, price, quantity, soldOut, hidden }
 
-        product = new Product(__product);
-        await product.save();
+        product = new Product(__product)
+        await product.save()
 
         if (!fs.existsSync(CDN_PRODUCTS)) {
-            fs.mkdirSync(CDN_PRODUCTS, { recursive: true });
+            fs.mkdirSync(CDN_PRODUCTS, { recursive: true })
         }
         
         // image
-        const _image = path.join(CDN_TEMP_PRODUCTS, imageFile);
+        const _image = path.join(CDN_TEMP_PRODUCTS, imageFile)
         if (fs.existsSync(_image)) {
-            const filename = `${product._id}_${Date.now()}${path.extname(imageFile)}`;
-            const newPath = path.join(CDN_PRODUCTS, filename);
+            const filename = `${product._id}_${Date.now()}${path.extname(imageFile)}`
+            const newPath = path.join(CDN_PRODUCTS, filename)
 
-            fs.renameSync(_image, newPath);
-            product.image = filename;
+            fs.renameSync(_image, newPath)
+            product.image = filename
         } else {
-            await Product.deleteOne({ _id: product._id });
-            const err = 'Image file not found';
-            console.error(strings.ERROR, err);
-            return res.status(400).send(strings.ERROR + err);
+            await Product.deleteOne({ _id: product._id })
+            const err = 'Image file not found'
+            console.error(strings.ERROR, err)
+            return res.status(400).send(strings.ERROR + err)
         }
 
         // images
         for (let i = 0; i < images.length; i++) {
-            const imageFile = images[i];
-            const _image = path.join(CDN_TEMP_PRODUCTS, imageFile);
+            const imageFile = images[i]
+            const _image = path.join(CDN_TEMP_PRODUCTS, imageFile)
 
             if (fs.existsSync(_image)) {
-                const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`;
-                const newPath = path.join(CDN_PRODUCTS, filename);
+                const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
+                const newPath = path.join(CDN_PRODUCTS, filename)
 
-                fs.renameSync(_image, newPath);
-                product.images.push(filename);
+                fs.renameSync(_image, newPath)
+                product.images.push(filename)
             } else {
-                await Product.deleteOne({ _id: product._id });
-                const err = 'Image file not found';
-                console.error(strings.ERROR, err);
-                return res.status(400).send(strings.ERROR + err);
+                await Product.deleteOne({ _id: product._id })
+                const err = 'Image file not found'
+                console.error(strings.ERROR, err)
+                return res.status(400).send(strings.ERROR + err)
             }
         }
 
-        await product.save();
-        return res.status(200).json(product);
+        await product.save()
+        return res.status(200).json(product)
     } catch (err) {
-        if (product && product._id) await Product.deleteOne({ _id: product._id });
-        console.error(strings.ERROR, err);
-        return res.status(400).send(strings.ERROR + err);
+        if (product && product._id) await Product.deleteOne({ _id: product._id })
+        console.error(strings.ERROR, err)
+        return res.status(400).send(strings.ERROR + err)
     }
-};
+}
 
 export const update = async (req, res) => {
     try {
-        const { _id, categories, name, description, image, price, quantity, soldOut, hidden, images, tempImages } = req.body;
-        const product = await Product.findById(_id);
+        const { _id, categories, name, description, image, price, quantity, soldOut, hidden, images, tempImages } = req.body
+        const product = await Product.findById(_id)
 
         if (product) {
-            product.name = name;
-            product.description = description;
-            product.categories = categories;
-            product.price = price;
-            product.quantity = quantity;
-            product.soldOut = soldOut;
-            product.hidden = hidden;
+            product.name = name
+            product.description = description
+            product.categories = categories
+            product.price = price
+            product.quantity = quantity
+            product.soldOut = soldOut
+            product.hidden = hidden
 
             if (!fs.existsSync(CDN_PRODUCTS)) {
-                fs.mkdirSync(CDN_PRODUCTS, { recursive: true });
+                fs.mkdirSync(CDN_PRODUCTS, { recursive: true })
             }
 
             if (image) {
-                const oldImage = path.join(CDN_PRODUCTS, product.image);
+                const oldImage = path.join(CDN_PRODUCTS, product.image)
                 if (fs.existsSync(oldImage)) {
-                    fs.unlinkSync(oldImage);
+                    fs.unlinkSync(oldImage)
                 }
 
-                const filename = `${product._id}_${Date.now()}${path.extname(image)}`;
-                const filepath = path.join(CDN_PRODUCTS, filename);
+                const filename = `${product._id}_${Date.now()}${path.extname(image)}`
+                const filepath = path.join(CDN_PRODUCTS, filename)
 
-                const tempImagePath = path.join(CDN_TEMP_PRODUCTS, image);
-                fs.renameSync(tempImagePath, filepath);
-                product.image = filename;
+                const tempImagePath = path.join(CDN_TEMP_PRODUCTS, image)
+                fs.renameSync(tempImagePath, filepath)
+                product.image = filename
             }
 
             // delete deleted images
             for (const image of product.images) {
                 if (!images.includes(image)) {
-                    const _image = path.join(CDN_PRODUCTS, image);
+                    const _image = path.join(CDN_PRODUCTS, image)
                     if (fs.existsSync(_image)) {
-                        fs.unlinkSync(_image);
+                        fs.unlinkSync(_image)
                     }
-                    const index = product.images.indexOf(image);
-                    product.images.splice(index, 1);
+                    const index = product.images.indexOf(image)
+                    product.images.splice(index, 1)
                 }
             }
 
             // add temp images
             for (let i = 0; i < tempImages.length; i++) {
-                const imageFile = tempImages[i];
-                const _image = path.join(CDN_TEMP_PRODUCTS, imageFile);
+                const imageFile = tempImages[i]
+                const _image = path.join(CDN_TEMP_PRODUCTS, imageFile)
 
                 if (fs.existsSync(_image)) {
-                    const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`;
-                    const newPath = path.join(CDN_PRODUCTS, filename);
+                    const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
+                    const newPath = path.join(CDN_PRODUCTS, filename)
 
-                    fs.renameSync(_image, newPath);
-                    product.images.push(filename);
+                    fs.renameSync(_image, newPath)
+                    product.images.push(filename)
                 }
             }
 
-            await product.save();
-            return res.status(200).json(product);
+            await product.save()
+            return res.status(200).json(product)
         } else {
-            const err = `Product ${_id} not found`;
-            console.error(strings.ERROR, err);
-            return res.status(400).send(strings.ERROR + err);
+            const err = `Product ${_id} not found`
+            console.error(strings.ERROR, err)
+            return res.status(400).send(strings.ERROR + err)
         }
     } catch (err) {
-        console.error(strings.ERROR, err);
-        return res.status(400).send(strings.ERROR + err);
+        console.error(strings.ERROR, err)
+        return res.status(400).send(strings.ERROR + err)
     }
-};
+}
 
 export const checkProduct = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params
 
-        const count = await OrderItem.find({ product: id }).limit(1).count();
+        const count = await OrderItem.find({ product: id }).limit(1).count()
 
         if (count === 1) {
-            return res.sendStatus(200);
+            return res.sendStatus(200)
         }
-        return res.sendStatus(204);
+        return res.sendStatus(204)
 
     } catch (err) {
-        console.error(`[product.checkProduct]  ${strings.DB_ERROR} ${id}`, err);
-        return res.status(400).send(strings.DB_ERROR + err);
+        console.error(`[product.checkProduct]  ${strings.DB_ERROR} ${id}`, err)
+        return res.status(400).send(strings.DB_ERROR + err)
     }
-};
+}
 
 export const deleteProduct = async (req, res) => {
     try {
-        const product = await Product.findByIdAndDelete(req.params.id);
+        const product = await Product.findByIdAndDelete(req.params.id)
 
         if (product) {
-            const _image = path.join(CDN_PRODUCTS, product.image);
+            const _image = path.join(CDN_PRODUCTS, product.image)
 
             if (fs.existsSync(_image)) {
-                fs.unlinkSync(_image);
+                fs.unlinkSync(_image)
             }
 
             for (const image of product.images) {
-                const _image = path.join(CDN_PRODUCTS, image);
+                const _image = path.join(CDN_PRODUCTS, image)
 
                 if (fs.existsSync(_image)) {
-                    fs.unlinkSync(_image);
+                    fs.unlinkSync(_image)
                 }
             }
 
-            await CartItem.deleteMany({ product: product._id });
+            await CartItem.deleteMany({ product: product._id })
 
-            return res.sendStatus(200);
+            return res.sendStatus(200)
         } else {
-            return res.sendStatus(204);
+            return res.sendStatus(204)
         }
     } catch (err) {
-        console.error(strings.ERROR, err);
-        return res.status(400).send(strings.ERROR + err);
+        console.error(strings.ERROR, err)
+        return res.status(400).send(strings.ERROR + err)
     }
-};
+}
 
 export const getProduct = async (req, res) => {
     try {
-        const _id = mongoose.Types.ObjectId(req.params.id);
-        const language = req.params.language;
+        const _id = mongoose.Types.ObjectId(req.params.id)
+        const language = req.params.language
 
-        const { cart: cartId } = req.body;
-        let cartProducts = [];
+        const { cart: cartId } = req.body
+        let cartProducts = []
         if (cartId) {
-            const _cart = await Cart.findById(cartId).populate('cartItems').lean();
+            const _cart = await Cart.findById(cartId).populate('cartItems').lean()
 
             if (_cart) {
-                cartProducts = _cart.cartItems.map(cartItem => cartItem.product);
+                cartProducts = _cart.cartItems.map(cartItem => cartItem.product)
             }
         }
 
@@ -312,18 +312,18 @@ export const getProduct = async (req, res) => {
                     }
                 }
             },
-        ]);
+        ])
 
         if (products.length > 0) {
-            return res.json(products[0]);
+            return res.json(products[0])
         } else {
-            return res.sendStatus(204);
+            return res.sendStatus(204)
         }
     } catch (err) {
-        console.error(strings.ERROR, err);
-        return res.status(400).send(strings.ERROR + err);
+        console.error(strings.ERROR, err)
+        return res.status(400).send(strings.ERROR + err)
     }
-};
+}
 
 export const getBackendProducts = async (req, res) => {
     try {
@@ -339,30 +339,30 @@ export const getBackendProducts = async (req, res) => {
         //         image: '81iD7QhS30L._AC_SL1500_.jpg',
         //         price: i * 1000,
         //         quantity: 1,
-        //     }).save();
+        //     }).save()
         // }
 
-        const { user: userId } = req.params;
+        const { user: userId } = req.params
 
-        const user = await User.find({ _id: userId, type: Env.USER_TYPE.ADMIN });
+        const user = await User.find({ _id: userId, type: Env.USER_TYPE.ADMIN })
 
         if (!user) {
-            const err = `[product.getBackendProducts] admin user ${userId} not found.`;
-            console.error(err);
-            return res.status(204).send(err);
+            const err = `[product.getBackendProducts] admin user ${userId} not found.`
+            console.error(err)
+            return res.status(204).send(err)
         }
 
-        const page = parseInt(req.params.page);
-        const size = parseInt(req.params.size);
-        const keyword = escapeStringRegexp(req.query.s || '');
-        const options = 'i';
+        const page = parseInt(req.params.page)
+        const size = parseInt(req.params.size)
+        const keyword = escapeStringRegexp(req.query.s || '')
+        const options = 'i'
 
-        let category;
+        let category
         if (req.params.category) {
-            category = mongoose.Types.ObjectId(req.params.category);
+            category = mongoose.Types.ObjectId(req.params.category)
         }
 
-        let $match;
+        let $match
         if (category) {
             $match = {
                 $and: [
@@ -373,11 +373,11 @@ export const getBackendProducts = async (req, res) => {
                         name: { $regex: keyword, $options: options }
                     }
                 ]
-            };
+            }
         } else {
             $match = {
                 name: { $regex: keyword, $options: options }
-            };
+            }
         }
 
         const products = await Product.aggregate([
@@ -404,38 +404,38 @@ export const getBackendProducts = async (req, res) => {
                     ]
                 }
             }
-        ], { collation: { locale: Env.DEFAULT_LANGUAGE, strength: 2 } });
+        ], { collation: { locale: Env.DEFAULT_LANGUAGE, strength: 2 } })
 
-        return res.json(products);
+        return res.json(products)
     } catch (err) {
-        console.error(strings.ERROR, err);
-        return res.status(400).send(strings.ERROR + err);
+        console.error(strings.ERROR, err)
+        return res.status(400).send(strings.ERROR + err)
     }
-};
+}
 
 export const getFrontendProducts = async (req, res) => {
     try {
-        const page = parseInt(req.params.page);
-        const size = parseInt(req.params.size);
-        const keyword = escapeStringRegexp(req.query.s || '');
-        const options = 'i';
+        const page = parseInt(req.params.page)
+        const size = parseInt(req.params.size)
+        const keyword = escapeStringRegexp(req.query.s || '')
+        const options = 'i'
 
-        let category;
+        let category
         if (req.params.category) {
-            category = mongoose.Types.ObjectId(req.params.category);
+            category = mongoose.Types.ObjectId(req.params.category)
         }
 
-        const { cart: cartId } = req.body;
-        let cartProducts = [];
+        const { cart: cartId } = req.body
+        let cartProducts = []
         if (cartId) {
-            const _cart = await Cart.findById(cartId).populate('cartItems').lean();
+            const _cart = await Cart.findById(cartId).populate('cartItems').lean()
 
             if (_cart) {
-                cartProducts = _cart.cartItems.map(cartItem => cartItem.product);
+                cartProducts = _cart.cartItems.map(cartItem => cartItem.product)
             }
         }
 
-        let $match;
+        let $match
         if (category) {
             $match = {
                 $and: [
@@ -449,7 +449,7 @@ export const getFrontendProducts = async (req, res) => {
                         hidden: false
                     }
                 ]
-            };
+            }
         } else {
             $match = {
                 $and: [
@@ -460,7 +460,7 @@ export const getFrontendProducts = async (req, res) => {
                         hidden: false
                     }
                 ]
-            };
+            }
         }
 
         // TODO after: sort by price asc, desc
@@ -495,13 +495,13 @@ export const getFrontendProducts = async (req, res) => {
                     ]
                 }
             }
-        ], { collation: { locale: Env.DEFAULT_LANGUAGE, strength: 2 } });
+        ], { collation: { locale: Env.DEFAULT_LANGUAGE, strength: 2 } })
 
-        return res.json(products);
+        return res.json(products)
 
-        return res.sendStatus(200);
+        return res.sendStatus(200)
     } catch (err) {
-        console.error(strings.ERROR, err);
-        return res.status(400).send(strings.ERROR + err);
+        console.error(strings.ERROR, err)
+        return res.status(400).send(strings.ERROR + err)
     }
-};
+}

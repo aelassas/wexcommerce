@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const cartItemSchema = new Schema({
     product: {
@@ -20,16 +20,16 @@ const cartItemSchema = new Schema({
     timestamps: true,
     strict: true,
     collection: 'CartItem'
-});
+})
 
-const cartItemModel = mongoose.model('CartItem', cartItemSchema);
+const cartItemModel = mongoose.model('CartItem', cartItemSchema)
 
 cartItemModel.on('index', (err) => {
     if (err) {
-        console.error('CartItem index error: %s', err);
+        console.error('CartItem index error: %s', err)
     } else {
-        console.info('CartItem indexing complete');
+        console.info('CartItem indexing complete')
     }
-});
+})
 
-export default cartItemModel;
+export default cartItemModel

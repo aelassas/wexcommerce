@@ -9,4 +9,4 @@ export default {
     getProduct: '/api/product/:id/:language',
     getBackendProducts: '/api/backend-products/:user/:page/:size/:category?',
     getFrontendProducts: '/api/frontend-products/:page/:size/:category?',
-};
+}

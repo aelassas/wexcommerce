@@ -1,40 +1,40 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import * as CategoryService from '../services/CategoryService';
-import * as Helper from '../common/Helper';
-import MultipleSelect from './MultipleSelect';
-import * as UserService from '../services/UserService';
+import React, { useCallback, useEffect, useState } from 'react'
+import * as CategoryService from '../services/CategoryService'
+import * as Helper from '../common/Helper'
+import MultipleSelect from './MultipleSelect'
+import * as UserService from '../services/UserService'
 
 export default function CategorySelectList(props) {
-    const [loading, setLoading] = useState(false);
-    const [keyword, setKeyword] = useState(null);
-    const [rows, setRows] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const [keyword, setKeyword] = useState(null)
+    const [rows, setRows] = useState([])
 
     const fetch = useCallback(async () => {
         if (keyword !== null) {
             try {
-                setLoading(true);
-                const categories = await CategoryService.searchCategories(null, UserService.getLanguage(), keyword);
-                setRows(categories);
-                setLoading(false);
+                setLoading(true)
+                const categories = await CategoryService.searchCategories(null, UserService.getLanguage(), keyword)
+                setRows(categories)
+                setLoading(false)
             } catch (err) {
-                Helper.error();
+                Helper.error()
             }
         }
-    }, [keyword]);
+    }, [keyword])
 
     useEffect(() => {
-        fetch();
-    }, [fetch]);
+        fetch()
+    }, [fetch])
 
     useEffect(() => {
-        setKeyword('');
-    }, []);
+        setKeyword('')
+    }, [])
 
     const handleChange = (values, key, reference) => {
         if (props.onChange) {
-            props.onChange(values);
+            props.onChange(values)
         }
-    };
+    }
 
     return (
         <MultipleSelect
@@ -52,18 +52,18 @@ export default function CategorySelectList(props) {
             variant={props.variant || 'standard'}
             onInputChange={
                 (event) => {
-                    const value = (event && event.target ? event.target.value : null) || '';
+                    const value = (event && event.target ? event.target.value : null) || ''
 
                     if (value !== keyword) {
-                        setKeyword(value);
+                        setKeyword(value)
                     }
                 }
             }
             onClear={
                 (event) => {
-                    setKeyword('');
+                    setKeyword('')
                 }
             }
         />
-    );
+    )
 }
