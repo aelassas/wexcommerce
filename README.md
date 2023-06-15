@@ -17,20 +17,11 @@ wexCommerce is an eCommerce platform optimized for SEO with multiple interesting
 * Multiple language support (English, French)
 * Responsive backend and frontend
 
-# Download
-You can download the latest release from [here](https://github.com/aelassas/wexcommerce/releases/latest).
+# Links
 
-# Install
-
-You can find installation instructions [here](https://github.com/aelassas/wexcommerce/wiki/Installation).
-
-# Run from Code
-
-You can find instructions to run wexCommerce from code [here](https://github.com/aelassas/wexcommerce/wiki/Run-from-code).
-
-# Documentation
-
-You can find documentation [here](https://github.com/aelassas/wexcommerce/wiki).
+* [Installing](https://github.com/aelassas/wexcommerce/wiki/Installing)
+* [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)
+* [Documentation](https://github.com/aelassas/wexcommerce/wiki)
 
 # Overview
 
