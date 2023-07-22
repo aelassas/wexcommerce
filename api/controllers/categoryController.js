@@ -55,7 +55,7 @@ export const checkCategory = (req, res) => {
             }
             return res.sendStatus(204)
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(`[category.checkCategory]  ${strings.DB_ERROR} ${id}`, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -113,7 +113,7 @@ export const update = (req, res) => {
                 return res.sendStatus(204)
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(`[category.update]  ${strings.DB_ERROR} ${req.body}`, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -151,7 +151,7 @@ export const getCategory = async (req, res) => {
                 return res.sendStatus(204)
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(`[category.getCategory]  ${strings.DB_ERROR} ${req.params.id}`, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })

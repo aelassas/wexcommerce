@@ -29,21 +29,21 @@ const getStatusMessage = (lang, msg) => {
     return '<!DOCTYPE html><html lang="' + lang + '"><head></head><body><p>' + msg + '</p></body></html>'
 }
 
-export const signup = (req, res) => {
+export const signup = async (req, res) => {
     const { body } = req
     body.active = true
     body.verified = false
     body.blacklisted = false
     body.type = Env.USER_TYPE.USER
 
-    const salt = bcrypt.genSaltSync(10)
+    const salt = await bcrypt.genSalt(10)
     const password = body.password
-    const passwordHash = bcrypt.hashSync(password, salt)
+    const passwordHash = await bcrypt.hash(password, salt)
     body.password = passwordHash
 
     const user = new User(body)
     user.save()
-        .then(user => {
+        .then((user) => {
 
             // generate token and save
             const token = new Token({ user: user._id, token: uuid() })
@@ -80,32 +80,32 @@ export const signup = (req, res) => {
                         }
                     })
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error(strings.DB_ERROR, err)
                     return res.status(400).send(getStatusMessage(user.language, strings.DB_ERROR + err))
                 })
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
 }
 
-export const adminSignup = (req, res) => {
+export const adminSignup = async (req, res) => {
     const { body } = req
     body.active = true
     body.verified = false
     body.blacklisted = false
     body.type = Env.USER_TYPE.ADMIN
 
-    const salt = bcrypt.genSaltSync(10)
+    const salt = await bcrypt.genSalt(10)
     const password = body.password
-    const passwordHash = bcrypt.hashSync(password, salt)
+    const passwordHash = await bcrypt.hash(password, salt)
     body.password = passwordHash
 
     const user = new User(body)
     user.save()
-        .then(user => {
+        .then((user) => {
 
             // generate token and save
             const token = new Token({ user: user._id, token: uuid() })
@@ -142,12 +142,12 @@ export const adminSignup = (req, res) => {
                         }
                     })
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error(strings.DB_ERROR, err)
                     return res.status(400).send(getStatusMessage(user.language, strings.DB_ERROR + err))
                 })
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -358,14 +358,14 @@ export const resend = async (req, res) => {
 
 export const activate = (req, res) => {
     User.findById(req.body.userId)
-        .then(user => {
+        .then((user) => {
             if (user) {
                 Token.find({ token: req.body.token })
-                    .then(token => {
+                    .then(async (token) => {
                         if (token) {
-                            const salt = bcrypt.genSaltSync(10)
+                            const salt = await bcrypt.genSalt(10)
                             const password = req.body.password
-                            const passwordHash = bcrypt.hashSync(password, salt)
+                            const passwordHash = await bcrypt.hash(password, salt)
                             user.password = passwordHash
 
                             user.active = true
@@ -374,7 +374,7 @@ export const activate = (req, res) => {
                                 .then(() => {
                                     return res.sendStatus(200)
                                 })
-                                .catch(err => {
+                                .catch((err) => {
                                     console.error(strings.DB_ERROR, err)
                                     return res.status(400).send(strings.DB_ERROR + err)
                                 })
@@ -382,13 +382,13 @@ export const activate = (req, res) => {
                             return res.sendStatus(204)
                         }
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.error(strings.DB_ERROR, err)
                         return res.status(400).send(strings.DB_ERROR + err)
                     })
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -396,7 +396,7 @@ export const activate = (req, res) => {
 
 export const checkToken = (req, res) => {
     User.findOne({ _id: mongoose.Types.ObjectId(req.params.userId), email: req.params.email })
-        .then(user => {
+        .then((user) => {
             if (user) {
                 if (![Env.APP_TYPE.FRONTEND, Env.APP_TYPE.BACKEND].includes(req.params.type)
                     || (req.params.type === Env.APP_TYPE.BACKEND && user.type === Env.USER_TYPE.USER)
@@ -413,7 +413,7 @@ export const checkToken = (req, res) => {
                                 return res.sendStatus(204)
                             }
                         })
-                        .catch(err => {
+                        .catch((err) => {
                             console.error(strings.DB_ERROR, err)
                             return res.status(400).send(strings.DB_ERROR + err)
                         })
@@ -422,7 +422,7 @@ export const checkToken = (req, res) => {
                 return res.sendStatus(403)
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -437,7 +437,7 @@ export const deleteTokens = (req, res) => {
                 return res.sendStatus(400)
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -445,7 +445,7 @@ export const deleteTokens = (req, res) => {
 
 export const signin = (req, res) => {
     User.findOne({ email: req.body.email })
-        .then(user => {
+        .then((user) => {
             if (!req.body.password
                 || !user
                 || !user.password
@@ -456,7 +456,7 @@ export const signin = (req, res) => {
                 return res.sendStatus(204)
             } else {
                 bcrypt.compare(req.body.password, user.password)
-                    .then(async passwordMatch => {
+                    .then(async (passwordMatch) => {
                         if (passwordMatch) {
                             const payload = { id: user._id }
 
@@ -479,13 +479,13 @@ export const signin = (req, res) => {
                             return res.sendStatus(204)
                         }
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.error(strings.ERROR, err)
                         return res.status(400).send(strings.ERROR + err)
                     })
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -507,7 +507,7 @@ export const getUser = (req, res) => {
         subscription: 1
     })
         .lean()
-        .then(user => {
+        .then((user) => {
             if (!user) {
                 console.error('[user.getUser] User not found:', req.params)
                 res.sendStatus(204)
@@ -515,7 +515,7 @@ export const getUser = (req, res) => {
                 return res.json(user)
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -523,7 +523,7 @@ export const getUser = (req, res) => {
 
 export const update = (req, res) => {
     User.findById(req.body._id)
-        .then(user => {
+        .then((user) => {
             if (!user) {
                 console.error('[user.update] User not found:', req.body.email)
                 return res.sendStatus(204)
@@ -538,13 +538,13 @@ export const update = (req, res) => {
                     .then(() => {
                         return res.sendStatus(200)
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.error(strings.DB_ERROR, err)
                         return res.status(400).send(strings.DB_ERROR + err)
                     })
 
             }
-        }).catch(err => {
+        }).catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -552,7 +552,7 @@ export const update = (req, res) => {
 
 export const updateLanguage = (req, res) => {
     User.findById(req.body.id)
-        .then(user => {
+        .then((user) => {
             if (!user) {
                 console.error('[user.updateLanguage] User not found:', req.body.id)
                 return res.sendStatus(204)
@@ -562,13 +562,13 @@ export const updateLanguage = (req, res) => {
                     .then(() => {
                         return res.sendStatus(200)
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.error(strings.DB_ERROR, err)
                         return res.status(400).send(strings.DB_ERROR + err)
                     })
 
             }
-        }).catch(err => {
+        }).catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -576,9 +576,9 @@ export const updateLanguage = (req, res) => {
 
 export const checkPassword = (req, res) => {
     User.findById(req.params.id)
-        .then(user => {
+        .then((user) => {
             if (user) {
-                bcrypt.compare(req.params.password, user.password).then(passwordMatch => {
+                bcrypt.compare(req.params.password, user.password).then((passwordMatch) => {
                     if (passwordMatch) {
                         return res.sendStatus(200)
                     }
@@ -591,7 +591,7 @@ export const checkPassword = (req, res) => {
                 return res.sendStatus(204)
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })
@@ -599,24 +599,24 @@ export const checkPassword = (req, res) => {
 
 export const changePassword = (req, res) => {
     User.findOne({ _id: req.body._id })
-        .then(user => {
+        .then((user) => {
 
             if (!user) {
                 console.error('[user.changePassword] User not found:', req.body._id)
                 return res.sendStatus(204)
             }
 
-            const changePassword = () => {
-                const salt = bcrypt.genSaltSync(10)
+            const changePassword = async () => {
+                const salt = await bcrypt.genSalt(10)
                 const password = req.body.newPassword
-                const passwordHash = bcrypt.hashSync(password, salt)
+                const passwordHash = await bcrypt.hash(password, salt)
                 user.password = passwordHash
 
                 user.save()
                     .then(() => {
                         return res.sendStatus(200)
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.error(strings.DB_ERROR, err)
                         return res.status(400).send(strings.DB_ERROR + err)
                     })
@@ -624,9 +624,9 @@ export const changePassword = (req, res) => {
 
             if (req.body.strict) {
                 bcrypt.compare(req.body.password, user.password)
-                    .then(async passwordMatch => {
+                    .then(async (passwordMatch) => {
                         if (passwordMatch) {
-                            changePassword()
+                            await changePassword()
                         }
                         else {
                             return res.sendStatus(204)
@@ -637,7 +637,7 @@ export const changePassword = (req, res) => {
                 changePassword()
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(strings.DB_ERROR, err)
             return res.status(400).send(strings.DB_ERROR + err)
         })

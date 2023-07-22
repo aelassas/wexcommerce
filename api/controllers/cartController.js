@@ -19,8 +19,8 @@ export const addItem = async (req, res) => {
                 const _cart = await Cart.find({ user: userId })
 
                 if (_cart) {
-                    CartItem.deleteMany({ _id: { $in: _cart.cartItems } })
-                    Cart.deleteOne({ _id: _cart._id })
+                    await CartItem.deleteMany({ _id: { $in: _cart.cartItems } })
+                    await Cart.deleteOne({ _id: _cart._id })
                 }
 
                 cart = new Cart({ user: userId })

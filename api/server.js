@@ -56,6 +56,7 @@ if (DB_SSL) {
 }
 
 mongoose.set('debug', DB_DEBUG)
+mongoose.set('strictQuery', true)
 mongoose.Promise = global.Promise
 mongoose.connect(DB_URI, options)
     .then(

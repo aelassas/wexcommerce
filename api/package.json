@@ -28,5 +28,8 @@
     "nodemailer": "^6.8.0",
     "uuid": "^9.0.0",
     "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

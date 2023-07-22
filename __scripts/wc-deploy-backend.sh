@@ -11,7 +11,7 @@ sudo chmod +x -R /opt/wexcommerce/__scripts
 cd /opt/wexcommerce/backend/
 npm ci
 sudo rm -rf .next
-npm run build
+yarn build
 
 sudo systemctl restart wexcommerce-backend
 sudo systemctl status wexcommerce-backend --no-pager

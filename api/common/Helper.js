@@ -1,3 +1,5 @@
+import fs from 'fs'
+
 export const joinURL = (part1, part2) => {
     if (part1.charAt(part1.length - 1) === '/') {
         part1 = part1.substr(0, part1.length - 1)
@@ -17,3 +19,5 @@ export const formatNumber = (x) => {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ")
     return parts.join(".")
 }
+
+export const fileExists = (path) => new Promise((resolve) => fs.access(path, fs.constants.F_OK, (err) => resolve(!err)))
