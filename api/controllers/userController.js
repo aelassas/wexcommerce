@@ -395,7 +395,7 @@ export const activate = (req, res) => {
 }
 
 export const checkToken = (req, res) => {
-    User.findOne({ _id: mongoose.Types.ObjectId(req.params.userId), email: req.params.email })
+    User.findOne({ _id: new mongoose.Types.ObjectId(req.params.userId), email: req.params.email })
         .then((user) => {
             if (user) {
                 if (![Env.APP_TYPE.FRONTEND, Env.APP_TYPE.BACKEND].includes(req.params.type)
@@ -405,7 +405,7 @@ export const checkToken = (req, res) => {
                 ) {
                     return res.sendStatus(403)
                 } else {
-                    Token.findOne({ user: mongoose.Types.ObjectId(req.params.userId), token: req.params.token })
+                    Token.findOne({ user: new mongoose.Types.ObjectId(req.params.userId), token: req.params.token })
                         .then(token => {
                             if (token) {
                                 return res.sendStatus(200)
@@ -429,7 +429,7 @@ export const checkToken = (req, res) => {
 }
 
 export const deleteTokens = (req, res) => {
-    Token.deleteMany({ user: mongoose.Types.ObjectId(req.params.userId) })
+    Token.deleteMany({ user: new mongoose.Types.ObjectId(req.params.userId) })
         .then((result) => {
             if (result.deletedCount > 0) {
                 return res.sendStatus(200)
@@ -662,7 +662,7 @@ export const getUsers = async (req, res) => {
                             type: Env.USER_TYPE.USER
                         },
                         {
-                            _id: { $eq: mongoose.Types.ObjectId(keyword) }
+                            _id: { $eq: new mongoose.Types.ObjectId(keyword) }
                         }
                     ]
                 }
@@ -779,7 +779,7 @@ export const getUsers = async (req, res) => {
 
 export const deleteUsers = async (req, res) => {
     try {
-        const ids = req.body.map(id => mongoose.Types.ObjectId(id))
+        const ids = req.body.map(id => new mongoose.Types.ObjectId(id))
 
         await User.deleteMany({ _id: { $in: ids } })
         return res.sendStatus(200)

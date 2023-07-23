@@ -225,7 +225,7 @@ export const update = async (req, res) => {
 
             // user confirmation email
             const _user = order.user
-            
+
             const setting = await Setting.findOne()
             strings.setLanguage(setting.language)
 
@@ -283,26 +283,15 @@ export const deleteOrder = async (req, res) => {
             return res.status(204).send(err)
         }
 
-        Order.findByIdAndDelete(id, async (err, order) => {
-            if (err) {
-                console.error(`[order.delete]  ${strings.DB_ERROR} ${req.params.id}`, err)
-                return res.status(400).send(strings.DB_ERROR + err)
-            } else {
-                try {
-                    if (order) {
-                        await OrderItem.deleteMany({ _id: { $in: order.orderItems } })
-                        return res.sendStatus(200)
-                    } else {
-                        return res.sendStatus(204)
-                    }
-                } catch (err) {
-                    console.error(`[order.delete]  ${strings.DB_ERROR} OrderId: ${id}`, err)
-                    return res.status(400).send(strings.DB_ERROR + err)
-                }
-            }
-        })
+        const order = await Order.findByIdAndDelete(id)
+        if (order) {
+            await OrderItem.deleteMany({ _id: { $in: order.orderItems } })
+            return res.sendStatus(200)
+        } else {
+            return res.sendStatus(204)
+        }
     } catch (err) {
-        console.error(`[ordert.create]  ${strings.DB_ERROR} ${req.body}`, err)
+        console.error(`[order.delete]  ${strings.DB_ERROR} ${req.body}`, err)
         return res.status(400).send(strings.DB_ERROR + err)
     }
 }
@@ -330,7 +319,7 @@ export const getOrders = async (req, res) => {
         if (user.type === Env.USER_TYPE.USER) {
             $match = {
                 $and: [
-                    { 'user._id': { $eq: mongoose.Types.ObjectId(userId) } },
+                    { 'user._id': { $eq: new mongoose.Types.ObjectId(userId) } },
                     { 'paymentType.name': { $in: paymentTypes } },
                     { 'deliveryType.name': { $in: deliveryTypes } },
                     { status: { $in: statuses } }
@@ -351,7 +340,7 @@ export const getOrders = async (req, res) => {
             isObjectId = mongoose.isValidObjectId(keyword)
 
             if (isObjectId) {
-                $match.$and.push({ _id: { $eq: mongoose.Types.ObjectId(keyword) } })
+                $match.$and.push({ _id: { $eq: new mongoose.Types.ObjectId(keyword) } })
             }
         }
 

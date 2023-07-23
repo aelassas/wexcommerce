@@ -167,7 +167,6 @@ const UpdateCategory = ({ _user, _signout, _noMatch, _category, _language }) => 
                           values[index].value = e.target.value
                           setValues(Helper.cloneArray(values))
                           setValueErrors(Helper.cloneArray(valueErrors))
-                          console.log(commonStrings.SAVE)
                         }}
                         autoComplete="off"
                       />

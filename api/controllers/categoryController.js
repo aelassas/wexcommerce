@@ -44,7 +44,7 @@ export const validate = async (req, res) => {
 }
 
 export const checkCategory = (req, res) => {
-    const id = mongoose.Types.ObjectId(req.params.id)
+    const id = new mongoose.Types.ObjectId(req.params.id)
 
     Product.find({ categories: id })
         .limit(1)
@@ -119,23 +119,20 @@ export const update = (req, res) => {
         })
 }
 
-export const deleteCategory = (req, res) => {
+export const deleteCategory = async (req, res) => {
     const id = req.params.id
-
-    Category.findByIdAndDelete(id, async (err, category) => {
-        if (err) {
-            console.error(`[category.delete]  ${strings.DB_ERROR} ${req.params.id}`, err)
-            return res.status(400).send(strings.DB_ERROR + err)
+    try {
+        const category = await Category.findByIdAndDelete(id)
+        if (category) {
+            await Value.deleteMany({ _id: { $in: category.values } })
+            return res.sendStatus(200)
         } else {
-            try {
-                await Value.deleteMany({ _id: { $in: category.values } })
-                return res.sendStatus(200)
-            } catch (err) {
-                console.error(`[category.delete]  ${strings.DB_ERROR} ${req.params.id}`, err)
-                return res.status(400).send(strings.DB_ERROR + err)
-            }
+            return res.sendStatus(204)
         }
-    })
+    } catch (err) {
+        console.error(`[category.delete]  ${strings.DB_ERROR} ${id}`, err)
+        return res.status(400).send(strings.DB_ERROR + err)
+    }
 }
 
 export const getCategory = async (req, res) => {

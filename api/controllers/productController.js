@@ -253,7 +253,7 @@ export const deleteProduct = async (req, res) => {
 
 export const getProduct = async (req, res) => {
     try {
-        const _id = mongoose.Types.ObjectId(req.params.id)
+        const _id = new mongoose.Types.ObjectId(req.params.id)
         const language = req.params.language
 
         const { cart: cartId } = req.body
@@ -360,7 +360,7 @@ export const getBackendProducts = async (req, res) => {
 
         let category
         if (req.params.category) {
-            category = mongoose.Types.ObjectId(req.params.category)
+            category = new mongoose.Types.ObjectId(req.params.category)
         }
 
         let $match
@@ -423,7 +423,7 @@ export const getFrontendProducts = async (req, res) => {
 
         let category
         if (req.params.category) {
-            category = mongoose.Types.ObjectId(req.params.category)
+            category = new mongoose.Types.ObjectId(req.params.category)
         }
 
         const { cart: cartId } = req.body

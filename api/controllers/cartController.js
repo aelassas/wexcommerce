@@ -104,27 +104,21 @@ export const deleteItem = async (req, res) => {
     }
 }
 
-export const deleteCart = (req, res) => {
+export const deleteCart = async (req, res) => {
     const { id } = req.params
 
-    Cart.findByIdAndDelete(id, async (err, cart) => {
-        if (err) {
-            console.error(`[cart.deleteCart]  ${strings.DB_ERROR} ${req.params.id}`, err)
-            return res.status(400).send(strings.DB_ERROR + err)
+    try {
+        const cart = await Cart.findByIdAndDelete(id)
+        if (cart) {
+            await CartItem.deleteMany({ _id: { $in: cart.cartItems } })
+            return res.sendStatus(200)
         } else {
-            try {
-                if (cart) {
-                    await CartItem.deleteMany({ _id: { $in: cart.cartItems } })
-                    return res.sendStatus(200)
-                } else {
-                    return res.sendStatus(204)
-                }
-            } catch (err) {
-                console.error(`[cart.deleteCart]  ${strings.DB_ERROR} ${req.params.id}`, err)
-                return res.status(400).send(strings.DB_ERROR + err)
-            }
+            return res.sendStatus(204)
         }
-    })
+    } catch (err) {
+        console.error(`[cart.deleteCart]  ${strings.DB_ERROR} ${id}`, err)
+        return res.status(400).send(strings.DB_ERROR + err)
+    }
 }
 
 export const getCart = async (req, res) => {
@@ -158,7 +152,7 @@ export const getCartCount = async (req, res) => {
         const { id } = req.params
 
         const data = await Cart.aggregate([
-            { $match: { _id: { $eq: mongoose.Types.ObjectId(id) } } },
+            { $match: { _id: { $eq: new mongoose.Types.ObjectId(id) } } },
             {
                 $lookup: {
                     from: 'CartItem',
