@@ -36,7 +36,6 @@ const App = ({ Component, pageProps }) => {
   }, [])
 
   useEffect(() => {
-
     (async function () {
       const lang = await SettingService.getLanguage()
       const isFr = lang === 'fr'
@@ -130,7 +129,6 @@ const App = ({ Component, pageProps }) => {
 
       setTheme(theme)
     })()
-
   }, [])
 
   if (!theme) {
