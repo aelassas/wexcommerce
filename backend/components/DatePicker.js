@@ -3,12 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker'
-import { TextField, IconButton, InputAdornment } from '@mui/material'
-import { Clear as ClearIcon } from '@mui/icons-material'
 import { fr, enUS } from "date-fns/locale"
 
 export default function DatePicker({ label, language, value, minDate, required, onChange }) {
-    const [date, setDate] = useState()
+    const [date, setDate] = useState(value || null)
 
     useEffect(() => {
         setDate(value)
@@ -29,36 +27,14 @@ export default function DatePicker({ label, language, value, minDate, required, 
                 minDate={minDate}
                 defaultCalendarMonth={minDate}
                 required={required}
-                renderInput={(params) =>
-                    <TextField
-                        {...params}
-                        variant='standard'
-                        fullWidth
-                        required={required}
-                        autoComplete='off'
-                        InputProps={{
-                            ...params.InputProps,
-                            endAdornment:
-                                <>
-                                    {
-                                        value && (
-                                            <InputAdornment position='end' className='d-adornment'>
-                                                <IconButton
-                                                    size='small'
-                                                    onClick={() => {
-                                                        setDate(null)
-                                                        if (onChange) onChange(null)
-                                                    }}>
-                                                    <ClearIcon className='d-adornment-icon' />
-                                                </IconButton>
-                                            </InputAdornment>
-                                        )
-                                    }
-                                    {params.InputProps.endAdornment}
-                                </>
-                        }}
-                    />
-                }
+                slotProps={{
+                    textField: {
+                        variant: 'standard',
+                    },
+                    actionBar: {
+                        actions: ['accept', 'cancel', 'today', 'clear']
+                    }
+                }}
             />
         </LocalizationProvider>
     )

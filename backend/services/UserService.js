@@ -80,8 +80,10 @@ export const getLanguage = (context) => {
     if (hasCookie('wc-be-user', _context)) user = JSON.parse(getCookie('wc-be-user', _context))
 
     if (user && user.language) {
+        console.log(user)
         return user.language
     } else {
+        console.log('wc-be-language')
         let lang
         if (hasCookie('wc-be-language', _context)) lang = JSON.parse(getCookie('wc-be-language', _context))
 

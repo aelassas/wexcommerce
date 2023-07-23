@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import * as CategoryService from '../services/CategoryService'
 import * as Helper from '../common/Helper'
 import MultipleSelect from './MultipleSelect'
-import * as UserService from '../services/UserService'
+import * as SettingService from '../services/SettingService'
 
 export default function CategorySelectList(props) {
     const [loading, setLoading] = useState(false)
@@ -13,7 +13,7 @@ export default function CategorySelectList(props) {
         if (keyword !== null) {
             try {
                 setLoading(true)
-                const categories = await CategoryService.searchCategories(null, UserService.getLanguage(), keyword)
+                const categories = await CategoryService.searchCategories(null, await SettingService.getLanguage(), keyword)
                 setRows(categories)
                 setLoading(false)
             } catch (err) {
