@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'fs/promises'
 
 export const joinURL = (part1, part2) => {
     if (part1.charAt(part1.length - 1) === '/') {
@@ -20,4 +20,11 @@ export const formatNumber = (x) => {
     return parts.join(".")
 }
 
-export const fileExists = (path) => new Promise((resolve) => fs.access(path, fs.constants.F_OK, (err) => resolve(!err)))
+export const exists = async (path) => {
+    try {
+        await fs.access(path)
+        return true
+    } catch {
+        return false
+    }
+}

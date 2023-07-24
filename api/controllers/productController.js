@@ -17,7 +17,7 @@ const CDN_TEMP_PRODUCTS = process.env.WC_CDN_TEMP_PRODUCTS
 
 export const uploadImage = async (req, res) => {
     try {
-        if (!await Helper.fileExists(CDN_TEMP_PRODUCTS)) {
+        if (!await Helper.exists(CDN_TEMP_PRODUCTS)) {
             await fs.mkdir(CDN_TEMP_PRODUCTS, { recursive: true })
         }
 
@@ -35,7 +35,7 @@ export const uploadImage = async (req, res) => {
 export const deleteTempImage = async (req, res) => {
     try {
         const _image = path.join(CDN_TEMP_PRODUCTS, req.params.fileName)
-        if (await Helper.fileExists(_image)) {
+        if (await Helper.exists(_image)) {
             await fs.unlink(_image)
         }
         return res.sendStatus(200)
@@ -56,7 +56,7 @@ export const deleteImage = async (req, res) => {
 
             if (index > -1) {
                 const _image = path.join(CDN_PRODUCTS, imageFileName)
-                if (await Helper.fileExists(_image)) {
+                if (await Helper.exists(_image)) {
                     await fs.unlink(_image)
                 }
                 product.images.splice(index, 1)
@@ -85,13 +85,13 @@ export const create = async (req, res) => {
         product = new Product(__product)
         await product.save()
 
-        if (!await Helper.fileExists(CDN_PRODUCTS)) {
+        if (!await Helper.exists(CDN_PRODUCTS)) {
             await fs.mkdir(CDN_PRODUCTS, { recursive: true })
         }
 
         // image
         const _image = path.join(CDN_TEMP_PRODUCTS, imageFile)
-        if (await Helper.fileExists(_image)) {
+        if (await Helper.exists(_image)) {
             const filename = `${product._id}_${Date.now()}${path.extname(imageFile)}`
             const newPath = path.join(CDN_PRODUCTS, filename)
 
@@ -109,7 +109,7 @@ export const create = async (req, res) => {
             const imageFile = images[i]
             const _image = path.join(CDN_TEMP_PRODUCTS, imageFile)
 
-            if (await Helper.fileExists(_image)) {
+            if (await Helper.exists(_image)) {
                 const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
                 const newPath = path.join(CDN_PRODUCTS, filename)
 
@@ -146,13 +146,13 @@ export const update = async (req, res) => {
             product.soldOut = soldOut
             product.hidden = hidden
 
-            if (!await Helper.fileExists(CDN_PRODUCTS)) {
+            if (!await Helper.exists(CDN_PRODUCTS)) {
                 await fs.mkdir(CDN_PRODUCTS, { recursive: true })
             }
 
             if (image) {
                 const oldImage = path.join(CDN_PRODUCTS, product.image)
-                if (await Helper.fileExists(oldImage)) {
+                if (await Helper.exists(oldImage)) {
                     await fs.unlink(oldImage)
                 }
 
@@ -168,7 +168,7 @@ export const update = async (req, res) => {
             for (const image of product.images) {
                 if (!images.includes(image)) {
                     const _image = path.join(CDN_PRODUCTS, image)
-                    if (await Helper.fileExists(_image)) {
+                    if (await Helper.exists(_image)) {
                         await fs.unlink(_image)
                     }
                     const index = product.images.indexOf(image)
@@ -181,7 +181,7 @@ export const update = async (req, res) => {
                 const imageFile = tempImages[i]
                 const _image = path.join(CDN_TEMP_PRODUCTS, imageFile)
 
-                if (await Helper.fileExists(_image)) {
+                if (await Helper.exists(_image)) {
                     const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
                     const newPath = path.join(CDN_PRODUCTS, filename)
 
@@ -227,14 +227,14 @@ export const deleteProduct = async (req, res) => {
         if (product) {
             const _image = path.join(CDN_PRODUCTS, product.image)
 
-            if (await Helper.fileExists(_image)) {
+            if (await Helper.exists(_image)) {
                 await fs.unlink(_image)
             }
 
             for (const image of product.images) {
                 const _image = path.join(CDN_PRODUCTS, image)
 
-                if (await Helper.fileExists(_image)) {
+                if (await Helper.exists(_image)) {
                     await fs.unlink(_image)
                 }
             }
