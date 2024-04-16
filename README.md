@@ -1,11 +1,13 @@
 [![Backend](https://github.com/aelassas/wexcommerce/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/backend.yml)
-[![Frontend](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml) [![open in vscode](https://img.shields.io/badge/open%20in-vscode-1f425f.svg)](https://vscode.dev/github/aelassas/wexcommerce)
+[![Frontend](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml)
 
+<!--
 <p align="center">
 <img alt="" src="https://wexcommerce.github.io/content/wexcommerce.png" />
 </p>
+-->
 
-wexCommerce is an eCommerce platform optimized for SEO with multiple interesting features. wexCommerce is optimized for SEO so that products can be indexed by search engines.
+wexCommerce is an eCommerce platform optimized for SEO with multiple interesting features.
 
 # Features
 
@@ -17,7 +19,7 @@ wexCommerce is an eCommerce platform optimized for SEO with multiple interesting
 * Multiple language support (English, French)
 * Responsive backend and frontend
 
-# Links
+# Resources
 
 * [Installing](https://github.com/aelassas/wexcommerce/wiki/Installing)
 * [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)
