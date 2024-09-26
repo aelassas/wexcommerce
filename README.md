@@ -7,7 +7,7 @@
 </p>
 -->
 
-wexCommerce is an eCommerce platform optimized for SEO with multiple interesting features.
+wexCommerce is an eCommerce platform optimized for SEO.
 
 # Features
 
