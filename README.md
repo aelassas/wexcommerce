@@ -21,29 +21,7 @@ wexCommerce is an eCommerce platform optimized for SEO with multiple interesting
 
 # Resources
 
-* [Installing](https://github.com/aelassas/wexcommerce/wiki/Installing)
-* [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)
-* [Documentation](https://github.com/aelassas/wexcommerce/wiki)
-
-# Overview
-
-## Frontend
-
-![Frontend](__content/frontend-1.png)
-![Frontend](__content/frontend-7-bis.png)
-![Frontend](__content/frontend-8-bis.png)
-![Frontend](__content/frontend-2.png)
-![Frontend](__content/frontend-3.png)
-![Frontend](__content/frontend-4.png)
-![Frontend](__content/frontend-5.png)
-![Frontend](__content/frontend-6.png)
-
-## Backend
-
-![Backend](__content/backend-1.png)
-![Backend](__content/backend-2.png)
-![Backend](__content/backend-3.png)
-![Backend](__content/backend-4.png)
-![Backend](__content/backend-5.png)
-![Backend](__content/backend-6.png)
-![Backend](__content/backend-7.png)
+1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
+2. [Installing](https://github.com/aelassas/weecommerce/wiki/Installing)
+3. [Run from Source](https://github.com/aelassas/weecommerce/wiki/Run-from-Source)
+4. [Demo Database](https://github.com/aelassas/weecommerce/wiki/Demo-Database)
