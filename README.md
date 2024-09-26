@@ -22,6 +22,9 @@ wexCommerce is an eCommerce platform optimized for SEO with multiple interesting
 # Resources
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
-2. [Installing](https://github.com/aelassas/weecommerce/wiki/Installing)
+2. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
 3. [Run from Source](https://github.com/aelassas/weecommerce/wiki/Run-from-Source)
 4. [Demo Database](https://github.com/aelassas/weecommerce/wiki/Demo-Database)
+
+# License
+wexCommerce is [MIT](https://github.com/aelassas/wexcommerce/blob/main/LICENSE) licensed.
