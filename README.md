@@ -1,11 +1,5 @@
 [![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) [![](https://raw.githubusercontent.com/aelassas/wexcommerce/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml)
 
-<!--
-<p align="center">
-<img alt="" src="https://wexcommerce.github.io/content/wexcommerce.png" />
-</p>
--->
-
 wexCommerce is a minimalistic but powerful eCommerce platform built with Next.js using SSR, server actions, MongoDB and Stripe for payments.
 
 A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
