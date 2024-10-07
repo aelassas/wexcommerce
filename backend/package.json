@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 8003",
+    "dev": "next dev -p 8005",
     "build": "rimraf .next && next build",
-    "start": "next start -p 8003",
+    "start": "next start -p 8005",
     "lint": "next lint",
     "ncu": "ncu -u -x typescript,eslint,date-fns"
   },
