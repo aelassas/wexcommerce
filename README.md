@@ -1,5 +1,4 @@
-[![Backend](https://github.com/aelassas/wexcommerce/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/backend.yml)
-[![Frontend](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/frontend.yml)
+[![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) [![](https://raw.githubusercontent.com/aelassas/wexcommerce/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml)
 
 <!--
 <p align="center">
@@ -7,19 +6,26 @@
 </p>
 -->
 
-wexCommerce is an eCommerce platform optimized for SEO.
+wexCommerce is a minimalistic but powerful eCommerce platform optimized for SEO built with Next.js using SSR, server actions, MongoDB and Stripe for payments.
+
+A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
 
 # Features
 
 * Stock management
 * Order management
-* Client management
-* Multiple payment methods (Credit Card, Cash On Delivery, Wire Transfer)
-* Multiple delivery methods (Home delivery, Store withdrawal)
+* Payment management
+* Customer management
+* Multiple payment options (Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link)
+* Operational Stripe Payment Gateway
+* Multiple delivery options (Home delivery, Store withdrawal)
 * Multiple language support (English, French)
+* Multiple login options (Google, Facebook, Apple, Email)
 * Responsive backend and frontend
 
 # Resources
+
+The documentation and installation instructions are not up to date and will be updated soon.
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
 2. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
