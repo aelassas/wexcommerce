@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { notFound } from 'next/navigation'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/sign-up'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -54,9 +55,9 @@ const SignUp: React.FC = () => {
     }
   }, [language, router])
 
-  useEffect(() => {
-
-  }, [router])
+  if (process.env.NODE_ENV === 'production') {
+    return notFound()
+  }
 
   const handleOnChangeFullName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value)
@@ -269,13 +270,6 @@ const SignUp: React.FC = () => {
       {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
     </div>
   )
-}
-
-export function getStaticProps() {
-  return {
-    // returns the default 404 page with a status code of 404 in production
-    notFound: process.env.NODE_ENV === 'production'
-  }
 }
 
 export default SignUp
