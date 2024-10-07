@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 80002",
+    "dev": "next dev -p 8004",
     "build": "rimraf .net && next build",
-    "start": "next start -p 80002",
+    "start": "next start -p 8004",
     "lint": "next lint"
   },
   "dependencies": {
