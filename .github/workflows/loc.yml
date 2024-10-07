@@ -18,7 +18,7 @@ jobs:
           badge_label: lines of code
           badge_color: green
           badge: ./output/badge.svg
-          ignore: 'coverage|package-lock.json|README.md|LICENSE|.github|.vscode|__scripts|__services'
+          ignore: 'coverage|package-lock.json|README.md|LICENSE|.github|.vscode|__scripts|__services|.next|.env|tsconfig.tsbuildinfo'
 
       - name: Print the output
         run: |
