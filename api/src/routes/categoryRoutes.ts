@@ -13,6 +13,7 @@ routes.route(routeNames.update).put(authJwt.verifyToken, categoryController.upda
 routes.route(routeNames.delete).delete(authJwt.verifyToken, categoryController.deleteCategory)
 routes.route(routeNames.getCategory).get(authJwt.verifyToken, categoryController.getCategory)
 routes.route(routeNames.getCategories).get(categoryController.getCategories)
+routes.route(routeNames.getFeaturedCategories).get(categoryController.getFeaturedCategories)
 routes.route(routeNames.searchCategories).get(authJwt.verifyToken, categoryController.searchCategories)
 routes.route(routeNames.createImage).post([authJwt.verifyToken, multer({ storage: multer.memoryStorage() }).single('image')], categoryController.createImage)
 routes.route(routeNames.updateImage).post([authJwt.verifyToken, multer({ storage: multer.memoryStorage() }).single('image')], categoryController.updateImage)

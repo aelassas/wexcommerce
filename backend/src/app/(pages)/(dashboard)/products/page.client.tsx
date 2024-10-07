@@ -120,6 +120,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = ({ children }) => {
               {strings.NEW_PRODUCT}
             </Button>
           }
+
           <ul className={styles.categories}>
             <li>
               <Link href='/products' className={!categoryId ? styles.selected : ''}>
@@ -129,13 +130,26 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = ({ children }) => {
 
               </Link>
             </li>
+
             {
               categories.map((category) => (
                 <li key={category._id}>
                   <Link
                     href={`/products?c=${category._id}`}
                     className={categoryId === category._id ? styles.selected : ''}
-                    title={category.name}>
+                    title={category.name}
+                    onClick={() => {
+                      if (env.isMobile() && leftPanelRef.current) {
+                        leftPanelRef.current.style.display = 'none'
+                        if (productsRef.current) {
+                          productsRef.current.style.display = 'block'
+                        }
+                        if (closeIconRef.current) {
+                          closeIconRef.current.style.visibility = 'hidden'
+                        }
+                      }
+                    }}
+                  >
 
                     <CategoryIcon className={styles.categoryIcon} />
                     <span>{category.name}</span>

@@ -13,9 +13,7 @@ import {
   DialogActions,
   IconButton,
 } from '@mui/material'
-import {
-  ShoppingCart as CartIcon
-} from '@mui/icons-material'
+import { ShoppingCart as CartIcon } from '@mui/icons-material'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
 import { strings } from '@/lang/product-list'
@@ -104,11 +102,11 @@ export const Actions: React.FC<ActionsProps> = ({ product }) => {
                   setCartItemCount(cartItemCount - 1)
 
                   if (res.data.cartDeleted) {
-                    CartService.deleteCartId()
+                    await CartService.deleteCartId()
                   }
 
                   setOpenDeleteDialog(false)
-                  // helper.info(commonStrings.ARTICLE_REMOVED)
+                  helper.info(commonStrings.ARTICLE_REMOVED)
                 } else {
                   helper.error()
                 }
@@ -137,7 +135,7 @@ export const Actions: React.FC<ActionsProps> = ({ product }) => {
                   }
                   setInCart(true)
                   setCartItemCount(cartItemCount + 1)
-                  // helper.info(commonStrings.ARTICLE_ADDED)
+                  helper.info(commonStrings.ARTICLE_ADDED)
                 } else {
                   helper.error()
                 }
@@ -169,7 +167,7 @@ export const Actions: React.FC<ActionsProps> = ({ product }) => {
                 setCartItemCount(cartItemCount - 1)
 
                 if (res.data.cartDeleted) {
-                  CartService.deleteCartId()
+                  await CartService.deleteCartId()
                 }
 
                 setOpenDeleteDialog(false)

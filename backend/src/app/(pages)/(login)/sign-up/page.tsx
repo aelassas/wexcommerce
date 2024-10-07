@@ -271,4 +271,11 @@ const SignUp: React.FC = () => {
   )
 }
 
+export function getStaticProps() {
+  return {
+    // returns the default 404 page with a status code of 404 in production
+    notFound: process.env.NODE_ENV === 'production'
+  }
+}
+
 export default SignUp

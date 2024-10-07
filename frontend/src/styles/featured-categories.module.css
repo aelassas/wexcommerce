@@ -1,0 +1,44 @@
+section.main {
+  flex: 1;
+  margin: 15px 0;
+}
+
+section.main article.categoryGroup {
+  flex: 1;
+}
+
+section.main article.categoryGroup .title {
+  color: rgba(0, 0, 0, 0.87);
+  text-align: left;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+section.main article.categoryGroup section.products {
+  margin-top: 15px;
+  margin-bottom: 75px;
+}
+
+section.main article.categoryGroup .title:hover {
+  opacity: 0.87;
+}
+
+@media only screen and (width <=960px) {
+  section.main .btnSliderPrev {
+    margin-right: 20px;
+  }
+
+  section.main .btnSliderNext {
+    margin-left: 20px;
+  }
+
+  section.main article.categoryGroup .title {
+    margin-left: 15px;
+  }
+
+  section.main article.categoryGroup {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

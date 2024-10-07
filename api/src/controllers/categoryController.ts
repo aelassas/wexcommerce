@@ -12,6 +12,7 @@ import * as env from '../config/env.config'
 import Category from '../models/Category'
 import Value from '../models/Value'
 import Product from '../models/Product'
+import Cart from '../models/Cart'
 
 /**
  * Validate category name by language.
@@ -249,9 +250,18 @@ export const getCategory = async (req: Request, res: Response) => {
  */
 export const getCategories = async (req: Request, res: Response) => {
   try {
-    const { language } = req.params
+    const { language, imageRequired } = req.params
+    const _imageRequired = helper.StringToBoolean(imageRequired)
+
+    let $match: mongoose.FilterQuery<env.Category> = {}
+    if (_imageRequired) {
+      $match = { image: { $ne: null } }
+    }
 
     const categories = await Category.aggregate([
+      {
+        $match,
+      },
       {
         $lookup: {
           from: 'Value',
@@ -278,6 +288,142 @@ export const getCategories = async (req: Request, res: Response) => {
     return res.json(categories)
   } catch (err) {
     logger.error(`[category.getCategories] ${i18n.t('DB_ERROR')}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
+  }
+}
+
+/**
+ * Get featured categories.
+ *
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
+export const getFeaturedCategories = async (req: Request, res: Response) => {
+  try {
+    const { language, size: _size } = req.params
+    const cartId = String(req.query.c || '')
+    const size = Number.parseInt(_size, 10)
+
+    let cartProducts: mongoose.Types.ObjectId[] = []
+    if (cartId) {
+      const _cart = await Cart
+        .findById(cartId)
+        .populate<{ cartItems: env.CartItem[] }>('cartItems')
+        .lean()
+
+      if (_cart) {
+        cartProducts = _cart.cartItems.map((cartItem) => cartItem.product)
+      }
+    }
+
+    const data = await Product.aggregate([
+      {
+        $match: { soldOut: false, hidden: false, quantity: { $gt: 0 } },
+      },
+      //
+      // Add inCart field
+      //
+      {
+        $addFields: {
+          inCart: {
+            $cond: [{ $in: ['$_id', cartProducts] }, 1, 0],
+          },
+        },
+      },
+      //
+      // lookup categories
+      //
+      {
+        $lookup: {
+          from: 'Category',
+          let: { categories: '$categories' },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $in: ['$_id', '$$categories'] },
+              },
+            },
+            {
+              $lookup: {
+                from: 'Value',
+                let: { values: '$values' },
+                pipeline: [
+                  {
+                    $match: {
+                      $and: [
+                        { $expr: { $in: ['$_id', '$$values'] } },
+                        { $expr: { $eq: ['$language', language] } },
+                      ],
+                    },
+                  },
+                ],
+                as: 'value',
+              },
+            },
+            { $unwind: { path: '$value', preserveNullAndEmptyArrays: false } },
+            { $addFields: { name: '$value.value' } },
+          ],
+          as: 'category',
+        },
+      },
+      //
+      // unwind category
+      //
+      { $unwind: { path: '$category', preserveNullAndEmptyArrays: false } },
+      //
+      // Skip categories and description fields
+      //
+      {
+        $project: {
+          categories: 0,
+          description: 0,
+        },
+      },
+      //
+      // Sort products by createdAt desc
+      //
+      {
+        $sort: { createdAt: -1 },
+      },
+      //
+      // Group products by category
+      //
+      {
+        $group: {
+          _id: '$category._id',
+          name: { $first: '$category.name' },
+          image: { $first: '$category.image' },
+          featured: { $first: '$category.featured' },
+          products: { $push: '$$ROOT' },
+        },
+      },
+      //
+      // Sort categories by name
+      //
+      {
+        $sort: { name: 1 },
+      },
+      //
+      // Build final result and take only (size) products
+      //
+      {
+        $project: {
+          _id: 0,
+          category: {
+            _id: '$_id',
+            name: '$name',
+            image: '$image',
+            featured: '$featured',
+          },
+          products: { $slice: ['$products', size] },
+        },
+      },
+    ])
+    return res.json(data)
+  } catch (err) {
+    logger.error(`[category.getFeaturedCategories] ${i18n.t('DB_ERROR')}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

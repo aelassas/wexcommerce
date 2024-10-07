@@ -326,6 +326,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
                 helper.error(err)
               }
               router.push('/products')
+              router.refresh()
             }}
           >
             {commonStrings.CANCEL}

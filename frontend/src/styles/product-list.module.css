@@ -1,4 +1,4 @@
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
   article.product {
     flex: 1 0 100%;
     max-width: calc(100% - 12px);
@@ -14,7 +14,7 @@
   }
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >=960px) {
 
   article.product {
     flex: 1 0 21%;

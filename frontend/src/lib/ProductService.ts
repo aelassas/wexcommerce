@@ -12,7 +12,7 @@ import * as fetchInstance from './fetchInstance'
  * @returns {Promise<wexcommerceTypes.Product>}
  */
 export const getProduct = async (id: string, language: string, cartId: string): Promise<wexcommerceTypes.Product> => {
-  const data = { cart: cartId }
+  const data: wexcommerceTypes.GetProductPayload = { cart: cartId }
 
   return fetchInstance
     .POST(
@@ -39,11 +39,25 @@ export const getProducts = async (
   categoryId: string,
   cartId: string
 ): Promise<wexcommerceTypes.Result<wexcommerceTypes.Product>> => {
-  const data = { cart: cartId }
+  const data: wexcommerceTypes.GetProductsPayload = { cart: cartId }
 
   return fetchInstance
     .POST(
       `/api/frontend-products/${page}/${size}/${(categoryId && `${categoryId}/`) || ''}${(keyword !== '' && `?s=${encodeURIComponent(keyword)}` || '')}`,
+      data,
+    )
+    .then((res) => res.data)
+}
+
+export const getFeaturedProducts = async (
+  size: number,
+  cartId: string
+): Promise<wexcommerceTypes.Product[]> => {
+  const data: wexcommerceTypes.GetProductsPayload = { cart: cartId, size }
+
+  return fetchInstance
+    .POST(
+      '/api/featured-products/',
       data,
     )
     .then((res) => res.data)

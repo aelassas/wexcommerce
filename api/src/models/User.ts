@@ -1,6 +1,7 @@
 import validator from 'validator'
 import { Schema, model } from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
+// import * as wexcommerceHelper from ':wexcommerce-helper'
 import * as env from '../config/env.config'
 
 export const USER_EXPIRE_AT_INDEX_NAME = 'expireAt'

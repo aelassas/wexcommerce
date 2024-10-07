@@ -232,7 +232,7 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
                 setTotal(helper.total(_cartItems))
 
                 if (res.data.cartDeleted) {
-                  CartService.deleteCartId()
+                  await CartService.deleteCartId()
                 }
 
                 helper.info(commonStrings.ARTICLE_REMOVED)
@@ -263,7 +263,7 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
               const status = await CartService.clearCart(cartId)
 
               if (status === 200) {
-                CartService.deleteCartId()
+                await CartService.deleteCartId()
                 setCartItems([])
                 setCartItemCount(0)
                 setTotal(0)

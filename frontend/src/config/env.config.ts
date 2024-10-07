@@ -21,11 +21,12 @@ const env = {
   DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_WC_DEFAULT_LANGUAGE || 'en',
   PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_PAGE_SIZE || '30'),
   CDN_PRODUCTS: process.env.NEXT_PUBLIC_WC_CDN_PRODUCTS,
-  CDN_TEMP_PRODUCTS: process.env.NEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS,
+  CDN_CATEGORIES: process.env.NEXT_PUBLIC_WC_CDN_CATEGORIES,
   FB_APP_ID: String(process.env.NEXT_PUBLIC_WC_FB_APP_ID),
   APPLE_ID: String(process.env.NEXT_PUBLIC_WC_APPLE_ID),
   GG_APP_ID: String(process.env.NEXT_PUBLIC_WC_GG_APP_ID),
   STRIPE_PUBLISHABLE_KEY: String(process.env.NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY),
+  FEATURED_PRODUCTS_SIZE: 10,
 }
 
 export const CookieOptions: Partial<ResponseCookie> = {

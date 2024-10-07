@@ -137,6 +137,7 @@ const SignIn: React.FC = () => {
             <label onClick={async (e) => {
               const checkbox = e.currentTarget.previousSibling as HTMLInputElement
               const checked = !checkbox.checked
+              checkbox.checked = checked
               await UserService.setStayConnected(checked)
             }}>{strings.STAY_CONNECTED}</label>
           </div>

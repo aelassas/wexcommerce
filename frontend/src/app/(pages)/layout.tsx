@@ -200,7 +200,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             pauseOnFocusLoss={false}
             draggable={false}
             pauseOnHover={true}
-            theme='dark'
+            theme='light'
           />
         </CssBaseline>
       </ThemeProvider>

@@ -15,7 +15,7 @@
 
 /* Device width is less than or equal to 960px */
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
   .signupForm {
     margin: 45px 0 120px 0;
     width: 350px;
@@ -25,7 +25,7 @@
 
 /* Device width is greater than or equal to 960px */
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >=960px) {
   .signupForm {
     margin: 85px 0 120px 0;
     width: 550px;

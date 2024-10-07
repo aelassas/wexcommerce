@@ -203,7 +203,7 @@ a {
   height: 20px !important;
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
   div.content {
     min-height: calc(100vh - 283px);
   }
@@ -244,7 +244,7 @@ div.content {
   flex: 1;
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >=960px) {
   div.content {
     min-height: calc(100vh - 90px);
   }
@@ -279,4 +279,8 @@ input[type=number] {
 .stop-scrolling {
   height: 100%;
   overflow: hidden;
+}
+
+.github-fork-ribbon:before {
+  background-color: #272727;
 }

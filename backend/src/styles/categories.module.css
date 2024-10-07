@@ -7,7 +7,7 @@ div.categories div.categoryList {
   flex: 1;
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
   div.categories {
     flex-direction: column;
   }
@@ -18,7 +18,7 @@ div.categories div.categoryList {
   }
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >=960px) {
   .sideBar {
     width: 300px;
   }

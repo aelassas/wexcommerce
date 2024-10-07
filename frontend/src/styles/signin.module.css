@@ -43,7 +43,7 @@ div.resetPassword {
   margin-top: 15px;
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
 
   .signinForm {
     align-items: center;
@@ -69,7 +69,7 @@ div.resetPassword {
 
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >=960px) {
 
   .signinForm {
     align-items: center;

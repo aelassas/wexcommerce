@@ -110,7 +110,7 @@ export const getCategory = async (language: string, id: string): Promise<wexcomm
  */
 export const getCategories = async (language: string): Promise<wexcommerceTypes.CategoryInfo[]> => (
   fetchInstance.GET(
-    `/api/categories/${language}`
+    `/api/categories/${language}/${false}`
   )
     .then((res) => res.data)
 )

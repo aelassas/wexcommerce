@@ -148,7 +148,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                             setCartItemCount(cartItemCount - 1)
 
                             if (res.data.cartDeleted) {
-                              CartService.deleteCartId()
+                              await CartService.deleteCartId()
                             }
 
                             setOpenDeleteDialog(false)
@@ -240,7 +240,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                   setCartItemCount(cartItemCount - 1)
 
                   if (res.data.cartDeleted) {
-                    CartService.deleteCartId()
+                    await CartService.deleteCartId()
                   }
 
                   setOpenDeleteDialog(false)

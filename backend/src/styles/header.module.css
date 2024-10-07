@@ -110,7 +110,7 @@ img.logo {
   background-color: #f0f0f0;
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
   .searchIcon {
     padding: 8px 4px;
   }
@@ -152,7 +152,7 @@ img.logo {
   color: #121212 !important;
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
 
   .searchContainer {
     justify-content: flex-end;
@@ -194,7 +194,7 @@ img.logo {
   }
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >=960px) {
   .signin {
     color: #121212;
     text-decoration: none;
@@ -213,7 +213,7 @@ img.logo {
   }
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
 
   .headerDesktop {
     display: none;

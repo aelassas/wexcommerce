@@ -40,7 +40,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = ({ children }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       if (language) {
-        const _categories = await CategoryService.getCategories(language)
+        const _categories = await CategoryService.getCategories(language, false)
         setCategories(_categories)
       }
     }

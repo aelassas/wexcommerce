@@ -59,6 +59,8 @@ export const strings = new LocalizedStrings({
     SHIPPING: 'Livraison à domicile',
     WITHDRAWAL: 'Retrait en magasin',
     OR: 'ou',
+    BACK: 'Précédant',
+    NEXT: 'Suivant',
   },
   en: {
     GENERIC_ERROR: 'An unhandled error occurred.',
@@ -118,5 +120,7 @@ export const strings = new LocalizedStrings({
     SHIPPING: 'Home delivery',
     WITHDRAWAL: 'Store withdrawal',
     OR: 'or',
+    BACK: 'Back',
+    NEXT: 'Next',
   }
 })

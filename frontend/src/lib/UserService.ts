@@ -127,7 +127,7 @@ export const signout = async (_redirect = true, _redirectSignIn = false, _delete
   cookies().delete('wc-fe-user')
 
   if (_deleteCartId) {
-    CartService.deleteCartId()
+    await CartService.deleteCartId()
   }
 
   if (_redirect) {

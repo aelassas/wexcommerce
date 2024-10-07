@@ -19,7 +19,6 @@ import {
   Menu as MenuIcon,
   Notifications as NotificationsIcon,
   More as MoreIcon,
-  Language as LanguageIcon,
   Settings as SettingsIcon,
   Inventory as OrdersIcon,
   AccountTree as CategoriesIcon,
@@ -160,10 +159,6 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch }) => {
     setMobileMoreAnchorEl(null)
   }
 
-  const handleLangMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setLangAnchorEl(event.currentTarget)
-  }
-
   const refreshPage = () => {
     router.refresh()
   }
@@ -272,17 +267,6 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch }) => {
           <SettingsIcon />
         </IconButton>
         <p>{strings.SETTINGS}</p>
-      </MenuItem>
-      <MenuItem onClick={handleLangMenuOpen}>
-        <IconButton
-          aria-label="language of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <LanguageIcon />
-        </IconButton>
-        <p>{strings.LANGUAGE}</p>
       </MenuItem>
       <MenuItem onClick={handleSignout}>
         <IconButton color="inherit">

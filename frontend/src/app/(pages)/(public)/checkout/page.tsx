@@ -24,7 +24,7 @@ const Cart = async () => {
     console.error(err)
   }
 
-  return paymentTypes && deliveryTypes ? (
+  return cart && paymentTypes && deliveryTypes ? (
     <CheckoutComponent
       cart={cart}
       paymentTypes={paymentTypes}

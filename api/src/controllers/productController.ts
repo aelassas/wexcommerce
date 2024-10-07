@@ -212,6 +212,10 @@ export const update = async (req: Request, res: Response) => {
       product.hidden = hidden
       product.featured = featured
 
+      if (quantity > 0) {
+        product.soldOut = false
+      }
+
       if (image) {
         const oldImage = path.join(env.CDN_PRODUCTS, product.image!)
         if (await helper.exists(oldImage)) {
@@ -552,7 +556,8 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
       category = new mongoose.Types.ObjectId(req.params.category)
     }
 
-    const { cart: cartId } = req.body
+    const { body }: { body: wexcommerceTypes.GetProductsPayload } = req
+    const { cart: cartId } = body
     let cartProducts: mongoose.Types.ObjectId[] = []
     if (cartId) {
       const _cart = await Cart
@@ -635,7 +640,7 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
 }
 
 /**
- * Get frontend products.
+ * Get featured products.
  *
  * @async
  * @param {Request} req
@@ -644,7 +649,10 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
  */
 export const getFeaturedProducts = async (req: Request, res: Response) => {
   try {
-    const { cart: cartId, size } = req.body
+    const { body }: { body: wexcommerceTypes.GetProductsPayload } = req
+    const { cart: cartId, size: _size } = body
+
+    const size: number = _size || 10
 
     let cartProducts: mongoose.Types.ObjectId[] = []
     if (cartId) {
@@ -658,10 +666,9 @@ export const getFeaturedProducts = async (req: Request, res: Response) => {
       }
     }
 
-    // TODO after: sort by price asc, desc
     const products = await Product.aggregate([
       {
-        $match: { featured: true },
+        $match: { featured: true, soldOut: false, hidden: false, quantity: { $gt: 0 } },
       },
       {
         $addFields: {
@@ -677,23 +684,16 @@ export const getFeaturedProducts = async (req: Request, res: Response) => {
         },
       },
       {
-        $facet: {
-          resultData: [
-            { $sort: { createdAt: -1 } },
-            { $limit: size },
-          ],
-          pageInfo: [
-            {
-              $count: 'totalRecords',
-            },
-          ],
-        },
+        $sort: { createdAt: -1 },
+      },
+      {
+        $limit: size,
       },
     ], { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } })
 
     return res.json(products)
   } catch (err) {
-    logger.error(i18n.t('DB_ERROR'), err)
+    logger.error(`[product.getFeaturedProducts] ${i18n.t('DB_ERROR')}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

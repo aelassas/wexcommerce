@@ -305,3 +305,10 @@ export interface CartItem {
     product: Product;
     quantity: number;
 }
+export interface GetProductPayload {
+    cart?: string;
+}
+export interface GetProductsPayload {
+    cart?: string;
+    size?: number;
+}

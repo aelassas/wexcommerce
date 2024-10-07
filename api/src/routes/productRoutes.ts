@@ -16,5 +16,6 @@ routes.route(routeNames.delete).delete(authJwt.verifyToken, productController.de
 routes.route(routeNames.getProduct).post(productController.getProduct)
 routes.route(routeNames.getBackendProducts).post(authJwt.verifyToken, productController.getBackendProducts)
 routes.route(routeNames.getFrontendProducts).post(productController.getFrontendProducts)
+routes.route(routeNames.getFeaturedProducts).post(productController.getFeaturedProducts)
 
 export default routes

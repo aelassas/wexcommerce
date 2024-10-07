@@ -142,7 +142,10 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
           type="category"
           categoryId={category._id}
           image={image}
-          onMainImageUpsert={(img) => setImage(img)}
+          onMainImageUpsert={(img) => {
+            setImage(img)
+            router.refresh()
+          }}
         />
 
         {
@@ -199,6 +202,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
             size="small"
             onClick={() => {
               router.push('/categories')
+              router.refresh()
             }}
           >
             {commonStrings.CANCEL}

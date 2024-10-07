@@ -211,7 +211,7 @@ a {
 
 @media only screen and (min-width: 600px) {}
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
   div.content {
     margin: 0;
     padding: 0;
@@ -241,7 +241,7 @@ a {
   }
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >=960px) {
 
   div.content {
     margin: 0;

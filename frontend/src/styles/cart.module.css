@@ -1,4 +1,4 @@
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
   div.main {
     margin-top: 20px;
   }
@@ -15,7 +15,7 @@
   }
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >=960px) {
   div.main {
     max-width: 1184px;
     margin-right: auto;

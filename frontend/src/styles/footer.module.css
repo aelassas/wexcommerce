@@ -21,7 +21,7 @@ div.footer div.main div.copyright {
   justify-content: space-between;
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <=960px) {
   div.footer div.main {
     margin-right: 15px;
     margin-left: 15px;
@@ -44,7 +44,7 @@ div.footer div.main div.copyright {
   }
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >=960px) {
   div.footer div.main {
     max-width: 1184px;
     margin-right: auto;
@@ -54,7 +54,7 @@ div.footer div.main div.copyright {
   }
 }
 
-@media only screen and (min-width: 960px) and (max-width: 1184px) {
+@media only screen and (width >=960px) and (max-width: 1184px) {
   div.footer div.main div.content {
     margin-right: 15px;
   }
