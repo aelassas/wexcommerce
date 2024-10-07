@@ -633,3 +633,67 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
+
+/**
+ * Get frontend products.
+ *
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
+export const getFeaturedProducts = async (req: Request, res: Response) => {
+  try {
+    const { cart: cartId, size } = req.body
+
+    let cartProducts: mongoose.Types.ObjectId[] = []
+    if (cartId) {
+      const _cart = await Cart
+        .findById(cartId)
+        .populate<{ cartItems: env.CartItem[] }>('cartItems')
+        .lean()
+
+      if (_cart) {
+        cartProducts = _cart.cartItems.map((cartItem) => cartItem.product)
+      }
+    }
+
+    // TODO after: sort by price asc, desc
+    const products = await Product.aggregate([
+      {
+        $match: { featured: true },
+      },
+      {
+        $addFields: {
+          inCart: {
+            $cond: [{ $in: ['$_id', cartProducts] }, 1, 0],
+          },
+        },
+      },
+      {
+        $project: {
+          categories: 0,
+          description: 0,
+        },
+      },
+      {
+        $facet: {
+          resultData: [
+            { $sort: { createdAt: -1 } },
+            { $limit: size },
+          ],
+          pageInfo: [
+            {
+              $count: 'totalRecords',
+            },
+          ],
+        },
+      },
+    ], { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } })
+
+    return res.json(products)
+  } catch (err) {
+    logger.error(i18n.t('DB_ERROR'), err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
+  }
+}
