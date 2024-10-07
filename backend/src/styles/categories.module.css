@@ -1,0 +1,31 @@
+div.categories {
+  display: flex;
+  flex-direction: row;
+}
+
+div.categories div.categoryList {
+  flex: 1;
+}
+
+@media only screen and (max-width: 960px) {
+  div.categories {
+    flex-direction: column;
+  }
+
+  .newCategory {
+    width: calc(100% - 20px);
+    margin: 10px !important;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .sideBar {
+    width: 300px;
+  }
+
+  .newCategory {
+    width: calc(100% - 20px);
+    margin-top: 15px !important;
+    margin-left: 15px !important;
+  }
+}

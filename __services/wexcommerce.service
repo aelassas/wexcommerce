@@ -10,8 +10,6 @@ Type=simple
 Restart=always
 StandardOutput=append:/var/log/wexcommerce.log
 StandardError=append:/var/log/wexcommerce.log
-User=aelassas
-Group=aelassas
 
 [Install]
 WantedBy=multi-user.target

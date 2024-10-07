@@ -1,0 +1,43 @@
+@media only screen and (max-width: 960px) {
+  .form {
+      margin-top: 45px !important;
+      margin-left: calc(50% - 180px) !important;
+      margin-bottom: 45px !important;
+      width: 360px;
+      padding: 30px;
+  }
+}
+
+
+@media only screen and (min-width: 960px) {
+  .form {
+      margin-top: 45px !important;
+      margin-left: calc(50% - 350px) !important;
+      margin-bottom: 45px !important;
+      width: 700px;
+      padding: 30px;
+  }
+}
+
+.form .label {
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 400;
+  font-size: 12px;
+  display: block;
+  width: fit-content;
+  margin: 0 0 12px 12px;
+}
+
+.form .editorField {
+  z-index: 0;
+}
+
+.form .editor {
+  border: 1px solid #F1F1F1;
+  height: 500px;
+  overflow: auto;
+}
+
+.form .error {
+margin-top: 15px;
+}

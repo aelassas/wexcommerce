@@ -1,0 +1,72 @@
+.pagerContainer {
+  height: 54px;
+  padding: 5px 10px 5px 0;
+  margin: 3px 0 0 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.pagerContainer .pager {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.pagerContainer .pager .rowCount {
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 7px;
+}
+
+.pagerContainer .pager .actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.pagerContainer .pager .actions a {
+  text-decoration: none;
+  color: #030303;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
+}
+
+.pagerContainer .pager .actions a:hover {
+  color: #131313 !important;
+}
+
+.pagerContainer .pager .actions {
+  font-size: 18px;
+}
+
+.pagerContainer a.disabled,
+.pagerContainer a.disabled:hover {
+  pointer-events: none;
+  cursor: default;
+  color: #939393 !important;
+}
+
+@media only screen and (max-width: 960px) {
+  .pagerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .pagerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}

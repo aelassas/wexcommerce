@@ -1,0 +1,168 @@
+.signin {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signinFormTitle {
+  text-align: center;
+  text-transform: none;
+  margin-top: 35px;
+  color: #1d1d1b;
+}
+
+div.signinButtons {
+  float: right;
+  margin-top: 20px;
+}
+
+.formError {
+  clear: both;
+  height: 65px;
+  padding-top: 10px;
+  text-align: center;
+}
+
+div.stayConnected {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+}
+
+div.stayConnected input[type='checkbox'] {
+  margin-right: 5px;
+}
+
+div.stayConnected label {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+div.resetPassword {
+  margin-top: 15px;
+}
+
+@media only screen and (max-width: 960px) {
+
+  .signinForm {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 350px;
+    margin-top: 45px;
+    margin-bottom: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 15px;
+  }
+
+  div.signinButtons {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    display: grid;
+    width: 100%;
+  }
+
+  div.signinButtons button {
+    margin-right: 0;
+  }
+
+}
+
+@media only screen and (min-width: 960px) {
+
+  .signinForm {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 380px;
+    margin-top: 85px;
+    margin-bottom: 150px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 15px;
+  }
+}
+.signin {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signinFormTitle {
+  text-align: center;
+  text-transform: none;
+  margin-top: 35px;
+  color: #1d1d1b;
+}
+
+div.signinButtons {
+  float: right;
+  margin-top: 20px;
+}
+
+.formError {
+  clear: both;
+  height: 65px;
+  padding-top: 10px;
+  text-align: center;
+}
+
+div.stayConnected {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+}
+
+div.stayConnected input[type='checkbox'] {
+  margin-right: 5px;
+}
+
+div.stayConnected label {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+div.resetPassword {
+  margin-top: 15px;
+}
+
+@media only screen and (max-width: 960px) {
+
+  .signinForm {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 350px;
+    margin-top: 45px;
+    margin-bottom: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 15px;
+  }
+
+  div.signinButtons {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    display: grid;
+    width: 100%;
+  }
+
+  div.signinButtons button {
+    margin-right: 0;
+  }
+
+}
+
+@media only screen and (min-width: 960px) {
+
+  .signinForm {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 380px;
+    margin-top: 85px;
+    margin-bottom: 150px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 15px;
+  }
+}

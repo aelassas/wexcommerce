@@ -1,0 +1,68 @@
+.users {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.emptyList {
+    margin-top: 15px;
+    text-align: center;
+    width: 250px;
+    margin-left: calc(50% - 125px);
+}
+
+.userList {
+    padding-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userList article {
+    position: relative;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #333;
+    font-size: 12px;
+    padding: 25px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: calc(100% - 20px);
+    max-width: 550px;
+}
+
+.userList article .userContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.userList article .userInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 7px;
+}
+
+.userList article .userInfo .userLabel {
+    font-weight: bold;
+    margin-right: 15px;
+    min-width: 80px;
+}
+
+.userList article .userInfo pre {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    margin: 0;
+}
+
+.userList article .userActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

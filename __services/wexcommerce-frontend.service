@@ -1,7 +1,7 @@
 [Unit]
 Description=wexCommerce Frontend
-Wants=mongod.service
-After=mongod.service
+Wants=wexcommerce.service
+After=wexcommerce.service
 
 [Service]
 ExecStart=/usr/bin/npm run start
@@ -10,8 +10,6 @@ Type=simple
 Restart=always
 StandardOutput=append:/var/log/wexcommerce-frontend.log
 StandardError=append:/var/log/wexcommerce-frontend.log
-User=aelassas
-Group=aelassas
 
 [Install]
 WantedBy=multi-user.target

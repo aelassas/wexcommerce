@@ -1,0 +1,34 @@
+'use server'
+
+import * as wexcommerceTypes from ':wexcommerce-types'
+import * as OrderService from '@/lib/OrderService'
+import OrderForm from './page.client'
+import { EmptyList } from '@/components/OrderList.client'
+
+const Order = async ({ searchParams }: { searchParams: SearchParams }) => {
+  const orderId = searchParams['o'] as string
+  let order: wexcommerceTypes.OrderInfo | null = null
+
+  try {
+    const res = await OrderService.getOrder(orderId)
+
+    if (res.status === 204) {
+      console.log(`Order ${orderId} not found`)
+      return
+    }
+
+    order = res.data
+  } catch (err) {
+    console.error(err)
+  }
+
+  return (
+    order ? (
+      <OrderForm order={order} />
+    ) : (
+      <EmptyList />
+    )
+  )
+}
+
+export default Order
