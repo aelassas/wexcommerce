@@ -6,10 +6,9 @@ import CartComponent, { EmptyCart } from '@/components/Cart'
 
 const Cart = async () => {
   let cart: wexcommerceTypes.Cart | undefined = undefined
-  console.log('bpooo')
+
   try {
     const cartId = await CartService.getCartId()
-    console.log('cartId', cartId)
 
     if (cartId) {
       cart = await CartService.getCart(cartId)
