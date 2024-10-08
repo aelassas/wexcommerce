@@ -16,6 +16,11 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['localhost', 'wexcommerce.dynv6.net:8002'],
+    },
+  },
 }
 
 export default nextConfig
