@@ -312,3 +312,7 @@ export interface GetProductsPayload {
     cart?: string;
     size?: number;
 }
+export interface FeaturedCategory {
+    category: CategoryInfo;
+    products: Product[];
+}
