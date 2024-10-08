@@ -13,6 +13,7 @@ import { CurrencyProvider } from '@/context/CurrencyContext'
 import { UserProvider } from '@/context/UserContext'
 import { NotificationProvider } from '@/context/NotificationContext'
 import { CartProvider } from '@/context/CartContext'
+import env from '@/config/env.config'
 import * as helper from '@/common/helper'
 
 import { strings as activateStrings } from '@/lang/activate'
@@ -41,6 +42,12 @@ import { strings as soldOutStrings } from '@/lang/sold-out'
 
 import 'react-toastify/dist/ReactToastify.min.css'
 import '@/styles/globals.css'
+
+import { init as initGA } from '@/common/ga4'
+
+if (env.GOOGLE_ANALYTICS_ENABLED) {
+  initGA()
+}
 
 type LayoutProps = Readonly<{
   children: React.ReactNode

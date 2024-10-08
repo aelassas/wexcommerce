@@ -4,6 +4,7 @@ const env = {
   isMobile: () => window.innerWidth <= 960,
   isTablet: () => window.innerWidth >= 500 && window.innerWidth <= 960,
   isLandscape: () => window.innerHeight <= 566,
+  isProduction: process.env.NODE_ENV === 'production',
 
   APP_TYPE: 'frontend',
   API_HOST: process.env.NEXT_PUBLIC_WC_API_HOST,
@@ -27,6 +28,8 @@ const env = {
   GG_APP_ID: String(process.env.NEXT_PUBLIC_WC_GG_APP_ID),
   STRIPE_PUBLISHABLE_KEY: String(process.env.NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY),
   FEATURED_PRODUCTS_SIZE: 10,
+  GOOGLE_ANALYTICS_ENABLED: (process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED && process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED.toLowerCase()) === 'true',
+  GOOGLE_ANALYTICS_ID: String(process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ID),
 }
 
 export const CookieOptions: Partial<ResponseCookie> = {

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 8006",
-    "build": "rimraf .net && next build",
+    "build": "rimraf .next && next build",
     "start": "next start -p 8006",
     "lint": "next lint"
   },
@@ -24,6 +24,7 @@
     "next-nprogress-bar": "^2.3.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-ga4": "^2.1.0",
     "react-localization": "^1.0.19",
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.5",
