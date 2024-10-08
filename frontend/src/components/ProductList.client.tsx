@@ -130,7 +130,6 @@ export const Actions: React.FC<ActionsProps> = ({ product }) => {
 
                 if (res.status === 200) {
                   if (!cartId) {
-                    console.log('res.data', res.data)
                     await CartService.setCartId(res.data)
                   }
                   setInCart(true)
