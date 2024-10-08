@@ -422,11 +422,11 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
             </div>
           }
 
-          <React.Fragment>
+          <>
             <Drawer open={isSideMenuOpen} onClose={handleSideMenuClose}>
               <ul className={styles.menu}>
                 <li>
-                  <Link href="/" className={styles.menuItem}>
+                  <Link href="/" className={styles.menuItem} onClick={handleSideMenuClose}>
 
                     <HomeIcon className={styles.menuItemIcon} />
                     <span className={styles.menuItemText}>{strings.HOME}</span>
@@ -435,7 +435,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
                 </li>
                 {isSignedIn &&
                   <li>
-                    <Link href="/orders" className={styles.menuItem}>
+                    <Link href="/orders" className={styles.menuItem} onClick={handleSideMenuClose}>
 
                       <OrdersIcon className={styles.menuItemIcon} />
                       <span className={styles.menuItemText}>{strings.ORDERS}</span>
@@ -445,7 +445,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
                 }
                 {!isSignedIn && env.isMobile() &&
                   <li>
-                    <Link href="/sign-in" className={styles.menuItem}>
+                    <Link href="/sign-in" className={styles.menuItem} onClick={handleSideMenuClose}>
 
                       <LoginIcon className={styles.menuItemIcon} />
                       <span className={styles.menuItemText}>{strings.SIGN_IN}</span>
@@ -455,7 +455,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
                 }
               </ul>
             </Drawer>
-          </React.Fragment>
+          </>
 
           <div style={classes.grow} />
 

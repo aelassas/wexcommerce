@@ -419,7 +419,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch }) => {
             <Drawer open={isSideMenuOpen} onClose={handleSideMenuClose}>
               <ul className={styles.menu}>
                 <li>
-                  <Link href="/orders" className={styles.menuItem} onClick={() => setSideAnchorEl(null)}>
+                  <Link href="/orders" className={styles.menuItem} onClick={handleSideMenuClose}>
 
                     <OrdersIcon className={styles.menuItemIcon} />
                     <span className={styles.menuItemText}>{strings.ORDERS}</span>
@@ -429,7 +429,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch }) => {
                 {isSignedIn &&
                   <>
                     <li>
-                      <Link href="/categories" className={styles.menuItem} onClick={() => setSideAnchorEl(null)}>
+                      <Link href="/categories" className={styles.menuItem} onClick={handleSideMenuClose}>
 
                         <CategoriesIcon className={styles.menuItemIcon} />
                         <span className={styles.menuItemText}>{strings.CATEGORIES}</span>
@@ -437,7 +437,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch }) => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/products" className={styles.menuItem} onClick={() => setSideAnchorEl(null)}>
+                      <Link href="/products" className={styles.menuItem} onClick={handleSideMenuClose}>
 
                         <ProductsIcon className={styles.menuItemIcon} />
                         <span className={styles.menuItemText}>{strings.PRODUCTS} </span>
@@ -445,7 +445,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch }) => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/users" className={styles.menuItem} onClick={() => setSideAnchorEl(null)}>
+                      <Link href="/users" className={styles.menuItem} onClick={handleSideMenuClose}>
 
                         <UsersIcon className={styles.menuItemIcon} />
                         <span className={styles.menuItemText}>{strings.USERS}</span>
