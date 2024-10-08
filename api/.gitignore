@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+# TypeScript
+/dist
+*.tsbuildinfo
+
 # testing
 /coverage
 
