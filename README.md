@@ -29,12 +29,11 @@ A key design decision was made to use TypeScript instead of JavaScript due to it
 
 # Resources
 
-The documentation and installation instructions are not up to date and will be updated soon.
-
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
 2. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
-3. [Run from Source](https://github.com/aelassas/weecommerce/wiki/Run-from-Source)
-4. [Demo Database](https://github.com/aelassas/weecommerce/wiki/Demo-Database)
+3. [Setup Stripe](https://github.com/aelassas/wexcommerce/wiki/Setup-Stripe)
+4. [Run from Source](https://github.com/aelassas/weecommerce/wiki/Run-from-Source)
+5. [Demo Database](https://github.com/aelassas/weecommerce/wiki/Demo-Database)
 
 # License
 wexCommerce is [MIT licensed](https://github.com/aelassas/wexcommerce/blob/main/LICENSE).
