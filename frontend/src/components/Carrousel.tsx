@@ -3,9 +3,6 @@
 import React, { useRef } from 'react'
 import Slider from 'react-slick'
 import Image from 'next/image'
-import { Button } from '@mui/material'
-import { ArrowRight, ArrowLeft } from '@mui/icons-material'
-import { strings as commonStrings } from '@/lang/common'
 
 import styles from '@/styles/carrousel.module.css'
 
@@ -37,17 +34,9 @@ const Carrousel: React.FC<CarrouselProps> = ({
     appendDots: (dots: React.ReactNode) => (showNavigation || !autoplay) ? (
       <div>
         <ul style={{ margin: '0px', padding: '0px' }}>
-          <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderPrev}`} onClick={() => slider?.current?.slickPrev()}>
-            <ArrowLeft />
-            {commonStrings.BACK}
-          </Button>
           {' '}
           {dots}
           {' '}
-          <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderNext}`} onClick={() => slider?.current?.slickNext()}>
-            {commonStrings.NEXT}
-            <ArrowRight />
-          </Button>
         </ul>
       </div>
     ) : <></>,

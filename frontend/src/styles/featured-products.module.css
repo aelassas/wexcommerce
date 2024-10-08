@@ -12,14 +12,6 @@ section.main .slider {
   height: 320px;
 }
 
-section.main .slickDots {
-  bottom: -60px;
-}
-
-section.main .slickDots li.slickActive button:before {
-  color: #1976D2;
-}
-
 section.main .btnSlider {
   color: #000 !important;
 }

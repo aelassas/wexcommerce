@@ -11,33 +11,13 @@ section.main h1.title {
 }
 
 section.main .slider {
-  height: 320px;
+  height: 310px;
   width: 1075px;
-}
-
-section.main .slickDots {
-  bottom: -60px;
-}
-
-section.main .slickDots li.slickActive button:before {
-  color: #1976D2;
-}
-
-section.main .btnSlider {
-  color: #000 !important;
-}
-
-section.main .btnSliderPrev {
-  margin-right: 60px;
-}
-
-section.main .btnSliderNext {
-  margin-left: 60px;
 }
 
 section.main article.image {
   height: 300px;
-  background-color: #fff;
+  background-color: #FAFAFA;
   margin: auto;
 }
 
