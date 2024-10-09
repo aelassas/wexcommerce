@@ -9,7 +9,6 @@ import { ArrowRight, ArrowLeft } from '@mui/icons-material'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'
-import { strings as commonStrings } from '@/lang/common'
 
 import styles from '@/styles/category-list.module.css'
 
@@ -43,13 +42,11 @@ const CategoryList: React.FC<CategoryListProps> = (
         <ul style={{ margin: '0px', padding: '0px' }}>
           <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderPrev}`} onClick={() => slider?.current?.slickPrev()}>
             <ArrowLeft />
-            {commonStrings.BACK}
           </Button>
           {' '}
           {dots}
           {' '}
           <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderNext}`} onClick={() => slider?.current?.slickNext()}>
-            {commonStrings.NEXT}
             <ArrowRight />
           </Button>
         </ul>

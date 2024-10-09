@@ -56,13 +56,11 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
         <ul style={{ margin: '0px', padding: '0px' }}>
           <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderPrev}`} onClick={() => slider?.current?.slickPrev()}>
             <ArrowLeft />
-            {commonStrings.BACK}
           </Button>
           {' '}
           {dots}
           {' '}
           <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderNext}`} onClick={() => slider?.current?.slickNext()}>
-            {commonStrings.NEXT}
             <ArrowRight />
           </Button>
         </ul>
