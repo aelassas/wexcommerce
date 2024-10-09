@@ -8,6 +8,8 @@ wexCommerce is composed of a frontend and an admin dashboard. From the frontend,
 
 A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
 
+wexCommerce can run in a Docker container. Follow this step by step [guide](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)) to walk you through on how to build wexCommerce Docker image and run it in a Docker container.
+
 # Features
 
 * Stock management
@@ -31,9 +33,15 @@ A key design decision was made to use TypeScript instead of JavaScript due to it
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
 2. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
+2. [Installing (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))
+   1. [Docker Image](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#docker-image)
+   2. [SSL](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#ssl)
 3. [Setup Stripe](https://github.com/aelassas/wexcommerce/wiki/Setup-Stripe)
-4. [Run from Source](https://github.com/aelassas/weecommerce/wiki/Run-from-Source)
-5. [Demo Database](https://github.com/aelassas/weecommerce/wiki/Demo-Database)
+4. [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)
+5. [Demo Database](https://github.com/aelassas/wexcommerce/wiki/Demo-Database)
+   1. [Windows, Linux and macOS](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#windows-linux-and-macos)
+   2. [Docker](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#docker)
+6. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 
 # License
 wexCommerce is [MIT licensed](https://github.com/aelassas/wexcommerce/blob/main/LICENSE).
