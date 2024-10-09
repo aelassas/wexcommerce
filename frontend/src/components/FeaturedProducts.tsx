@@ -4,7 +4,6 @@ import React, { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button, IconButton } from '@mui/material'
-import { ArrowRight, ArrowLeft } from '@mui/icons-material'
 import { ShoppingCart as CartIcon } from '@mui/icons-material'
 import slugify from '@sindresorhus/slugify'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -47,21 +46,15 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
   const slider = useRef<ReactSlick>(null)
 
   const sliderSettings = {
-    arrows: false,
+    arrows: true,
     dots: true,
     // eslint-disable-next-line react/no-unstable-nested-components
-    appendDots: (dots: React.ReactNode) => (showNavigation || !autoplay) ? (
+    appendDots: (dots: React.ReactNode) => showNavigation ? (
       <div>
         <ul style={{ margin: '0px', padding: '0px' }}>
-          <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderPrev}`} onClick={() => slider?.current?.slickPrev()}>
-            <ArrowLeft />
-          </Button>
           {' '}
           {dots}
           {' '}
-          <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderNext}`} onClick={() => slider?.current?.slickNext()}>
-            <ArrowRight />
-          </Button>
         </ul>
       </div>
     ) : <></>,

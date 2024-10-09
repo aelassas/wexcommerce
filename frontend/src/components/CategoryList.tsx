@@ -4,8 +4,6 @@ import React, { useRef } from 'react'
 import ReactSlick from 'react-slick'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Button } from '@mui/material'
-import { ArrowRight, ArrowLeft } from '@mui/icons-material'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'
@@ -33,20 +31,14 @@ const CategoryList: React.FC<CategoryListProps> = (
   const slider = useRef<ReactSlick>(null)
 
   const sliderSettings = {
-    arrows: false,
+    arrows: true,
     dots: true,
-    appendDots: (dots: React.ReactNode) => (showNavigation || !autoplay) ? (
+    appendDots: (dots: React.ReactNode) => showNavigation ? (
       <div>
         <ul style={{ margin: '0px', padding: '0px' }}>
-          <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderPrev}`} onClick={() => slider?.current?.slickPrev()}>
-            <ArrowLeft />
-          </Button>
           {' '}
           {dots}
           {' '}
-          <Button variant="text" className={`${styles.btnSlider} ${styles.btnSliderNext}`} onClick={() => slider?.current?.slickNext()}>
-            <ArrowRight />
-          </Button>
         </ul>
       </div>
     ) : <></>,

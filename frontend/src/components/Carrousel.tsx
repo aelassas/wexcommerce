@@ -30,7 +30,7 @@ const Carrousel: React.FC<CarrouselProps> = ({
     arrows: false,
     dots: true,
     // eslint-disable-next-line react/no-unstable-nested-components
-    appendDots: (dots: React.ReactNode) => (showNavigation || !autoplay) ? (
+    appendDots: (dots: React.ReactNode) => showNavigation ? (
       <div>
         <ul style={{ margin: '0px', padding: '0px' }}>
           {' '}

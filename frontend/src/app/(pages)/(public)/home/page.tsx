@@ -60,7 +60,7 @@ const Home = async () => {
       </div>
 
       <div className={styles.categories}>
-        <CategoryList title={strings.CATEGORIES_TITLE} categories={categories} />
+        <CategoryList title={strings.CATEGORIES_TITLE} categories={categories} showNavigation />
       </div>
 
       <div className={styles.featuredCategories}>

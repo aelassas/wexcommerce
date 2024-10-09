@@ -15,6 +15,21 @@ body,
   flex-direction: column;
 }
 
+.slick-prev {
+  left: -5% !important;
+  z-index: 1 !important;
+}
+
+.slick-next {
+  z-index: 1 !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-size: 28px !important;
+  color: #ddd !important;
+}
+
 a {
   color: #3498db;
 }
