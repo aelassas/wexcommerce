@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useRef } from 'react'
-import Slider from 'react-slick'
+import ReactSlick from 'react-slick'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@mui/material'
@@ -9,11 +9,9 @@ import { ArrowRight, ArrowLeft } from '@mui/icons-material'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'
+import Slick from './Slick'
 
 import styles from '@/styles/category-list.module.css'
-
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
 
 interface CategoryListProps {
   title?: string,
@@ -32,7 +30,7 @@ const CategoryList: React.FC<CategoryListProps> = (
     showNavigation,
   }) => {
 
-  const slider = useRef<Slider>(null)
+  const slider = useRef<ReactSlick>(null)
 
   const sliderSettings = {
     arrows: false,
@@ -52,10 +50,12 @@ const CategoryList: React.FC<CategoryListProps> = (
         </ul>
       </div>
     ) : <></>,
+
     infinite: true,
-    speed: 500,
     autoplay: !!autoplay,
+    speed: 500,
     autoplaySpeed: autoplaySpeed || (3 * 1000),
+    swipeToSlide: true,
 
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -75,7 +75,7 @@ const CategoryList: React.FC<CategoryListProps> = (
   return categories.length >= 4 && (
     <section className={styles.main}>
       {title && <h1 className={styles.title}>{title}</h1>}
-      <Slider ref={slider} className={styles.slider} {...sliderSettings}>
+      <Slick ref={slider} className={styles.slider} {...sliderSettings}>
         {
           categories.map((category) => (
             <article key={category._id} className={styles.category}>
@@ -96,7 +96,7 @@ const CategoryList: React.FC<CategoryListProps> = (
             </article>
           ))
         }
-      </Slider>
+      </Slick>
     </section>
   )
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useRef, useState } from 'react'
-import Slider from 'react-slick'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button, IconButton } from '@mui/material'
@@ -17,11 +16,10 @@ import { LanguageContextType, useLanguageContext } from '@/context/LanguageConte
 import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyContext'
 import { CartContextType, useCartContext } from '@/context/CartContext'
 import { UserContextType, useUserContext } from '@/context/UserContext'
+import Slick from './Slick'
+import ReactSlick from 'react-slick'
 
 import styles from '@/styles/featured-products.module.css'
-
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
 
 interface FeaturedProductsProps {
   title?: string
@@ -45,7 +43,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
   const { cartItemCount, setCartItemCount } = useCartContext() as CartContextType
   const [products, setProducts] = useState<wexcommerceTypes.Product[]>(productsFromProps)
 
-  const slider = useRef<Slider>(null)
+  const slider = useRef<ReactSlick>(null)
 
   const sliderSettings = {
     arrows: false,
@@ -68,9 +66,10 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
     ) : <></>,
 
     infinite: true,
-    speed: 500,
     autoplay: !!autoplay,
+    speed: 500,
     autoplaySpeed: autoplaySpeed || (3 * 1000),
+    swipeToSlide: true,
 
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -94,7 +93,14 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
   return products.length > 0 && (
     <section className={styles.main}>
       {title && <h1 className={styles.title}>{title}</h1>}
-      <Slider ref={slider} className={styles.slider} {...sliderSettings}>
+      <Slick ref={slider} className={styles.slider} {...sliderSettings}
+        onSwipe={(direction) => {
+          console.log('onSwipe', direction)
+        }}
+        onEdge={(direction) => {
+          console.log('onEdge', direction)
+        }}
+      >
         {
           products.map((product, index) => (
             <article key={product._id} className={styles.product}>
@@ -182,7 +188,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
             </article>
           ))
         }
-      </Slider >
+      </Slick >
     </section >
   )
 }

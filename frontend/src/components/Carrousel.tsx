@@ -1,13 +1,12 @@
 'use client'
 
 import React, { useRef } from 'react'
-import Slider from 'react-slick'
+import ReactSlick from 'react-slick'
+import Link from 'next/link'
 import Image from 'next/image'
+import Slick from './Slick'
 
 import styles from '@/styles/carrousel.module.css'
-
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
 
 interface CarrouselProps {
   title?: string
@@ -25,7 +24,7 @@ const Carrousel: React.FC<CarrouselProps> = ({
   showNavigation,
 }) => {
 
-  const slider = useRef<Slider>(null)
+  const slider = useRef<ReactSlick>(null)
 
   const sliderSettings = {
     arrows: false,
@@ -42,9 +41,10 @@ const Carrousel: React.FC<CarrouselProps> = ({
     ) : <></>,
 
     infinite: true,
-    speed: 500,
     autoplay: !!autoplay,
+    speed: 500,
     autoplaySpeed: autoplaySpeed || (3 * 1000),
+    swipeToSlide: true,
 
     // centerMode: true,
 
@@ -67,23 +67,25 @@ const Carrousel: React.FC<CarrouselProps> = ({
   return (
     <section className={styles.main}>
       {title && <h1 className={styles.title}>{title}</h1>}
-      <Slider ref={slider} className={styles.slider} {...sliderSettings}>
+      <Slick ref={slider} className={styles.slider} {...sliderSettings}>
         {
           images.map((image, index) => (
-            <article key={index} className={styles.image}>
-              <Image
-                alt=""
-                src={image}
-                width={0}
-                height={0}
-                sizes='100vw'
-                priority={true}
-                className={styles.image}
-              />
-            </article>
+            <Link key={index} href="/search">
+              <article className={styles.image}>
+                <Image
+                  alt=""
+                  src={image}
+                  width={0}
+                  height={0}
+                  sizes='100vw'
+                  priority={true}
+                  className={styles.image}
+                />
+              </article>
+            </Link>
           ))
         }
-      </Slider>
+      </Slick>
     </section>
   )
 }
