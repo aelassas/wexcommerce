@@ -2,7 +2,7 @@ import LocalizedStrings from 'react-localization'
 
 export const strings = new LocalizedStrings({
     fr: {
-        CHANGE_PASSWORD_HEADING: 'Modification du mot de passe',
+        CHANGE_PASSWORD_HEADING: 'Modifier le mot de passe',
         CURRENT_PASSWORD: 'Mot de passe actuel',
         YOUR_PASSWORD: 'Votre mot de passe',
         CURRENT_PASSWORD_ERROR: 'Mauvais mot de passe',
@@ -12,7 +12,7 @@ export const strings = new LocalizedStrings({
         PASSWORD_UPDATE: 'Le mot de passe a été mofifié avec succès.'
     },
     en: {
-        CHANGE_PASSWORD_HEADING: 'Password Modification',
+        CHANGE_PASSWORD_HEADING: 'Change Password',
         CURRENT_PASSWORD: 'Current Password',
         YOUR_PASSWORD: 'Your password',
         CURRENT_PASSWORD_ERROR: 'Wrong password',
