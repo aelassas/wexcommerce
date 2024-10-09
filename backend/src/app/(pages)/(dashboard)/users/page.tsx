@@ -18,7 +18,7 @@ const Users = ({ searchParams }: { searchParams: SearchParams }) => {
 
   return page > 0 && (
     <UserList
-      keyword={(searchParams['s'] as string) || ''}
+      keyword={(searchParams['s'] || searchParams['u'] || '') as string}
       page={page}
     />
   )

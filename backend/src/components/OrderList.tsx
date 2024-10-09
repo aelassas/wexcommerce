@@ -121,7 +121,7 @@ const OrderList = async (
                       </div>
                       <div className={styles.orderInfo}>
                         <span className={styles.orderLabel}>{strings.CLIENT}</span>
-                        <Link href={`/users?s=${(order.user as wexcommerceTypes.User)._id}`}>
+                        <Link href={`/users?u=${(order.user as wexcommerceTypes.User)._id}`}>
                           <span>{(order.user as wexcommerceTypes.User).fullName}</span>
                         </Link>
                       </div>
