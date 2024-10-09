@@ -72,6 +72,10 @@ const CategoryList: React.FC<CategoryListProps> = (
     ]
   }
 
+  const disableDragAndDrop = (e: React.DragEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+  }
+
   return categories.length >= 4 && (
     <section className={styles.main}>
       {title && <h1 className={styles.title}>{title}</h1>}
@@ -79,7 +83,12 @@ const CategoryList: React.FC<CategoryListProps> = (
         {
           categories.map((category) => (
             <article key={category._id} className={styles.category}>
-              <Link href={`/search?c=${category._id}`} title={category.name}>
+              <Link
+                href={`/search?c=${category._id}`}
+                title={category.name}
+                onDragStart={disableDragAndDrop}
+                onDrop={disableDragAndDrop}
+              >
                 <div className={styles.thumbnail}>
                   <Image
                     alt=""

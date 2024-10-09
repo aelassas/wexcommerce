@@ -87,6 +87,10 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
     ]
   }
 
+  const disableDragAndDrop = (e: React.DragEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+  }
+
   if (products.length < 4) {
     return null
   }
@@ -94,18 +98,16 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
   return products.length > 0 && (
     <section className={styles.main}>
       {title && <h1 className={styles.title}>{title}</h1>}
-      <Slick ref={slider} className={styles.slider} {...sliderSettings}
-        onSwipe={(direction) => {
-          console.log('onSwipe', direction)
-        }}
-        onEdge={(direction) => {
-          console.log('onEdge', direction)
-        }}
-      >
+      <Slick ref={slider} className={styles.slider} {...sliderSettings}>
         {
           products.map((product, index) => (
             <article key={product._id} className={styles.product}>
-              <Link href={`/product/${product._id}/${slugify(product.name)}`} title={product.name}>
+              <Link
+                href={`/product/${product._id}/${slugify(product.name)}`}
+                title={product.name}
+                onDragStart={disableDragAndDrop}
+                onDrop={disableDragAndDrop}
+              >
                 <div className={styles.thumbnail}>
                   <Image
                     alt=""
@@ -117,7 +119,10 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
                     className={styles.thumbnail}
                   />
                 </div>
-                <span className={styles.name} title={product.name}>{product.name}</span>
+                <span className={styles.name} title={product.name} onDragStart={(e) => {
+                  e.preventDefault()
+                  console.log('ddd')
+                }} onDrop={(e) => e.preventDefault()}>{product.name}</span>
                 <span className={styles.price}>{`${wexcommerceHelper.formatPrice(product.price, currency, language)}`}</span>
               </Link>
 

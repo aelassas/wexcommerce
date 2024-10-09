@@ -64,14 +64,22 @@ const Carrousel: React.FC<CarrouselProps> = ({
     ]
   }
 
+  const disableDragAndDrop = (e: React.DragEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+  }
+
   return (
     <section className={styles.main}>
       {title && <h1 className={styles.title}>{title}</h1>}
       <Slick ref={slider} className={styles.slider} {...sliderSettings}>
         {
           images.map((image, index) => (
-            <Link key={index} href="/search">
-              <article className={styles.image}>
+            <article key={index} className={styles.image}>
+              <Link
+                href="/search"
+                onDragStart={disableDragAndDrop}
+                onDrop={disableDragAndDrop}
+              >
                 <Image
                   alt=""
                   src={image}
@@ -81,8 +89,8 @@ const Carrousel: React.FC<CarrouselProps> = ({
                   priority={true}
                   className={styles.image}
                 />
-              </article>
-            </Link>
+              </Link>
+            </article>
           ))
         }
       </Slick>
