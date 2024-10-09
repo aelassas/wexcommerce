@@ -54,19 +54,3 @@
   cursor: default;
   color: #939393 !important;
 }
-
-@media only screen and (width <=960px) {
-  .pagerContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-@media only screen and (width >=960px) {
-  .pagerContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-  }
-}

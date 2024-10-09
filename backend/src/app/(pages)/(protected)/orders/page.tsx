@@ -80,16 +80,18 @@ const Orders = ({ searchParams }: { searchParams: SearchParams }) => {
         />
       </div>
 
-      <OrderList
-        page={page}
-        userId={userId}
-        keyword={keyword}
-        from={from?.getTime()}
-        to={to?.getTime()}
-        paymentTypes={paymentTypes}
-        deliveryTypes={deliveryTypes}
-        statuses={statuses}
-      />
+      <div className={styles.orders}>
+        <OrderList
+          page={page}
+          userId={userId}
+          keyword={keyword}
+          from={from?.getTime()}
+          to={to?.getTime()}
+          paymentTypes={paymentTypes}
+          deliveryTypes={deliveryTypes}
+          statuses={statuses}
+        />
+      </div>
 
     </div>
   )

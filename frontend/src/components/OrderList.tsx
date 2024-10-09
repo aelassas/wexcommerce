@@ -54,7 +54,7 @@ const OrderList = async (
       const data = await OrderService.getOrders(
         userIdFromProps || userId!,
         page,
-        env.PAGE_SIZE,
+        env.ORDERS_PAGE_SIZE,
         keyword,
         paymentTypes,
         deliveryTypes,
@@ -68,14 +68,14 @@ const OrderList = async (
         return
       }
       const _orders = _data.resultData
-      const _rowCount = ((page - 1) * env.PAGE_SIZE) + _orders.length
+      const _rowCount = ((page - 1) * env.ORDERS_PAGE_SIZE) + _orders.length
       const _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
       orders = _orders
       rowCount = _rowCount
       totalRecords = _totalRecords
 
-      if (_totalRecords > 0 && page > Math.ceil(_totalRecords / env.PAGE_SIZE)) {
+      if (_totalRecords > 0 && page > Math.ceil(_totalRecords / env.ORDERS_PAGE_SIZE)) {
         noMatch = true
       }
     }

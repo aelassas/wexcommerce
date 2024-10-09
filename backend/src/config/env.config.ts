@@ -22,6 +22,7 @@ const env = {
   ],
   DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_WC_DEFAULT_LANGUAGE || 'en',
   PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_PAGE_SIZE || '30', 10),
+  ORDERS_PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_ORDERS_PAGE_SIZE || '4', 10),
   CDN_USERS: process.env.NEXT_PUBLIC_WC_CDN_USERS,
   CDN_TEMP_USERS: process.env.NEXT_PUBLIC_WC_CDN_TEMP_USERS,
   CDN_CATEGORIES: process.env.NEXT_PUBLIC_WC_CDN_CATEGORIES,

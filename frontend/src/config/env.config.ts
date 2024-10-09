@@ -23,6 +23,7 @@ const env = {
   ],
   DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_WC_DEFAULT_LANGUAGE || 'en',
   PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_PAGE_SIZE || '30'),
+  ORDERS_PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_ORDERS_PAGE_SIZE || '4', 10),
   CDN_PRODUCTS: process.env.NEXT_PUBLIC_WC_CDN_PRODUCTS,
   CDN_CATEGORIES: process.env.NEXT_PUBLIC_WC_CDN_CATEGORIES,
   FB_APP_ID: String(process.env.NEXT_PUBLIC_WC_FB_APP_ID),

@@ -1,3 +1,7 @@
+:root {
+  --toastify-color-info: #121212 !important;
+}
+
 html,
 body,
 .App,

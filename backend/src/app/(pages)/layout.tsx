@@ -101,7 +101,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           MuiCssBaseline: {
             styleOverrides: {
               body: {
-                backgroundColor: '#fafafa',
+                backgroundColor: '#f6f6f6',
               }
             },
           },
@@ -194,7 +194,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </LanguageProvider>
 
           <ToastContainer
-            position='bottom-right'
+            position="bottom-right"
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}
@@ -202,7 +202,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             pauseOnFocusLoss={false}
             draggable={false}
             pauseOnHover={true}
-            theme='dark'
+            theme="light"
           />
         </CssBaseline>
       </ThemeProvider>

@@ -1,3 +1,7 @@
+div.orders {
+  flex: 1;
+}
+
 @media only screen and (width <=960px) {
     div.main {
         display: flex;

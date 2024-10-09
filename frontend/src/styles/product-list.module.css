@@ -1,4 +1,10 @@
 @media only screen and (width <=960px) {
+  div.productList {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   article.product {
     flex: 1 0 100%;
     max-width: calc(100% - 12px);
@@ -15,12 +21,16 @@
 }
 
 @media only screen and (width >=960px) {
+  div.productList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 10px;
+  }
 
   article.product {
-    flex: 1 0 21%;
-    max-width: calc(25% - 6px);
+    width: 210px;
     height: 300px;
-    margin: 3px;
+    margin: 15px;
     background-color: #fff;
     padding: 6px;
   }
@@ -33,12 +43,6 @@
 div.products {
   flex: 1;
   height: fit-content;
-}
-
-div.productList {
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
 }
 
 article.product {
@@ -60,7 +64,7 @@ div.productList a:hover {
 }
 
 article.product {
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 article.product div.actions {

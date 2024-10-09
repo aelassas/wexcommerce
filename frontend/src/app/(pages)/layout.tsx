@@ -104,7 +104,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           MuiCssBaseline: {
             styleOverrides: {
               body: {
-                backgroundColor: '#fafafa',
+                backgroundColor: '#f6f6f6',
               }
             },
           },

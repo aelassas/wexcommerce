@@ -53,7 +53,7 @@ export const Pager: React.FC<PagerProps> = ({
   return (
     <PagerComponent
       page={page}
-      pageSize={env.PAGE_SIZE}
+      pageSize={env.ORDERS_PAGE_SIZE}
       rowCount={rowCount}
       totalRecords={totalRecords}
       onPrevious={() => router.push(`/orders?pt=${encodeURIComponent(paymentTypes.join(','))}&dt=${encodeURIComponent(deliveryTypes.join(','))}&os=${encodeURIComponent(statuses.join(','))}&${`p=${page - 1}`}${(from && `&from=${from}`) || ''}${(to && `&to=${to}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}`)}
