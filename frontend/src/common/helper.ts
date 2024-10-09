@@ -78,7 +78,7 @@ export const getDeliveryType = (deliveryType: wexcommerceTypes.DeliveryType, lan
       : ''
 }
 
-export const total = (cartItems:wexcommerceTypes.CartItem[]) => {
+export const total = (cartItems: wexcommerceTypes.CartItem[]) => {
   let total = 0
   for (const item of cartItems) {
     if (!item.product.soldOut) {

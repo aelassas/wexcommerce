@@ -7,10 +7,10 @@ import * as CartService from '@/lib/CartService'
 import * as ProductService from '@/lib/ProductService'
 import ProductComponent from '@/components/Product'
 
-const Product = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const productId = searchParams['p'] as (string | undefined)
+const Product = async ({ params }: { params: { id: string, name: string } }) => {
+  const { id } = params
 
-  if (!productId) {
+  if (!id) {
     return (
       <NoMatch />
     )
@@ -20,7 +20,7 @@ const Product = async ({ searchParams }: { searchParams: SearchParams }) => {
   try {
     const language = await SettingService.getLanguage()
     const cartId = await CartService.getCartId()
-    product = await ProductService.getProduct(productId, language, cartId)
+    product = await ProductService.getProduct(id, language, cartId)
   } catch (err) {
     console.error(err)
   }

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import slugify from '@sindresorhus/slugify'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'
@@ -77,7 +78,7 @@ const ProductList = async (
             {
               products.map((product) => (
                 <article key={product._id} className={styles.product}>
-                  <Link href={`/product?p=${product._id}`} title={product.name}>
+                  <Link href={`/product/${product._id}/${slugify(product.name)}`} title={product.name}>
                     <div className={styles.thumbnail}>
                       <Image
                         alt=""

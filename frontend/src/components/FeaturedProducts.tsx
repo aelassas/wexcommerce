@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Button, IconButton } from '@mui/material'
 import { ArrowRight, ArrowLeft } from '@mui/icons-material'
 import { ShoppingCart as CartIcon } from '@mui/icons-material'
+import slugify from '@sindresorhus/slugify'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'
@@ -104,7 +105,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
         {
           products.map((product, index) => (
             <article key={product._id} className={styles.product}>
-              <Link href={`/product?p=${product._id}`} title={product.name}>
+              <Link href={`/product/${product._id}/${slugify(product.name)}`} title={product.name}>
                 <div className={styles.thumbnail}>
                   <Image
                     alt=""

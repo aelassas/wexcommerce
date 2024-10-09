@@ -26,6 +26,7 @@ import {
   EmbeddedCheckout,
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
+import slugify from '@sindresorhus/slugify'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import * as SettingService from '@/lib/SettingService'
@@ -423,7 +424,7 @@ const Checkout: React.FC = () => {
                     cart.cartItems.filter(cartItem => !cartItem.product.soldOut).map(cartItem => (
 
                       <div key={cartItem._id} className={styles.article}>
-                        <Link href={`/product?p=${cartItem.product._id}`}>
+                        <Link href={`/product/${cartItem.product._id}/${slugify(cartItem.product.name)}`}>
 
                           <div className={styles.thumbnail}>
                             <Image
@@ -439,7 +440,7 @@ const Checkout: React.FC = () => {
 
                         </Link>
                         <div className={styles.articleInfo}>
-                          <Link href={`/product?p=${cartItem.product._id}`}>
+                          <Link href={`/product/${cartItem.product._id}/${slugify(cartItem.product.name)}`}>
 
                             <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
 

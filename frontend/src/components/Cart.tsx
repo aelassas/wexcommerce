@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
+import slugify from '@sindresorhus/slugify'
 import {
   Button,
   IconButton,
@@ -26,13 +28,13 @@ import { strings } from '@/lang/cart'
 import { strings as commonStrings } from '@/lang/common'
 import * as helper from '@/common/helper'
 import * as CartService from '@/lib/CartService'
+import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
+import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyContext'
 import Env from '@/config/env.config'
 import SoldOut from '@/components/SoldOut'
 
 import styles from '@/styles/cart.module.css'
-import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
-import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyContext'
-import Image from 'next/image'
+
 
 export const EmptyCart: React.FC = () => (
   <Card variant="outlined" className={styles.empty}>
@@ -76,7 +78,7 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
           cartItems.map((cartItem, index) => (
             <article key={cartItem._id} className={`${styles.item} ${index < (cartItems.length - 1) ? styles.itemBorder : ''}`}>
               <div className={styles.product} >
-                <Link href={`/product?p=${cartItem.product._id}`}>
+                <Link href={`/product/${cartItem.product._id}/${slugify(cartItem.product.name)}`}>
 
                   <div className={styles.thumbnailContainer}>
                     <div className={styles.thumbnail}>

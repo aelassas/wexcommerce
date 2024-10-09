@@ -14,6 +14,7 @@
     "@mui/icons-material": "^6.1.2",
     "@mui/material": "^6.1.2",
     "@mui/x-date-pickers": "^7.19.0",
+    "@sindresorhus/slugify": "^2.2.1",
     "@stripe/react-stripe-js": "^2.8.1",
     "@stripe/stripe-js": "^4.7.0",
     "@types/react-slick": "^0.23.13",
