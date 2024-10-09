@@ -222,15 +222,17 @@ export const checkout = async (req: Request, res: Response) => {
         _order.status = wexcommerceTypes.OrderStatus.Pending
         _order.expireAt = expireAt
 
-        //
-        // Non verified and active users created from checkout with Stripe are temporary
-        // and are automatically deleted if the payment checkout session expires.
-        //
-        expireAt = new Date()
-        expireAt.setSeconds(expireAt.getSeconds() + env.USER_EXPIRE_AT)
+        if (!_user.verified) {
+          //
+          // Non verified and active users created from checkout with Stripe are temporary
+          // and are automatically deleted if the payment checkout session expires.
+          //
+          expireAt = new Date()
+          expireAt.setSeconds(expireAt.getSeconds() + env.USER_EXPIRE_AT)
 
-        _user.expireAt = expireAt
-        await _user.save()
+          _user.expireAt = expireAt
+          await _user.save()
+        }
       }
     }
 
