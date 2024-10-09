@@ -1,0 +1,72 @@
+version: "3.8"
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: ./api/Dockerfile
+    restart: always
+    ports:
+      - 4005:4005
+    depends_on:
+      - mongo
+    volumes:
+      - cdn:/var/www/cdn/wexcommerce
+
+  mongo:
+    image: mongo:latest
+    command: mongod --quiet --logpath /dev/null
+    restart: always
+    environment:
+      # Provide your credentials here
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: PASSWORD
+    ports:
+      - 27017:27017
+
+  backend:
+    build: 
+      context: .
+      dockerfile: ./backend/Dockerfile
+    depends_on:
+      - api
+    ports:
+      - 8005:8005
+    restart: always
+
+  nginx-backend:
+    build: 
+      context: .
+      dockerfile: ./backend/nginx/Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - 8001:8001
+    restart: always
+
+  frontend:
+    build: 
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    depends_on:
+      - api
+    ports:
+      - 8006:8006
+    volumes:
+      - cdn:/var/www/cdn/wexcommerce
+    restart: always
+
+  nginx-frontend:
+    build: 
+      context: .
+      dockerfile: ./frontend/nginx/Dockerfile
+    depends_on:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - cdn:/var/www/cdn/wexcommerce
+    restart: always
+
+volumes:
+  cdn:

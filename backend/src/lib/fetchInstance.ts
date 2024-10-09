@@ -3,7 +3,8 @@ import * as wexcommerceHelper from ':wexcommerce-helper'
 
 const skipStatuses = [204, 400, 500]
 
-const getURL = (url: string) => `${wexcommerceHelper.trimEnd(env.API_HOST!, '/')}/${wexcommerceHelper.trimStart(url, '/')}`
+const getURL = (url: string) =>
+  `${wexcommerceHelper.trimEnd(env.isServer() ? env.SERVER_API_HOST! : env.CLIENT_API_HOST!, '/')}/${wexcommerceHelper.trimStart(url, '/')}`
 
 const getContentType = (headers?: Record<string, string>[]) => {
   let contentType = 'text/plain'

@@ -4,9 +4,11 @@ const env = {
   isMobile: () => window.innerWidth <= 960,
   isTablet: () => window.innerWidth >= 500 && window.innerWidth <= 960,
   isLandscape: () => window.innerHeight <= 566,
+  isServer: () => typeof window === 'undefined',
 
   APP_TYPE: 'backend',
-  API_HOST: process.env.NEXT_PUBLIC_WC_API_HOST,
+  SERVER_API_HOST: process.env.NEXT_PUBLIC_WC_SERVER_API_HOST,
+  CLIENT_API_HOST: process.env.NEXT_PUBLIC_WC_CLIENT_API_HOST,
   LANGUAGES: ['en', 'fr'],
   _LANGUAGES: [
     {
