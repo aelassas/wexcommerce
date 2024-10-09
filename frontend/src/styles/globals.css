@@ -28,6 +28,7 @@ body,
 .slick-next:before {
   font-size: 28px !important;
   color: #ddd !important;
+  opacity: .75 !important;
 }
 
 a {

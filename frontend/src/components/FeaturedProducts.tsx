@@ -27,6 +27,7 @@ interface FeaturedProductsProps {
   autoplay?: boolean
   autoplaySpeed?: number // in milliseconds
   showNavigation?: boolean
+  showActions?: boolean
 }
 
 const FeaturedProducts: React.FC<FeaturedProductsProps> = (
@@ -36,6 +37,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
     autoplay,
     autoplaySpeed,
     showNavigation,
+    showActions,
   }) => {
   const { language } = useLanguageContext() as LanguageContextType
   const { currency } = useCurrencyContext() as CurrencyContextType
@@ -119,71 +121,74 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
                 <span className={styles.price}>{`${wexcommerceHelper.formatPrice(product.price, currency, language)}`}</span>
               </Link>
 
-              <div className={styles.actions}>
-                {
-                  product.inCart ?
-                    <Button
-                      variant="outlined"
-                      color='error'
-                      className={styles.removeButton}
-                      onClick={async () => {
-                        try {
-                          const cartId = await CartService.getCartId()
-                          const res = await CartService.deleteItem(cartId, product._id)
+              {
+                showActions && (
+                  <div className={styles.actions}>
+                    {
+                      product.inCart ?
+                        <Button
+                          variant="outlined"
+                          color='error'
+                          className={styles.removeButton}
+                          onClick={async () => {
+                            try {
+                              const cartId = await CartService.getCartId()
+                              const res = await CartService.deleteItem(cartId, product._id)
 
-                          if (res.status === 200) {
-                            const _products = wexcommerceHelper.cloneArray(products) as wexcommerceTypes.Product[]
-                            _products[index].inCart = false
-                            setProducts(_products)
-                            setCartItemCount(cartItemCount - 1)
+                              if (res.status === 200) {
+                                const _products = wexcommerceHelper.cloneArray(products) as wexcommerceTypes.Product[]
+                                _products[index].inCart = false
+                                setProducts(_products)
+                                setCartItemCount(cartItemCount - 1)
 
-                            if (res.data.cartDeleted) {
-                              await CartService.deleteCartId()
+                                if (res.data.cartDeleted) {
+                                  await CartService.deleteCartId()
+                                }
+
+                                helper.info(commonStrings.ARTICLE_REMOVED)
+                              } else {
+                                helper.error()
+                              }
+                            } catch (err) {
+                              helper.error(err)
                             }
+                          }}
+                        >
+                          {commonStrings.REMOVE_FROM_CART}
+                        </Button>
+                        :
+                        <IconButton
+                          className={`${styles.button} btn-primary`}
+                          title={commonStrings.ADD_TO_CART}
+                          onClick={async () => {
+                            try {
+                              const cartId = await CartService.getCartId()
+                              const userId = (user && user._id) || ''
 
-                            helper.info(commonStrings.ARTICLE_REMOVED)
-                          } else {
-                            helper.error()
-                          }
-                        } catch (err) {
-                          helper.error(err)
-                        }
-                      }}
-                    >
-                      {commonStrings.REMOVE_FROM_CART}
-                    </Button>
-                    :
-                    <IconButton
-                      className={`${styles.button} btn-primary`}
-                      title={commonStrings.ADD_TO_CART}
-                      onClick={async () => {
-                        try {
-                          const cartId = await CartService.getCartId()
-                          const userId = (user && user._id) || ''
+                              const res = await CartService.addItem(cartId, userId, product._id)
 
-                          const res = await CartService.addItem(cartId, userId, product._id)
-
-                          if (res.status === 200) {
-                            if (!cartId) {
-                              await CartService.setCartId(res.data)
+                              if (res.status === 200) {
+                                if (!cartId) {
+                                  await CartService.setCartId(res.data)
+                                }
+                                const _products = wexcommerceHelper.cloneArray(products) as wexcommerceTypes.Product[]
+                                _products[index].inCart = true
+                                setProducts(_products)
+                                setCartItemCount(cartItemCount + 1)
+                                helper.info(commonStrings.ARTICLE_ADDED)
+                              } else {
+                                helper.error()
+                              }
+                            } catch (err) {
+                              helper.error(err)
                             }
-                            const _products = wexcommerceHelper.cloneArray(products) as wexcommerceTypes.Product[]
-                            _products[index].inCart = true
-                            setProducts(_products)
-                            setCartItemCount(cartItemCount + 1)
-                            helper.info(commonStrings.ARTICLE_ADDED)
-                          } else {
-                            helper.error()
-                          }
-                        } catch (err) {
-                          helper.error(err)
-                        }
-                      }}
-                    >
-                      <CartIcon className={styles.buttonIcon} />
-                    </IconButton>
-                }
-              </div>
+                          }}
+                        >
+                          <CartIcon className={styles.buttonIcon} />
+                        </IconButton>
+                    }
+                  </div>
+                )}
             </article>
           ))
         }

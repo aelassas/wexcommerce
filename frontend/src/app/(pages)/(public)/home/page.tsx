@@ -56,6 +56,7 @@ const Home = async () => {
           products={featuredProducts}
           autoplay
           autoplaySpeed={5 * 1000}
+          showActions
         />
       </div>
 
