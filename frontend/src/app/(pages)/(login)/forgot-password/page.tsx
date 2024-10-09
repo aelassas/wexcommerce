@@ -5,7 +5,7 @@ import * as UserService from '@/lib/UserService'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/forgot-password'
 import {
-  Input,
+  OutlinedInput,
   InputLabel,
   FormControl,
   FormHelperText,
@@ -150,17 +150,19 @@ const ForgotPassword: React.FC = () => {
             {!sent &&
               <form onSubmit={handleSubmit}>
                 <label>{strings.RESET_PASSWORD}</label>
-                <FormControl fullWidth margin="dense">
+                <FormControl fullWidth margin="normal" size="small">
                   <InputLabel className='required'>
                     {commonStrings.EMAIL}
                   </InputLabel>
-                  <Input
+                  <OutlinedInput
+                    label={commonStrings.EMAIL}
                     onChange={handleEmailChange}
                     onKeyDown={handleEmailKeyDown}
                     onBlur={handleEmailBlur}
                     type='text'
                     error={error || !emailValid}
                     autoComplete='off'
+                    size="small"
                     required
                   />
                   <FormHelperText error={error || !emailValid}>

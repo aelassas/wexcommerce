@@ -14,7 +14,7 @@ import { strings as activateStrings } from '@/lang/activate'
 import { strings as dashboardStrings } from '@/lang/dashboard'
 import NoMatch from '@/components/NoMatch'
 import {
-  Input,
+  OutlinedInput,
   InputLabel,
   FormControl,
   FormHelperText,
@@ -205,15 +205,17 @@ const ResetPassword: React.FC = () => {
           <Paper className={styles.resetUserPasswordForm} elevation={10}>
             <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
             <form onSubmit={handleSubmit}>
-              <FormControl fullWidth margin="dense">
+              <FormControl fullWidth margin="normal" size="small">
                 <InputLabel className='required' error={passwordLengthError}>
                   {cpStrings.NEW_PASSWORD}
                 </InputLabel>
-                <Input
+                <OutlinedInput
+                  label={cpStrings.NEW_PASSWORD}
                   onChange={handlePasswordChange}
                   onBlur={handlePasswordBlur}
                   type='password'
                   error={passwordLengthError}
+                  size="small"
                   required
                 />
                 <FormHelperText
@@ -222,16 +224,18 @@ const ResetPassword: React.FC = () => {
                   {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
                 </FormHelperText>
               </FormControl>
-              <FormControl fullWidth margin="dense" error={confirmPasswordError}>
+              <FormControl fullWidth margin="normal" size="small" error={confirmPasswordError}>
                 <InputLabel error={confirmPasswordError} className='required'>
                   {commonStrings.CONFIRM_PASSWORD}
                 </InputLabel>
-                <Input
+                <OutlinedInput
+                  label={commonStrings.CONFIRM_PASSWORD}
                   onChange={handleConfirmPasswordChange}
                   onKeyDown={handleConfirmPasswordKeyDown}
                   onBlur={handleConfirmPasswordBlur}
                   error={confirmPasswordError}
                   type='password'
+                  size="small"
                   required
                 />
                 <FormHelperText

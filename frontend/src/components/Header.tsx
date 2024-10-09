@@ -483,7 +483,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
                 </Badge>
               </IconButton>}
             {(!hideSignIn && !isSignedIn && isLoaded && !loading) &&
-              <Link href='sign-in' className={styles.signin}>
+              <Link href="/sign-in" className={styles.signin}>
 
                 <LoginIcon className={styles.signinIcon} />
                 <span>{strings.SIGN_IN}</span>

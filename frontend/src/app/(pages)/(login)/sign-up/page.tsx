@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import validator from 'validator'
 import {
-  Input,
+  OutlinedInput,
   InputLabel,
   FormControl,
   FormHelperText,
@@ -188,36 +188,41 @@ const SignUp: React.FC = () => {
         <h1 className={styles.signupFormTitle}> {strings.SIGN_UP_HEADING} </h1>
         <form onSubmit={handleSubmit}>
           <div>
-            <FormControl fullWidth margin="dense">
+            <FormControl fullWidth margin="normal" size="small">
               <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
-              <Input
+              <OutlinedInput
                 type="text"
+                label={commonStrings.FULL_NAME}
                 value={fullName}
                 required
                 onChange={handleOnChangeFullName}
                 autoComplete="off"
+                size="small"
               />
             </FormControl>
-            <FormControl fullWidth margin="dense">
+            <FormControl fullWidth margin="normal" size="small">
               <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
-              <Input
+              <OutlinedInput
                 type="text"
+                label={commonStrings.EMAIL}
                 error={!emailValid || emailError}
                 value={email}
                 onBlur={handleEmailBlur}
                 onChange={handleEmailChange}
                 required
                 autoComplete="off"
+                size="small"
               />
               <FormHelperText error={!emailValid || emailError}>
                 {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
                 {(emailError && commonStrings.EMAIL_ALREADY_REGISTERED) || ''}
               </FormHelperText>
             </FormControl>
-            <FormControl fullWidth margin="dense">
+            <FormControl fullWidth margin="normal" size="small">
               <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
-              <Input
+              <OutlinedInput
                 type="text"
+                label={commonStrings.PHONE}
                 error={!phoneValid}
                 value={phone}
                 onBlur={(e) => {
@@ -229,15 +234,17 @@ const SignUp: React.FC = () => {
                 }}
                 required
                 autoComplete="off"
+                size="small"
               />
               <FormHelperText error={!phoneValid}>
                 {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
               </FormHelperText>
             </FormControl>
-            <FormControl fullWidth margin="dense">
+            <FormControl fullWidth margin="normal" size="small">
               <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
-              <Input
+              <OutlinedInput
                 type="text"
+                label={commonStrings.ADDRESS}
                 onChange={(e) => {
                   setAddress(e.target.value)
                 }}
@@ -245,11 +252,13 @@ const SignUp: React.FC = () => {
                 multiline
                 minRows={3}
                 value={address}
+                size="small"
               />
             </FormControl>
-            <FormControl fullWidth margin="dense">
+            <FormControl fullWidth margin="normal" size="small">
               <InputLabel className='required'>{commonStrings.PASSWORD}</InputLabel>
-              <Input
+              <OutlinedInput
+                label={commonStrings.PASSWORD}
                 value={password}
                 onChange={handleOnChangePassword}
                 required
@@ -260,11 +269,13 @@ const SignUp: React.FC = () => {
                     autoComplete: 'off',
                   },
                 }}
+                size="small"
               />
             </FormControl>
-            <FormControl fullWidth margin="dense">
+            <FormControl fullWidth margin="normal" size="small">
               <InputLabel className='required'>{commonStrings.CONFIRM_PASSWORD}</InputLabel>
-              <Input
+              <OutlinedInput
+                label={commonStrings.CONFIRM_PASSWORD}
                 value={confirmPassword}
                 onChange={handleOnChangeConfirmPassword}
                 required
@@ -275,6 +286,7 @@ const SignUp: React.FC = () => {
                     autoComplete: 'off',
                   },
                 }}
+                size="small"
               />
             </FormControl>
 

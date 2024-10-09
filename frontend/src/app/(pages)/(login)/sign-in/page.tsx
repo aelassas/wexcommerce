@@ -7,7 +7,7 @@ import {
   Paper,
   FormControl,
   InputLabel,
-  Input,
+  OutlinedInput,
   Button
 } from '@mui/material'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -110,22 +110,26 @@ const SignIn: React.FC = () => {
       <Paper className={styles.signinForm} elevation={10}>
         <form onSubmit={handleSubmit}>
           <h1 className={styles.signinFormTitle}>{strings.SIGN_IN_HEADING}</h1>
-          <FormControl fullWidth margin="dense">
+          <FormControl fullWidth margin="normal" size="small">
             <InputLabel>{commonStrings.EMAIL}</InputLabel>
-            <Input
+            <OutlinedInput
               type="text"
+              label={commonStrings.EMAIL}
               onChange={handleOnChangeEmail}
               autoComplete="email"
+              size="small"
               required
             />
           </FormControl>
-          <FormControl fullWidth margin="dense">
+          <FormControl fullWidth margin="normal" size="small">
             <InputLabel>{commonStrings.PASSWORD}</InputLabel>
-            <Input
+            <OutlinedInput
+              label={commonStrings.PASSWORD}
               onChange={handleOnChangePassword}
               onKeyDown={handleOnPasswordKeyDown}
               autoComplete="password"
               type="password"
+              size="small"
               required
             />
           </FormControl>

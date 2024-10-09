@@ -62,7 +62,7 @@ const OrderDateFilter: React.FC<OrderDateFilterProps> = (
       className={className}
     >
       <form onSubmit={handleSubmit} className={styles.form}>
-        <FormControl fullWidth margin="dense">
+        <FormControl fullWidth margin="normal" size="small">
           <DatePicker
             label={strings.FROM}
             value={fromDate}
@@ -73,7 +73,7 @@ const OrderDateFilter: React.FC<OrderDateFilterProps> = (
             language={language}
           />
         </FormControl>
-        <FormControl fullWidth margin="dense">
+        <FormControl fullWidth margin="normal" size="small">
           <DatePicker
             label={strings.TO}
             value={toDate}

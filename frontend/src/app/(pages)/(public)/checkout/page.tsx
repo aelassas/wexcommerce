@@ -8,7 +8,7 @@ import {
   Button,
   FormControl,
   InputLabel,
-  Input,
+  OutlinedInput,
   FormHelperText,
   RadioGroup,
   Radio,
@@ -332,21 +332,24 @@ const Checkout: React.FC = () => {
                       <label>{strings.USER_DETAILS}</label>
                     </div>
                     <div className={styles.boxForm}>
-                      <FormControl fullWidth margin="dense">
+                      <FormControl fullWidth margin="normal" size="small">
                         <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
-                        <Input
+                        <OutlinedInput
                           type="text"
+                          label={commonStrings.FULL_NAME}
                           required
                           onChange={(e) => {
                             setFullName(e.target.value)
                           }}
                           autoComplete="off"
+                          size="small"
                         />
                       </FormControl>
-                      <FormControl fullWidth margin="dense">
+                      <FormControl fullWidth margin="normal" size="small">
                         <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
-                        <Input
+                        <OutlinedInput
                           type="text"
+                          label={commonStrings.EMAIL}
                           error={!emailValid || emailRegistered}
                           onChange={(e) => {
                             setEmail(e.target.value)
@@ -363,6 +366,7 @@ const Checkout: React.FC = () => {
                           }}
                           required
                           autoComplete="off"
+                          size="small"
                         />
                         <FormHelperText error={!emailValid || emailRegistered}>
                           {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
@@ -376,10 +380,11 @@ const Checkout: React.FC = () => {
                           {(emailInfo && strings.EMAIL_INFO) || ''}
                         </FormHelperText>
                       </FormControl>
-                      <FormControl fullWidth margin="dense">
+                      <FormControl fullWidth margin="normal" size="small">
                         <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
-                        <Input
+                        <OutlinedInput
                           type="text"
+                          label={commonStrings.PHONE}
                           error={!phoneValid}
                           value={phone}
                           onBlur={(e) => {
@@ -391,14 +396,16 @@ const Checkout: React.FC = () => {
                           }}
                           required
                           autoComplete="off"
+                          size="small"
                         />
                         <FormHelperText error={!phoneValid}>
                           {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
                         </FormHelperText>
                       </FormControl>
-                      <FormControl fullWidth margin="dense">
+                      <FormControl fullWidth margin="normal" size="small">
                         <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
-                        <Input
+                        <OutlinedInput
+                          label={commonStrings.ADDRESS}
                           type="text"
                           onChange={(e) => {
                             setAddress(e.target.value)
@@ -407,6 +414,7 @@ const Checkout: React.FC = () => {
                           multiline
                           minRows={3}
                           value={address}
+                          size="small"
                         />
                       </FormControl>
                     </div>

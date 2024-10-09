@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
-  Input,
+  OutlinedInput,
   InputLabel,
   FormControl,
   Button,
@@ -94,14 +94,15 @@ const ChangePassword: React.FC = () => {
       <Paper className={styles.form} elevation={10}>
         <form onSubmit={handleSubmit}>
           <h1 className={styles.formTitle}>{strings.CHANGE_PASSWORD_HEADING}</h1>
-          <FormControl fullWidth margin="dense">
+          <FormControl fullWidth margin="normal" size="small">
             <InputLabel
               error={currentPasswordError}
               className='required'
             >
               {strings.CURRENT_PASSWORD}
             </InputLabel>
-            <Input
+            <OutlinedInput
+              label={strings.CURRENT_PASSWORD}
               onChange={(e) => {
                 setCurrentPassword(e.target.value)
                 setCurrentPasswordError(false)
@@ -109,6 +110,7 @@ const ChangePassword: React.FC = () => {
               value={currentPassword}
               error={currentPasswordError}
               type='password'
+              size="small"
               required
             />
             <FormHelperText
@@ -119,12 +121,13 @@ const ChangePassword: React.FC = () => {
           </FormControl>
           <FormControl
             fullWidth
-            margin="dense"
+            margin="normal" size="small"
           >
             <InputLabel className='required'>
               {strings.NEW_PASSWORD}
             </InputLabel>
-            <Input
+            <OutlinedInput
+              label={strings.NEW_PASSWORD}
               onChange={(e) => {
                 setNewPassword(e.target.value)
                 setPasswordLengthError(false)
@@ -133,6 +136,7 @@ const ChangePassword: React.FC = () => {
               type='password'
               value={newPassword}
               error={passwordLengthError}
+              size="small"
               required
             />
             <FormHelperText
@@ -143,7 +147,7 @@ const ChangePassword: React.FC = () => {
           </FormControl>
           <FormControl
             fullWidth
-            margin="dense"
+            margin="normal" size="small"
             error={confirmPasswordError}
           >
             <InputLabel
@@ -152,7 +156,8 @@ const ChangePassword: React.FC = () => {
             >
               {commonStrings.CONFIRM_PASSWORD}
             </InputLabel>
-            <Input
+            <OutlinedInput
+              label={commonStrings.CONFIRM_PASSWORD}
               onChange={(e) => {
                 setConfirmPassword(e.target.value)
                 setPasswordLengthError(false)
@@ -166,6 +171,7 @@ const ChangePassword: React.FC = () => {
               error={confirmPasswordError}
               type='password'
               value={confirmPassword}
+              size="small"
               required
             />
             <FormHelperText
