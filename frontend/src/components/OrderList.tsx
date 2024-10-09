@@ -120,12 +120,6 @@ const OrderList = async (
                         <DeliveryTypeField value={(order.deliveryType as wexcommerceTypes.DeliveryTypeInfo).name} />
                       </div>
                       <div className={styles.orderInfo}>
-                        <span className={styles.orderLabel}>{strings.CLIENT}</span>
-                        <Link href={`/users?s=${(order.user as wexcommerceTypes.User)._id}`}>
-                          <span>{(order.user as wexcommerceTypes.User).fullName}</span>
-                        </Link>
-                      </div>
-                      <div className={styles.orderInfo}>
                         <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
                         <div className={styles.orderItems}>
                           {
