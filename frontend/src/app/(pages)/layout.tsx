@@ -108,15 +108,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               }
             },
           },
-          MuiButton: {
-            styleOverrides: {
-              root: {
-                '&.Mui-disabled': {
-                  opacity: 0.5
-                }
-              }
-            },
-          },
+          // MuiButton: {
+          //   styleOverrides: {
+          //     root: {
+          //       '&.Mui-disabled': {
+          //         opacity: 0.5
+          //       }
+          //     }
+          //   },
+          // },
           MuiIconButton: {
             styleOverrides: {
               root: {

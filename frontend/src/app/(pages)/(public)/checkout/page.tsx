@@ -12,7 +12,8 @@ import {
   FormHelperText,
   RadioGroup,
   Radio,
-  FormControlLabel
+  FormControlLabel,
+  CircularProgress
 } from '@mui/material'
 import {
   Person as UserIcon,
@@ -47,7 +48,6 @@ import { UserContextType, useUserContext } from '@/context/UserContext'
 import { CartContextType, useCartContext } from '@/context/CartContext'
 import Error from '@/components/Error'
 import Info from '@/components/Info'
-import Backdrop from '@/components/SimpleBackdrop'
 import NoMatch from '@/components/NoMatch'
 
 import styles from '@/styles/checkout.module.css'
@@ -568,8 +568,13 @@ const Checkout: React.FC = () => {
                     variant="contained"
                     className={`${styles.btnCheckout} btn-margin-bottom`}
                     size="small"
-                  >
-                    {strings.CHECKOUT}
+
+                    disabled={loading}>
+                    {
+                      loading
+                        ? <CircularProgress color="inherit" size={24} />
+                        : strings.CHECKOUT
+                    }
                   </Button>
                 )}
                 <Button
@@ -619,8 +624,6 @@ const Checkout: React.FC = () => {
         {
           !success && noMatch && <NoMatch />
         }
-
-        {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
       </div>
     </>
   )
