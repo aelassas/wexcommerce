@@ -192,7 +192,32 @@ export const update = async (req: Request, res: Response) => {
     }
     return res.sendStatus(204)
   } catch (err) {
-    logger.error(`[cart.getCartId] ${i18n.t('DB_ERROR')}`, err)
+    logger.error(`[cart.update] ${i18n.t('DB_ERROR')}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
+  }
+}
+
+/**
+ * Check wishlist.
+ *
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
+export const check = async (req: Request, res: Response) => {
+  try {
+    const { id, user } = req.params
+
+    const wishlist = await Wishlist.findOne({ user, _id: id })
+
+    if (wishlist) {
+      return res.sendStatus(200)
+    }
+
+    return res.sendStatus(204)
+  } catch (err) {
+    logger.error(`[cart.update] ${i18n.t('DB_ERROR')}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

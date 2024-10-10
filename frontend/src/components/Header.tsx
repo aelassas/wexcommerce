@@ -469,6 +469,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
               onClick={() => {
                 if (isSignedIn) {
                   router.push('/wishlist')
+                  router.refresh()
                 } else {
                   router.push('/sign-in')
                 }
@@ -484,6 +485,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
               <IconButton
                 onClick={() => {
                   router.push('/cart')
+                  router.refresh()
                 }}
                 className={styles.iconButton}
                 title={strings.WISHLIST}

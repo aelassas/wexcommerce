@@ -167,6 +167,24 @@ export const updateCart = async (cartId: string, userId: string): Promise<number
     )
     .then((res) => res.status)
 )
+
+/**
+ * Check if cart is in db.
+ *
+ * @async
+ * @param {string} cartId
+ * @returns {Promise<number>}
+ */
+export const checkCart = async (cartId: string): Promise<number> => (
+  fetchInstance
+    .GET(
+      `/api/check-cart/${cartId}`,
+      [await UserService.authHeader()],
+      true
+    )
+    .then((res) => res.status)
+)
+
 /**
  * Clear other carts.
  *

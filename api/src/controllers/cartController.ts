@@ -290,6 +290,30 @@ export const update = async (req: Request, res: Response) => {
 }
 
 /**
+ * Check cart.
+ *
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
+export const check = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+
+    const cart = await Cart.findById(id)
+
+    if (cart) {
+      return res.sendStatus(200)
+    }
+    return res.sendStatus(204)
+  } catch (err) {
+    logger.error(`[cart.check] ${i18n.t('DB_ERROR')}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
+  }
+}
+
+/**
  * Clear other carts.
  *
  * @async

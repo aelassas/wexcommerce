@@ -205,62 +205,64 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                 }
 
                 {
-                  product.inWishlist ?
-                    <Button
-                      variant="outlined"
-                      color='error'
-                      startIcon={<RemoveFromWishlistIcon />}
-                      title={commonStrings.REMOVE_FROM_WISHLIST}
-                      className={styles.button}
-                      onClick={async () => {
-                        try {
-                          const wishlistId = await WishlistService.getWishlistId()
-                          const res = await WishlistService.deleteItem(wishlistId, product._id)
+                  !!user && (
+                    product.inWishlist ?
+                      <Button
+                        variant="outlined"
+                        color='error'
+                        startIcon={<RemoveFromWishlistIcon />}
+                        title={commonStrings.REMOVE_FROM_WISHLIST}
+                        className={styles.button}
+                        onClick={async () => {
+                          try {
+                            const wishlistId = await WishlistService.getWishlistId()
+                            const res = await WishlistService.deleteItem(wishlistId, product._id)
 
-                          if (res === 200) {
-                            product.inWishlist = false
-                            setProduct(product)
-                            setWishlistCount(wishlistCount - 1)
-                          } else {
-                            helper.error()
-                          }
-                        } catch (err) {
-                          console.log(err)
-                          helper.error()
-                        }
-                      }}
-                    >
-                    </Button>
-                    :
-                    <Button
-                      variant="contained"
-                      className={`${styles.button} btn-primary`}
-                      startIcon={<WishlistIcon />}
-                      title={commonStrings.ADD_TO_WISHLIST}
-                      onClick={async () => {
-                        try {
-                          const wishlistId = await WishlistService.getWishlistId()
-                          const userId = user?._id || ''
-
-                          const res = await WishlistService.addItem(wishlistId, userId, product._id)
-
-                          if (res.status === 200) {
-                            if (!wishlistId) {
-                              await WishlistService.setWishlistId(res.data)
+                            if (res === 200) {
+                              product.inWishlist = false
+                              setProduct(product)
+                              setWishlistCount(wishlistCount - 1)
+                            } else {
+                              helper.error()
                             }
-                            product.inWishlist = true
-                            setProduct(product)
-                            setWishlistCount(wishlistCount + 1)
-                          } else {
+                          } catch (err) {
+                            console.log(err)
                             helper.error()
                           }
-                        } catch (err) {
-                          console.log(err)
-                          helper.error()
-                        }
-                      }}
-                    >
-                    </Button>
+                        }}
+                      >
+                      </Button>
+                      :
+                      <Button
+                        variant="contained"
+                        className={`${styles.button} btn-primary`}
+                        startIcon={<WishlistIcon />}
+                        title={commonStrings.ADD_TO_WISHLIST}
+                        onClick={async () => {
+                          try {
+                            const wishlistId = await WishlistService.getWishlistId()
+                            const userId = user?._id || ''
+
+                            const res = await WishlistService.addItem(wishlistId, userId, product._id)
+
+                            if (res.status === 200) {
+                              if (!wishlistId) {
+                                await WishlistService.setWishlistId(res.data)
+                              }
+                              product.inWishlist = true
+                              setProduct(product)
+                              setWishlistCount(wishlistCount + 1)
+                            } else {
+                              helper.error()
+                            }
+                          } catch (err) {
+                            console.log(err)
+                            helper.error()
+                          }
+                        }}
+                      >
+                      </Button>
+                  )
                 }
               </div>
             }

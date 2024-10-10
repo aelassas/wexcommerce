@@ -6,4 +6,5 @@ export default {
     getWishlistId: '/api/wishlist-id/:user',
     clearWishlist: '/api/clear-wishlist/:id',
     update: '/api/update-wishlist/:id/:user',
+    check: '/api/check-wishlist/:id/:user',
 }

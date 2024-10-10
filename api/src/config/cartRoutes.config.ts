@@ -7,5 +7,6 @@ export default {
     getCartCount: '/api/cart-count/:id',
     getCartId: '/api/cart-id/:user',
     update: '/api/update-cart/:id/:user',
+    check: '/api/check-cart/:id',
     clearOtherCarts: '/api/clear-other-carts/:id/:user',
 }

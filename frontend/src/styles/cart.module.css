@@ -44,9 +44,6 @@
 
 div.main div.items {
   flex: 1;
-  background-color: #fff;
-  border: 1px solid #ededed;
-  border-radius: 4px;
   max-width: 720px;
 }
 
@@ -57,10 +54,10 @@ div.main div.items article.item {
   flex: 1;
   height: 220px;
   padding: 15px;
-}
-
-div.main div.items article.itemBorder {
-  border-bottom: 1px solid #ededed;
+  background-color: #fff;
+  border: 1px solid #ededed;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 div.main div.items article.item div.product {

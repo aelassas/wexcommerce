@@ -20,7 +20,8 @@ export const addItem = async (wishlistId: string, userId: string, productId: str
   return fetchInstance
     .POST(
       '/api/add-wishlist-item',
-      data
+      data,
+      [await UserService.authHeader()],
     )
     .then((res) => ({ status: res.status, data: res.data }))
 }
@@ -36,7 +37,7 @@ export const deleteItem = async (wishlistId: string, productId: string): Promise
   fetchInstance
     .DELETE(
       `/api/delete-wishlist-item/${wishlistId}/${productId}`,
-      [],
+      [await UserService.authHeader()],
       true
     )
     .then((res) => res.status)
@@ -52,7 +53,7 @@ export const clearWishlist = async (wishlistId: string): Promise<number> => (
   fetchInstance
     .DELETE(
       `/api/clear-wishlist/${wishlistId}`,
-      [],
+      [await UserService.authHeader()],
       true
     )
     .then((res) => res.status)
@@ -67,7 +68,8 @@ export const clearWishlist = async (wishlistId: string): Promise<number> => (
 export const getWishlist = async (wishlistId: string): Promise<wexcommerceTypes.Wishlist> => (
   fetchInstance
     .GET(
-      `/api/wishlist/${wishlistId}`
+      `/api/wishlist/${wishlistId}`,
+      [await UserService.authHeader()],
     )
     .then((res) => res.data)
 )
@@ -84,6 +86,7 @@ export const getWishlistCount = async (wishlistId?: string): Promise<number> => 
     const res = await fetchInstance
       .GET(
         `/api/wishlist-count/${wishlistId}`,
+        [await UserService.authHeader()],
       )
     return res.data
   }
@@ -146,6 +149,24 @@ export const updateWishlist = async (wishlistId: string, userId: string): Promis
     .PUT(
       `/api/update-wishlist/${wishlistId}/${userId}`,
       null,
+      [await UserService.authHeader()],
+      true
+    )
+    .then((res) => res.status)
+)
+
+/**
+ * Check user's wishlist.
+ *
+ * @async
+ * @param {string} wishlistId
+ * @param {string} userId
+ * @returns {Promise<number>}
+ */
+export const checkWishlist = async (wishlistId: string, userId: string): Promise<number> => (
+  fetchInstance
+    .GET(
+      `/api/check-wishlist/${wishlistId}/${userId}`,
       [await UserService.authHeader()],
       true
     )

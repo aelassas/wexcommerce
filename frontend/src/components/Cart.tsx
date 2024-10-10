@@ -74,8 +74,8 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
     <div className={styles.main}>
       <div className={styles.items}>
         {
-          cartItems.map((cartItem, index) => (
-            <article key={cartItem._id} className={`${styles.item} ${index < (cartItems.length - 1) ? styles.itemBorder : ''}`}>
+          cartItems.map((cartItem) => (
+            <article key={cartItem._id} className={styles.item}>
               <div className={styles.product} >
                 <Link href={`/product/${cartItem.product._id}/${slugify(cartItem.product.name)}`}>
 

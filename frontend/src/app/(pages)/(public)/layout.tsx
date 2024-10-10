@@ -54,20 +54,54 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 cartId = await CartService.getUserCartId(_user._id!)
                 await CartService.setCartId(cartId)
               } else {
-                //
-                // Set current cart
-                //
-                await CartService.updateCart(cartId, _user._id!)
-                //
-                // Clear other carts different from (cartId, userId)
-                //
-                await CartService.clearOtherCarts(cartId, _user._id!)
+                const cartStatus = await CartService.checkCart(cartId)
+
+                if (cartStatus === 200) {
+                  //
+                  // Set current cart
+                  //
+                  await CartService.updateCart(cartId, _user._id!)
+                  //
+                  // Clear other carts different from (cartId, userId)
+                  //
+                  await CartService.clearOtherCarts(cartId, _user._id!)
+                } else {
+                  //
+                  // Cart does not exist in db.
+                  // Delete cartId from the browser and set a new one
+                  // if a cart already exist in db.
+                  //
+                  await CartService.deleteCartId()
+                  cartId = await CartService.getUserCartId(_user._id!)
+                  if (cartId) {
+                    await CartService.setCartId(cartId)
+                  }
+                }
               }
+
               if (!wishlistId) {
                 wishlistId = await WishlistService.getUserWishlistId(_user._id!)
                 await WishlistService.setWishlistId(wishlistId)
               } else {
-                await WishlistService.updateWishlist(wishlistId, _user._id!)
+                const wishlistStatus = await WishlistService.checkWishlist(wishlistId, _user._id!)
+
+                if (wishlistStatus === 200) {
+                  //
+                  // Set current wishlist
+                  //
+                  await WishlistService.updateWishlist(wishlistId, _user._id!)
+                } else {
+                  //
+                  // Wishlist does not exist in db.
+                  // Delete wishlistId from the browser and set a new one
+                  // if a wishlist already exist in db.
+                  //
+                  await WishlistService.deleteWishlistId()
+                  wishlistId = await WishlistService.getUserWishlistId(_user._id!)
+                  if (wishlistId) {
+                    await WishlistService.setWishlistId(wishlistId)
+                  }
+                }
               }
 
               const notificationCounter = await NotificationService.getNotificationCounter(_user._id!)
