@@ -1,3 +1,4 @@
+'use server'
 
 import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
@@ -22,7 +23,6 @@ const slides = [
 ]
 
 const Home = async () => {
-
   let featuredProducts: wexcommerceTypes.Product[] = []
   let categories: wexcommerceTypes.CategoryInfo[] = []
   let categoryGroups: wexcommerceTypes.FeaturedCategory[] = []
