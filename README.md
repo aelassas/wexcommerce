@@ -45,3 +45,4 @@ wexCommerce can run in a Docker container. Follow this step by step [guide](http
 
 # License
 wexCommerce is [MIT licensed](https://github.com/aelassas/wexcommerce/blob/main/LICENSE).
+
