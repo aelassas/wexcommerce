@@ -38,7 +38,7 @@ const Wishlist: React.FC<WishlistProps> = ({ wishlist }) => {
   const { setWishlistCount } = useWishlistContext() as WishlistContextType
   const [openClearDialog, setOpenClearDialog] = useState(false)
   const [products, setProducts] = useState<wexcommerceTypes.Product[]>(wishlist.products)
-  console.log('wishlist.products', wishlist.products)
+
   return (
     <div className={styles.main}>
 

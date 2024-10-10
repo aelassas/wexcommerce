@@ -13,7 +13,6 @@ const Wishlist = async () => {
 
     if (wishlistId) {
       wishlist = await WishlistService.getWishlist(wishlistId)
-      console.log('wishlist.products', wishlist.products?.length)
     }
   } catch (err) {
     console.error(err)
