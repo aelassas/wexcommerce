@@ -64,10 +64,10 @@ export const deleteItem = async (cartId: string, productId: string): Promise<wex
  * @param {string} cartId
  * @returns {Promise<number>}
  */
-export const clearCart = async (cartId: string): Promise<number> => (
+export const clearCart = async (cartId?: string): Promise<number> => (
   fetchInstance
     .DELETE(
-      `/api/delete-cart/${cartId}`,
+      `/api/delete-cart/${cartId || (await getCartId())}`,
       [],
       true
     )

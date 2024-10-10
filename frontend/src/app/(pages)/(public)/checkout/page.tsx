@@ -283,6 +283,7 @@ const Checkout: React.FC = () => {
           const _status = await CartService.clearCart(cart!._id)
 
           if (_status === 200) {
+            await CartService.clearCart()
             await CartService.deleteCartId()
             setCartItemCount(0)
             setSuccess(true)

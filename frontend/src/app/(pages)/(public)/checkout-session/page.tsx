@@ -28,6 +28,7 @@ const CheckoutSession = () => {
           const _success = status === 200
 
           if (_success) {
+            await CartService.clearCart()
             await CartService.deleteCartId()
             setCartItemCount(0)
           }
