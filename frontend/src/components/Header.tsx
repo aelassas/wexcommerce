@@ -26,7 +26,8 @@ import {
   Search as SearchIcon,
   ArrowBack as ArrowBackIcon,
   Clear as ClearIcon,
-  ShoppingCart as CartIcon
+  ShoppingCart as CartIcon,
+  FavoriteBorder as WishlistIcon,
 } from '@mui/icons-material'
 import env from '@/config/env.config'
 import * as helper from '@/common/helper'
@@ -36,6 +37,7 @@ import * as UserService from '@/lib/UserService'
 import { UserContextType, useUserContext } from '@/context/UserContext'
 import { NotificationContextType, useNotificationContext } from '@/context/NotificationContext'
 import { CartContextType, useCartContext } from '@/context/CartContext'
+import { useWishlistContext, WishlistContextType } from '@/context/WishlistContext'
 import Avatar from './Avatar'
 import Backdrop from './SimpleBackdrop'
 
@@ -57,6 +59,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
   const { user, setUser } = useUserContext() as UserContextType
   const { notificationCount } = useNotificationContext() as NotificationContextType
   const { cartItemCount } = useCartContext() as CartContextType
+  const { wishlistCount } = useWishlistContext() as WishlistContextType
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const [langAnchorEl, setLangAnchorEl] = useState<HTMLElement | null>(null)
@@ -462,12 +465,24 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
           <div
             className={styles.headerDesktop}
           >
+            <IconButton
+              onClick={() => {
+                router.push('/wishlist')
+              }}
+              className={styles.iconButton}
+            >
+              <Badge badgeContent={wishlistCount > 0 ? wishlistCount : null} color="error">
+                <WishlistIcon />
+              </Badge>
+            </IconButton>
+
             {!hideCart &&
               <IconButton
                 onClick={() => {
                   router.push('/cart')
                 }}
                 className={styles.iconButton}
+                title={strings.WISHLIST}
               >
                 <Badge badgeContent={cartItemCount > 0 ? cartItemCount : null} color="error">
                   <CartIcon />

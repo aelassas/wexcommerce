@@ -3,8 +3,9 @@
 import * as wexcommerceTypes from ':wexcommerce-types'
 import NoMatch from '@/components/NoMatch'
 import * as SettingService from '@/lib/SettingService'
-import * as CartService from '@/lib/CartService'
 import * as ProductService from '@/lib/ProductService'
+import * as CartService from '@/lib/CartService'
+import * as WishlistService from '@/lib/WishlistService'
 import ProductComponent from '@/components/Product'
 
 const Product = async ({ params }: { params: { id: string, name: string } }) => {
@@ -20,7 +21,8 @@ const Product = async ({ params }: { params: { id: string, name: string } }) => 
   try {
     const language = await SettingService.getLanguage()
     const cartId = await CartService.getCartId()
-    product = await ProductService.getProduct(id, language, cartId)
+    const wishlistId = await WishlistService.getWishlistId()
+    product = await ProductService.getProduct(id, language, cartId, wishlistId)
   } catch (err) {
     console.error(err)
   }

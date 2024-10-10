@@ -1,0 +1,134 @@
+'use server'
+
+import { cookies } from 'next/headers'
+import * as wexcommerceTypes from ':wexcommerce-types'
+import * as fetchInstance from './fetchInstance'
+import { CookieOptions } from '@/config/env.config'
+import * as UserService from './UserService'
+
+/**
+ * Add item to wishlist.
+ *
+ * @param {string} wishlistId
+ * @param {string} userId
+ * @param {string} productId
+ * @returns {Promise<wexcommerceTypes.Response<string>>}
+ */
+export const addItem = async (wishlistId: string, userId: string, productId: string): Promise<wexcommerceTypes.Response<string>> => {
+  const data: wexcommerceTypes.AddWishlistItemPayload = { wishlistId, userId, productId }
+
+  return fetchInstance
+    .POST(
+      '/api/add-wishlist-item',
+      data
+    )
+    .then((res) => ({ status: res.status, data: res.data }))
+}
+
+/**
+ * Delete wishlist item.
+ *
+ * @param {string} wishlistId
+ * @param {string} productId
+ * @returns {Promise<wexcommerceTypes.Response<{ wishlistDeleted: boolean }>>}
+ */
+export const deleteItem = async (wishlistId: string, productId: string): Promise<number> => (
+  fetchInstance
+    .DELETE(
+      `/api/delete-wishlist-item/${wishlistId}/${productId}`,
+      [],
+      true
+    )
+    .then((res) => res.status)
+)
+
+/**
+ * Clear wishlist.
+ *
+ * @param {string} wishlistId
+ * @returns {Promise<number>}
+ */
+export const clearWishlist = async (wishlistId: string): Promise<number> => (
+  fetchInstance
+    .DELETE(
+      `/api/delete-wishlist/${wishlistId}`,
+      [],
+      true
+    )
+    .then((res) => res.status)
+)
+
+/**
+ * Get wishlist.
+ *
+ * @param {string} wishlistId
+ * @returns {Promise<wexcommerceTypes.Wishlist>}
+ */
+export const getWishlist = async (wishlistId: string): Promise<wexcommerceTypes.Wishlist> => (
+  fetchInstance
+    .GET(
+      `/api/wishlist/${wishlistId}`
+    )
+    .then((res) => res.data)
+)
+
+/**
+ * Get wishlist count.
+ *
+ * @param {string} wishlistId
+ * @returns {Promise<number>}
+ */
+export const getWishlistCount = async (wishlistId?: string): Promise<number> => {
+  wishlistId = await getWishlistId()
+  if (wishlistId) {
+    const res = await fetchInstance
+      .GET(
+        `/api/wishlist-count/${wishlistId}`,
+      )
+    return res.data
+  }
+
+  return 0
+}
+
+/**
+ * Set wishlist id.
+ *
+ * @param {string} id
+ */
+export const setWishlistId = async (id: string) => {
+  cookies().set('wc-fe-wishlist', id, CookieOptions)
+}
+
+/**
+ * Get wishlist id.
+ *
+ * @returns {string}
+ */
+export const getWishlistId = async () => cookies().get('wc-fe-wishlist')?.value || ''
+
+/**
+ * Delete wishlist id.
+ *
+ * @async
+ * @returns {*}
+ */
+export const deleteWishlistId = async () => {
+  cookies().delete('wc-fe-wishlist')
+}
+
+/**
+ * Get user's wishlist id.
+ *
+ * @async
+ * @param {string} userId
+ * @returns {Promise<string>}
+ */
+export const getUserWishlistId = async (userId: string): Promise<string> => (
+  fetchInstance
+    .GET(
+      `/api/wishlist-id/${userId}`,
+      [await UserService.authHeader()]
+    )
+    .then((res) => res.data)
+)

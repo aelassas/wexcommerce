@@ -9,17 +9,23 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material'
-import { AddShoppingCart as AddShoppingCart } from '@mui/icons-material'
+import {
+  AddShoppingCart as CartIcon,
+  FavoriteBorder as WishlistIcon,
+  Favorite as RemoveFromWishlistIcon,
+} from '@mui/icons-material'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import * as CartService from '@/lib/CartService'
+import * as WishlistService from '@/lib/WishlistService'
 import { strings as commonStrings } from '@/lang/common'
 import * as helper from '@/common/helper'
 import Env from '@/config/env.config'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyContext'
-import { CartContextType, useCartContext } from '@/context/CartContext'
 import { UserContextType, useUserContext } from '@/context/UserContext'
+import { CartContextType, useCartContext } from '@/context/CartContext'
+import { WishlistContextType, useWishlistContext } from '@/context/WishlistContext'
 import ImageViewer from '@/components/ImageViewer'
 import SoldOut from '@/components/SoldOut'
 
@@ -34,6 +40,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
   const { currency } = useCurrencyContext() as CurrencyContextType
   const { user } = useUserContext() as UserContextType
   const { cartItemCount, setCartItemCount } = useCartContext() as CartContextType
+  const { wishlistCount, setWishlistCount } = useWishlistContext() as WishlistContextType
 
   const [product, setProduct] = useState(productFromProps)
   const [image, setImage] = useState<string>()
@@ -126,9 +133,11 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                   : <span className={styles.stock}>{`${product.quantity} ${product.quantity > 1 ? commonStrings.ARTICLES_IN_STOCK : commonStrings.ARTICLE_IN_STOCK}`}</span>
               }
             </div>
+
             {
               !product.soldOut &&
               <div className={styles.actions}>
+
                 {
                   product.inCart ?
                     <Button
@@ -136,8 +145,6 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                       color='error'
                       className={styles.button}
                       onClick={async () => {
-                        // setOpenDeleteDialog(true)
-
                         try {
                           const cartId = await CartService.getCartId()
                           const res = await CartService.deleteItem(cartId, product._id)
@@ -168,7 +175,8 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                     <Button
                       variant="contained"
                       className={`${styles.button} btn-primary`}
-                      startIcon={<AddShoppingCart />}
+                      startIcon={<CartIcon />}
+                      title={commonStrings.ADD_TO_CART}
                       onClick={async () => {
                         try {
                           const cartId = await CartService.getCartId()
@@ -181,6 +189,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                               await CartService.setCartId(res.data)
                             }
                             product.inCart = true
+                            setProduct(product)
                             setCartItemCount(cartItemCount + 1)
                             // helper.info(commonStrings.ARTICLE_ADDED)
                           } else {
@@ -192,7 +201,65 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                         }
                       }}
                     >
-                      {commonStrings.ADD_TO_CART}
+                    </Button>
+                }
+
+                {
+                  product.inWishlist ?
+                    <Button
+                      variant="outlined"
+                      color='error'
+                      startIcon={<RemoveFromWishlistIcon />}
+                      title={commonStrings.REMOVE_FROM_WISHLIST}
+                      className={styles.button}
+                      onClick={async () => {
+                        try {
+                          const wishlistId = await WishlistService.getWishlistId()
+                          const res = await WishlistService.deleteItem(wishlistId, product._id)
+
+                          if (res === 200) {
+                            product.inWishlist = false
+                            setProduct(product)
+                            setWishlistCount(wishlistCount - 1)
+                          } else {
+                            helper.error()
+                          }
+                        } catch (err) {
+                          console.log(err)
+                          helper.error()
+                        }
+                      }}
+                    >
+                    </Button>
+                    :
+                    <Button
+                      variant="contained"
+                      className={`${styles.button} btn-primary`}
+                      startIcon={<WishlistIcon />}
+                      title={commonStrings.ADD_TO_WISHLIST}
+                      onClick={async () => {
+                        try {
+                          const wishlistId = await WishlistService.getWishlistId()
+                          const userId = user?._id || ''
+
+                          const res = await WishlistService.addItem(wishlistId, userId, product._id)
+
+                          if (res.status === 200) {
+                            if (!wishlistId) {
+                              await WishlistService.setWishlistId(res.data)
+                            }
+                            product.inWishlist = true
+                            setProduct(product)
+                            setWishlistCount(wishlistCount + 1)
+                          } else {
+                            helper.error()
+                          }
+                        } catch (err) {
+                          console.log(err)
+                          helper.error()
+                        }
+                      }}
+                    >
                     </Button>
                 }
               </div>

@@ -15,6 +15,7 @@ import Cart from '../models/Cart'
 import CartItem from '../models/CartItem'
 import User from '../models/User'
 import Order from '../models/Order'
+import Wishlist from '../models/Wishlist'
 
 /**
  * Upload product image.
@@ -368,7 +369,8 @@ export const getProduct = async (req: Request, res: Response) => {
     const _id = new mongoose.Types.ObjectId(req.params.id)
     const { language } = req.params
 
-    const { cart: cartId } = req.body
+    const { body }: { body: wexcommerceTypes.GetProductPayload } = req
+    const { cart: cartId, wishlist: wisthlistId } = body
     let cartProducts: mongoose.Types.ObjectId[] = []
     if (cartId) {
       const _cart = await Cart
@@ -378,6 +380,17 @@ export const getProduct = async (req: Request, res: Response) => {
 
       if (_cart) {
         cartProducts = _cart.cartItems.map((cartItem) => cartItem.product)
+      }
+    }
+
+    let wishlistProducts: mongoose.Types.ObjectId[] = []
+    if (wisthlistId) {
+      const _wishlist = await Wishlist
+        .findById(wisthlistId)
+        .lean()
+
+      if (_wishlist) {
+        wishlistProducts = _wishlist.products
       }
     }
 
@@ -425,6 +438,9 @@ export const getProduct = async (req: Request, res: Response) => {
         $addFields: {
           inCart: {
             $cond: [{ $in: ['$_id', cartProducts] }, 1, 0],
+          },
+          inWishlist: {
+            $cond: [{ $in: ['$_id', wishlistProducts] }, 1, 0],
           },
         },
       },
@@ -570,6 +586,18 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
       }
     }
 
+    const { wishlist: wishlistId } = body
+    let wishlistProducts: mongoose.Types.ObjectId[] = []
+    if (wishlistId) {
+      const _wishlist = await Wishlist
+        .findById(wishlistId)
+        .lean()
+
+      if (_wishlist) {
+        wishlistProducts = _wishlist.products
+      }
+    }
+
     let $match: mongoose.FilterQuery<env.Product>
     if (category) {
       $match = {
@@ -607,6 +635,9 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
         $addFields: {
           inCart: {
             $cond: [{ $in: ['$_id', cartProducts] }, 1, 0],
+          },
+          inWishlist: {
+            $cond: [{ $in: ['$_id', wishlistProducts] }, 1, 0],
           },
         },
       },

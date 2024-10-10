@@ -11,8 +11,8 @@ import * as fetchInstance from './fetchInstance'
  * @param {string} cartId
  * @returns {Promise<wexcommerceTypes.Product>}
  */
-export const getProduct = async (id: string, language: string, cartId: string): Promise<wexcommerceTypes.Product> => {
-  const data: wexcommerceTypes.GetProductPayload = { cart: cartId }
+export const getProduct = async (id: string, language: string, cartId: string, wishlistId: string): Promise<wexcommerceTypes.Product> => {
+  const data: wexcommerceTypes.GetProductPayload = { cart: cartId, wishlist: wishlistId }
 
   return fetchInstance
     .POST(
@@ -37,9 +37,10 @@ export const getProducts = async (
   page: number,
   size: number,
   categoryId: string,
-  cartId: string
+  cartId: string,
+  wishlistId: string,
 ): Promise<wexcommerceTypes.Result<wexcommerceTypes.Product>> => {
-  const data: wexcommerceTypes.GetProductsPayload = { cart: cartId }
+  const data: wexcommerceTypes.GetProductsPayload = { cart: cartId, wishlist: wishlistId }
 
   return fetchInstance
     .POST(

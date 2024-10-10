@@ -1,21 +1,21 @@
 @media only screen and (width <=960px) {
   .form {
-      margin-top: 45px !important;
-      margin-left: calc(50% - 180px) !important;
-      margin-bottom: 45px !important;
-      width: 360px;
-      padding: 30px;
+    margin-top: 45px !important;
+    margin-left: calc(50% - 180px) !important;
+    margin-bottom: 45px !important;
+    width: 360px;
+    padding: 30px;
   }
 }
 
 
 @media only screen and (width >=960px) {
   .form {
-      margin-top: 45px !important;
-      margin-left: calc(50% - 350px) !important;
-      margin-bottom: 45px !important;
-      width: 700px;
-      padding: 30px;
+    margin-top: 45px !important;
+    margin-left: calc(50% - 350px) !important;
+    margin-bottom: 45px !important;
+    width: 700px;
+    padding: 30px;
   }
 }
 
@@ -39,5 +39,5 @@
 }
 
 .form .error {
-margin-top: 15px;
+  margin-top: 15px;
 }

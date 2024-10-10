@@ -460,6 +460,19 @@ export interface CartItem extends Document {
 }
 
 /**
+ * Wishlist Document.
+ *
+ * @export
+ * @interface Wishlist
+ * @typedef {Wishlist}
+ * @extends {Document}
+ */
+export interface Wishlist extends Document {
+  user: Types.ObjectId
+  products: Types.ObjectId[]
+}
+
+/**
  * Category Document.
  *
  * @export

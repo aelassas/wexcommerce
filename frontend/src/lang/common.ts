@@ -61,6 +61,10 @@ export const strings = new LocalizedStrings({
     OR: 'ou',
     BACK: 'Précédant',
     NEXT: 'Suivant',
+    ADD_TO_WISHLIST: 'Ajouter aux favoris',
+    REMOVE_FROM_WISHLIST: 'Supprimer des favoris',
+    ARTICLE_ADDED_TO_WISH_LIST: 'Article ajouté aux favoris',
+    ARTICLE_REMOVED_FROM_WISH_LIST: 'Article retiré des favoris',
   },
   en: {
     GENERIC_ERROR: 'An unhandled error occurred.',
@@ -122,5 +126,9 @@ export const strings = new LocalizedStrings({
     OR: 'or',
     BACK: 'Back',
     NEXT: 'Next',
+    ADD_TO_WISHLIST: 'Add to wishlist',
+    REMOVE_FROM_WISHLIST: 'Remove from wishlist',
+    ARTICLE_ADDED_TO_WISH_LIST: 'Article added to wishlist',
+    ARTICLE_REMOVED_FROM_WISH_LIST: 'Article removed from wishlist',
   }
 })

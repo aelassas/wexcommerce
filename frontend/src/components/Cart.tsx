@@ -35,7 +35,6 @@ import SoldOut from '@/components/SoldOut'
 
 import styles from '@/styles/cart.module.css'
 
-
 export const EmptyCart: React.FC = () => (
   <Card variant="outlined" className={styles.empty}>
     <CardContent>

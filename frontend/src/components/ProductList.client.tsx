@@ -13,15 +13,21 @@ import {
   DialogActions,
   IconButton,
 } from '@mui/material'
-import { ShoppingCart as CartIcon } from '@mui/icons-material'
+import {
+  ShoppingCart as CartIcon,
+  FavoriteBorder as WishlistIcon,
+  Favorite as RemoveFromWishlistIcon,
+} from '@mui/icons-material'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
 import { strings } from '@/lang/product-list'
 import { strings as commonStrings } from '@/lang/common'
 import * as helper from '@/common/helper'
 import * as CartService from '@/lib/CartService'
+import * as WishlistService from '@/lib/WishlistService'
 import { UserContextType, useUserContext } from '@/context/UserContext'
 import { CartContextType, useCartContext } from '@/context/CartContext'
+import { WishlistContextType, useWishlistContext } from '@/context/WishlistContext'
 import PagerComponent from './Pager'
 import SoldOut from './SoldOut'
 
@@ -79,17 +85,74 @@ interface ActionsProps {
 export const Actions: React.FC<ActionsProps> = ({ product }) => {
   const { user } = useUserContext() as UserContextType
   const { cartItemCount, setCartItemCount } = useCartContext() as CartContextType
+  const { wishlistCount, setWishlistCount } = useWishlistContext() as WishlistContextType
   const [inCart, setInCart] = useState(product.inCart)
+  const [inWishlist, setInWishlist] = useState(product.inWishlist)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
 
   return !product.soldOut && (
     <div className={styles.actions}>
       {
+        inWishlist ?
+          <IconButton
+            color="error"
+            title={commonStrings.REMOVE_FROM_WISHLIST}
+            className={styles.button}
+            onClick={async () => {
+              try {
+                const wishlistId = await WishlistService.getWishlistId()
+                const res = await WishlistService.deleteItem(wishlistId, product._id)
+
+                if (res === 200) {
+                  setInWishlist(false)
+                  setWishlistCount(wishlistCount - 1)
+                } else {
+                  helper.error()
+                }
+              } catch (err) {
+                console.log(err)
+                helper.error()
+              }
+            }}
+          >
+            <RemoveFromWishlistIcon className={styles.buttonIcon} />
+          </IconButton>
+          :
+          <IconButton
+            className={`${styles.button} btn-primary`}
+            title={commonStrings.ADD_TO_WISHLIST}
+            onClick={async () => {
+              try {
+                const wishlistId = await WishlistService.getWishlistId()
+                const userId = user?._id || ''
+
+                const res = await WishlistService.addItem(wishlistId, userId, product._id)
+
+                if (res.status === 200) {
+                  if (!wishlistId) {
+                    await WishlistService.setWishlistId(res.data)
+                  }
+                  setInWishlist(true)
+                  setWishlistCount(wishlistCount + 1)
+                } else {
+                  helper.error()
+                }
+              } catch (err) {
+                console.log(err)
+                helper.error()
+              }
+            }}
+          >
+            <WishlistIcon className={styles.buttonIcon} />
+          </IconButton>
+      }
+
+      {
         inCart ?
-          <Button
-            variant="outlined"
-            color='error'
-            className={styles.removeButton}
+          <IconButton
+            color="error"
+            title={commonStrings.REMOVE_FROM_CART}
+            className={styles.button}
             onClick={async () => {
               // setOpenDeleteDialog(true)
 
@@ -115,8 +178,8 @@ export const Actions: React.FC<ActionsProps> = ({ product }) => {
               }
             }}
           >
-            {commonStrings.REMOVE_FROM_CART}
-          </Button>
+            <CartIcon className={styles.buttonIcon} />
+          </IconButton>
           :
           <IconButton
             className={`${styles.button} btn-primary`}

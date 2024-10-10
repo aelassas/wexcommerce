@@ -56,6 +56,7 @@ const CategoryList: React.FC<CategoryListProps> = (
       {
         breakpoint: 960,
         settings: {
+          arrows: false,
           slidesToShow: 1,
           slidesToScroll: 1,
           variableWidth: false,

@@ -143,4 +143,5 @@ div.main div.product div.rightPanel div.actions {
 div.main div.product div.rightPanel div.actions .button {
   width: 100%;
   height: 38px;
+  margin-bottom: 15px;
 }

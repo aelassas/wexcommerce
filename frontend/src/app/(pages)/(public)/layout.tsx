@@ -7,10 +7,12 @@ import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyConte
 import { UserContextType, useUserContext } from '@/context/UserContext'
 import { NotificationContextType, useNotificationContext } from '@/context/NotificationContext'
 import { CartContextType, useCartContext } from '@/context/CartContext'
+import { useWishlistContext, WishlistContextType } from '@/context/WishlistContext'
 import * as SettingService from '@/lib/SettingService'
 import * as UserService from '@/lib/UserService'
 import * as NotificationService from '@/lib/NotificationService'
 import * as CartService from '@/lib/CartService'
+import * as WhishlistService from '@/lib/WishlistService'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -25,6 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { setCurrency } = useCurrencyContext() as CurrencyContextType
   const { setNotificationCount } = useNotificationContext() as NotificationContextType
   const { setCartItemCount } = useCartContext() as CartContextType
+  const { setWishlistCount } = useWishlistContext() as WishlistContextType
 
   const signout = async (redirect: boolean) => {
     setUser(null)
@@ -69,6 +72,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         await CartService.getCartId()
       )) || 0
       setCartItemCount(cartItemCount)
+
+      const wishlistCount = (await WhishlistService.getWishlistCount(
+        await WhishlistService.getWishlistId()
+      )) || 0
+      setWishlistCount(wishlistCount)
     }
 
     init()
