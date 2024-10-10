@@ -37,7 +37,7 @@ interface ProductListItemProps {
   product: wexcommerceTypes.Product
   hideActions?: boolean
   disableDragAndDrop?: boolean
-  width?: number
+  style?: React.CSSProperties
   onRemoveWishlistItem?: (productId: string) => void
 }
 
@@ -46,7 +46,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
     product,
     hideActions,
     disableDragAndDrop,
-    width,
+    style,
     onRemoveWishlistItem
   }) => {
   const { currency } = useCurrencyContext() as CurrencyContextType
@@ -65,7 +65,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
   }
 
   return (
-    <article key={product._id} className={styles.product} style={{ width: width || undefined }}>
+    <article key={product._id} className={styles.product} style={style}>
       <Link
         href={`/product/${product._id}/${slugify(product.name)}`}
         title={product.name}
