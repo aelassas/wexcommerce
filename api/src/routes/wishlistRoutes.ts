@@ -1,5 +1,5 @@
 import express from 'express'
-import routeNames from '../config/wishListRoutes.config'
+import routeNames from '../config/wishlistRoutes.config'
 import authJwt from '../middlewares/authJwt'
 import * as wishlistController from '../controllers/wishlistController'
 

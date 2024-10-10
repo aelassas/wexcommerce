@@ -131,6 +131,15 @@ export interface AddItemPayload {
     userId: string;
     productId: string;
 }
+export interface AddWishlistItemPayload {
+    wishlistId: string;
+    userId: string;
+    productId: string;
+}
+export interface Wishlist {
+    _id: string;
+    products: Product[];
+}
 export interface UpdateSettingsPayload {
     language: string;
     currency: string;
@@ -284,6 +293,7 @@ export interface Product {
     soldOut: boolean;
     hidden: boolean;
     inCart?: boolean;
+    inWishlist?: boolean;
     featured: boolean;
 }
 export interface Option {
@@ -307,9 +317,11 @@ export interface CartItem {
 }
 export interface GetProductPayload {
     cart?: string;
+    wishlist?: string;
 }
 export interface GetProductsPayload {
     cart?: string;
+    wishlist?: string;
     size?: number;
 }
 export interface FeaturedCategory {
