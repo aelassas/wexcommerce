@@ -4,6 +4,7 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import * as logger from '../common/logger'
 import i18n from '../lang/i18n'
 import Wishlist from '../models/Wishlist'
+import User from '../models/User'
 
 /**
  * Add item to wishlist.
@@ -16,41 +17,23 @@ import Wishlist from '../models/Wishlist'
 export const addItem = async (req: Request, res: Response) => {
   try {
     const { body }: { body: wexcommerceTypes.AddWishlistItemPayload } = req
-    const { wishlistId } = body
+    const { userId, productId } = body
 
-    let wishlist
-    if (wishlistId) {
-      wishlist = await Wishlist.findById(wishlistId)
+    const user = await User.findById(userId)
+    if (!user) {
+      throw new Error(`User ${userId} not found`)
     }
 
-    //
-    // Try to get user's wishlist, otherwise create a new one
-    //
+    let wishlist = await Wishlist.findOne({ user: userId })
     if (!wishlist) {
-      const { userId } = body
-
-      if (userId) {
-        const _wishlist = await Wishlist.findOne({ user: userId })
-
-        if (_wishlist) {
-          await Wishlist.deleteOne({ _id: _wishlist._id })
-        }
-
-        wishlist = new Wishlist({ user: userId })
-      } else {
-        wishlist = new Wishlist()
-      }
-
-      await wishlist.save()
+      wishlist = new Wishlist({ user: userId, products: [] })
     }
-
-    const { productId } = body
     wishlist.products.push(new mongoose.Types.ObjectId(productId))
     await wishlist.save()
 
     return res.status(200).json(wishlist._id)
   } catch (err) {
-    logger.error(`[wishlist.create] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[wishlist.addItem] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -97,6 +80,9 @@ export const getWishlist = async (req: Request, res: Response) => {
       .lean()
 
     if (wishlist) {
+      for (const product of wishlist.products) {
+        product.inWishlist = true
+      }
       return res.json(wishlist)
     }
     return res.sendStatus(204)
@@ -180,6 +166,33 @@ export const clearWishlist = async (req: Request, res: Response) => {
     return res.sendStatus(204)
   } catch (err) {
     logger.error(`[wishlist.getWishlistId] ${i18n.t('DB_ERROR')}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
+  }
+}
+
+/**
+ * Update wishlist.
+ *
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
+export const update = async (req: Request, res: Response) => {
+  try {
+    const { id, user } = req.params
+
+    const wishlist = await Wishlist.findById(id)
+
+    if (wishlist) {
+      wishlist.user = new mongoose.Types.ObjectId(user)
+      await wishlist.save()
+
+      return res.sendStatus(200)
+    }
+    return res.sendStatus(204)
+  } catch (err) {
+    logger.error(`[cart.getCartId] ${i18n.t('DB_ERROR')}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

@@ -5,3 +5,41 @@
   margin-right: auto;
   margin-left: auto;
 }
+
+div.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+div.main div.header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+div.main div.products {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media only screen and (width <=960px) {
+  div.main {
+    margin-top: 5px;
+  }
+}
+
+@media only screen and (width >=960px) {
+  div.main {
+    max-width: 1284px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-bottom: 30px;
+    margin-top: 15px;
+  }
+}

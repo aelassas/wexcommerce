@@ -38,6 +38,7 @@ interface ProductListItemProps {
   hideActions?: boolean
   disableDragAndDrop?: boolean
   width?: number
+  onRemoveWishlistItem?: (productId: string) => void
 }
 
 const ProductListItem: React.FC<ProductListItemProps> = (
@@ -45,7 +46,8 @@ const ProductListItem: React.FC<ProductListItemProps> = (
     product,
     hideActions,
     disableDragAndDrop,
-    width
+    width,
+    onRemoveWishlistItem
   }) => {
   const { currency } = useCurrencyContext() as CurrencyContextType
   const { language } = useLanguageContext() as LanguageContextType
@@ -88,7 +90,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
       {
         !hideActions &&
         <div className={styles.actions}>
-          {
+          {!!user && (
             inWishlist ?
               <IconButton
                 color="error"
@@ -102,6 +104,9 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                     if (res === 200) {
                       setInWishlist(false)
                       setWishlistCount(wishlistCount - 1)
+                      if (onRemoveWishlistItem) {
+                        onRemoveWishlistItem(product._id)
+                      }
                       helper.info(commonStrings.ARTICLE_REMOVED_FROM_WISH_LIST)
                     } else {
                       helper.error()
@@ -143,7 +148,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
               >
                 <WishlistIcon className={styles.buttonIcon} />
               </IconButton>
-          }
+          )}
 
           {
             inCart ?

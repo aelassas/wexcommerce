@@ -697,6 +697,18 @@ export const getFeaturedProducts = async (req: Request, res: Response) => {
       }
     }
 
+    const { wishlist: wishlistId } = body
+    let wishlistProducts: mongoose.Types.ObjectId[] = []
+    if (wishlistId) {
+      const _wishlist = await Wishlist
+        .findById(wishlistId)
+        .lean()
+
+      if (_wishlist) {
+        wishlistProducts = _wishlist.products
+      }
+    }
+
     const products = await Product.aggregate([
       {
         $match: { featured: true, soldOut: false, hidden: false, quantity: { $gt: 0 } },
@@ -705,6 +717,9 @@ export const getFeaturedProducts = async (req: Request, res: Response) => {
         $addFields: {
           inCart: {
             $cond: [{ $in: ['$_id', cartProducts] }, 1, 0],
+          },
+          inWishlist: {
+            $cond: [{ $in: ['$_id', wishlistProducts] }, 1, 0],
           },
         },
       },

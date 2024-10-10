@@ -12,7 +12,7 @@ import * as SettingService from '@/lib/SettingService'
 import * as UserService from '@/lib/UserService'
 import * as NotificationService from '@/lib/NotificationService'
 import * as CartService from '@/lib/CartService'
-import * as WhishlistService from '@/lib/WishlistService'
+import * as WishlistService from '@/lib/WishlistService'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -38,6 +38,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     const init = async () => {
       const currentUser = await UserService.getCurrentUser()
 
+      let cartId: string | undefined = await CartService.getCartId()
+      let wishlistId: string | undefined = await WishlistService.getWishlistId()
+
       if (currentUser) {
         try {
           const status = await UserService.validateAccessToken()
@@ -47,6 +50,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             if (_user) {
               setUser(_user)
+              if (!cartId) {
+                cartId = await CartService.getUserCartId(_user._id!)
+                await CartService.setCartId(cartId)
+              } else {
+                //
+                // Set current cart
+                //
+                await CartService.updateCart(cartId, _user._id!)
+                //
+                // Clear other carts different from (cartId, userId)
+                //
+                await CartService.clearOtherCarts(cartId, _user._id!)
+              }
+              if (!wishlistId) {
+                wishlistId = await WishlistService.getUserWishlistId(_user._id!)
+                await WishlistService.setWishlistId(wishlistId)
+              } else {
+                await WishlistService.updateWishlist(wishlistId, _user._id!)
+              }
 
               const notificationCounter = await NotificationService.getNotificationCounter(_user._id!)
               setNotificationCount(notificationCounter.count)
@@ -69,12 +91,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       setCurrency(currency)
 
       const cartItemCount = (await CartService.getCartCount(
-        await CartService.getCartId()
+        cartId
       )) || 0
       setCartItemCount(cartItemCount)
 
-      const wishlistCount = (await WhishlistService.getWishlistCount(
-        await WhishlistService.getWishlistId()
+      const wishlistCount = (await WishlistService.getWishlistCount(
+        wishlistId
       )) || 0
       setWishlistCount(wishlistCount)
     }

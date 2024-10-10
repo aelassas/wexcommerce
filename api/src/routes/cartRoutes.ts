@@ -13,5 +13,6 @@ routes.route(routeNames.getCart).get(cartController.getCart)
 routes.route(routeNames.getCartCount).get(cartController.getCartCount)
 routes.route(routeNames.getCartId).get(authJwt.verifyToken, cartController.getCartId)
 routes.route(routeNames.update).put(authJwt.verifyToken, cartController.update)
+routes.route(routeNames.clearOtherCarts).delete(authJwt.verifyToken, cartController.clearOtherCarts)
 
 export default routes

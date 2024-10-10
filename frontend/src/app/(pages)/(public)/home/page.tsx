@@ -4,6 +4,7 @@ import env from '@/config/env.config'
 import * as SettingService from '@/lib/SettingService'
 import * as ProductService from '@/lib/ProductService'
 import * as CartService from '@/lib/CartService'
+import * as WishlistService from '@/lib/WishlistService'
 import * as CategoryService from '@/lib/CategoryService'
 import { strings } from '@/lang/home'
 import FeaturedProducts from '@/components/FeaturedProducts'
@@ -28,7 +29,8 @@ const Home = async () => {
 
   try {
     const cartId = await CartService.getCartId()
-    featuredProducts = await ProductService.getFeaturedProducts(env.FEATURED_PRODUCTS_SIZE, cartId)
+    const wishlistId = await WishlistService.getWishlistId()
+    featuredProducts = await ProductService.getFeaturedProducts(env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId)
 
     const language = await SettingService.getLanguage()
     categories = await CategoryService.getCategories(language, true)

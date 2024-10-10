@@ -51,7 +51,7 @@ export const deleteItem = async (wishlistId: string, productId: string): Promise
 export const clearWishlist = async (wishlistId: string): Promise<number> => (
   fetchInstance
     .DELETE(
-      `/api/delete-wishlist/${wishlistId}`,
+      `/api/clear-wishlist/${wishlistId}`,
       [],
       true
     )
@@ -131,4 +131,23 @@ export const getUserWishlistId = async (userId: string): Promise<string> => (
       [await UserService.authHeader()]
     )
     .then((res) => res.data)
+)
+
+/**
+ * Update user's wishlist.
+ *
+ * @async
+ * @param {string} wishlistId
+ * @param {string} userId
+ * @returns {Promise<number>}
+ */
+export const updateWishlist = async (wishlistId: string, userId: string): Promise<number> => (
+  fetchInstance
+    .PUT(
+      `/api/update-wishlist/${wishlistId}/${userId}`,
+      null,
+      [await UserService.authHeader()],
+      true
+    )
+    .then((res) => res.status)
 )

@@ -211,7 +211,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
 
   const handleSignout = async () => {
     setUser(null)
-    await UserService.signout()
+    await UserService.signout(true, false, true, true)
   }
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -465,16 +465,20 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
           <div
             className={styles.headerDesktop}
           >
-            <IconButton
+            {<IconButton
               onClick={() => {
-                router.push('/wishlist')
+                if (isSignedIn) {
+                  router.push('/wishlist')
+                } else {
+                  router.push('/sign-in')
+                }
               }}
               className={styles.iconButton}
             >
               <Badge badgeContent={wishlistCount > 0 ? wishlistCount : null} color="error">
                 <WishlistIcon />
               </Badge>
-            </IconButton>
+            </IconButton>}
 
             {!hideCart &&
               <IconButton

@@ -11,5 +11,6 @@ routes.route(routeNames.getWishlist).get(wishlistController.getWishlist)
 routes.route(routeNames.getWishlistCount).get(wishlistController.getWishlistCount)
 routes.route(routeNames.getWishlistId).get(authJwt.verifyToken, wishlistController.getWishlistId)
 routes.route(routeNames.clearWishlist).delete(wishlistController.clearWishlist)
+routes.route(routeNames.update).put(authJwt.verifyToken, wishlistController.update)
 
 export default routes

@@ -167,3 +167,20 @@ export const updateCart = async (cartId: string, userId: string): Promise<number
     )
     .then((res) => res.status)
 )
+/**
+ * Clear other carts.
+ *
+ * @async
+ * @param {string} cartId
+ * @param {string} userId
+ * @returns {Promise<number>}
+ */
+export const clearOtherCarts = async (cartId: string, userId: string): Promise<number> => (
+  fetchInstance
+    .DELETE(
+      `/api/clear-other-carts/${cartId}/${userId}`,
+      [await UserService.authHeader()],
+      true
+    )
+    .then((res) => res.status)
+)

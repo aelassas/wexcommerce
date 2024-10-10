@@ -1,31 +1,19 @@
 @media only screen and (width <=960px) {
-  div.productList {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
   article.product span.name {
     text-align: center;
     padding: 5px;
   }
 }
 
-@media only screen and (width >=960px) {
-  div.productList {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 10px;
-  }
-
-  div.products {
-    width: 100%;
-  }
-}
-
 div.products {
   flex: 1;
   height: fit-content;
+}
+
+div.productList {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .emptyList {

@@ -52,9 +52,10 @@ export const getProducts = async (
 
 export const getFeaturedProducts = async (
   size: number,
-  cartId: string
+  cartId: string,
+  wishlistId: string,
 ): Promise<wexcommerceTypes.Product[]> => {
-  const data: wexcommerceTypes.GetProductsPayload = { cart: cartId, size }
+  const data: wexcommerceTypes.GetProductsPayload = { cart: cartId, wishlist: wishlistId, size }
 
   return fetchInstance
     .POST(

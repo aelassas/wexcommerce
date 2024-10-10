@@ -55,7 +55,7 @@ export const addItem = async (req: Request, res: Response) => {
 
     return res.status(200).json(cart._id)
   } catch (err) {
-    logger.error(`[cart.create] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[cart.addItem] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -284,7 +284,37 @@ export const update = async (req: Request, res: Response) => {
     }
     return res.sendStatus(204)
   } catch (err) {
-    logger.error(`[cart.getCartId] ${i18n.t('DB_ERROR')}`, err)
+    logger.error(`[cart.update] ${i18n.t('DB_ERROR')}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
+  }
+}
+
+/**
+ * Clear other carts.
+ *
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
+export const clearOtherCarts = async (req: Request, res: Response) => {
+  try {
+    const { id, user } = req.params
+
+    const cart = await Cart.find({ user, _id: id })
+    if (cart) {
+      const otherCarts = await Cart.find({ user, _id: { $ne: id } })
+
+      for (const otherCart of otherCarts) {
+        await CartItem.deleteMany({ _id: { $in: otherCart.cartItems } })
+        await otherCart.deleteOne()
+      }
+
+      return res.sendStatus(200)
+    }
+    return res.sendStatus(204)
+  } catch (err) {
+    logger.error(`[cart.clearOtherCarts] ${i18n.t('DB_ERROR')}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

@@ -275,7 +275,7 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
               console.error(err)
               helper.error()
             }
-            setOpenDeleteDialog(false)
+            setOpenClearDialog(false)
           }} variant='contained' color='error'>{strings.CLEAR_CART}</Button>
         </DialogActions>
       </Dialog>
