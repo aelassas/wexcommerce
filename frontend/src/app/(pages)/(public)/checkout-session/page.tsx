@@ -24,7 +24,6 @@ const CheckoutSession = () => {
         try {
           setLoading(true)
           const status = await StripeService.checkCheckoutSession(sessionId)
-          console.log('status', status)
           const _success = status === 200
 
           if (_success) {
