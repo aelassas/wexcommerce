@@ -9,7 +9,6 @@ const Wishlist = async () => {
 
   try {
     const wishlistId = await WishlistService.getWishlistId()
-    console.log('wishlistId', wishlistId)
 
     if (wishlistId) {
       wishlist = await WishlistService.getWishlist(wishlistId)
