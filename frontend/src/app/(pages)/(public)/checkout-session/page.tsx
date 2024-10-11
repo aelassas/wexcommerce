@@ -12,19 +12,19 @@ import NoMatch from '@/components/NoMatch'
 const CheckoutSession = () => {
   const searchParams = useSearchParams()
 
-  const { cartItemCount, setCartItemCount } = useCartContext() as CartContextType
+  const { setCartItemCount } = useCartContext() as CartContextType
   const [loading, setLoading] = useState(true)
   const [noMatch, setNoMatch] = useState(false)
   const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     const sessionId = searchParams.get('sessionId')
-    if (sessionId && cartItemCount > 0) {
+    if (sessionId) {
       const checkSession = async () => {
         try {
           setLoading(true)
           const status = await StripeService.checkCheckoutSession(sessionId)
-
+          console.log('status', status)
           const _success = status === 200
 
           if (_success) {
@@ -33,7 +33,7 @@ const CheckoutSession = () => {
             setCartItemCount(0)
           }
 
-          setNoMatch(status === 204)
+          setNoMatch(!_success)
           setSuccess(_success)
         } catch (err) {
           console.error(err)
@@ -45,7 +45,7 @@ const CheckoutSession = () => {
 
       checkSession()
     }
-  }, [searchParams, cartItemCount]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     loading
