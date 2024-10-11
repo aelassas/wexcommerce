@@ -2,6 +2,7 @@
 
 import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
+import * as serverHelper from '@/common/serverHelper'
 import * as SettingService from '@/lib/SettingService'
 import * as ProductService from '@/lib/ProductService'
 import * as CartService from '@/lib/CartService'
@@ -32,10 +33,20 @@ const Home = async () => {
     const wishlistId = await WishlistService.getWishlistId()
     featuredProducts = await ProductService.getFeaturedProducts(env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId)
 
+    for (const product of featuredProducts) {
+      product.url = serverHelper.getProductURL(product)
+    }
+
     const language = await SettingService.getLanguage()
     categories = await CategoryService.getCategories(language, true)
 
     categoryGroups = await CategoryService.getFeaturedCategories(language, env.FEATURED_PRODUCTS_SIZE, cartId)
+
+    for (const categoryGroup of categoryGroups) {
+      for (const product of categoryGroup.products) {
+        product.url = serverHelper.getProductURL(product)
+      }
+    }
   } catch (err) {
     console.error(err)
   }

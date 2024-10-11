@@ -295,6 +295,7 @@ export interface Product {
     inCart?: boolean;
     inWishlist?: boolean;
     featured: boolean;
+    url?: string;
 }
 export interface Option {
     _id: string;

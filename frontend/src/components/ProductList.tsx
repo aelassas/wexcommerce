@@ -1,6 +1,7 @@
 'use server'
 
 import * as wexcommerceTypes from ':wexcommerce-types'
+import * as serverHelper from '@/common/serverHelper'
 import env from '@/config/env.config'
 import * as ProductService from '@/lib/ProductService'
 import * as CartService from '@/lib/CartService'
@@ -46,6 +47,10 @@ const ProductList = async (
 
         if (_totalRecords > 0 && page > Math.ceil(_totalRecords / env.PAGE_SIZE)) {
           noMatch = true
+        }
+
+        for (const product of _products) {
+          product.url = serverHelper.getProductURL(product)
         }
 
         products = _products

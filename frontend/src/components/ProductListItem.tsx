@@ -67,7 +67,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
   return (
     <article key={product._id} className={styles.product} style={style}>
       <Link
-        href={`/product/${product._id}/${slugify(product.name)}`}
+        href={product.url || `/product/${product._id}/${slugify(product.name)}`}
         title={product.name}
         onDragStart={handleDisableDragAndDrop}
         onDrop={handleDisableDragAndDrop}
