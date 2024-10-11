@@ -52,7 +52,7 @@ const ProductList = async (
         }
 
         for (const product of _products) {
-          product.url = serverHelper.getProductURL(product)
+          product.url = await serverHelper.getProductURL(product)
         }
 
         products = _products

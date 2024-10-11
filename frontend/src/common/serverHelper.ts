@@ -2,7 +2,7 @@ import { headers } from 'next/headers'
 import slugify from '@sindresorhus/slugify'
 import * as wexcommerceTypes from ':wexcommerce-types'
 
-export const getProductURL = (product: wexcommerceTypes.Product) => {
+export const getProductURL = async (product: wexcommerceTypes.Product) => {
   //
   // Get reverse proxy headers
   //

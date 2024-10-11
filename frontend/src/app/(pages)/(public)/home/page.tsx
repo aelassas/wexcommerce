@@ -34,7 +34,7 @@ const Home = async () => {
     featuredProducts = await ProductService.getFeaturedProducts(env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId)
 
     for (const product of featuredProducts) {
-      product.url = serverHelper.getProductURL(product)
+      product.url = await serverHelper.getProductURL(product)
     }
 
     const language = await SettingService.getLanguage()
@@ -44,7 +44,7 @@ const Home = async () => {
 
     for (const categoryGroup of categoryGroups) {
       for (const product of categoryGroup.products) {
-        product.url = serverHelper.getProductURL(product)
+        product.url = await serverHelper.getProductURL(product)
       }
     }
   } catch (err) {
