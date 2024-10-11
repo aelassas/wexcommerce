@@ -36,7 +36,7 @@ div.main div.products {
 
 @media only screen and (width >=960px) {
   div.main {
-    max-width: 1384px;
+    max-width: 1124px;
     margin-right: auto;
     margin-left: auto;
     padding-bottom: 30px;
