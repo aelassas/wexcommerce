@@ -34,3 +34,9 @@ export var SocialSignInType;
     SocialSignInType["Apple"] = "apple";
     SocialSignInType["Google"] = "google";
 })(SocialSignInType || (SocialSignInType = {}));
+export var ProductOrderBy;
+(function (ProductOrderBy) {
+    ProductOrderBy["featured"] = "featured";
+    ProductOrderBy["priceAsc"] = "priceAsc";
+    ProductOrderBy["priceDesc"] = "priceDesc";
+})(ProductOrderBy || (ProductOrderBy = {}));

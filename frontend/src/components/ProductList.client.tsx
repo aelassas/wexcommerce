@@ -7,6 +7,7 @@ import {
   CardContent,
   Typography,
 } from '@mui/material'
+import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
 import { strings } from '@/lang/product-list'
 import PagerComponent from './Pager'
@@ -27,6 +28,7 @@ interface PagerProps {
   rowCount: number
   categoryId?: string
   keyword: string
+  orderBy?: wexcommerceTypes.ProductOrderBy
 }
 
 export const Pager: React.FC<PagerProps> = ({
@@ -35,6 +37,7 @@ export const Pager: React.FC<PagerProps> = ({
   rowCount,
   categoryId,
   keyword,
+  orderBy,
 }) => {
   const router = useRouter()
 
@@ -44,8 +47,8 @@ export const Pager: React.FC<PagerProps> = ({
       pageSize={env.PAGE_SIZE}
       rowCount={rowCount}
       totalRecords={totalRecords}
-      onPrevious={() => router.push(`/search?${`p=${page - 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}`)}
-      onNext={() => router.push(`/search?${`p=${page + 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}`)}
+      onPrevious={() => router.push(`/search?${`p=${page - 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(orderBy && `&o=${orderBy}`) || ''}`)}
+      onNext={() => router.push(`/search?${`p=${page + 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(orderBy && `&o=${orderBy}`) || ''}`)}
     />
   )
 }

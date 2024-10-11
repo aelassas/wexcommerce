@@ -39,8 +39,9 @@ export const getProducts = async (
   categoryId: string,
   cartId: string,
   wishlistId: string,
+  orderBy: wexcommerceTypes.ProductOrderBy = wexcommerceTypes.ProductOrderBy.featured
 ): Promise<wexcommerceTypes.Result<wexcommerceTypes.Product>> => {
-  const data: wexcommerceTypes.GetProductsPayload = { cart: cartId, wishlist: wishlistId }
+  const data: wexcommerceTypes.GetProductsPayload = { cart: cartId, wishlist: wishlistId, orderBy }
 
   return fetchInstance
     .POST(

@@ -15,6 +15,7 @@ interface ProductListProps {
   categoryId: string
   keyword: string
   page: number
+  orderBy?: wexcommerceTypes.ProductOrderBy
 }
 
 const ProductList = async (
@@ -22,6 +23,7 @@ const ProductList = async (
     categoryId,
     keyword,
     page,
+    orderBy
   }: ProductListProps) => {
 
   const cartId = await CartService.getCartId()
@@ -35,7 +37,7 @@ const ProductList = async (
   try {
     if (page >= 1) {
       try {
-        const data = await ProductService.getProducts(keyword, page, env.PAGE_SIZE, categoryId, cartId, wishlistId)
+        const data = await ProductService.getProducts(keyword, page, env.PAGE_SIZE, categoryId, cartId, wishlistId, orderBy)
         const _data = data && data.length > 0 ? data[0] : { pageInfo: [{ totalRecords: 0 }], resultData: [] }
         if (!_data) {
           console.log('Users data empty')
@@ -90,6 +92,7 @@ const ProductList = async (
               totalRecords={totalRecords}
               categoryId={categoryId}
               keyword={keyword}
+              orderBy={orderBy}
             />
           )}
 

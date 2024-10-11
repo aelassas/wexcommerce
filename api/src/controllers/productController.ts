@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { Expression } from 'mongoose'
 import fs from 'fs/promises'
 import path from 'path'
 import { v1 as uuid } from 'uuid'
@@ -626,7 +626,16 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
       }
     }
 
-    // TODO after: sort by price asc, desc
+    let $sort: Record<string, 1 | -1 | Expression.Meta> = { createdAt: -1 } // featured
+    const { orderBy } = body
+    if (orderBy) {
+      if (orderBy === wexcommerceTypes.ProductOrderBy.priceAsc) {
+        $sort = { price: 1 }
+      } else if (orderBy === wexcommerceTypes.ProductOrderBy.priceDesc) {
+        $sort = { price: -1 }
+      }
+    }
+
     const products = await Product.aggregate([
       {
         $match,
@@ -650,7 +659,7 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
       {
         $facet: {
           resultData: [
-            { $sort: { createdAt: -1 } },
+            { $sort },
             { $skip: ((page - 1) * size) },
             { $limit: size },
           ],

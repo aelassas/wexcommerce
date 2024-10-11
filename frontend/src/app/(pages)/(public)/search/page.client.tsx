@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import {
   ShoppingBag as CategoryIcon,
   Home as HomeIcon,
@@ -22,12 +23,15 @@ interface ProductsWrapperProps {
 }
 
 const ProductsWrapper: React.FC<ProductsWrapperProps> = ({ children }) => {
+  const router = useRouter()
   const searchParams = useSearchParams()
 
   const { language } = useLanguageContext() as LanguageContextType
 
   const [categories, setCategories] = useState<wexcommerceTypes.CategoryInfo[]>([])
+  const [keyword, setKeyword] = useState('')
   const [categoryId, setCategoryId] = useState('')
+  const [orderBy, setOrderBy] = useState<wexcommerceTypes.ProductOrderBy>()
 
   const leftPanelRef = useRef<HTMLDivElement>(null)
   const closeIconRef = useRef<SVGSVGElement>(null)
@@ -35,6 +39,18 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = ({ children }) => {
 
   useEffect(() => {
     setCategoryId(searchParams.get('c') || '')
+    setKeyword(searchParams.get('s') || '')
+
+    let _orderBy = wexcommerceTypes.ProductOrderBy.featured
+    const o = searchParams.get('o')
+    if (o) {
+      if (o.toLowerCase() === wexcommerceTypes.ProductOrderBy.priceAsc.toLowerCase()) {
+        _orderBy = wexcommerceTypes.ProductOrderBy.priceAsc
+      } else if (o.toLowerCase() === wexcommerceTypes.ProductOrderBy.priceDesc.toLowerCase()) {
+        _orderBy = wexcommerceTypes.ProductOrderBy.priceDesc
+      }
+    }
+    setOrderBy(_orderBy)
   }, [searchParams])
 
   useEffect(() => {
@@ -124,6 +140,38 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = ({ children }) => {
           className={styles.products}
           ref={productsRef}
         >
+          <div className={styles.header}>
+            {orderBy &&
+              <FormControl margin="dense" className={styles.sort}>
+                <InputLabel>{strings.SORT_BY}</InputLabel>
+                <Select
+                  variant="outlined"
+                  size="small"
+                  label={strings.SORT_BY}
+                  value={orderBy}
+                  onChange={(e) => {
+                    const _orderBy = e.target.value
+
+                    let url = '/search'
+
+                    const firstParamSet = categoryId || keyword
+                    if (categoryId) {
+                      url += `?c=${categoryId}`
+                    } else if (keyword) {
+                      url += `?s=${keyword}`
+                    }
+
+                    url += `${firstParamSet ? '&' : '?'}o=${_orderBy}`
+
+                    router.push(url)
+                  }}
+                >
+                  <MenuItem value={wexcommerceTypes.ProductOrderBy.featured.toString()}>{strings.ORDER_BY_FEATURED}</MenuItem>
+                  <MenuItem value={wexcommerceTypes.ProductOrderBy.priceAsc.toString()}>{strings.ORDER_BY_PRICE_ASC}</MenuItem>
+                  <MenuItem value={wexcommerceTypes.ProductOrderBy.priceDesc.toString()}>{strings.ORDER_BY_PRICE_DESC}</MenuItem>
+                </Select>
+              </FormControl>}
+          </div>
           {children}
         </div>
       </div>

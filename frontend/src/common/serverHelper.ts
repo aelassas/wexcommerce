@@ -7,6 +7,5 @@ export const getProductURL = (product: wexcommerceTypes.Product) => {
   const host = headers().get('host')
   const isHTTPS = xURL?.startsWith('https')
   const url = `${isHTTPS ? 'https://' : 'http://'}${host}/product/${product._id}/${slugify(product.name)}`
-  console.log('url', url)
   return url
 }

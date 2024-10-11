@@ -320,10 +320,16 @@ export interface GetProductPayload {
     cart?: string;
     wishlist?: string;
 }
+export declare enum ProductOrderBy {
+    featured = "featured",
+    priceAsc = "priceAsc",
+    priceDesc = "priceDesc"
+}
 export interface GetProductsPayload {
     cart?: string;
     wishlist?: string;
     size?: number;
+    orderBy?: ProductOrderBy;
 }
 export interface FeaturedCategory {
     category: CategoryInfo;

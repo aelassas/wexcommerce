@@ -369,10 +369,17 @@ export interface GetProductPayload {
   wishlist?: string
 }
 
+export enum ProductOrderBy {
+  featured = 'featured',
+  priceAsc = 'priceAsc',
+  priceDesc = 'priceDesc',
+}
+
 export interface GetProductsPayload {
   cart?: string
   wishlist?: string
   size?: number
+  orderBy?: ProductOrderBy
 }
 
 export interface FeaturedCategory {

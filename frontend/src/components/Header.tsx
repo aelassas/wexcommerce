@@ -112,8 +112,8 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
 
   const search = (keyword: string) => {
     const url = pathname.includes('/orders') ?
-      (keyword ? '/orders?s=' + encodeURIComponent(keyword) : '/orders')
-      : (keyword ? '/search?s=' + encodeURIComponent(keyword) : '/search')
+      (keyword ? `/orders?s=${encodeURIComponent(keyword)}` : '/orders')
+      : (keyword ? `/search?s=${encodeURIComponent(keyword)}` : '/search')
 
     router.push(url)
   }
