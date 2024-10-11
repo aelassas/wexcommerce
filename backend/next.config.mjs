@@ -24,7 +24,7 @@ const nextConfig = {
   compress: false,
   experimental: {
     serverActions: {
-      allowedOrigins: ['localhost', 'wexcommerce.dynv6.net:8002'],
+      allowedOrigins: ['localhost:8001', 'wexcommerce.dynv6.net:8001'],
     },
   },
 }
