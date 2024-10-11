@@ -13,13 +13,13 @@ div.main {
 }
 
 div.main div.header {
-  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   padding: 15px;
+  margin: 0 10px;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 
 div.main div.products {

@@ -230,6 +230,15 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
     router.push('/notifications')
   }
 
+  const handleWishlistClick = () => {
+    if (isSignedIn) {
+      router.push('/wishlist')
+      router.refresh()
+    } else {
+      router.push('/sign-in')
+    }
+  }
+
   const menuId = 'primary-account-menu'
   const renderMenu = (
     <Menu
@@ -465,21 +474,14 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
           <div
             className={styles.headerDesktop}
           >
-            {<IconButton
-              onClick={() => {
-                if (isSignedIn) {
-                  router.push('/wishlist')
-                  router.refresh()
-                } else {
-                  router.push('/sign-in')
-                }
-              }}
+            <IconButton
+              onClick={handleWishlistClick}
               className={styles.iconButton}
             >
               <Badge badgeContent={wishlistCount > 0 ? wishlistCount : null} color="error">
                 <WishlistIcon />
               </Badge>
-            </IconButton>}
+            </IconButton>
 
             {!hideCart &&
               <IconButton
@@ -540,16 +542,27 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
 
           {isLoaded && !loading && !showMobileSearch &&
             <div className={styles.headerMobile}>
-              {!hideCart && <IconButton
-                onClick={() => {
-                  router.push('/cart')
-                }}
+
+              <IconButton
+                onClick={handleWishlistClick}
                 className={styles.iconButton}
               >
-                <Badge badgeContent={cartItemCount > 0 ? cartItemCount : null} color="error">
-                  <CartIcon />
+                <Badge badgeContent={wishlistCount > 0 ? wishlistCount : null} color="error">
+                  <WishlistIcon />
                 </Badge>
-              </IconButton>}
+              </IconButton>
+              {
+                !hideCart && <IconButton
+                  onClick={() => {
+                    router.push('/cart')
+                  }}
+                  className={styles.iconButton}
+                >
+                  <Badge badgeContent={cartItemCount > 0 ? cartItemCount : null} color="error">
+                    <CartIcon />
+                  </Badge>
+                </IconButton>
+              }
               {/* {(!isSignedIn && !loading) &&
                             <Button
                                 variant="contained"

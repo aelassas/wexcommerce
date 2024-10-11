@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'http',
@@ -15,7 +14,14 @@ const nextConfig = {
         pathname: '**',
       },
     ],
+    unoptimized: true,
   },
+  //
+  // Nginx will do gzip compression. We disable
+  // compression here so we can prevent buffering
+  // streaming responses
+  //
+  compress: false,
   experimental: {
     serverActions: {
       allowedOrigins: ['localhost', 'wexcommerce.dynv6.net:8002'],
