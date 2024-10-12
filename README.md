@@ -4,7 +4,7 @@
 
 wexCommerce is a minimalistic and powerful eCommerce platform built with Next.js using SSR, server actions, MongoDB and Stripe for payments.
 
-With the following solution, you can build an eCommerce website optmized for SEO with an operational Stripe payment gateway at very low cost by hosting it on a Docker droplet with at least 1GB of RAM.
+With the following solution, you can build a fully customizable eCommerce website optmized for SEO with an operational Stripe payment gateway at very low cost by hosting it on a Docker droplet with at least 1GB of RAM.
 
 wexCommerce is composed of a frontend and an admin dashboard. From the frontend, customers can search for the products they want, add them to their cart and checkout. Customers can sign up with Google, Facebook, Apple or Email, and pay with a Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link or other Stripe payment methods. Once logged in, they can have access to the history of their purshases and follow their orders. From the admin dashboard, admins can manage orders, payments, products, categories, customers and general settings such as the default language, the currency, delivery, shipping and payment methods accepted.
 
