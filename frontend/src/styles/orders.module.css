@@ -28,7 +28,6 @@ div.orders {
 }
 
 @media only screen and (width >=960px) {
-
   div.main {
     max-width: 1184px;
     margin-right: auto;

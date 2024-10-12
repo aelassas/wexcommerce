@@ -32,7 +32,7 @@ div.accordionContainer span.accordion:hover {
   background: #fafafa;
 }
 
-div.accordionContainer span.accordion:after {
+div.accordionContainer span.accordion::after {
   content: '';
   border-top: 5px solid transparent;
   border-left: 5px solid #000;

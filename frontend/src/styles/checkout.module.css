@@ -1,7 +1,4 @@
-@media only screen and (width <=960px) {}
-
-@media only screen and (max-width: 550px) {
-
+@media only screen and (width <= 550px) {
   .checkoutForm .signIn,
   .checkoutForm .box,
   .checkoutForm .payment,
@@ -15,8 +12,7 @@
   }
 }
 
-@media only screen and (min-width: 550px) {
-
+@media only screen and (width >= 550px) {
   .checkoutForm .signIn,
   .checkoutForm .box,
   .checkoutForm .payment,
@@ -24,8 +20,6 @@
     width: 550px;
   }
 }
-
-@media only screen and (width >=960px) {}
 
 .checkoutForm {
   padding: 30px;
@@ -71,6 +65,41 @@
 
 .checkoutForm .boxForm {
   margin-top: 5px;
+}
+
+.checkoutForm .buttons {
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.checkoutForm .buttons button,
+.checkoutForm .buttons a {
+  float: right;
+}
+
+.checkoutForm .buttons .btnCheckout,
+.checkoutForm .buttons .btnCancel {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 500;
+  border: 0;
+  border-radius: 5px;
+  color: #fff;
+  height: 42px;
+  min-width: 75px;
+  width: 100%;
+  margin: 0;
+  white-space: nowrap;
+  padding: 5px 32px;
+  margin-left: 7px;
+}
+
+.checkoutForm .buttons .btnCheckout {
+  background: #1d1d1b;
+}
+
+.checkoutForm .buttons .btnCancel {
+  background: #BBB;
 }
 
 .checkoutForm div.article {
@@ -128,7 +157,7 @@
 }
 
 .checkoutForm div.article .articleInfo span.quantity {
-  color: rgba(0, 0, 0, 0.55);
+  color: rgb(0 0 0 / 55%);
   font-size: 12px;
   align-self: flex-end;
 }
@@ -144,7 +173,7 @@
 }
 
 .checkoutForm span.paymentInfo {
-  color: rgba(0, 0, 0, 0.55);
+  color: rgb(0 0 0 / 55%);
   font-size: 13px;
 }
 
@@ -187,39 +216,4 @@
   .checkoutForm .stripe {
     width: calc(100% - 20px);
   }
-}
-
-.checkoutForm .buttons {
-  display: inline-block;
-  margin-top: 20px;
-}
-
-.checkoutForm .buttons button,
-.checkoutForm .buttons a {
-  float: right;
-}
-
-.checkoutForm .buttons .btnCheckout,
-.checkoutForm .buttons .btnCancel {
-  font-size: 18px;
-  line-height: 24px;
-  font-weight: 500;
-  border: 0;
-  border-radius: 5px;
-  color: #fff;
-  height: 42px;
-  min-width: 75px;
-  width: 100%;
-  margin: 0;
-  white-space: nowrap;
-  padding: 5px 32px;
-  margin-left: 7px;
-}
-
-.checkoutForm .buttons .btnCheckout {
-  background: #1d1d1b;
-}
-
-.checkoutForm .buttons .btnCancel {
-  background: #BBB;
 }

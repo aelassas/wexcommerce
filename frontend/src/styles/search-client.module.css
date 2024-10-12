@@ -9,7 +9,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 15px 10px 15px;
+    padding: 15px 15px 10px;
     font-weight: 600;
     color: #030303;
   }
@@ -37,7 +37,6 @@
 }
 
 @media only screen and (width >=960px) {
-
   div.main {
     max-width: 1384px;
     margin-right: auto;

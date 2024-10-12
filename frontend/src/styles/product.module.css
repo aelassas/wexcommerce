@@ -70,9 +70,8 @@ div.main div.product img.thumbnail {
 
 div.main div.product div.images {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   overflow-x: auto;
-  flex-wrap: wrap;
 }
 
 div.main div.product div.images div.image {

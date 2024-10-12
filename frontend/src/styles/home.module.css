@@ -24,7 +24,6 @@ div.main div.featuredCategories {
 }
 
 @media only screen and (width <=960px) {
-
   div.main {
     margin-top: 5px;
   }
@@ -36,7 +35,6 @@ div.main div.featuredCategories {
 }
 
 @media only screen and (width >=960px) {
-
   div.main {
     max-width: 1124px;
     margin-right: auto;

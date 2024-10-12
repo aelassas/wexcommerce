@@ -17,7 +17,7 @@
 
 @media only screen and (width <=960px) {
   .signupForm {
-    margin: 45px 0 120px 0;
+    margin: 45px 0 120px;
     width: 350px;
     padding: 30px;
   }
@@ -27,7 +27,7 @@
 
 @media only screen and (width >=960px) {
   .signupForm {
-    margin: 85px 0 120px 0;
+    margin: 85px 0 120px;
     width: 550px;
     padding: 30px;
   }

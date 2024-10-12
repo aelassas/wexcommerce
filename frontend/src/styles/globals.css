@@ -18,16 +18,9 @@
 }
 
 html,
-body,
-.App,
-#root {
+body {
   margin: 0;
   padding: 0;
-}
-
-#__next {
-  display: flex;
-  flex-direction: column;
 }
 
 .slick-prev {
@@ -39,8 +32,8 @@ body,
   z-index: 1 !important;
 }
 
-.slick-prev:before,
-.slick-next:before {
+.slick-prev::before,
+.slick-next::before {
   font-size: 28px !important;
   color: #ddd !important;
   opacity: .75 !important;
@@ -57,12 +50,12 @@ a {
 
 .btn-primary {
   background-color: #1d1d1b !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 .btn-secondary {
-  background-color: #999999 !important;
-  color: #ffffff !important;
+  background-color: #999 !important;
+  color: #fff !important;
 }
 
 .btn-primary:hover,
@@ -80,10 +73,10 @@ a {
 }
 
 .btn-resend {
-  margin: 0 10px 0 10px !important;
+  margin: 0 10px !important;
 }
 
-.required:after {
+.required::after {
   content: " *";
 }
 
@@ -150,7 +143,7 @@ a {
 
 .avatar-ctn {
   position: relative;
-  margin: 20px 0 20px 0;
+  margin: 20px 0;
   height: 170px;
   display: flex;
   align-items: center;
@@ -233,7 +226,7 @@ a {
 }
 
 .d-adornment-icon {
-  color: rgba(0, 0, 0, 0.54);
+  color: rgb(0 0 0 / 54%);
   width: 20px !important;
   height: 20px !important;
 }
@@ -303,12 +296,12 @@ div.content {
 /* input[type=number] */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 
-input[type=number] {
-  -moz-appearance: textfield;
+input[type="number"] {
+  appearance: textfield;
 }
 
 .stop-scrolling {
@@ -316,6 +309,6 @@ input[type=number] {
   overflow: hidden;
 }
 
-.github-fork-ribbon:before {
+.github-fork-ribbon::before {
   background-color: #272727;
 }

@@ -33,6 +33,7 @@ article.product {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-radius: 10px;
 }
 
 article.product a {
@@ -45,10 +46,6 @@ article.product a {
 
 article.product a:hover {
   text-decoration: none;
-}
-
-article.product {
-  border-radius: 10px;
 }
 
 article.product div.actions {

@@ -15,12 +15,6 @@ div.footer img.payment {
   max-height: 100%;
 }
 
-div.footer div.main div.copyright {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 @media only screen and (width <=960px) {
   div.footer div.main {
     margin-right: 15px;
@@ -28,7 +22,6 @@ div.footer div.main div.copyright {
     margin-top: 25px;
     padding-bottom: 30px;
   }
-
 
   div.footer div.main div.copyright {
     display: flex;
@@ -54,7 +47,7 @@ div.footer div.main div.copyright {
   }
 }
 
-@media only screen and (width >=960px) and (max-width: 1184px) {
+@media only screen and (width >=960px) and (width <= 1184px) {
   div.footer div.main div.content {
     margin-right: 15px;
   }
@@ -92,4 +85,7 @@ div.footer div.main div.copyright {
   padding-top: 5px;
   font-size: 0.75rem;
   border-top: 1px solid #ddd;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

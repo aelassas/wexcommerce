@@ -42,6 +42,46 @@
   margin-left: auto;
 }
 
+div.main div.total {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #ededed;
+  border-radius: 4px;
+}
+
+div.main div.total div.title,
+div.main div.total div.price,
+div.main div.total div.action {
+  padding: 10px;
+}
+
+div.main div.total div.title,
+div.main div.total div.price {
+  border-bottom: 1px solid #ededed;
+}
+
+div.main div.total div.title {
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+div.main div.total div.price {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+div.main div.total div.price span.price {
+  font-weight: 500;
+}
+
+div.main div.total div.action .btn {
+  width: 100%;
+  margin: 10px 0;
+}
+
+
 div.main div.items {
   flex: 1;
   max-width: 720px;
@@ -154,43 +194,4 @@ div.main div.items article.item div.actions div.quantity span.quantity {
 div.main div.items article.item div.actions .label {
   margin-top: auto;
   margin-bottom: auto;
-}
-
-div.main div.total {
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  border: 1px solid #ededed;
-  border-radius: 4px;
-}
-
-div.main div.total div.title,
-div.main div.total div.price,
-div.main div.total div.action {
-  padding: 10px;
-}
-
-div.main div.total div.title,
-div.main div.total div.price {
-  border-bottom: 1px solid #ededed;
-}
-
-div.main div.total div.title {
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-div.main div.total div.price {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-div.main div.total div.price span.price {
-  font-weight: 500;
-}
-
-div.main div.total div.action .btn {
-  width: 100%;
-  margin: 10px 0;
 }

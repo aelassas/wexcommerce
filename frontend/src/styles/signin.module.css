@@ -36,7 +36,7 @@ div.stayConnected input[type='checkbox'] {
 
 div.stayConnected label {
   cursor: pointer;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgb(0 0 0 / 60%);
 }
 
 div.resetPassword {
@@ -44,7 +44,6 @@ div.resetPassword {
 }
 
 @media only screen and (width <=960px) {
-
   .signinForm {
     align-items: center;
     justify-content: center;
@@ -52,7 +51,7 @@ div.resetPassword {
     width: 350px;
     margin-top: 45px;
     margin-bottom: 50px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid rgb(0 0 0 / 12%);
     padding: 15px;
   }
 
@@ -70,7 +69,6 @@ div.resetPassword {
 }
 
 @media only screen and (width >=960px) {
-
   .signinForm {
     align-items: center;
     justify-content: center;
@@ -78,7 +76,7 @@ div.resetPassword {
     width: 380px;
     margin-top: 85px;
     margin-bottom: 150px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid rgb(0 0 0 / 12%);
     padding: 15px;
   }
 }
