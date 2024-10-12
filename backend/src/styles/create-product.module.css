@@ -20,7 +20,7 @@
 }
 
 .form .label {
-    color: rgba(0, 0, 0, 0.6);
+    color: rgb(0 0 0 / 60%);
     font-weight: 400;
     font-size: 12px;
     display: block;

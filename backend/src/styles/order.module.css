@@ -76,6 +76,7 @@ form.order article div.orderContent div.orderItem {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   /* border-bottom: #eaeaea 1px solid; */
   padding: 7px 0;
 }

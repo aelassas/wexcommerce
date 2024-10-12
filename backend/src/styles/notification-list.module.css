@@ -44,10 +44,7 @@ div.notifications div.headerContainer div.header {
 
 div.notifications div.notificationList {
   position: absolute;
-  top: 55px;
-  right: 0;
-  bottom: 65px;
-  left: 0;
+  inset: 55px 0 65px;
   display: flex;
   flex-direction: column;
   align-items: center;

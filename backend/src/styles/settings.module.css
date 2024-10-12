@@ -28,7 +28,7 @@ div.settings a.stripeCurrencies {
 
 div.settings .priceLabel {
   margin-right: 5px;
-  color: rgba(0, 0, 0, 0.55);
+  color: rgb(0 0 0 / 55%);
   font-size: 13px;
 }
 
@@ -42,7 +42,6 @@ div.settings .paymentType {
 
 div.settings .form .formTitle {
   text-align: center;
-  text-transform: none;
   color: #1d1d1b;
   text-transform: capitalize;
 }

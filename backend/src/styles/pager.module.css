@@ -27,6 +27,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-size: 18px;
 }
 
 .pagerContainer .pager .actions a {
@@ -42,10 +43,6 @@
 
 .pagerContainer .pager .actions a:hover {
   color: #131313 !important;
-}
-
-.pagerContainer .pager .actions {
-  font-size: 18px;
 }
 
 .pagerContainer a.disabled,

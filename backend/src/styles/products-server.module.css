@@ -14,7 +14,7 @@
   }
 
   .pager {
-    margin: 5px 10px 15px 10px;
+    margin: 5px 10px 15px;
   }
 }
 
@@ -65,14 +65,12 @@ div.productList a {
   height: 100%;
 }
 
-div.productList a:hover {
-  text-decoration: none;
-}
 
 article.product {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-radius: 10px;
 }
 
 article.product a {
@@ -83,12 +81,9 @@ article.product a {
   align-items: center;
 }
 
+div.productList a:hover,
 article.product a:hover {
   text-decoration: none;
-}
-
-article.product {
-  border-radius: 10px;
 }
 
 article.product div.actions {
