@@ -43,7 +43,9 @@ wexCommerce can run in a Docker container. Follow this step by step [guide](http
 5. [Demo Database](https://github.com/aelassas/wexcommerce/wiki/Demo-Database)
    1. [Windows, Linux and macOS](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#windows-linux-and-macos)
    2. [Docker](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#docker)
-6. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
+6. [Change Language and Currency](https://github.com/aelassas/wexcommerce/wiki/Change-Language-and-Currency)
+7. [Add New Language](https://github.com/aelassas/wexcommerce/wiki/Add-New-Language)
+8. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 
 # License
 wexCommerce is [MIT licensed](https://github.com/aelassas/wexcommerce/blob/main/LICENSE).
