@@ -7,7 +7,6 @@
 
 div.products {
   flex: 1;
-  height: fit-content;
 }
 
 div.productList {
