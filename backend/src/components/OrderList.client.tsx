@@ -2,16 +2,12 @@
 
 import React from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  Card,
-  CardContent,
-  Typography,
-  IconButton,
-} from '@mui/material'
+import { IconButton } from '@mui/material'
 import { Edit as EditIcon } from '@mui/icons-material'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
 import { strings } from '@/lang/order-list'
+import EmptyListComponent from '@/components/EmptyList'
 import PagerComponent from './Pager'
 import OrderStatus from './OrderStatus'
 import PaymentType from './PaymentType'
@@ -20,11 +16,7 @@ import DeliveryType from './DeliveryType'
 import styles from '@/styles/order-list.module.css'
 
 export const EmptyList: React.FC = () => (
-  <Card variant="outlined" className={styles.emptyList}>
-    <CardContent>
-      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-    </CardContent>
-  </Card>
+  <EmptyListComponent text={strings.EMPTY_LIST} />
 )
 
 interface PagerProps {

@@ -13,7 +13,14 @@ import { strings } from '@/lang/order-list'
 import * as SettingService from '@/lib/SettingService'
 import * as UserService from '@/lib/UserService'
 import * as OrderService from '@/lib/OrderService'
-import { EmptyList, Pager, OdrerStatusField, PaymentTypeField, DeliveryTypeField, Actions } from './OrderList.client'
+import {
+  EmptyList,
+  Pager,
+  OdrerStatusField,
+  PaymentTypeField,
+  DeliveryTypeField,
+  Actions
+} from './OrderList.client'
 
 import styles from '@/styles/order-list.module.css'
 

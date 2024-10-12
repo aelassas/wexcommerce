@@ -3,7 +3,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material'
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select
+} from '@mui/material'
 import {
   ShoppingBag as CategoryIcon,
   Home as HomeIcon,
@@ -24,14 +30,6 @@ import { strings as headerStrings } from '@/lang/header'
 import PagerComponent from '@/components/Pager'
 
 import styles from '@/styles/products-client.module.css'
-
-export const EmptyList: React.FC = () => (
-  <Card variant="outlined" className={styles.emptyList}>
-    <CardContent>
-      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-    </CardContent>
-  </Card>
-)
 
 interface PagerProps {
   page: number

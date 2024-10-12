@@ -10,7 +10,9 @@ import env from '@/config/env.config'
 import * as SettingService from '@/lib/SettingService'
 import * as UserService from '@/lib/UserService'
 import * as ProductService from '@/lib/ProductService'
-import { EmptyList, Pager, Tags } from './page.client'
+import { strings } from '@/lang/products'
+import EmptyList from '@/components/EmptyList'
+import { Pager, Tags } from './page.client'
 
 import styles from '@/styles/products-server.module.css'
 
@@ -89,7 +91,7 @@ const Products = async ({ searchParams }: { searchParams: SearchParams }) => {
       <div className={styles.products}>
 
         {
-          (totalRecords === 0 || noMatch) && <EmptyList />
+          (totalRecords === 0 || noMatch) && <EmptyList text={strings.EMPTY_LIST} />
         }
 
         {

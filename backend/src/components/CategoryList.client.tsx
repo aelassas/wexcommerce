@@ -10,9 +10,6 @@ import {
   DialogContent,
   DialogActions,
   Tooltip,
-  Card,
-  CardContent,
-  Typography,
 } from '@mui/material'
 import {
   AccountTree as CategoryIcon,
@@ -23,15 +20,12 @@ import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/category-list'
 import * as helper from '../common/helper'
 import * as CategoryService from '../lib/CategoryService'
+import EmptyListComponent from '@/components/EmptyList'
 
 import styles from '../styles/category-list.module.css'
 
 export const EmptyList: React.FC = () => (
-  <Card variant="outlined" className={styles.emptyList}>
-    <CardContent>
-      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-    </CardContent>
-  </Card>
+  <EmptyListComponent text={strings.EMPTY_LIST} marginTop />
 )
 
 export const EmptyCategoryIcon: React.FC = () => (
