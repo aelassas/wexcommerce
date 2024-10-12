@@ -382,6 +382,10 @@ export interface GetProductsPayload {
   orderBy?: ProductOrderBy
 }
 
+export interface GetBackendProductsPayload {
+  orderBy?: ProductOrderBy
+}
+
 export interface FeaturedCategory {
   category: CategoryInfo
   products: Product[]

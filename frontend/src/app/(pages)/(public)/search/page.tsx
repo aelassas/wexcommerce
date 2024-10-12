@@ -81,7 +81,12 @@ const Search = async ({ searchParams }: { searchParams: SearchParams }) => {
   }
 
   return page > 0 && (
-    <ProductsWrapper rowCount={rowCount} totalRecords={totalRecords} page={page} pageSize={env.PAGE_SIZE}>
+    <ProductsWrapper
+      rowCount={rowCount}
+      totalRecords={totalRecords}
+      page={page}
+      pageSize={env.PAGE_SIZE}
+    >
       <div className={styles.products}>
 
         {

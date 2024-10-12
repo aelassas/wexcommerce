@@ -200,46 +200,47 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
           className={styles.products}
           ref={productsRef}
         >
-          {totalRecords > 0 && (
-            <div className={styles.header}>
-              {
-                // 1-24 of over 100,000 results
-                <span className={styles.rowCount}>
-                  {`${(page - 1) * pageSize + 1}-${rowCount} ${strings.OF_OVER} ${wexcommerceHelper.formatNumber(totalRecords, language)} ${totalRecords === 1 ? strings.RESULT : strings.RESULTS}`}
-                </span>
-              }
-              {orderBy &&
-                <FormControl margin="dense" className={styles.sort}>
-                  <InputLabel>{strings.SORT_BY}</InputLabel>
-                  <Select
-                    variant="outlined"
-                    size="small"
-                    label={strings.SORT_BY}
-                    value={orderBy}
-                    onChange={(e) => {
-                      const _orderBy = e.target.value
+          {
+            totalRecords > 0 && (
+              <div className={styles.header}>
+                {
+                  // 1-24 of over 100,000 results
+                  <span className={styles.rowCount}>
+                    {`${(page - 1) * pageSize + 1}-${rowCount} ${strings.OF_OVER} ${wexcommerceHelper.formatNumber(totalRecords, language)} ${totalRecords === 1 ? strings.RESULT : strings.RESULTS}`}
+                  </span>
+                }
+                {orderBy &&
+                  <FormControl margin="dense" className={styles.sort}>
+                    <InputLabel>{strings.SORT_BY}</InputLabel>
+                    <Select
+                      variant="outlined"
+                      size="small"
+                      label={strings.SORT_BY}
+                      value={orderBy}
+                      onChange={(e) => {
+                        const _orderBy = e.target.value
 
-                      let url = '/search'
+                        let url = '/search'
 
-                      const firstParamSet = categoryId || keyword
-                      if (categoryId) {
-                        url += `?c=${categoryId}`
-                      } else if (keyword) {
-                        url += `?s=${keyword}`
-                      }
+                        const firstParamSet = categoryId || keyword
+                        if (categoryId) {
+                          url += `?c=${categoryId}`
+                        } else if (keyword) {
+                          url += `?s=${keyword}`
+                        }
 
-                      url += `${firstParamSet ? '&' : '?'}o=${_orderBy}`
+                        url += `${firstParamSet ? '&' : '?'}o=${_orderBy}`
 
-                      router.push(url)
-                    }}
-                  >
-                    <MenuItem value={wexcommerceTypes.ProductOrderBy.featured.toString()}>{strings.ORDER_BY_FEATURED}</MenuItem>
-                    <MenuItem value={wexcommerceTypes.ProductOrderBy.priceAsc.toString()}>{strings.ORDER_BY_PRICE_ASC}</MenuItem>
-                    <MenuItem value={wexcommerceTypes.ProductOrderBy.priceDesc.toString()}>{strings.ORDER_BY_PRICE_DESC}</MenuItem>
-                  </Select>
-                </FormControl>}
-            </div>
-          )}
+                        router.push(url)
+                      }}
+                    >
+                      <MenuItem value={wexcommerceTypes.ProductOrderBy.featured.toString()}>{strings.ORDER_BY_FEATURED}</MenuItem>
+                      <MenuItem value={wexcommerceTypes.ProductOrderBy.priceAsc.toString()}>{strings.ORDER_BY_PRICE_ASC}</MenuItem>
+                      <MenuItem value={wexcommerceTypes.ProductOrderBy.priceDesc.toString()}>{strings.ORDER_BY_PRICE_DESC}</MenuItem>
+                    </Select>
+                  </FormControl>}
+              </div>
+            )}
           {children}
         </div>
       </div>

@@ -1,0 +1,169 @@
+@media only screen and (width <=960px) {
+  div.main {
+    margin-top: 5px;
+  }
+
+  .newProduct {
+    width: calc(100% - 20px);
+    margin: 10px !important;
+  }
+
+  div.categoriesAction {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 15px 10px 15px;
+    font-weight: 600;
+    color: #030303;
+  }
+
+  div.categoriesAction div.categoriesText {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  div.categoriesAction .categoriesIcon {
+    margin-right: 5px;
+  }
+
+  div.categoriesAction .closeIcon {
+    visibility: hidden;
+  }
+
+  div.leftPanel {
+    display: none;
+    width: 100%;
+    margin: 0 5px;
+  }
+}
+
+@media only screen and (width >=960px) {
+
+  div.main {
+    max-width: 1384px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-bottom: 30px;
+    margin-top: 15px;
+  }
+
+  div.main .newProduct {
+    width: 100%;
+  }
+
+  div.leftPanel {
+    min-width: 275px;
+    max-width: 300px;
+  }
+
+  ul.categories {
+    padding-right: 25px;
+  }
+
+  div.products {
+    margin-left: 15px;
+  }
+}
+
+div.main {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.emptyList {
+  text-align: center;
+  width: 250px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.sort {
+  width: 180px;
+}
+
+div.products {
+  width: 100%;
+}
+
+div.products div.header {
+  background-color: #fff;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+}
+
+div.products div.header span.rowCount {
+  margin-left: 15px;
+  color: #75757a;
+  font-size: .875rem;
+}
+
+div.leftPanel {
+  background-color: #fff;
+  border-radius: 5px;
+  min-height: 100vh;
+}
+
+ul.categories {
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+  padding-top: 10px;
+  height: 100%;
+}
+
+ul.categories:hover {
+  box-sizing: border-box;
+  padding-right: 0;
+}
+
+ul.categories li a {
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 48px;
+  padding-left: 24px;
+}
+
+ul.categories li a:hover {
+  background-color: #f2f2f2;
+}
+
+ul.categories li a.selected {
+  background-color: #e2e2e2;
+}
+
+ul.categories li a.selected:hover {
+  background-color: #d2d2d2;
+}
+
+ul.categories li a span,
+ul.categories li a.selected span {
+  font-weight: 400;
+  color: #030303;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+ul.categories li a.selected span {
+  font-weight: 500;
+}
+
+ul.categories li a .categoryIcon {
+  color: #030303;
+  font-size: 24px;
+  margin-right: 24px;
+}

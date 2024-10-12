@@ -15,6 +15,7 @@
     "@mui/icons-material": "^6.1.2",
     "@mui/material": "^6.1.2",
     "@mui/x-date-pickers": "^7.19.0",
+    "@sindresorhus/slugify": "^2.2.1",
     "@types/draft-js": "^0.11.18",
     "@types/draftjs-to-html": "^0.8.4",
     "@types/html-to-draftjs": "^1.4.3",

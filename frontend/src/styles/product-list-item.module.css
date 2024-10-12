@@ -16,9 +16,10 @@
 
 @media only screen and (width >=960px) {
   article.product {
-    width: 240px;
+    flex: 1 0 21%;
+    max-width: calc(25% - 6px);
     height: 300px;
-    margin: 15px;
+    margin: 10px;
     background-color: #fff;
     padding: 6px;
   }
@@ -132,8 +133,4 @@ article.product div.label .labelIcon {
 
 article.product div.soldOut {
   background-color: #e33b2f;
-}
-
-article.product div.hidden {
-  background-color: #c2c2c2;
 }

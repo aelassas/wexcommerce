@@ -127,9 +127,10 @@ export const getProducts = async (
   keyword: string,
   page: number,
   size: number,
-  categoryId: string
+  categoryId: string,
+  orderBy: wexcommerceTypes.ProductOrderBy = wexcommerceTypes.ProductOrderBy.featured
 ): Promise<wexcommerceTypes.Result<wexcommerceTypes.Product>> => {
-  const data = null
+  const data: wexcommerceTypes.GetBackendProductsPayload = { orderBy }
 
   return fetchInstance
     .POST(

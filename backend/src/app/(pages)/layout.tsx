@@ -32,7 +32,6 @@ import { strings as notificationListStrings } from '@/lang/notification-list'
 import { strings as orderDateFilterStrings } from '@/lang/order-date-filter'
 import { strings as orderListStrings } from '@/lang/order-list'
 import { strings as orderStatusStrings } from '@/lang/order-status'
-import { strings as productListStrings } from '@/lang/product-list'
 import { strings as productStrings } from '@/lang/product'
 import { strings as productsStrings } from '@/lang/products'
 import { strings as settingsStrings } from '@/lang/settings'
@@ -74,7 +73,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       helper.setLanguage(orderDateFilterStrings, language)
       helper.setLanguage(orderListStrings, language)
       helper.setLanguage(orderStatusStrings, language)
-      helper.setLanguage(productListStrings, language)
       helper.setLanguage(productStrings, language)
       helper.setLanguage(productsStrings, language)
       helper.setLanguage(settingsStrings, language)

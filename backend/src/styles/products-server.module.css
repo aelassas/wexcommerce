@@ -1,15 +1,9 @@
 @media only screen and (width <=960px) {
-  div.productList {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
   article.product {
     flex: 1 0 100%;
-    max-width: calc(100% - 12px);
+    max-width: calc(100% - 20px);
     height: 300px;
-    margin: 3px 6px 3px 6px;
+    margin: 10px;
     background-color: #fff;
     padding: 6px;
   }
@@ -21,21 +15,16 @@
 }
 
 @media only screen and (width >=960px) {
-  div.productList {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 10px;
-  }
-
   article.product {
-    width: 210px;
+    flex: 1 0 21%;
+    max-width: calc(25% - 6px);
     height: 300px;
-    margin: 15px;
+    margin: 10px;
     background-color: #fff;
     padding: 6px;
   }
 
-  div.products {
+  article.products {
     width: 100%;
   }
 }
@@ -57,6 +46,12 @@ div.products {
   height: fit-content;
 }
 
+div.productList {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 div.productList a {
   color: #030303;
   text-decoration: none;
@@ -71,7 +66,49 @@ div.productList a:hover {
 }
 
 article.product {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+article.product a {
+  color: #030303;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+article.product a:hover {
+  text-decoration: none;
+}
+
+article.product {
   border-radius: 10px;
+}
+
+article.product div.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+article.product div.actions .button {
+  width: 36px;
+  height: 36px;
+  margin-left: 10px;
+}
+
+article.product div.actions .buttonIcon {
+  width: 22px;
+}
+
+article.product div.actions .button:hover {
+  opacity: 0.8;
+}
+
+article.product div.actions .removeButton {
+  width: 100%;
 }
 
 article.product div.thumbnail {
@@ -136,10 +173,4 @@ article.product div.soldOut {
 
 article.product div.hidden {
   background-color: #c2c2c2;
-}
-
-.emptyList {
-  text-align: center;
-  width: 250px;
-  margin-left: calc(50% - 125px);
 }
