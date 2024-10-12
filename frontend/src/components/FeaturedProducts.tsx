@@ -80,7 +80,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
               product={product}
               hideActions={!showActions}
               disableDragAndDrop
-              style={{ width: 346, marginRight: 'auto', marginLeft: 'auto' }}
+              style={{ width: 346, maxWidth: 346, marginRight: 'auto', marginLeft: 'auto' }}
             />
           ))
         }
