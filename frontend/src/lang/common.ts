@@ -65,6 +65,7 @@ export const strings = new LocalizedStrings({
     REMOVE_FROM_WISHLIST: 'Supprimer des favoris',
     ARTICLE_ADDED_TO_WISH_LIST: 'Article ajouté aux favoris',
     ARTICLE_REMOVED_FROM_WISH_LIST: 'Article retiré des favoris',
+    VIEW_CART: 'Voir le panier',
   },
   en: {
     GENERIC_ERROR: 'An unhandled error occurred.',
@@ -115,8 +116,8 @@ export const strings = new LocalizedStrings({
     REMOVE_FROM_CART: 'Remove from cart',
     REMOVE_FROM_CART_CONFIRM: 'Are you sure you want to remove this article from cart?',
     PRICE: 'Price',
-    ARTICLE_ADDED: 'Article added to cart.',
-    ARTICLE_REMOVED: 'Article removed from cart.',
+    ARTICLE_ADDED: 'Item added to cart.',
+    ARTICLE_REMOVED: 'Item removed from cart.',
     ARTICLES_IN_STOCK: 'articles in stock',
     ARTICLE_IN_STOCK: 'article in stock',
     SUBTOTAL: 'Subtotal',
@@ -128,7 +129,8 @@ export const strings = new LocalizedStrings({
     NEXT: 'Next',
     ADD_TO_WISHLIST: 'Add to wishlist',
     REMOVE_FROM_WISHLIST: 'Remove from wishlist',
-    ARTICLE_ADDED_TO_WISH_LIST: 'Article added to wishlist',
-    ARTICLE_REMOVED_FROM_WISH_LIST: 'Article removed from wishlist',
+    ARTICLE_ADDED_TO_WISH_LIST: 'Item added to wishlist',
+    ARTICLE_REMOVED_FROM_WISH_LIST: 'Item removed from wishlist',
+    VIEW_CART: 'View cart',
   }
 })

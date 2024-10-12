@@ -202,7 +202,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </LanguageProvider>
 
           <ToastContainer
-            position='bottom-right'
+            position='top-right'
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}
@@ -210,7 +210,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             pauseOnFocusLoss={false}
             draggable={false}
             pauseOnHover={true}
-            theme='light'
+            theme='dark'
+            icon={<></>}
           />
         </CssBaseline>
       </ThemeProvider>

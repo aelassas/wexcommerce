@@ -1,5 +1,25 @@
 :root {
-  --toastify-color-info: #121212 !important;
+  --toastify-color-progress-info: #fff !important;
+  --toastify-color-progress-bgo: .6 !important;
+}
+
+.Toastify__toast-container {
+  width: 380px !important;
+}
+
+.Toastify__toast-container>div:first-child {
+  margin: 15px 0 !important;
+}
+
+.Toastify__toast-body>div:last-child {
+  text-align: center !important;
+}
+
+@media only screen and (max-width: 480px) {
+  .Toastify__toast-container--top-right {
+    top: var(--toastify-toast-top) !important;
+    left: var(--toastify-toast-left) !important;
+  }
 }
 
 html,

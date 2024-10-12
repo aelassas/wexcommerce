@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import slugify from '@sindresorhus/slugify'
@@ -49,6 +50,8 @@ const ProductListItem: React.FC<ProductListItemProps> = (
     style,
     onRemoveWishlistItem
   }) => {
+  const router = useRouter()
+
   const { currency } = useCurrencyContext() as CurrencyContextType
   const { language } = useLanguageContext() as LanguageContextType
   const { user } = useUserContext() as UserContextType
@@ -200,7 +203,25 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                       }
                       setInCart(true)
                       setCartItemCount(cartItemCount + 1)
-                      helper.info(commonStrings.ARTICLE_ADDED)
+
+                      helper.infoWithComponent(
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                          <span style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                            {commonStrings.ARTICLE_ADDED}
+                          </span>
+                          <Button
+                            variant="contained"
+                            size="small"
+                            style={{ backgroundColor: '#fff', color: '#121212', marginRight: 15 }}
+                            onClick={() => {
+                              router.push('/cart')
+                            }}
+                          >
+                            {commonStrings.VIEW_CART}
+                          </Button>
+
+                        </div>
+                      )
                     } else {
                       helper.error()
                     }

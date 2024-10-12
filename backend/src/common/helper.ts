@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify'
+import { toast, ToastContent } from 'react-toastify'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as osStrings } from '@/lang/order-status'
@@ -6,6 +6,10 @@ import { LocalizedStrings } from 'react-localization'
 
 export const info = (message: string) => {
   toast.info(message)
+}
+
+export const infoWithComponent = (component: ToastContent<unknown>) => {
+  toast.info(component)
 }
 
 export const error = (err?: unknown, message?: string) => {

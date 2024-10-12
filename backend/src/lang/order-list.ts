@@ -20,10 +20,9 @@ export const strings = new LocalizedStrings({
         PAYMENT_TYPE: 'Payment method',
         DELIVERY_TYPE: 'Delivery method',
         CLIENT: 'Client',
-        ORDER_ITEMS: 'Articles',
-        PRODUCT: 'Article',
+        ORDER_ITEMS: 'Items',
+        PRODUCT: 'Item',
         ORDERED_AT: 'Ordered at',
         TOTAL: 'Total'
     }
 })
-

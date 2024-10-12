@@ -24,7 +24,7 @@ export const strings = new LocalizedStrings({
         WIRE_TRANSFER_SUCCESS: 'Votre commande a bien été confirmée. Nous vous avons envoyé un e-mail de confirmation contenant les informations bancaires pour effectuer le virement.',
         
         REGISTERED: 'Vous êtes déjà inscrit ?',
-        PRODUCTS: 'Articles',
+        PRODUCTS: 'Items',
         PAYMENT_TYPE: 'Mode de paiement',
         
         CREDIT_CARD: 'Paiement par carte bancaire',
@@ -63,7 +63,7 @@ export const strings = new LocalizedStrings({
         WIRE_TRANSFER_SUCCESS: 'Your order was confirmed. We have sent you a confirmation email containing the bank details to make the transfer.',
         
         REGISTERED: 'You already have an account?',
-        PRODUCTS: 'Articles',
+        PRODUCTS: 'Items',
         PAYMENT_TYPE: 'Payment method',
 
         CREDIT_CARD: 'Pay by credit card',

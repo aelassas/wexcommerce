@@ -17,7 +17,7 @@
 @media only screen and (width >=960px) {
   article.product {
     flex: 1 0 21%;
-    max-width: calc(25% - 6px); 
+    max-width: calc(25% - 6px);
     height: 300px;
     margin: 10px;
     background-color: #fff;
