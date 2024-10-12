@@ -205,6 +205,7 @@ const OrderList = async (
               statuses={statuses}
               from={from}
               to={to}
+              className={styles.pager}
             />
           )}
         </>

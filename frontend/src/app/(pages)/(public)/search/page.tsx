@@ -112,6 +112,7 @@ const Search = async ({ searchParams }: { searchParams: SearchParams }) => {
                 categoryId={categoryId}
                 keyword={keyword}
                 orderBy={orderBy}
+                className={styles.pager}
               />
             )}
 

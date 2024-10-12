@@ -131,6 +131,7 @@ const Products = async ({ searchParams }: { searchParams: SearchParams }) => {
                 totalRecords={totalRecords}
                 categoryId={categoryId}
                 keyword={keyword}
+                className={styles.pager}
               />
             )}
 

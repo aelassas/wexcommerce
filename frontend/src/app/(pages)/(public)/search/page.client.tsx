@@ -43,6 +43,7 @@ interface PagerProps {
   categoryId?: string
   keyword: string
   orderBy?: wexcommerceTypes.ProductOrderBy
+  className?: string
 }
 
 export const Pager: React.FC<PagerProps> = ({
@@ -52,6 +53,7 @@ export const Pager: React.FC<PagerProps> = ({
   categoryId,
   keyword,
   orderBy,
+  className,
 }) => {
   const router = useRouter()
 
@@ -61,6 +63,7 @@ export const Pager: React.FC<PagerProps> = ({
       pageSize={env.PAGE_SIZE}
       rowCount={rowCount}
       totalRecords={totalRecords}
+      className={className}
       onPrevious={() => router.push(`/search?${`p=${page - 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(orderBy && `&o=${orderBy}`) || ''}`)}
       onNext={() => router.push(`/search?${`p=${page + 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(orderBy && `&o=${orderBy}`) || ''}`)}
     />

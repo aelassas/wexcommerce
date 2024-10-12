@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
+import { init as initGA } from '@/common/ga4'
 import { createTheme, Theme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
@@ -43,8 +44,6 @@ import { strings as wishlistStrings } from '@/lang/wishlist'
 
 import 'react-toastify/dist/ReactToastify.min.css'
 import '@/styles/globals.css'
-
-import { init as initGA } from '@/common/ga4'
 
 if (env.GOOGLE_ANALYTICS_ENABLED) {
   initGA()

@@ -29,6 +29,7 @@ interface PagerProps {
   statuses: wexcommerceTypes.OrderStatus[]
   from?: number
   to?: number
+  className?: string
 }
 
 export const Pager: React.FC<PagerProps> = ({
@@ -40,7 +41,8 @@ export const Pager: React.FC<PagerProps> = ({
   deliveryTypes,
   statuses,
   from,
-  to
+  to,
+  className,
 }) => {
   const router = useRouter()
 
@@ -50,6 +52,7 @@ export const Pager: React.FC<PagerProps> = ({
       pageSize={env.ORDERS_PAGE_SIZE}
       rowCount={rowCount}
       totalRecords={totalRecords}
+      className={className}
       onPrevious={() => router.push(`/orders?pt=${encodeURIComponent(paymentTypes.join(','))}&dt=${encodeURIComponent(deliveryTypes.join(','))}&os=${encodeURIComponent(statuses.join(','))}&${`p=${page - 1}`}${(from && `&from=${from}`) || ''}${(to && `&to=${to}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}`)}
       onNext={() => router.push(`/orders?pt=${encodeURIComponent(paymentTypes.join(','))}&dt=${encodeURIComponent(deliveryTypes.join(','))}&os=${encodeURIComponent(statuses.join(','))}&${`p=${page + 1}`}${(from && `&from=${from}`) || ''}${(to && `&to=${to}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}`)}
     />

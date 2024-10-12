@@ -1,3 +1,9 @@
+@media only screen and (width <=960px) {
+  .pager {
+    margin: 5px 10px 15px 10px;
+  }
+}
+
 div.orders {
   flex: 1;
   height: fit-content;

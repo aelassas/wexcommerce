@@ -37,6 +37,7 @@ interface PagerProps {
   rowCount: number
   categoryId?: string
   keyword: string
+  className?: string
 }
 
 export const Pager: React.FC<PagerProps> = ({
@@ -45,6 +46,7 @@ export const Pager: React.FC<PagerProps> = ({
   rowCount,
   categoryId,
   keyword,
+  className,
 }) => {
   const router = useRouter()
 
@@ -54,6 +56,7 @@ export const Pager: React.FC<PagerProps> = ({
       pageSize={env.PAGE_SIZE}
       rowCount={rowCount}
       totalRecords={totalRecords}
+      className={className}
       onPrevious={() => router.push(`/products?${`p=${page - 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}`)}
       onNext={() => router.push(`/products?${`p=${page + 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}`)}
     />
