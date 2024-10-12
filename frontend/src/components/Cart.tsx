@@ -8,9 +8,6 @@ import slugify from '@sindresorhus/slugify'
 import {
   Button,
   IconButton,
-  Card,
-  CardContent,
-  Typography,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -32,15 +29,12 @@ import { LanguageContextType, useLanguageContext } from '@/context/LanguageConte
 import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyContext'
 import Env from '@/config/env.config'
 import SoldOut from '@/components/SoldOut'
+import EmptyList from './EmptyList'
 
 import styles from '@/styles/cart.module.css'
 
 export const EmptyCart: React.FC = () => (
-  <Card variant="outlined" className={styles.empty}>
-    <CardContent>
-      <Typography color="textSecondary">{strings.EMPTY}</Typography>
-    </CardContent>
-  </Card>
+  <EmptyList text={strings.EMPTY} marginTop />
 )
 
 interface CartProps {

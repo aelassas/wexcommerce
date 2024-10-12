@@ -3,7 +3,7 @@
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as OrderService from '@/lib/OrderService'
 import OrderForm from './page.client'
-import { EmptyList } from '@/components/OrderList.client'
+import EmptyOrderList from '@/components/EmptyOrderList'
 
 const Order = async ({ searchParams }: { searchParams: SearchParams }) => {
   const orderId = searchParams['o'] as string
@@ -26,7 +26,7 @@ const Order = async ({ searchParams }: { searchParams: SearchParams }) => {
     order ? (
       <OrderForm order={order} />
     ) : (
-      <EmptyList />
+      <EmptyOrderList />
     )
   )
 }

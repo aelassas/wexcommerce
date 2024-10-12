@@ -5,13 +5,6 @@ div.container {
   align-items: center;
 }
 
-.emptyList {
-  margin-top: 15px;
-  text-align: center;
-  width: 250px;
-  margin-left: calc(50% - 125px);
-}
-
 form.order {
   display: flex;
   flex-direction: column;

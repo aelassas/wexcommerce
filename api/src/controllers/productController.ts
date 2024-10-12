@@ -506,11 +506,11 @@ export const getBackendProducts = async (req: Request, res: Response) => {
     }
 
     let $sort: Record<string, 1 | -1 | Expression.Meta> = { createdAt: -1 } // featured
-    const { orderBy } = body
-    if (orderBy) {
-      if (orderBy === wexcommerceTypes.ProductOrderBy.priceAsc) {
+    const { sortBy } = body
+    if (sortBy) {
+      if (sortBy === wexcommerceTypes.SortProductBy.priceAsc) {
         $sort = { price: 1 }
-      } else if (orderBy === wexcommerceTypes.ProductOrderBy.priceDesc) {
+      } else if (sortBy === wexcommerceTypes.SortProductBy.priceDesc) {
         $sort = { price: -1 }
       }
     }
@@ -623,11 +623,11 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
     }
 
     let $sort: Record<string, 1 | -1 | Expression.Meta> = { createdAt: -1 } // featured
-    const { orderBy } = body
-    if (orderBy) {
-      if (orderBy === wexcommerceTypes.ProductOrderBy.priceAsc) {
+    const { sortBy } = body
+    if (sortBy) {
+      if (sortBy === wexcommerceTypes.SortProductBy.priceAsc) {
         $sort = { price: 1 }
-      } else if (orderBy === wexcommerceTypes.ProductOrderBy.priceDesc) {
+      } else if (sortBy === wexcommerceTypes.SortProductBy.priceDesc) {
         $sort = { price: -1 }
       }
     }

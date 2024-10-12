@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { Expression } from 'mongoose'
 import { Request, Response } from 'express'
 import escapeStringRegexp from 'escape-string-regexp'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -541,13 +541,20 @@ export const getOrders = async (req: Request, res: Response) => {
       }
     }
 
-    const { from, to }: wexcommerceTypes.GetOrdersPayload = req.body
+    const { from, to, sortBy }: wexcommerceTypes.GetOrdersPayload = req.body
 
     if (from) {
       $match.$and!.push({ createdAt: { $gt: new Date(from) } })
     }
     if (to) {
       $match.$and!.push({ createdAt: { $lt: new Date(to) } })
+    }
+
+    let $sort: Record<string, 1 | -1 | Expression.Meta> = { createdAt: -1 } // dateDesc default
+    if (sortBy) {
+      if (sortBy === wexcommerceTypes.SortOrderBy.dateAsc) {
+        $sort = { createdAt: 1 }
+      }
     }
 
     // page search (aggregate)
@@ -641,7 +648,7 @@ export const getOrders = async (req: Request, res: Response) => {
       {
         $facet: {
           resultData: [
-            { $sort: { createdAt: -1 } },
+            { $sort },
             { $skip: ((page - 1) * size) },
             { $limit: size },
           ],

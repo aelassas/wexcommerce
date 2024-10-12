@@ -34,14 +34,6 @@
   }
 }
 
-.empty {
-  text-align: center;
-  width: 250px;
-  margin-top: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
 div.main div.total {
   display: flex;
   flex-direction: column;

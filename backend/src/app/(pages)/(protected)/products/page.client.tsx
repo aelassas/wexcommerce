@@ -20,7 +20,6 @@ import {
   VisibilityOff as HiddenIcon
 } from '@mui/icons-material'
 import * as wexcommerceTypes from ':wexcommerce-types'
-import * as wexcommerceHelper from ':wexcommerce-helper'
 import * as CategoryService from '@/lib/CategoryService'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import env from '@/config/env.config'
@@ -30,6 +29,7 @@ import { strings as headerStrings } from '@/lang/header'
 import PagerComponent from '@/components/Pager'
 
 import styles from '@/styles/products-client.module.css'
+import RowCount from '@/components/RowCount'
 
 interface PagerProps {
   page: number
@@ -37,6 +37,7 @@ interface PagerProps {
   rowCount: number
   categoryId?: string
   keyword: string
+  sortBy: wexcommerceTypes.SortProductBy
   className?: string
 }
 
@@ -46,6 +47,7 @@ export const Pager: React.FC<PagerProps> = ({
   rowCount,
   categoryId,
   keyword,
+  sortBy,
   className,
 }) => {
   const router = useRouter()
@@ -57,8 +59,8 @@ export const Pager: React.FC<PagerProps> = ({
       rowCount={rowCount}
       totalRecords={totalRecords}
       className={className}
-      onPrevious={() => router.push(`/products?${`p=${page - 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}`)}
-      onNext={() => router.push(`/products?${`p=${page + 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}`)}
+      onPrevious={() => router.push(`/products?${`p=${page - 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`)}
+      onNext={() => router.push(`/products?${`p=${page + 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`)}
     />
   )
 }
@@ -91,7 +93,6 @@ interface ProductsWrapperProps {
   rowCount: number
   totalRecords: number
   page: number
-  pageSize: number
   children: React.ReactNode
 }
 
@@ -100,7 +101,6 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
     rowCount,
     totalRecords,
     page,
-    pageSize,
     children,
   }) => {
   const router = useRouter()
@@ -111,7 +111,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
   const [categories, setCategories] = useState<wexcommerceTypes.CategoryInfo[]>([])
   const [keyword, setKeyword] = useState('')
   const [categoryId, setCategoryId] = useState('')
-  const [orderBy, setOrderBy] = useState<wexcommerceTypes.ProductOrderBy>()
+  const [sortBy, setOrderBy] = useState<wexcommerceTypes.SortProductBy>()
 
   const leftPanelRef = useRef<HTMLDivElement>(null)
   const closeIconRef = useRef<SVGSVGElement>(null)
@@ -121,16 +121,16 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
     setKeyword(searchParams.get('s') || '')
     setCategoryId(searchParams.get('c') || '')
 
-    let _orderBy = wexcommerceTypes.ProductOrderBy.featured
+    let _sortBy = wexcommerceTypes.SortProductBy.featured
     const o = searchParams.get('o')
     if (o) {
-      if (o.toLowerCase() === wexcommerceTypes.ProductOrderBy.priceAsc.toLowerCase()) {
-        _orderBy = wexcommerceTypes.ProductOrderBy.priceAsc
-      } else if (o.toLowerCase() === wexcommerceTypes.ProductOrderBy.priceDesc.toLowerCase()) {
-        _orderBy = wexcommerceTypes.ProductOrderBy.priceDesc
+      if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
+        _sortBy = wexcommerceTypes.SortProductBy.priceAsc
+      } else if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceDesc.toLowerCase()) {
+        _sortBy = wexcommerceTypes.SortProductBy.priceDesc
       }
     }
-    setOrderBy(_orderBy)
+    setOrderBy(_sortBy)
   }, [searchParams])
 
   useEffect(() => {
@@ -263,22 +263,22 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
           {
             totalRecords > 0 && (
               <div className={styles.header}>
-                {
-                  // 1-24 of over 100,000 results
-                  <span className={styles.rowCount}>
-                    {`${(page - 1) * pageSize + 1}-${rowCount} ${strings.OF_OVER} ${wexcommerceHelper.formatNumber(totalRecords, language)} ${totalRecords === 1 ? strings.RESULT : strings.RESULTS}`}
-                  </span>
-                }
-                {orderBy &&
+                <RowCount
+                  page={page}
+                  rowCount={rowCount}
+                  totalRecords={totalRecords}
+                  pageSize={env.PAGE_SIZE}
+                />
+                {sortBy &&
                   <FormControl margin="dense" className={styles.sort}>
-                    <InputLabel>{strings.SORT_BY}</InputLabel>
+                    <InputLabel>{commonStrings.SORT_BY}</InputLabel>
                     <Select
                       variant="outlined"
                       size="small"
-                      label={strings.SORT_BY}
-                      value={orderBy}
+                      label={commonStrings.SORT_BY}
+                      value={sortBy}
                       onChange={(e) => {
-                        const _orderBy = e.target.value
+                        const _sortBy = e.target.value
 
                         let url = '/products'
 
@@ -289,14 +289,14 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
                           url += `?s=${keyword}`
                         }
 
-                        url += `${firstParamSet ? '&' : '?'}o=${_orderBy}`
+                        url += `${firstParamSet ? '&' : '?'}sb=${_sortBy}`
 
                         router.push(url)
                       }}
                     >
-                      <MenuItem value={wexcommerceTypes.ProductOrderBy.featured.toString()}>{strings.ORDER_BY_FEATURED}</MenuItem>
-                      <MenuItem value={wexcommerceTypes.ProductOrderBy.priceAsc.toString()}>{strings.ORDER_BY_PRICE_ASC}</MenuItem>
-                      <MenuItem value={wexcommerceTypes.ProductOrderBy.priceDesc.toString()}>{strings.ORDER_BY_PRICE_DESC}</MenuItem>
+                      <MenuItem value={wexcommerceTypes.SortProductBy.featured.toString()}>{strings.ORDER_BY_FEATURED}</MenuItem>
+                      <MenuItem value={wexcommerceTypes.SortProductBy.priceAsc.toString()}>{strings.ORDER_BY_PRICE_ASC}</MenuItem>
+                      <MenuItem value={wexcommerceTypes.SortProductBy.priceDesc.toString()}>{strings.ORDER_BY_PRICE_DESC}</MenuItem>
                     </Select>
                   </FormControl>}
               </div>

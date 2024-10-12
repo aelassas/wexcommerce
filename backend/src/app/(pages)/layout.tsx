@@ -30,7 +30,7 @@ import { strings as imageEditorStrings } from '@/lang/image-editor'
 import { strings as noMatchStrings } from '@/lang/no-match'
 import { strings as notificationListStrings } from '@/lang/notification-list'
 import { strings as orderDateFilterStrings } from '@/lang/order-date-filter'
-import { strings as orderListStrings } from '@/lang/order-list'
+import { strings as ordersStrings } from '@/lang/orders'
 import { strings as orderStatusStrings } from '@/lang/order-status'
 import { strings as productStrings } from '@/lang/product'
 import { strings as productsStrings } from '@/lang/products'
@@ -71,7 +71,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       helper.setLanguage(noMatchStrings, language)
       helper.setLanguage(notificationListStrings, language)
       helper.setLanguage(orderDateFilterStrings, language)
-      helper.setLanguage(orderListStrings, language)
+      helper.setLanguage(ordersStrings, language)
       helper.setLanguage(orderStatusStrings, language)
       helper.setLanguage(productStrings, language)
       helper.setLanguage(productsStrings, language)

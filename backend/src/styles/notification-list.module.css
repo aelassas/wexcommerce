@@ -14,13 +14,6 @@ div.notifications {
   margin-top: 0 !important;
 }
 
-.emptyList {
-  width: 100%;
-  max-width: 380px;
-  margin-top: 10px;
-  text-align: center;
-}
-
 div.notifications div.headerContainer {
   position: absolute;
   top: 0;

@@ -25,6 +25,10 @@ div.orders {
     max-width: 650px;
     width: 100%;
   }
+
+  .pager {
+    margin: 5px 10px 15px;
+  }
 }
 
 @media only screen and (width >=960px) {
@@ -52,4 +56,131 @@ div.orders {
   div.orders {
     margin-left: 15px;
   }
+}
+
+div.orders {
+  flex: 1;
+  height: fit-content;
+}
+
+div.orderList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+div.orderList article {
+  position: relative;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #333;
+  font-size: 12px;
+  padding: 25px;
+  margin-bottom: 15px;
+  width: calc(100% - 20px);
+  max-width: 650px;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+div.orderList article div.order {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+div.orderList article div.orderContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+div.orderList article div.orderContent div.orderInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 7px;
+}
+
+div.orderList article div.orderContent div.orderInfo span.orderLabel {
+  font-weight: bold;
+  margin-right: 15px;
+  min-width: 120px;
+}
+
+div.orderList article div.orderContent div.orderItems {
+  /* background-color: #fafafa;
+  border-top: #eaeaea 1px solid;
+  border-right: #eaeaea 1px solid;
+  border-left: #eaeaea 1px solid; */
+  flex: 1;
+}
+
+div.orderList article div.orderContent div.orderItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: #eaeaea 1px solid;
+  border-radius: 4px;
+  padding: 7px;
+  margin-bottom: 7px;
+}
+
+div.orderList article div.orderContent div.orderItem div.orderItemInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 7px;
+}
+
+div.orderList article div.orderContent div.orderItem span.image {
+  width: 150px;
+  height: 120px;
+}
+
+div.orderList article div.orderContent div.orderItem img.orderItemInfo {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+div.orderList article div.orderContent div.orderItem div.orderItemInfo span.orderItemLabel {
+  font-weight: bold;
+  margin-right: 10px;
+  min-width: 50px;
+}
+
+div.orderList article div.orderContent div.orderItem div.orderItemInfo .orderItemText {
+  overflow: hidden;
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+div.orderList article div.orderActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+}
+
+div.orders div.header {
+  background-color: #fff;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
 }

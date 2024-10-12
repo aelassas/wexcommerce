@@ -3,9 +3,6 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import {
-  Card,
-  CardContent,
-  Typography,
   Tooltip,
   IconButton
 } from '@mui/material'
@@ -18,15 +15,12 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/user-list'
 import env from '@/config/env.config'
 import PagerComponent from './Pager'
+import EmptyListComponent from './EmptyList'
 
 import styles from '@/styles/user-list.module.css'
 
 export const EmptyList: React.FC = () => (
-  <Card variant="outlined" className={styles.emptyList}>
-    <CardContent>
-      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-    </CardContent>
-  </Card>
+  <EmptyListComponent text={strings.EMPTY_LIST} marginTop />
 )
 
 interface PagerProps {

@@ -3,13 +3,10 @@
 import React, { useState } from 'react'
 import {
   Button,
-  Card,
-  CardContent,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Typography
 } from '@mui/material'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
@@ -17,17 +14,14 @@ import { strings } from '@/lang/wishlist'
 import { strings as commonStrings } from '@/lang/common'
 import * as helper from '@/common/helper'
 import * as WishlistService from '@/lib/WishlistService'
+import { useWishlistContext, WishlistContextType } from '@/context/WishlistContext'
 import ProductListItem from './ProductListItem'
+import EmptyList from './EmptyList'
 
 import styles from '@/styles/wishlist.module.css'
-import { useWishlistContext, WishlistContextType } from '@/context/WishlistContext'
 
 export const EmptyWishlist: React.FC = () => (
-  <Card variant="outlined" className={styles.empty}>
-    <CardContent>
-      <Typography color="textSecondary">{strings.EMPTY}</Typography>
-    </CardContent>
-  </Card>
+  <EmptyList text={strings.EMPTY} />
 )
 
 interface WishlistProps {

@@ -53,13 +53,25 @@ export const deleteOrder = async (userId: string, orderId: string): Promise<numb
  * @param {?number} [to]
  * @returns {Promise<wexcommerceTypes.Result<wexcommerceTypes.OrderInfo>>}
  */
-export const getOrders = async (userId: string, page: number, size: number, keyword: string, paymentTypes: wexcommerceTypes.PaymentType[], deliveryTypes: wexcommerceTypes.DeliveryType[], statuses: wexcommerceTypes.OrderStatus[], from?: number, to?: number): Promise<wexcommerceTypes.Result<wexcommerceTypes.OrderInfo>> => {
+export const getOrders = async (
+  userId: string,
+  page: number,
+  size: number,
+  keyword: string,
+  paymentTypes: wexcommerceTypes.PaymentType[],
+  deliveryTypes: wexcommerceTypes.DeliveryType[],
+  statuses: wexcommerceTypes.OrderStatus[],
+  sortBy: wexcommerceTypes.SortOrderBy = wexcommerceTypes.SortOrderBy.dateDesc,
+  from?: number,
+  to?: number,
+): Promise<wexcommerceTypes.Result<wexcommerceTypes.OrderInfo>> => {
   const data: wexcommerceTypes.GetOrdersPayload = {
     paymentTypes,
     deliveryTypes,
     statuses,
     from: from || null,
-    to: to || null
+    to: to || null,
+    sortBy,
   }
 
   return fetchInstance

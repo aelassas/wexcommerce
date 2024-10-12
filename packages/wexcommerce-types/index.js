@@ -34,9 +34,14 @@ export var SocialSignInType;
     SocialSignInType["Apple"] = "apple";
     SocialSignInType["Google"] = "google";
 })(SocialSignInType || (SocialSignInType = {}));
-export var ProductOrderBy;
-(function (ProductOrderBy) {
-    ProductOrderBy["featured"] = "featured";
-    ProductOrderBy["priceAsc"] = "priceAsc";
-    ProductOrderBy["priceDesc"] = "priceDesc";
-})(ProductOrderBy || (ProductOrderBy = {}));
+export var SortOrderBy;
+(function (SortOrderBy) {
+    SortOrderBy["dateAsc"] = "dateAsc";
+    SortOrderBy["dateDesc"] = "dateDesc";
+})(SortOrderBy || (SortOrderBy = {}));
+export var SortProductBy;
+(function (SortProductBy) {
+    SortProductBy["featured"] = "featured";
+    SortProductBy["priceAsc"] = "priceAsc";
+    SortProductBy["priceDesc"] = "priceDesc";
+})(SortProductBy || (SortProductBy = {}));

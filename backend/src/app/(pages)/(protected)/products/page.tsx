@@ -1,7 +1,5 @@
 'use server'
 
-import ProductsWrapper from './page.client'
-
 import Link from 'next/link'
 import Image from 'next/image'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -12,7 +10,7 @@ import * as UserService from '@/lib/UserService'
 import * as ProductService from '@/lib/ProductService'
 import { strings } from '@/lang/products'
 import EmptyList from '@/components/EmptyList'
-import { Pager, Tags } from './page.client'
+import ProductsWrapper, { Pager, Tags } from './page.client'
 
 import styles from '@/styles/products-server.module.css'
 
@@ -39,13 +37,13 @@ const Products = async ({ searchParams }: { searchParams: SearchParams }) => {
   let totalRecords = 0
   let noMatch = false
 
-  let orderBy = wexcommerceTypes.ProductOrderBy.featured
-  const o = searchParams['o'] as string
+  let sortBy = wexcommerceTypes.SortProductBy.featured
+  const o = searchParams['sb'] as string
   if (o) {
-    if (o.toLowerCase() === wexcommerceTypes.ProductOrderBy.priceAsc.toLowerCase()) {
-      orderBy = wexcommerceTypes.ProductOrderBy.priceAsc
-    } else if (o.toLowerCase() === wexcommerceTypes.ProductOrderBy.priceDesc.toLowerCase()) {
-      orderBy = wexcommerceTypes.ProductOrderBy.priceDesc
+    if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
+      sortBy = wexcommerceTypes.SortProductBy.priceAsc
+    } else if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceDesc.toLowerCase()) {
+      sortBy = wexcommerceTypes.SortProductBy.priceDesc
     }
   }
 
@@ -55,12 +53,13 @@ const Products = async ({ searchParams }: { searchParams: SearchParams }) => {
   try {
     if (userId && page >= 1) {
       try {
-        const data = await ProductService.getProducts(userId, keyword, page, env.PAGE_SIZE, categoryId, orderBy)
+        const data = await ProductService.getProducts(userId, keyword, page, env.PAGE_SIZE, categoryId, sortBy)
         const _data = data && data.length > 0 ? data[0] : { pageInfo: [{ totalRecords: 0 }], resultData: [] }
         if (!_data) {
           console.log('Products data empty')
           return
         }
+
         const _products = _data.resultData
         const _rowCount = ((page - 1) * env.PAGE_SIZE) + _products.length
         const _totalRecords = _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
@@ -86,7 +85,6 @@ const Products = async ({ searchParams }: { searchParams: SearchParams }) => {
       rowCount={rowCount}
       totalRecords={totalRecords}
       page={page}
-      pageSize={env.PAGE_SIZE}
     >
       <div className={styles.products}>
 
@@ -131,6 +129,7 @@ const Products = async ({ searchParams }: { searchParams: SearchParams }) => {
                 totalRecords={totalRecords}
                 categoryId={categoryId}
                 keyword={keyword}
+                sortBy={sortBy}
                 className={styles.pager}
               />
             )}

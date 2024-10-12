@@ -245,12 +245,18 @@ export interface UpdateOrderPayload {
   status: OrderStatus
 }
 
+export enum SortOrderBy {
+  dateAsc = 'dateAsc',
+  dateDesc = 'dateDesc',
+}
+
 export interface GetOrdersPayload {
   paymentTypes: PaymentType[]
   deliveryTypes: DeliveryType[]
   statuses: OrderStatus[]
   from: number | null
   to: number | null
+  sortBy?: SortOrderBy
 }
 
 export interface CreatePaymentPayload {
@@ -369,7 +375,7 @@ export interface GetProductPayload {
   wishlist?: string
 }
 
-export enum ProductOrderBy {
+export enum SortProductBy {
   featured = 'featured',
   priceAsc = 'priceAsc',
   priceDesc = 'priceDesc',
@@ -379,11 +385,11 @@ export interface GetProductsPayload {
   cart?: string
   wishlist?: string
   size?: number
-  orderBy?: ProductOrderBy
+  sortBy?: SortProductBy
 }
 
 export interface GetBackendProductsPayload {
-  orderBy?: ProductOrderBy
+  sortBy?: SortProductBy
 }
 
 export interface FeaturedCategory {

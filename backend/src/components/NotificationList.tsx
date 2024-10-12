@@ -4,8 +4,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Button,
-  Card,
-  CardContent,
   Checkbox,
   Dialog,
   DialogActions,
@@ -13,7 +11,6 @@ import {
   DialogTitle,
   IconButton,
   Tooltip,
-  Typography
 } from '@mui/material'
 import {
   Drafts as MarkReadIcon,
@@ -34,17 +31,13 @@ import { strings as commonStrings } from '@/lang/common'
 import * as NotificationService from '@/lib/NotificationService'
 import * as helper from '@/common/helper'
 import Pager from './Pager'
+import EmptyListComponent from './EmptyList'
 
 import styles from '@/styles/notification-list.module.css'
 
 export const EmptyList: React.FC = () => (
-  <Card variant="outlined" className={styles.emptyList}>
-    <CardContent>
-      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-    </CardContent>
-  </Card>
+  <EmptyListComponent text={strings.EMPTY_LIST} marginTop />
 )
-
 interface NotificationListProps {
   page: number
   rowCount: number

@@ -26,13 +26,13 @@ const Search = async ({ searchParams }: { searchParams: SearchParams }) => {
     page = 1
   }
 
-  let orderBy = wexcommerceTypes.ProductOrderBy.featured
-  const o = searchParams['o'] as string
+  let sortBy = wexcommerceTypes.SortProductBy.featured
+  const o = searchParams['sb'] as string
   if (o) {
-    if (o.toLowerCase() === wexcommerceTypes.ProductOrderBy.priceAsc.toLowerCase()) {
-      orderBy = wexcommerceTypes.ProductOrderBy.priceAsc
-    } else if (o.toLowerCase() === wexcommerceTypes.ProductOrderBy.priceDesc.toLowerCase()) {
-      orderBy = wexcommerceTypes.ProductOrderBy.priceDesc
+    if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
+      sortBy = wexcommerceTypes.SortProductBy.priceAsc
+    } else if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceDesc.toLowerCase()) {
+      sortBy = wexcommerceTypes.SortProductBy.priceDesc
     }
   }
 
@@ -50,7 +50,7 @@ const Search = async ({ searchParams }: { searchParams: SearchParams }) => {
   try {
     if (page >= 1) {
       try {
-        const data = await ProductService.getProducts(keyword, page, env.PAGE_SIZE, categoryId, cartId, wishlistId, orderBy)
+        const data = await ProductService.getProducts(keyword, page, env.PAGE_SIZE, categoryId, cartId, wishlistId, sortBy)
         const _data = data && data.length > 0 ? data[0] : { pageInfo: [{ totalRecords: 0 }], resultData: [] }
         if (!_data) {
           console.log('Users data empty')
@@ -85,7 +85,6 @@ const Search = async ({ searchParams }: { searchParams: SearchParams }) => {
       rowCount={rowCount}
       totalRecords={totalRecords}
       page={page}
-      pageSize={env.PAGE_SIZE}
     >
       <div className={styles.products}>
 
@@ -111,7 +110,7 @@ const Search = async ({ searchParams }: { searchParams: SearchParams }) => {
                 totalRecords={totalRecords}
                 categoryId={categoryId}
                 keyword={keyword}
-                orderBy={orderBy}
+                sortBy={sortBy}
                 className={styles.pager}
               />
             )}

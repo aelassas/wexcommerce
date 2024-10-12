@@ -93,12 +93,6 @@ div.products div.header {
   border-radius: 5px;
 }
 
-div.products div.header span.rowCount {
-  margin-left: 15px;
-  color: #75757a;
-  font-size: .875rem;
-}
-
 div.leftPanel {
   background-color: #fff;
   border-radius: 5px;
