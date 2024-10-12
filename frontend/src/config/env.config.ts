@@ -10,17 +10,6 @@ const env = {
   APP_TYPE: 'frontend',
   SERVER_API_HOST: process.env.NEXT_PUBLIC_WC_SERVER_API_HOST,
   CLIENT_API_HOST: process.env.NEXT_PUBLIC_WC_CLIENT_API_HOST,
-  LANGUAGES: ['fr', 'en'],
-  _LANGUAGES: [
-    {
-      code: 'fr',
-      label: 'Français'
-    },
-    {
-      code: 'en',
-      label: 'English'
-    }
-  ],
   DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_WC_DEFAULT_LANGUAGE || 'en',
   PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_PAGE_SIZE || '30'),
   ORDERS_PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_ORDERS_PAGE_SIZE || '4', 10),

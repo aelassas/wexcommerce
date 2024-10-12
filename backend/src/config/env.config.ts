@@ -1,5 +1,20 @@
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 
+//
+// ISO 639-1 language codes and their labels
+// https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+//
+const LANGUAGES = [
+  {
+    code: 'en',
+    label: 'English'
+  },
+  {
+    code: 'fr',
+    label: 'Français'
+  },
+]
+
 const env = {
   isMobile: () => window.innerWidth <= 960,
   isTablet: () => window.innerWidth >= 500 && window.innerWidth <= 960,
@@ -9,17 +24,7 @@ const env = {
   APP_TYPE: 'backend',
   SERVER_API_HOST: process.env.NEXT_PUBLIC_WC_SERVER_API_HOST,
   CLIENT_API_HOST: process.env.NEXT_PUBLIC_WC_CLIENT_API_HOST,
-  LANGUAGES: ['en', 'fr'],
-  _LANGUAGES: [
-    {
-      code: 'en',
-      label: 'English'
-    },
-    {
-      code: 'fr',
-      label: 'Français'
-    },
-  ],
+  LANGUAGES,
   DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_WC_DEFAULT_LANGUAGE || 'en',
   PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_PAGE_SIZE || '30', 10),
   ORDERS_PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_ORDERS_PAGE_SIZE || '4', 10),

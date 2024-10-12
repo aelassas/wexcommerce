@@ -38,7 +38,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
 
   useEffect(() => {
     if (category) {
-      env._LANGUAGES.forEach((lang) => {
+      env.LANGUAGES.forEach((lang) => {
         if (!category.values!.some(value => value.language === lang.code)) {
           category.values!.push({ language: lang.code, value: '' })
         }
@@ -151,7 +151,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
         {
           category.values!.map((value, index) => (
             <FormControl key={index} fullWidth margin="dense">
-              <InputLabel className='required'>{env._LANGUAGES.filter(l => l.code === value.language)[0].label}</InputLabel>
+              <InputLabel className='required'>{env.LANGUAGES.filter(l => l.code === value.language)[0].label}</InputLabel>
               <Input
                 type="text"
                 value={(values[index] && values[index].value) || ''}

@@ -92,7 +92,7 @@ const CreateCategory: React.FC = () => {
           onMainImageUpsert={(img) => setImage(img)}
         />
         {
-          env._LANGUAGES.map((language, index) => (
+          env.LANGUAGES.map((language, index) => (
             <FormControl key={index} fullWidth margin="dense">
               <InputLabel className='required'>{language.label}</InputLabel>
               <Input

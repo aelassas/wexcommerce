@@ -336,7 +336,7 @@ const Settings: React.FC = () => {
               }}
             >
               {
-                env._LANGUAGES.map((lang) => (
+                env.LANGUAGES.map((lang) => (
                   <MenuItem key={lang.code} value={lang.code} >{lang.label}</MenuItem>
                 ))
               }
