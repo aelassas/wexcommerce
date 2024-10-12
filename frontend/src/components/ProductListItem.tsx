@@ -215,6 +215,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                             style={{ backgroundColor: '#fff', color: '#121212', marginRight: 15 }}
                             onClick={() => {
                               router.push('/cart')
+                              router.refresh()
                             }}
                           >
                             {commonStrings.VIEW_CART}
