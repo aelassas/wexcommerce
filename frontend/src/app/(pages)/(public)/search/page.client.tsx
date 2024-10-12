@@ -3,26 +3,86 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import {
+  Card,
+  CardContent,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography
+} from '@mui/material'
 import {
   ShoppingBag as CategoryIcon,
   Home as HomeIcon,
   Clear as CloseIcon,
 } from '@mui/icons-material'
 import * as wexcommerceTypes from ':wexcommerce-types'
+import * as wexcommerceHelper from ':wexcommerce-helper'
 import * as CategoryService from '@/lib/CategoryService'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import env from '@/config/env.config'
 import { strings } from '@/lang/search'
 import { strings as headerStrings } from '@/lang/header'
+import PagerComponent from '@/components/Pager'
 
-import styles from '@/styles/search.module.css'
+import styles from '@/styles/search-client.module.css'
+
+export const EmptyList: React.FC = () => (
+  <Card variant="outlined" className={styles.emptyList}>
+    <CardContent>
+      <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
+    </CardContent>
+  </Card>
+)
+
+interface PagerProps {
+  page: number
+  totalRecords: number
+  rowCount: number
+  categoryId?: string
+  keyword: string
+  orderBy?: wexcommerceTypes.ProductOrderBy
+}
+
+export const Pager: React.FC<PagerProps> = ({
+  page,
+  totalRecords,
+  rowCount,
+  categoryId,
+  keyword,
+  orderBy,
+}) => {
+  const router = useRouter()
+
+  return (
+    <PagerComponent
+      page={page}
+      pageSize={env.PAGE_SIZE}
+      rowCount={rowCount}
+      totalRecords={totalRecords}
+      onPrevious={() => router.push(`/search?${`p=${page - 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(orderBy && `&o=${orderBy}`) || ''}`)}
+      onNext={() => router.push(`/search?${`p=${page + 1}`}${(categoryId && `&c=${categoryId}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(orderBy && `&o=${orderBy}`) || ''}`)}
+    />
+  )
+}
 
 interface ProductsWrapperProps {
+  rowCount: number
+  totalRecords: number
+  page: number
+  pageSize: number
   children: React.ReactNode
 }
 
-const ProductsWrapper: React.FC<ProductsWrapperProps> = ({ children }) => {
+const ProductsWrapper: React.FC<ProductsWrapperProps> = (
+  {
+    rowCount,
+    totalRecords,
+    page,
+    pageSize,
+    children,
+  }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -140,38 +200,46 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = ({ children }) => {
           className={styles.products}
           ref={productsRef}
         >
-          <div className={styles.header}>
-            {orderBy &&
-              <FormControl margin="dense" className={styles.sort}>
-                <InputLabel>{strings.SORT_BY}</InputLabel>
-                <Select
-                  variant="outlined"
-                  size="small"
-                  label={strings.SORT_BY}
-                  value={orderBy}
-                  onChange={(e) => {
-                    const _orderBy = e.target.value
+          {totalRecords > 0 && (
+            <div className={styles.header}>
+              {
+                // 1-24 of over 100,000 results
+                <span className={styles.rowCount}>
+                  {`${(page - 1) * pageSize + 1}-${rowCount} ${strings.OF_OVER} ${wexcommerceHelper.formatNumber(totalRecords, language)} ${totalRecords === 1 ? strings.RESULT : strings.RESULTS}`}
+                </span>
+              }
+              {orderBy &&
+                <FormControl margin="dense" className={styles.sort}>
+                  <InputLabel>{strings.SORT_BY}</InputLabel>
+                  <Select
+                    variant="outlined"
+                    size="small"
+                    label={strings.SORT_BY}
+                    value={orderBy}
+                    onChange={(e) => {
+                      const _orderBy = e.target.value
 
-                    let url = '/search'
+                      let url = '/search'
 
-                    const firstParamSet = categoryId || keyword
-                    if (categoryId) {
-                      url += `?c=${categoryId}`
-                    } else if (keyword) {
-                      url += `?s=${keyword}`
-                    }
+                      const firstParamSet = categoryId || keyword
+                      if (categoryId) {
+                        url += `?c=${categoryId}`
+                      } else if (keyword) {
+                        url += `?s=${keyword}`
+                      }
 
-                    url += `${firstParamSet ? '&' : '?'}o=${_orderBy}`
+                      url += `${firstParamSet ? '&' : '?'}o=${_orderBy}`
 
-                    router.push(url)
-                  }}
-                >
-                  <MenuItem value={wexcommerceTypes.ProductOrderBy.featured.toString()}>{strings.ORDER_BY_FEATURED}</MenuItem>
-                  <MenuItem value={wexcommerceTypes.ProductOrderBy.priceAsc.toString()}>{strings.ORDER_BY_PRICE_ASC}</MenuItem>
-                  <MenuItem value={wexcommerceTypes.ProductOrderBy.priceDesc.toString()}>{strings.ORDER_BY_PRICE_DESC}</MenuItem>
-                </Select>
-              </FormControl>}
-          </div>
+                      router.push(url)
+                    }}
+                  >
+                    <MenuItem value={wexcommerceTypes.ProductOrderBy.featured.toString()}>{strings.ORDER_BY_FEATURED}</MenuItem>
+                    <MenuItem value={wexcommerceTypes.ProductOrderBy.priceAsc.toString()}>{strings.ORDER_BY_PRICE_ASC}</MenuItem>
+                    <MenuItem value={wexcommerceTypes.ProductOrderBy.priceDesc.toString()}>{strings.ORDER_BY_PRICE_DESC}</MenuItem>
+                  </Select>
+                </FormControl>}
+            </div>
+          )}
           {children}
         </div>
       </div>

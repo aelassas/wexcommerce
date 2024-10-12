@@ -8,6 +8,9 @@ export const strings = new LocalizedStrings({
     ORDER_BY_FEATURED: 'Mis en avant',
     ORDER_BY_PRICE_ASC: 'Prix croissant',
     ORDER_BY_PRICE_DESC: 'Prix décroissant',
+    OF_OVER: 'sur plus de',
+    RESULT: 'résultat',
+    RESULTS: 'résultats',
   },
   en: {
     EMPTY_LIST: 'No products',
@@ -16,5 +19,8 @@ export const strings = new LocalizedStrings({
     ORDER_BY_FEATURED: 'Featured',
     ORDER_BY_PRICE_ASC: 'Price: Low to High',
     ORDER_BY_PRICE_DESC: 'Price: High to Low',
+    OF_OVER: 'of over',
+    RESULT: 'result',
+    RESULTS: 'results',
   }
 })

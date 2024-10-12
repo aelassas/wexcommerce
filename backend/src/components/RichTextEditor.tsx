@@ -1,7 +1,6 @@
 'use client'
 
 import React, { ComponentType, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { EditorProps } from 'react-draft-wysiwyg'
 import { EditorState, convertToRaw, ContentState } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
@@ -11,7 +10,7 @@ let htmlToDraft = null
 let Editor: ComponentType<EditorProps> | null = null
 if (typeof window === 'object') {
   htmlToDraft = require('html-to-draftjs').default
-  Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), { ssr: false })
+  Editor = require('react-draft-wysiwyg').Editor
 }
 
 interface RichTextEditorProps {

@@ -15,9 +15,3 @@ div.productList {
   display: flex;
   flex-wrap: wrap;
 }
-
-.emptyList {
-  text-align: center;
-  width: 250px;
-  margin-left: calc(50% - 125px);
-}
