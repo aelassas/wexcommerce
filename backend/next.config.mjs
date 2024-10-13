@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  poweredByHeader: false,
   images: {
     //
     // Add your backend domain here
