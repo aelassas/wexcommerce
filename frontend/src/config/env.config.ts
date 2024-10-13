@@ -22,6 +22,7 @@ const env = {
   FEATURED_PRODUCTS_SIZE: 10,
   GOOGLE_ANALYTICS_ENABLED: (process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED && process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED.toLowerCase()) === 'true',
   GOOGLE_ANALYTICS_ID: String(process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ID),
+  CARROUSEL_SIZE: 3,
 }
 
 export const CookieOptions: Partial<ResponseCookie> = {

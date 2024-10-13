@@ -21,7 +21,7 @@ import EmptyList from './EmptyList'
 import styles from '@/styles/wishlist.module.css'
 
 export const EmptyWishlist: React.FC = () => (
-  <EmptyList text={strings.EMPTY} />
+  <EmptyList text={strings.EMPTY} marginTop />
 )
 
 interface WishlistProps {

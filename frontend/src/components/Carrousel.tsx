@@ -4,6 +4,7 @@ import React, { useRef } from 'react'
 import ReactSlick from 'react-slick'
 import Link from 'next/link'
 import Image from 'next/image'
+import env from '@/config/env.config'
 import Slick from './Slick'
 
 import styles from '@/styles/carrousel.module.css'
@@ -26,6 +27,8 @@ const Carrousel: React.FC<CarrouselProps> = ({
 
   const slider = useRef<ReactSlick>(null)
 
+  const infinite = images.length > env.CARROUSEL_SIZE
+
   const sliderSettings = {
     arrows: false,
     dots: true,
@@ -40,7 +43,7 @@ const Carrousel: React.FC<CarrouselProps> = ({
       </div>
     ) : <></>,
 
-    infinite: true,
+    infinite,
     autoplay: !!autoplay,
     speed: 500,
     autoplaySpeed: autoplaySpeed || (3 * 1000),

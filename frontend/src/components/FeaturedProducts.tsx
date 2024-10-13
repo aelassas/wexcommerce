@@ -4,6 +4,7 @@ import React, { useRef } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import Slick from './Slick'
 import ReactSlick from 'react-slick'
+import env from '@/config/env.config'
 import ProductListItem from './ProductListItem'
 
 import styles from '@/styles/featured-products.module.css'
@@ -29,8 +30,10 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
 
   const slider = useRef<ReactSlick>(null)
 
+  const infinite = products.length > env.CARROUSEL_SIZE
+
   const sliderSettings = {
-    arrows: true,
+    arrows: infinite,
     dots: true,
     // eslint-disable-next-line react/no-unstable-nested-components
     appendDots: (dots: React.ReactNode) => showNavigation ? (
@@ -43,13 +46,13 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
       </div>
     ) : <></>,
 
-    infinite: true,
+    infinite,
     autoplay: !!autoplay,
     speed: 500,
     autoplaySpeed: autoplaySpeed || (3 * 1000),
     swipeToSlide: true,
 
-    slidesToShow: 3,
+    slidesToShow: products.length === 1 ? 1 : env.CARROUSEL_SIZE,
     slidesToScroll: 1,
     variableWidth: false,
     responsive: [
@@ -65,9 +68,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
     ]
   }
 
-  if (products.length < 4) {
-    return null
-  }
+  // if (products.length < 4) {
+  //   return null
+  // }
 
   return products.length > 0 && (
     <section className={styles.main}>
@@ -84,8 +87,8 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
             />
           ))
         }
-      </Slick >
-    </section >
+      </Slick>
+    </section>
   )
 }
 

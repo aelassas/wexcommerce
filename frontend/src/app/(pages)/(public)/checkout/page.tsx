@@ -322,7 +322,7 @@ const Checkout: React.FC = () => {
                       size='small'
                       className='btn-primary'
                       onClick={() => {
-                        router.replace('/sign-in?from=checkout')
+                        router.push('/sign-in?from=checkout')
                       }}
                     >{headerStrings.SIGN_IN}</Button>
                   </div>

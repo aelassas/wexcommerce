@@ -90,12 +90,20 @@ const SignIn: React.FC = () => {
       const res = await UserService.signin(data)
 
       if (res.status === 200) {
-        const o = searchParams.get('o')
-        if (o) {
-          router.push(`/orders?o=${o}`)
+        const fromCheckout = searchParams.has('from') && searchParams.get('from') === 'checkout'
+        if (fromCheckout) {
+          router.push(`/checkout`)
         } else {
-          router.push('/')
+          const o = searchParams.get('o')
+          if (o) {
+            router.push(`/orders?o=${o}`)
+          } else {
+            router.push('/')
+          }
         }
+
+
+
       } else {
         setError(true)
       }

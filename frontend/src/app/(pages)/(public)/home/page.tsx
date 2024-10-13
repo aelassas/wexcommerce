@@ -40,7 +40,7 @@ const Home = async () => {
     const language = await SettingService.getLanguage()
     categories = await CategoryService.getCategories(language, true)
 
-    categoryGroups = await CategoryService.getFeaturedCategories(language, env.FEATURED_PRODUCTS_SIZE, cartId)
+    categoryGroups = await CategoryService.getFeaturedCategories(language, env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId)
 
     for (const categoryGroup of categoryGroups) {
       for (const product of categoryGroup.products) {

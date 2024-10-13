@@ -25,9 +25,9 @@ export const getCategories = async (language: string, imageRequired: boolean): P
  * @param {string} cartId
  * @returns {Promise<wexcommerceTypes.CategoryInfo[]>}
  */
-export const getFeaturedCategories = async (language: string, size: number, cartId: string): Promise<wexcommerceTypes.FeaturedCategory[]> => (
+export const getFeaturedCategories = async (language: string, size: number, cartId: string, wishlistId: string): Promise<wexcommerceTypes.FeaturedCategory[]> => (
   fetchInstance.GET(
-    `/api/featured-categories/${language}/${size}?c=${cartId}`
+    `/api/featured-categories/${language}/${size}?c=${cartId}&w=${wishlistId}`
   )
     .then((res) => res.data)
 )

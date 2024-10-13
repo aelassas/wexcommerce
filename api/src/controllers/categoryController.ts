@@ -13,6 +13,7 @@ import Category from '../models/Category'
 import Value from '../models/Value'
 import Product from '../models/Product'
 import Cart from '../models/Cart'
+import Wishlist from '../models/Wishlist'
 
 /**
  * Validate category name by language.
@@ -304,6 +305,7 @@ export const getFeaturedCategories = async (req: Request, res: Response) => {
   try {
     const { language, size: _size } = req.params
     const cartId = String(req.query.c || '')
+    const wishlistId = String(req.query.w || '')
     const size = Number.parseInt(_size, 10)
 
     let cartProducts: mongoose.Types.ObjectId[] = []
@@ -318,6 +320,17 @@ export const getFeaturedCategories = async (req: Request, res: Response) => {
       }
     }
 
+    let wishlistProducts: mongoose.Types.ObjectId[] = []
+    if (wishlistId) {
+      const _wishlist = await Wishlist
+        .findById(wishlistId)
+        .lean()
+
+      if (_wishlist) {
+        wishlistProducts = _wishlist.products
+      }
+    }
+
     const data = await Product.aggregate([
       {
         $match: { soldOut: false, hidden: false, quantity: { $gt: 0 } },
@@ -329,6 +342,9 @@ export const getFeaturedCategories = async (req: Request, res: Response) => {
         $addFields: {
           inCart: {
             $cond: [{ $in: ['$_id', cartProducts] }, 1, 0],
+          },
+          inWishlist: {
+            $cond: [{ $in: ['$_id', wishlistProducts] }, 1, 0],
           },
         },
       },
@@ -373,7 +389,7 @@ export const getFeaturedCategories = async (req: Request, res: Response) => {
       //
       { $unwind: { path: '$category', preserveNullAndEmptyArrays: false } },
       //
-      // Skip categories and description fields
+      // Remove categories and description fields
       //
       {
         $project: {

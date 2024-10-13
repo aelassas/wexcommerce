@@ -30,8 +30,10 @@ const CategoryList: React.FC<CategoryListProps> = (
 
   const slider = useRef<ReactSlick>(null)
 
+  const infinite = categories.length > env.CARROUSEL_SIZE
+
   const sliderSettings = {
-    arrows: true,
+    arrows: infinite,
     dots: true,
     appendDots: (dots: React.ReactNode) => showNavigation ? (
       <div>
@@ -43,7 +45,7 @@ const CategoryList: React.FC<CategoryListProps> = (
       </div>
     ) : <></>,
 
-    infinite: true,
+    infinite,
     autoplay: !!autoplay,
     speed: 500,
     autoplaySpeed: autoplaySpeed || (3 * 1000),
@@ -69,7 +71,7 @@ const CategoryList: React.FC<CategoryListProps> = (
     e.preventDefault()
   }
 
-  return categories.length >= 4 && (
+  return categories.length >= env.CARROUSEL_SIZE && (
     <section className={styles.main}>
       {title && <h1 className={styles.title}>{title}</h1>}
       <Slick ref={slider} className={styles.slider} {...sliderSettings}>
