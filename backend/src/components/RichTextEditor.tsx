@@ -33,14 +33,17 @@ const RichTextEditor: React.FC<RichTextEditorProps> = (
   useEffect(() => {
     const contentBlock = htmlToDraft(valueFromProps)
     const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks)
-    const _editorState = EditorState.createWithContent(contentState)
+    let _editorState = EditorState.createWithContent(contentState)
+    _editorState = EditorState.moveFocusToEnd(_editorState)
     setEditorState(_editorState)
   }, [valueFromProps])
 
   const handleEditorStateChange = (state: EditorState) => {
-    setEditorState(state)
     const content = draftToHtml(convertToRaw(state.getCurrentContent()))
     const value = wexcommerceHelper.trimCarriageReturn(content).trim() === '<p></p>' ? '' : content
+
+    setEditorState(state)
+
     if (onChange) {
       onChange(value)
     }
@@ -58,6 +61,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = (
         locale: language
       }}
       stripPastedStyles
+      textAlignment="left"
     />
   )
 }
