@@ -122,6 +122,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch }) => {
     const keyword = e.currentTarget.value
 
     if (e.key === 'Enter') {
+      setShowMobileSearch(false)
       search(keyword)
     } else {
       setSearchKeyword(keyword)
@@ -382,7 +383,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch }) => {
                   />
                 </div>
                 {
-                  searchKeyword && // showMobileSearch &&
+                  searchKeyword && (!env.isMobile() || (env.isMobile() && showMobileSearch)) &&
                   <div className={styles.clearIcon}
                     onClick={() => {
                       setSearchKeyword('')

@@ -402,7 +402,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
                   />
                 </div>
                 {
-                  searchKeyword && // showMobileSearch &&
+                  searchKeyword && (!env.isMobile() || (env.isMobile() && showMobileSearch)) &&
                   <div className={styles.clearIcon}
                     onClick={() => {
                       setSearchKeyword('')

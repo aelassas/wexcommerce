@@ -120,6 +120,18 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
     fetchCategories()
   }, [language])
 
+  const handleCategoryClick = () => {
+    if (env.isMobile() && leftPanelRef.current) {
+      leftPanelRef.current.style.display = 'none'
+      if (productsRef.current) {
+        productsRef.current.style.display = 'block'
+      }
+      if (closeIconRef.current) {
+        closeIconRef.current.style.visibility = 'hidden'
+      }
+    }
+  }
+
   return (
     <>
       {
@@ -167,7 +179,11 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
         >
           <ul className={styles.categories}>
             <li>
-              <Link href='/search' className={!categoryId ? styles.selected : ''}>
+              <Link
+                href='/search'
+                className={!categoryId ? styles.selected : ''}
+                onClick={handleCategoryClick}
+              >
 
                 <HomeIcon className={styles.categoryIcon} />
                 <span>{strings.ALL}</span>
@@ -180,11 +196,11 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
                   <Link
                     href={`/search?c=${category._id}`}
                     className={categoryId === category._id ? styles.selected : ''}
-                    title={category.name}>
-
+                    title={category.name}
+                    onClick={handleCategoryClick}
+                  >
                     <CategoryIcon className={styles.categoryIcon} />
                     <span>{category.name}</span>
-
                   </Link>
                 </li>
               ))
