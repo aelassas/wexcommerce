@@ -5,7 +5,7 @@
 
 @media only screen and (width>=480px) {
   .Toastify__toast-container {
-    width: 360px !important;
+    width: 340px !important;
   }
 }
 
@@ -15,6 +15,10 @@
 
 .Toastify__toast-body>div:last-child {
   text-align: center !important;
+}
+
+.toastButton:hover {
+  opacity: .87;
 }
 
 html,

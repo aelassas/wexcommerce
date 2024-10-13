@@ -5,7 +5,7 @@
 
 @media only screen and (width>=480px) {
   .Toastify__toast-container {
-    width: 360px !important;
+    width: 340px !important;
   }
 }
 

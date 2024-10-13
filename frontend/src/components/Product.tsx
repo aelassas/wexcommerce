@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import {
   Button,
@@ -36,6 +37,8 @@ interface ProductProps {
 }
 
 const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
+  const router = useRouter()
+
   const { language } = useLanguageContext() as LanguageContextType
   const { currency } = useCurrencyContext() as CurrencyContextType
   const { user } = useUserContext() as UserContextType
@@ -159,7 +162,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                             }
 
                             setOpenDeleteDialog(false)
-                            // helper.info(commonStrings.ARTICLE_REMOVED)
+                            helper.info(commonStrings.ARTICLE_REMOVED)
                           } else {
                             helper.error()
                           }
@@ -191,7 +194,26 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                             product.inCart = true
                             setProduct(product)
                             setCartItemCount(cartItemCount + 1)
-                            // helper.info(commonStrings.ARTICLE_ADDED)
+
+                            helper.infoWithComponent(
+                              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <span style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                  {commonStrings.ARTICLE_ADDED}
+                                </span>
+                                <Button
+                                  variant="contained"
+                                  size="small"
+                                  style={{ backgroundColor: '#fff', color: '#121212', marginRight: 15 }}
+                                  className="toastButton"
+                                  onClick={() => {
+                                    router.push('/cart')
+                                    router.refresh()
+                                  }}
+                                >
+                                  {commonStrings.VIEW_CART}
+                                </Button>
+                              </div>
+                            )
                           } else {
                             helper.error()
                           }
@@ -222,6 +244,8 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                               product.inWishlist = false
                               setProduct(product)
                               setWishlistCount(wishlistCount - 1)
+
+                              helper.info(commonStrings.ARTICLE_REMOVED_FROM_WISH_LIST)
                             } else {
                               helper.error()
                             }
@@ -252,6 +276,26 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                               product.inWishlist = true
                               setProduct(product)
                               setWishlistCount(wishlistCount + 1)
+
+                              helper.infoWithComponent(
+                                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                  <span style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                    {commonStrings.ARTICLE_ADDED_TO_WISH_LIST}
+                                  </span>
+                                  <Button
+                                    variant="contained"
+                                    size="small"
+                                    style={{ backgroundColor: '#fff', color: '#121212', marginRight: 15 }}
+                                    className="toastButton"
+                                    onClick={() => {
+                                      router.push('/wishlist')
+                                      router.refresh()
+                                    }}
+                                  >
+                                    {commonStrings.VIEW}
+                                  </Button>
+                                </div>
+                              )
                             } else {
                               helper.error()
                             }

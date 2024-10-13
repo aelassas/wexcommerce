@@ -110,6 +110,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                       if (onRemoveWishlistItem) {
                         onRemoveWishlistItem(product._id)
                       }
+
                       helper.info(commonStrings.ARTICLE_REMOVED_FROM_WISH_LIST)
                     } else {
                       helper.error()
@@ -139,7 +140,26 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                       }
                       setInWishlist(true)
                       setWishlistCount(wishlistCount + 1)
-                      helper.info(commonStrings.ARTICLE_ADDED_TO_WISH_LIST)
+
+                      helper.infoWithComponent(
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                          <span style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                            {commonStrings.ARTICLE_ADDED_TO_WISH_LIST}
+                          </span>
+                          <Button
+                            variant="contained"
+                            size="small"
+                            style={{ backgroundColor: '#fff', color: '#121212', marginRight: 15 }}
+                            className="toastButton"
+                            onClick={() => {
+                              router.push('/wishlist')
+                              router.refresh()
+                            }}
+                          >
+                            {commonStrings.VIEW}
+                          </Button>
+                        </div>
+                      )
                     } else {
                       helper.error()
                     }
@@ -213,6 +233,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                             variant="contained"
                             size="small"
                             style={{ backgroundColor: '#fff', color: '#121212', marginRight: 15 }}
+                            className="toastButton"
                             onClick={() => {
                               router.push('/cart')
                               router.refresh()

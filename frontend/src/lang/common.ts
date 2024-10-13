@@ -50,8 +50,8 @@ export const strings = new LocalizedStrings({
     REMOVE_FROM_CART: 'Retirer du panier',
     REMOVE_FROM_CART_CONFIRM: 'Êtes-vous sûr de vouloir retirer cet article du panier ?',
     PRICE: 'Prix',
-    ARTICLE_ADDED: 'Article ajouté au panier.',
-    ARTICLE_REMOVED: 'Article retiré du panier.',
+    ARTICLE_ADDED: 'Article ajouté au panier',
+    ARTICLE_REMOVED: 'Article retiré du panier',
     ARTICLES_IN_STOCK: 'articles en stock',
     ARTICLE_IN_STOCK: 'article en stock',
     SUBTOTAL: 'Sous-total',
@@ -70,6 +70,7 @@ export const strings = new LocalizedStrings({
     OF_OVER: 'sur plus de',
     RESULT: 'résultat',
     RESULTS: 'résultats',
+    VIEW: 'Consulter',
   },
   en: {
     GENERIC_ERROR: 'An unhandled error occurred.',
@@ -120,8 +121,8 @@ export const strings = new LocalizedStrings({
     REMOVE_FROM_CART: 'Remove from cart',
     REMOVE_FROM_CART_CONFIRM: 'Are you sure you want to remove this article from cart?',
     PRICE: 'Price',
-    ARTICLE_ADDED: 'Item added to cart.',
-    ARTICLE_REMOVED: 'Item removed from cart.',
+    ARTICLE_ADDED: 'Item added to cart',
+    ARTICLE_REMOVED: 'Item removed from cart',
     ARTICLES_IN_STOCK: 'articles in stock',
     ARTICLE_IN_STOCK: 'article in stock',
     SUBTOTAL: 'Subtotal',
@@ -140,5 +141,6 @@ export const strings = new LocalizedStrings({
     OF_OVER: 'of over',
     RESULT: 'result',
     RESULTS: 'results',
+    VIEW: 'View',
   }
 })
