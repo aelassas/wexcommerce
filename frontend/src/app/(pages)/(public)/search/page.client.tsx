@@ -87,7 +87,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
   const [categories, setCategories] = useState<wexcommerceTypes.CategoryInfo[]>([])
   const [keyword, setKeyword] = useState('')
   const [categoryId, setCategoryId] = useState('')
-  const [sortBy, setOrderBy] = useState<wexcommerceTypes.SortProductBy>()
+  const [sortBy, setSortBy] = useState<wexcommerceTypes.SortProductBy>()
 
   const leftPanelRef = useRef<HTMLDivElement>(null)
   const closeIconRef = useRef<SVGSVGElement>(null)
@@ -98,7 +98,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
     setKeyword(searchParams.get('s') || '')
 
     let _sortBy = wexcommerceTypes.SortProductBy.featured
-    const o = searchParams.get('o')
+    const o = searchParams.get('sb')
     if (o) {
       if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
         _sortBy = wexcommerceTypes.SortProductBy.priceAsc
@@ -106,7 +106,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
         _sortBy = wexcommerceTypes.SortProductBy.priceDesc
       }
     }
-    setOrderBy(_sortBy)
+    setSortBy(_sortBy)
   }, [searchParams])
 
   useEffect(() => {
