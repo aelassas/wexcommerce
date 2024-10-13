@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
+    //
+    // Add your frontend domain here
+    //
     remotePatterns: [
       {
         protocol: 'http',
@@ -22,6 +25,9 @@ const nextConfig = {
   // streaming responses
   //
   compress: false,
+  //
+  // Add your frontend domain here
+  //
   experimental: {
     serverActions: {
       allowedOrigins: ['localhost', 'wexcommerce.dynv6.net:8002'],
