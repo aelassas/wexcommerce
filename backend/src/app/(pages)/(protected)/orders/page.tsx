@@ -43,6 +43,7 @@ const Orders = async ({ searchParams }: { searchParams: SearchParams }) => {
 
   const userIdFromSearchParams = (searchParams['u'] as string) || ''
   const keyword = (searchParams['o'] || searchParams['s'] || '') as string
+  console.log('keyword', keyword)
   const _from = searchParams['from'] as string
   const from = _from ? new Date(Number.parseInt(_from, 10)) : null
   const _to = searchParams['to'] as string
@@ -144,10 +145,11 @@ const Orders = async ({ searchParams }: { searchParams: SearchParams }) => {
   const _format = wexcommerceHelper.getDateFormat(language)
   const _locale = _fr ? fr : enUS
 
-  return (
+  return userId && (
     <div className={styles.main}>
       <div className={styles.leftPanel}>
         <Filters
+          user={userId}
           paymentTypes={paymentTypes}
           deliveryTypes={deliveryTypes}
           statuses={statuses}
@@ -161,6 +163,7 @@ const Orders = async ({ searchParams }: { searchParams: SearchParams }) => {
       <div className={styles.orders}>
 
         <Header
+          user={userId}
           page={page}
           rowCount={rowCount}
           totalRecords={totalRecords}

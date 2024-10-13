@@ -34,6 +34,7 @@ interface FiltersProps {
   from: Date | null
   to: Date | null
   keyword: string
+  user: string
   sortBy: wexcommerceTypes.SortOrderBy
 }
 
@@ -44,6 +45,7 @@ export const Filters: React.FC<FiltersProps> = ({
   from,
   to,
   keyword,
+  user,
   sortBy,
 }) => {
   const router = useRouter()
@@ -55,7 +57,7 @@ export const Filters: React.FC<FiltersProps> = ({
           const pt = __paymentTypes.join(',')
           const dt = deliveryTypes.join(',')
           const os = statuses.join(',')
-          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
+          const url = `/orders?pt=${encodeURIComponent(pt)}${(user && `&u=${user}`) || ''}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
           router.push(url)
         }}
         selectedOptions={paymentTypes}
@@ -67,7 +69,7 @@ export const Filters: React.FC<FiltersProps> = ({
           const pt = paymentTypes.join(',')
           const dt = deliveryTypes.join(',')
           const os = __statuses.join(',')
-          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
+          const url = `/orders?pt=${encodeURIComponent(pt)}${(user && `&u=${user}`) || ''}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
           router.push(url)
         }}
         selectedOptions={statuses}
@@ -79,7 +81,7 @@ export const Filters: React.FC<FiltersProps> = ({
           const dt = __deliveryTypes.join(',')
           const pt = paymentTypes.join(',')
           const os = statuses.join(',')
-          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
+          const url = `/orders?pt=${encodeURIComponent(pt)}${(user && `&u=${user}`) || ''}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
           router.push(url)
         }}
         selectedOptions={deliveryTypes}
@@ -95,7 +97,7 @@ export const Filters: React.FC<FiltersProps> = ({
           const pt = paymentTypes.join(',')
           const os = statuses.join(',')
           const dt = deliveryTypes.join(',')
-          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
+          const url = `/orders?pt=${encodeURIComponent(pt)}${(user && `&u=${user}`) || ''}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
           router.push(url)
         }}
         className={styles.dateFilter}
@@ -114,6 +116,7 @@ interface OrdersHeaderProps {
   from: Date | null
   to: Date | null
   keyword: string
+  user: string
   sortBy: wexcommerceTypes.SortOrderBy
 }
 
@@ -128,6 +131,7 @@ export const Header: React.FC<OrdersHeaderProps> = (
     from,
     to,
     keyword,
+    user,
     sortBy,
   }
 ) => {
@@ -157,7 +161,7 @@ export const Header: React.FC<OrdersHeaderProps> = (
               const dt = deliveryTypes.join(',')
               const os = statuses.join(',')
 
-              const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${ob}`) || ''}`
+              const url = `/orders?pt=${encodeURIComponent(pt)}${(user && `&u=${user}`) || ''}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${ob}`) || ''}`
 
               router.push(url)
             }}

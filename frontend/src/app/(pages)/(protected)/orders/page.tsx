@@ -40,7 +40,6 @@ const Orders = async ({ searchParams }: { searchParams: SearchParams }) => {
     }
   }
 
-  const userIdFromSearchParams = (searchParams['u'] as string) || ''
   const keyword = (searchParams['o'] || searchParams['s'] || '') as string
   const _from = searchParams['from'] as string
   const from = _from ? new Date(Number.parseInt(_from, 10)) : null
@@ -93,7 +92,7 @@ const Orders = async ({ searchParams }: { searchParams: SearchParams }) => {
 
   const language = await SettingService.getLanguage()
   const currency = await SettingService.getCurrency()
-  const userId = userIdFromSearchParams || (await UserService.getCurrentUser())?._id
+  const userId = (await UserService.getCurrentUser())?._id
 
   let sortBy = wexcommerceTypes.SortOrderBy.dateDesc
   const sb = searchParams['sb'] as string
@@ -144,7 +143,7 @@ const Orders = async ({ searchParams }: { searchParams: SearchParams }) => {
   const _format = wexcommerceHelper.getDateFormat(language)
   const _locale = _fr ? fr : enUS
 
-  return (
+  return userId && (
     <div className={styles.main}>
       <div className={styles.leftPanel}>
         <Filters

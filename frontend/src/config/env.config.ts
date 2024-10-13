@@ -27,7 +27,7 @@ const env = {
 export const CookieOptions: Partial<ResponseCookie> = {
   httpOnly: true,
   secure: true,
-  sameSite: 'strict',
+  sameSite: 'lax',
   maxAge: 100 * 365 * 24 * 60 * 60,
 }
 
