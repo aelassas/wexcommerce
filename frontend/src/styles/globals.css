@@ -18,8 +18,12 @@
   text-align: center !important;
 }
 
+.toastButton {
+  opacity: .93;
+}
+
 .toastButton:hover {
-  opacity: .87;
+  opacity: 1;
 }
 
 html,
