@@ -2,7 +2,7 @@
 
 ![](https://wexcommerce.github.io/content/frontend-0-tiny.png)
 
-wexCommerce is a minimalistic and powerful eCommerce platform built with Next.js using SSR, server actions, MongoDB and Stripe for payments.
+wexCommerce is a minimalistic and powerful eCommerce platform built with React using SSR, MongoDB and Stripe for payments.
 
 With the following solution, you can build a fully customizable eCommerce website optmized for SEO with an operational Stripe payment gateway at very low cost by hosting it on a Docker droplet with at least 1GB of RAM.
 
