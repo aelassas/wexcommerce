@@ -12,6 +12,12 @@ export const infoWithComponent = (component: ToastContent<unknown>) => {
   toast.info(component)
 }
 
+export const toastComponentContainerStyle: React.CSSProperties = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }
+
+export const toastComponentTextStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', justifyContent: 'center', marginRight: 20 }
+
+export const toastComponentButtonStyle: React.CSSProperties = { backgroundColor: '#fff', color: '#121212', marginRight: 15 }
+
 export const error = (err?: unknown, message?: string) => {
   if (err && console && console.error) {
     console.error(err)

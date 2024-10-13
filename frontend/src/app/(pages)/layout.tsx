@@ -202,7 +202,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
           <ToastContainer
             position='top-right'
-            autoClose={5000}
+            // autoClose={5000}
+            autoClose={false}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick

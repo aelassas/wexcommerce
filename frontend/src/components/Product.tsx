@@ -196,14 +196,14 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                             setCartItemCount(cartItemCount + 1)
 
                             helper.infoWithComponent(
-                              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <span style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                              <div style={helper.toastComponentContainerStyle}>
+                                <span style={helper.toastComponentTextStyle}>
                                   {commonStrings.ARTICLE_ADDED}
                                 </span>
                                 <Button
                                   variant="contained"
                                   size="small"
-                                  style={{ backgroundColor: '#fff', color: '#121212', marginRight: 15 }}
+                                  style={helper.toastComponentButtonStyle}
                                   className="toastButton"
                                   onClick={() => {
                                     router.push('/cart')
@@ -212,6 +212,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                                 >
                                   {commonStrings.VIEW_CART}
                                 </Button>
+
                               </div>
                             )
                           } else {
@@ -278,21 +279,21 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                               setWishlistCount(wishlistCount + 1)
 
                               helper.infoWithComponent(
-                                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                  <span style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                <div style={helper.toastComponentContainerStyle}>
+                                  <span style={helper.toastComponentTextStyle}>
                                     {commonStrings.ARTICLE_ADDED_TO_WISH_LIST}
                                   </span>
                                   <Button
                                     variant="contained"
                                     size="small"
-                                    style={{ backgroundColor: '#fff', color: '#121212', marginRight: 15 }}
+                                    style={helper.toastComponentButtonStyle}
                                     className="toastButton"
                                     onClick={() => {
                                       router.push('/wishlist')
                                       router.refresh()
                                     }}
                                   >
-                                    {commonStrings.VIEW}
+                                    {commonStrings.VIEW_WISHLIST}
                                   </Button>
                                 </div>
                               )

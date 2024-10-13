@@ -70,7 +70,7 @@ export const strings = new LocalizedStrings({
     OF_OVER: 'sur plus de',
     RESULT: 'résultat',
     RESULTS: 'résultats',
-    VIEW: 'Consulter',
+    VIEW_WISHLIST: 'Consulter les favoris',
   },
   en: {
     GENERIC_ERROR: 'An unhandled error occurred.',
@@ -141,6 +141,6 @@ export const strings = new LocalizedStrings({
     OF_OVER: 'of over',
     RESULT: 'result',
     RESULTS: 'results',
-    VIEW: 'View',
+    VIEW_WISHLIST: 'View wishlist',
   }
 })

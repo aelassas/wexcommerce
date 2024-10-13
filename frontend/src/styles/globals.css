@@ -5,7 +5,8 @@
 
 @media only screen and (width>=480px) {
   .Toastify__toast-container {
-    width: 340px !important;
+    min-width: 340px !important;
+    width: fit-content !important;
   }
 }
 
