@@ -28,12 +28,12 @@ const Pager: React.FC<PagerProps> = ({
   className,
   onNext,
   onPrevious
-}) => (
-  (((page > 1 || rowCount < totalRecords) && (
-    <div className={`${styles.pagerContainer} ${className || ''}`}>
-      <div className={styles.pager}>
-        <div className={styles.rowCount}>{`${(page - 1) * pageSize + 1}-${rowCount} ${commonStrings.OF} ${totalRecords}`}</div>
+}) => totalRecords > 0 && (
+  <div className={`${styles.pagerContainer} ${className || ''}`}>
+    <div className={styles.pager}>
+      <div className={styles.rowCount}>{`${(page - 1) * pageSize + 1}-${rowCount} ${commonStrings.OF} ${totalRecords}`}</div>
 
+      {(page > 1 || rowCount < totalRecords) && (
         <div className={styles.actions}>
           <IconButton onClick={onPrevious} disabled={page === 1}>
             <PreviousPageIcon className={styles.icon} />
@@ -43,9 +43,9 @@ const Pager: React.FC<PagerProps> = ({
             <NextPageIcon className={styles.icon} />
           </IconButton>
         </div>
-      </div>
+      )}
     </div>
-  )) || <></>)
+  </div>
 )
 
 export default Pager

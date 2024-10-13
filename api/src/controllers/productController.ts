@@ -213,9 +213,9 @@ export const update = async (req: Request, res: Response) => {
       product.hidden = hidden
       product.featured = featured
 
-      if (quantity > 0) {
-        product.soldOut = false
-      }
+      // if (quantity > 0) {
+      //   product.soldOut = false
+      // }
 
       if (image) {
         const oldImage = path.join(env.CDN_PRODUCTS, product.image!)
