@@ -54,7 +54,7 @@ export const Filters: React.FC<FiltersProps> = ({
           const pt = __paymentTypes.join(',')
           const dt = deliveryTypes.join(',')
           const os = statuses.join(',')
-          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from}`) || ''}${(to && `&to=${to}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
+          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
           router.push(url)
         }}
         selectedOptions={paymentTypes}
@@ -66,7 +66,7 @@ export const Filters: React.FC<FiltersProps> = ({
           const pt = paymentTypes.join(',')
           const dt = deliveryTypes.join(',')
           const os = __statuses.join(',')
-          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from}`) || ''}${(to && `&to=${to}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
+          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
           router.push(url)
         }}
         selectedOptions={statuses}
@@ -78,7 +78,7 @@ export const Filters: React.FC<FiltersProps> = ({
           const dt = __deliveryTypes.join(',')
           const pt = paymentTypes.join(',')
           const os = statuses.join(',')
-          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from}`) || ''}${(to && `&to=${to}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
+          const url = `/orders?pt=${encodeURIComponent(pt)}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
           router.push(url)
         }}
         selectedOptions={deliveryTypes}
