@@ -45,11 +45,13 @@ body {
 .slick-next::before {
   font-size: 28px !important;
   color: #ddd !important;
+  opacity: .8 !important;
 }
 
 .slick-prev:hover::before,
 .slick-next:hover::before {
   color: #1D1D1B !important;
+  opacity: 1 !important;
 }
 
 a {
