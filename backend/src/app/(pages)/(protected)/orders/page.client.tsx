@@ -61,6 +61,7 @@ export const Filters: React.FC<FiltersProps> = ({
           router.push(url)
         }}
         selectedOptions={paymentTypes}
+        collapse={false}
         className={styles.paymentTypeFilter}
       />
 
@@ -73,6 +74,7 @@ export const Filters: React.FC<FiltersProps> = ({
           router.push(url)
         }}
         selectedOptions={statuses}
+        collapse={false}
         className={styles.statusFilter}
       />
 
@@ -85,6 +87,7 @@ export const Filters: React.FC<FiltersProps> = ({
           router.push(url)
         }}
         selectedOptions={deliveryTypes}
+        collapse={false}
         className={styles.deliveryTypeFilter}
       />
 
@@ -100,6 +103,7 @@ export const Filters: React.FC<FiltersProps> = ({
           const url = `/orders?pt=${encodeURIComponent(pt)}${(user && `&u=${user}`) || ''}&dt=${encodeURIComponent(dt)}&os=${encodeURIComponent(os)}${(from && `&from=${from.getTime()}`) || ''}${(to && `&to=${to.getTime()}`) || ''}${(keyword !== '' && `&s=${encodeURIComponent(keyword)}`) || ''}${(sortBy && `&sb=${sortBy}`) || ''}`
           router.push(url)
         }}
+        collapse={!env.isMobile()}
         className={styles.dateFilter}
       />
     </>

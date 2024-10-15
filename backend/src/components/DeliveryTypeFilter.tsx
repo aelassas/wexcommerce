@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import { strings as commonStrings } from '@/lang/common'
-import env from '@/config/env.config'
 import Accordion from './Accordion'
 import DeliveryType from './DeliveryType'
 import * as helper from '@/common/helper'
@@ -12,9 +11,10 @@ import * as helper from '@/common/helper'
 import styles from '@/styles/delivery-type-filter.module.css'
 
 interface DeliveryTypeFilterProps {
-  selectedOptions: wexcommerceTypes.DeliveryType[],
-  onChange?: (values: wexcommerceTypes.DeliveryType[]) => void
+  selectedOptions: wexcommerceTypes.DeliveryType[]
+  collapse?: boolean
   className?: string
+  onChange?: (values: wexcommerceTypes.DeliveryType[]) => void
 }
 
 const deliveryTypes = helper.getDeliveryTypes()
@@ -22,8 +22,9 @@ const deliveryTypes = helper.getDeliveryTypes()
 const DeliveryTypeFilter: React.FC<DeliveryTypeFilterProps> = (
   {
     selectedOptions,
+    collapse,
+    className,
     onChange,
-    className
   }
 ) => {
   const [checkedDeliveryTypes, setCheckedDeliveryTypes] = useState(deliveryTypes)
@@ -111,7 +112,7 @@ const DeliveryTypeFilter: React.FC<DeliveryTypeFilterProps> = (
   return (
     <Accordion
       title={commonStrings.DELIVERY_TYPE}
-      collapse={!env.isMobile()}
+      collapse={collapse}
       className={className}
     >
       <ul className={styles.deliveryTypeList}>

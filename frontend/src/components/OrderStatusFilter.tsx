@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import { strings as commonStrings } from '@/lang/common'
-import env from '@/config/env.config'
 import Accordion from './Accordion'
 import OrderStatus from './OrderStatus'
 import * as helper from '@/common/helper'
@@ -13,8 +12,9 @@ import styles from '@/styles/order-status-filter.module.css'
 
 interface OrderStatusFilterProps {
   selectedOptions: wexcommerceTypes.OrderStatus[]
-  onChange: (values: wexcommerceTypes.OrderStatus[]) => void
+  collapse?: boolean
   className?: string
+  onChange: (values: wexcommerceTypes.OrderStatus[]) => void
 }
 
 const statuses = helper.getOrderStatuses()
@@ -22,8 +22,9 @@ const statuses = helper.getOrderStatuses()
 const OrderStatusFilter: React.FC<OrderStatusFilterProps> = (
   {
     selectedOptions,
+    collapse,
+    className,
     onChange,
-    className
   }
 ) => {
   const [checkedStatuses, setCheckedStatuses] = useState(statuses)
@@ -109,7 +110,7 @@ const OrderStatusFilter: React.FC<OrderStatusFilterProps> = (
   return (
     <Accordion
       title={commonStrings.STATUS}
-      collapse={!env.isMobile()}
+      collapse={collapse}
       className={className}
     >
       <ul className={styles.statusList}>

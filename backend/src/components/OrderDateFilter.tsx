@@ -5,7 +5,6 @@ import { FormControl, Button } from '@mui/material'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/order-date-filter'
-import env from '@/config/env.config'
 import Accordion from './Accordion'
 import DatePicker from './DatePicker'
 
@@ -14,16 +13,18 @@ import styles from '@/styles/order-date-filter.module.css'
 interface OrderDateFilterProps {
   from?: Date | null
   to?: Date | null
-  onSubmit: (value: { from: Date | null, to: Date | null }) => void
+  collapse?: boolean
   className?: string
+  onSubmit: (value: { from: Date | null, to: Date | null }) => void
 }
 
 const OrderDateFilter: React.FC<OrderDateFilterProps> = (
   {
     from,
     to,
+    collapse,
+    className,
     onSubmit,
-    className
   }
 ) => {
   const { language } = useLanguageContext() as LanguageContextType
@@ -58,7 +59,7 @@ const OrderDateFilter: React.FC<OrderDateFilterProps> = (
   return (
     <Accordion
       title={strings.TITLE}
-      collapse={!env.isMobile()}
+      collapse={collapse}
       className={className}
     >
       <form onSubmit={handleSubmit} className={styles.form}>

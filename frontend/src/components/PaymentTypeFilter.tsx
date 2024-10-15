@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import { strings as commonStrings } from '@/lang/common'
-import env from '@/config/env.config'
 import Accordion from './Accordion'
 import PaymentType from './PaymentType'
 import * as helper from '@/common/helper'
@@ -13,8 +12,9 @@ import styles from '@/styles/payment-type-filter.module.css'
 
 interface PaymentTypeFilterProps {
   selectedOptions: wexcommerceTypes.PaymentType[]
-  onChange: (values: wexcommerceTypes.PaymentType[]) => void
+  collapse?: boolean
   className?: string
+  onChange: (values: wexcommerceTypes.PaymentType[]) => void
 }
 
 const paymentTypes = helper.getPaymentTypes()
@@ -22,8 +22,9 @@ const paymentTypes = helper.getPaymentTypes()
 const PaymentTypeFilter: React.FC<PaymentTypeFilterProps> = (
   {
     selectedOptions,
+    collapse,
+    className,
     onChange,
-    className
   }
 ) => {
   const [checkedPaymentTypes, setCheckedPaymentTypes] = useState(paymentTypes)
@@ -111,7 +112,7 @@ const PaymentTypeFilter: React.FC<PaymentTypeFilterProps> = (
   return (
     <Accordion
       title={commonStrings.PAYMENT_TYPES}
-      collapse={!env.isMobile()}
+      collapse={collapse}
       className={className}
     >
       <ul className={styles.paymentTypeList}>
