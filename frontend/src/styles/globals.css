@@ -3,6 +3,12 @@
   --toastify-color-progress-bgo: .6 !important;
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 @media only screen and (width>=480px) {
   .Toastify__toast-container {
     min-width: 340px !important;
@@ -26,12 +32,6 @@
   opacity: 1;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
 .slick-prev {
   left: -5% !important;
   z-index: 1 !important;
@@ -45,7 +45,11 @@ body {
 .slick-next::before {
   font-size: 28px !important;
   color: #ddd !important;
-  opacity: .75 !important;
+}
+
+.slick-prev:hover::before,
+.slick-next:hover::before {
+  color: #1D1D1B !important;
 }
 
 a {
