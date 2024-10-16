@@ -33,12 +33,10 @@ const Wishlist: React.FC<WishlistProps> = ({ wishlist }) => {
   const [openClearDialog, setOpenClearDialog] = useState(false)
   const [products, setProducts] = useState<wexcommerceTypes.Product[]>(wishlist.products)
 
-  return (
+  return (!products || (products && products.length === 0)) ? (
+    <EmptyWishlist />
+  ) : (
     <div className={styles.main}>
-
-      {(!products || (products && products.length === 0)) && (
-        <EmptyWishlist />
-      )}
 
       {products && products.length > 0 && (
         <>
