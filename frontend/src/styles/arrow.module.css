@@ -1,0 +1,20 @@
+.arrow,
+.arrow:hover {
+  background-color: rgba(0, 0, 0, .1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 36px;
+}
+
+.arrow:hover {
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.icon {
+  color: #fff;
+  font-size: 30px !important;
+}

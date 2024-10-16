@@ -8,13 +8,15 @@ import env from '@/config/env.config'
 import Slick from './Slick'
 
 import styles from '@/styles/carrousel.module.css'
+import Arrow from './Arrow'
 
 interface CarrouselProps {
   title?: string
   images: string[]
   autoplay?: boolean
   autoplaySpeed?: number // in milliseconds
-  showNavigation?: boolean
+  showArrows?: boolean
+  showDots?: boolean
 }
 
 const Carrousel: React.FC<CarrouselProps> = ({
@@ -22,7 +24,8 @@ const Carrousel: React.FC<CarrouselProps> = ({
   images,
   autoplay,
   autoplaySpeed,
-  showNavigation,
+  showArrows,
+  showDots,
 }) => {
 
   const slider = useRef<ReactSlick>(null)
@@ -30,10 +33,11 @@ const Carrousel: React.FC<CarrouselProps> = ({
   const infinite = images.length > env.CARROUSEL_SIZE
 
   const sliderSettings = {
-    arrows: false,
+    nextArrow: <Arrow to="next" visible={showArrows} />,
+    prevArrow: <Arrow to="prev" visible={showArrows} />,
     dots: true,
     // eslint-disable-next-line react/no-unstable-nested-components
-    appendDots: (dots: React.ReactNode) => showNavigation ? (
+    appendDots: (dots: React.ReactNode) => showDots ? (
       <div>
         <ul style={{ margin: '0px', padding: '0px' }}>
           {' '}

@@ -8,6 +8,7 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'
 import Slick from './Slick'
+import Arrow from './Arrow'
 
 import styles from '@/styles/category-list.module.css'
 
@@ -33,7 +34,8 @@ const CategoryList: React.FC<CategoryListProps> = (
   const infinite = categories.length > env.CARROUSEL_SIZE
 
   const sliderSettings = {
-    arrows: infinite,
+    nextArrow: <Arrow to="next" visible={infinite} />,
+    prevArrow: <Arrow to="prev" visible={infinite} />,
     dots: true,
     appendDots: (dots: React.ReactNode) => showNavigation ? (
       <div>

@@ -6,6 +6,7 @@ import Slick from './Slick'
 import ReactSlick from 'react-slick'
 import env from '@/config/env.config'
 import ProductListItem from './ProductListItem'
+import Arrow from './Arrow'
 
 import styles from '@/styles/featured-products.module.css'
 
@@ -33,7 +34,8 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
   const infinite = products.length > env.CARROUSEL_SIZE
 
   const sliderSettings = {
-    arrows: infinite,
+    nextArrow: <Arrow to="next" visible={infinite} />,
+    prevArrow: <Arrow to="prev" visible={infinite} />,
     dots: true,
     // eslint-disable-next-line react/no-unstable-nested-components
     appendDots: (dots: React.ReactNode) => showNavigation ? (

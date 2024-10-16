@@ -59,7 +59,8 @@ const Home = async () => {
           images={slides}
           autoplay
           autoplaySpeed={4 * 1000}
-          showNavigation
+          showArrows={false}
+          showDots
         />
       </div>
 

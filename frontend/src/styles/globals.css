@@ -38,20 +38,13 @@ body {
 }
 
 .slick-next {
+  right: -5% !important;
   z-index: 1 !important;
 }
 
 .slick-prev::before,
 .slick-next::before {
-  font-size: 28px !important;
-  color: #ddd !important;
-  opacity: .8 !important;
-}
-
-.slick-prev:hover::before,
-.slick-next:hover::before {
-  color: #1D1D1B !important;
-  opacity: 1 !important;
+  content: '' !important;
 }
 
 a {
