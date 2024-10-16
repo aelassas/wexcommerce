@@ -5,16 +5,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 38px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
 }
 
 .arrow:hover {
-  background-color: rgba(0, 0, 0, .275);
+  background-color: rgba(0, 0, 0, .25);
 }
 
 .icon {
   color: #fff;
-  font-size: 27px !important;
+  font-size: 28px !important;
 }
