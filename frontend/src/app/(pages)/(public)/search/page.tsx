@@ -6,6 +6,7 @@ import * as serverHelper from '@/common/serverHelper'
 import env from '@/config/env.config'
 import * as ProductService from '@/lib/ProductService'
 import * as CartService from '@/lib/CartService'
+import * as UserService from '@/lib/UserService'
 import * as WishlistService from '@/lib/WishlistService'
 import ProductsWrapper, { EmptyList, Pager } from './page.client'
 import ProductListItem from '@/components/ProductListItem'
@@ -37,7 +38,8 @@ const Search = async ({ searchParams }: { searchParams: SearchParams }) => {
   }
 
   const cartId = await CartService.getCartId()
-  const wishlistId = await WishlistService.getWishlistId()
+  const userId = (await UserService.getCurrentUser())?._id || ''
+  const wishlistId = await WishlistService.getWishlistId(userId)
 
   const categoryId = (searchParams['c'] as string) || ''
   const keyword = (searchParams['s'] as string) || ''

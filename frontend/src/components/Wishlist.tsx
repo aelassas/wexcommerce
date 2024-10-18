@@ -86,7 +86,6 @@ const Wishlist: React.FC<WishlistProps> = ({ wishlist }) => {
               const status = await WishlistService.clearWishlist(wishlistId)
 
               if (status === 200) {
-                await WishlistService.deleteWishlistId()
                 setProducts([])
                 setWishlistCount(0)
               } else {

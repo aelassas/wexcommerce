@@ -1,9 +1,7 @@
 'use server'
 
-import { cookies } from 'next/headers'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as fetchInstance from './fetchInstance'
-import { CookieOptions } from '@/config/env.config'
 import * as UserService from './UserService'
 
 /**
@@ -81,7 +79,6 @@ export const getWishlist = async (wishlistId: string): Promise<wexcommerceTypes.
  * @returns {Promise<number>}
  */
 export const getWishlistCount = async (wishlistId?: string): Promise<number> => {
-  wishlistId = await getWishlistId()
   if (wishlistId) {
     const res = await fetchInstance
       .GET(
@@ -95,45 +92,21 @@ export const getWishlistCount = async (wishlistId?: string): Promise<number> => 
 }
 
 /**
- * Set wishlist id.
- *
- * @param {string} id
- */
-export const setWishlistId = async (id: string) => {
-  cookies().set('wc-fe-wishlist', id, CookieOptions)
-}
-
-/**
- * Get wishlist id.
- *
- * @returns {string}
- */
-export const getWishlistId = async () => cookies().get('wc-fe-wishlist')?.value || ''
-
-/**
- * Delete wishlist id.
- *
- * @async
- * @returns {*}
- */
-export const deleteWishlistId = async () => {
-  cookies().delete('wc-fe-wishlist')
-}
-
-/**
  * Get user's wishlist id.
  *
  * @async
  * @param {string} userId
  * @returns {Promise<string>}
  */
-export const getUserWishlistId = async (userId: string): Promise<string> => (
-  fetchInstance
-    .GET(
-      `/api/wishlist-id/${userId}`,
-      [await UserService.authHeader()]
-    )
-    .then((res) => res.data)
+export const getWishlistId = async (userId: string): Promise<string> => (
+  userId ?
+    fetchInstance
+      .GET(
+        `/api/wishlist-id/${userId}`,
+        [await UserService.authHeader()]
+      )
+      .then((res) => res.data)
+    : ''
 )
 
 /**

@@ -43,7 +43,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       const currentUser = await UserService.getCurrentUser()
 
       let cartId: string | undefined = await CartService.getCartId()
-      let wishlistId: string | undefined = await WishlistService.getWishlistId()
+      let wishlistId: string | undefined = undefined
 
       if (currentUser) {
         try {
@@ -84,30 +84,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 }
               }
             }
-            if (!wishlistId) {
-              wishlistId = await WishlistService.getUserWishlistId(_user._id!)
-              await WishlistService.setWishlistId(wishlistId)
-            } else {
-              const wishlistStatus = await WishlistService.checkWishlist(wishlistId, _user._id!)
-
-              if (wishlistStatus === 200) {
-                //
-                // Set current wishlist
-                //
-                await WishlistService.updateWishlist(wishlistId, _user._id!)
-              } else {
-                //
-                // Wishlist does not exist in db.
-                // Delete wishlistId from the browser and set a new one
-                // if a wishlist already exist in db.
-                //
-                await WishlistService.deleteWishlistId()
-                wishlistId = await WishlistService.getUserWishlistId(_user._id!)
-                if (wishlistId) {
-                  await WishlistService.setWishlistId(wishlistId)
-                }
-              }
-            }
+            
+            wishlistId = await WishlistService.getWishlistId(_user._id!)
 
             const notificationCounter = await NotificationService.getNotificationCounter(_user._id!)
             setNotificationCount(notificationCounter.count)

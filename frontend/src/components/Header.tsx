@@ -211,7 +211,7 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
 
   const handleSignout = async () => {
     setUser(null)
-    await UserService.signout(true, false, true, true)
+    await UserService.signout(true, false, true)
   }
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {

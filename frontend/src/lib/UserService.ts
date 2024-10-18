@@ -6,7 +6,6 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import * as fetchInstance from './fetchInstance'
 import env, { CookieOptions } from '@/config/env.config'
 import * as CartService from '@/lib/CartService'
-import * as WishlistService from '@/lib/WishlistService'
 
 /**
  * Get auth header.
@@ -124,15 +123,11 @@ export const socialSignin = async (data: wexcommerceTypes.SignInPayload): Promis
  * @param {boolean} [_deleteCartId=false]
  * @returns {*}
  */
-export const signout = async (_redirect = true, _redirectSignIn = false, _deleteCartId = false, _deleteWishlisttId = false) => {
+export const signout = async (_redirect = true, _redirectSignIn = false, _deleteCartId = false) => {
   cookies().delete('wc-fe-user')
 
   if (_deleteCartId) {
     await CartService.deleteCartId()
-  }
-
-  if (_deleteWishlisttId) {
-    await WishlistService.deleteWishlistId()
   }
 
   if (_redirect) {

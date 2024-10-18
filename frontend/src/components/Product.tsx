@@ -238,7 +238,8 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                         className={styles.button}
                         onClick={async () => {
                           try {
-                            const wishlistId = await WishlistService.getWishlistId()
+                            const userId = user?._id || ''
+                            const wishlistId = await WishlistService.getWishlistId(userId!)
                             const res = await WishlistService.deleteItem(wishlistId, product._id)
 
                             if (res === 200) {
@@ -265,15 +266,12 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                         title={commonStrings.ADD_TO_WISHLIST}
                         onClick={async () => {
                           try {
-                            const wishlistId = await WishlistService.getWishlistId()
                             const userId = user?._id || ''
+                            const wishlistId = await WishlistService.getWishlistId(userId)
 
                             const res = await WishlistService.addItem(wishlistId, userId, product._id)
 
                             if (res.status === 200) {
-                              if (!wishlistId) {
-                                await WishlistService.setWishlistId(res.data)
-                              }
                               product.inWishlist = true
                               setProduct(product)
                               setWishlistCount(wishlistCount + 1)

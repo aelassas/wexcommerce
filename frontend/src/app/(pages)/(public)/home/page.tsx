@@ -6,6 +6,7 @@ import * as serverHelper from '@/common/serverHelper'
 import * as SettingService from '@/lib/SettingService'
 import * as ProductService from '@/lib/ProductService'
 import * as CartService from '@/lib/CartService'
+import * as UserService from '@/lib/UserService'
 import * as WishlistService from '@/lib/WishlistService'
 import * as CategoryService from '@/lib/CategoryService'
 import { strings } from '@/lang/home'
@@ -30,7 +31,8 @@ const Home = async () => {
 
   try {
     const cartId = await CartService.getCartId()
-    const wishlistId = await WishlistService.getWishlistId()
+    const userId = (await UserService.getCurrentUser())?._id || ''
+    const wishlistId = await WishlistService.getWishlistId(userId)
     featuredProducts = await ProductService.getFeaturedProducts(env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId)
 
     for (const product of featuredProducts) {
