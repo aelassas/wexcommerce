@@ -50,7 +50,7 @@ export const updateQuantity = async (cartItemId: string, quantity: number): Prom
  * @param {string} productId
  * @returns {Promise<wexcommerceTypes.Response<{ cartDeleted: boolean }>>}
  */
-export const deleteItem = async (cartId: string, productId: string): Promise<wexcommerceTypes.Response<{ cartDeleted: boolean }>> => (
+export const deleteItem = async (cartId: string, productId: string): Promise<wexcommerceTypes.Response<{ cartDeleted: boolean, quantity: number }>> => (
   fetchInstance
     .DELETE(
       `/api/delete-cart-item/${cartId}/${productId}`

@@ -155,7 +155,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                           if (res.status === 200) {
                             product.inCart = false
                             setProduct(product)
-                            setCartItemCount(cartItemCount - 1)
+                            setCartItemCount(cartItemCount - res.data.quantity)
 
                             if (res.data.cartDeleted) {
                               await CartService.deleteCartId()
@@ -238,8 +238,8 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                         className={styles.button}
                         onClick={async () => {
                           try {
-                            const userId = user?._id || ''
-                            const wishlistId = await WishlistService.getWishlistId(userId!)
+                            const userId = user._id!
+                            const wishlistId = await WishlistService.getWishlistId(userId)
                             const res = await WishlistService.deleteItem(wishlistId, product._id)
 
                             if (res === 200) {
@@ -266,7 +266,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                         title={commonStrings.ADD_TO_WISHLIST}
                         onClick={async () => {
                           try {
-                            const userId = user?._id || ''
+                            const userId = user._id!
                             const wishlistId = await WishlistService.getWishlistId(userId)
 
                             const res = await WishlistService.addItem(wishlistId, userId, product._id)

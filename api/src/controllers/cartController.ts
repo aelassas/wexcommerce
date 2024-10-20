@@ -101,13 +101,16 @@ export const deleteItem = async (req: Request, res: Response) => {
     const cart = await Cart
       .findById(cartId)
       .populate<{ cartItems: env.CartItem[] }>('cartItems')
+
     let cartDeleted = false
+    let quantity = 0
 
     if (cart) {
       const cartItems = cart.cartItems.filter((ci) => ci.product.equals(productId))
 
       if (cartItems.length > 0) {
         const cartItem = cartItems[0]
+        quantity += cartItem.quantity
         const result = await CartItem.deleteOne({ _id: cartItem._id })
 
         if (result.deletedCount === 1) {
@@ -121,7 +124,7 @@ export const deleteItem = async (req: Request, res: Response) => {
             }
           }
 
-          return res.status(200).json({ cartDeleted })
+          return res.status(200).json({ cartDeleted, quantity })
         }
         return res.sendStatus(204)
       }
