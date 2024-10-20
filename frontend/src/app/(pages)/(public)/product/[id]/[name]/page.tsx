@@ -22,7 +22,7 @@ const Product = async ({ params }: { params: { id: string, name: string } }) => 
   try {
     const language = await SettingService.getLanguage()
     const cartId = await CartService.getCartId()
-    const userId = (await UserService.getCurrentUser())?._id || ''
+    const userId = await UserService.getUserId()
     const wishlistId = await WishlistService.getWishlistId(userId)
     product = await ProductService.getProduct(id, language, cartId, wishlistId)
   } catch (err) {

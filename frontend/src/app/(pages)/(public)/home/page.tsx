@@ -31,7 +31,7 @@ const Home = async () => {
 
   try {
     const cartId = await CartService.getCartId()
-    const userId = (await UserService.getCurrentUser())?._id || ''
+    const userId = await UserService.getUserId()
     const wishlistId = await WishlistService.getWishlistId(userId)
     featuredProducts = await ProductService.getFeaturedProducts(env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId)
 

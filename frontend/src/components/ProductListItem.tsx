@@ -179,7 +179,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                 className={styles.button}
                 onClick={async () => {
                   // setOpenDeleteDialog(true)
-                  
+
                   try {
                     const cartId = await CartService.getCartId()
                     const res = await CartService.deleteItem(cartId, product._id)
@@ -211,7 +211,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                 onClick={async () => {
                   try {
                     const cartId = await CartService.getCartId()
-                    const userId = (user && user._id) || ''
+                    const userId = user?._id || ''
 
                     const res = await CartService.addItem(cartId, userId, product._id)
 

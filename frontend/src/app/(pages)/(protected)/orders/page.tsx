@@ -92,7 +92,7 @@ const Orders = async ({ searchParams }: { searchParams: SearchParams }) => {
 
   const language = await SettingService.getLanguage()
   const currency = await SettingService.getCurrency()
-  const userId = (await UserService.getCurrentUser())?._id
+  const userId = await UserService.getUserId()
 
   let sortBy = wexcommerceTypes.SortOrderBy.dateDesc
   const sb = searchParams['sb'] as string

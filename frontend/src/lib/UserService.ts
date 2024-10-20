@@ -336,6 +336,14 @@ export const getCurrentUser = async (): Promise<wexcommerceTypes.User | null> =>
 }
 
 /**
+ * Get current user id.
+ *
+ * @async
+ * @returns {unknown}
+ */
+export const getUserId = async () => (await getCurrentUser())?._id || ''
+
+/**
  * Get user.
  *
  * @param {string} id

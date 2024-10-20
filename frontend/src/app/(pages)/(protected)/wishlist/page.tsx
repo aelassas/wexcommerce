@@ -10,7 +10,7 @@ const Wishlist = async () => {
   let wishlist: wexcommerceTypes.Wishlist | undefined = undefined
 
   try {
-    const userId = (await UserService.getCurrentUser())?._id
+    const userId = await UserService.getUserId()
     const wishlistId = await WishlistService.getWishlistId(userId!)
 
     if (wishlistId) {
