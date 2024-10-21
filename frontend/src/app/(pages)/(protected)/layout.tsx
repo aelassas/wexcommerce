@@ -17,6 +17,7 @@ import * as NotificationService from '@/lib/NotificationService'
 import * as CartService from '@/lib/CartService'
 import * as WishlistService from '@/lib/WishlistService'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 type LayoutProps = Readonly<{
   children: React.ReactNode
@@ -84,7 +85,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 }
               }
             }
-            
+
             wishlistId = await WishlistService.getWishlistId(_user._id!)
 
             const notificationCounter = await NotificationService.getNotificationCounter(_user._id!)
@@ -145,21 +146,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Header />
       {
         user.verified
-          ? (
-            <div className='content'>{children}</div>
-          )
-          : (
-            <div className="validate-email">
-              <span>{strings.VALIDATE_EMAIL}</span>
-              <Button
-                type="button"
-                variant="contained"
-                size="small"
-                className="btn-primary btn-resend"
-                onClick={handleResend}
-              >{strings.RESEND}</Button>
-            </div>
-          )
+          ?
+          <div className='content'>{children}</div>
+          :
+          <div className="validate-email">
+            <span>{strings.VALIDATE_EMAIL}</span>
+            <Button
+              type="button"
+              variant="contained"
+              size="small"
+              className="btn-primary btn-resend"
+              onClick={handleResend}
+            >{strings.RESEND}</Button>
+          </div>
+      }
+      {
+        pathname !== '/notifications' && <Footer />
       }
     </>
   )
