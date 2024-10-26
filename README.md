@@ -4,13 +4,11 @@
 
 wexCommerce is a minimalistic and powerful eCommerce platform built with Next.js using SSR, MongoDB and Stripe for payments.
 
-With the following solution, you can build a fully customizable eCommerce website optmized for SEO with an operational Stripe payment gateway at very low cost by hosting it on a Docker droplet with at least 1GB of RAM.
+Deploy your own customizable eCommerce solution at minimal cost using our [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). The platform integrates Stripe for secure payments, is optimized for SEO and can be efficiently hosted on a 1GB RAM droplet, making it an ideal choice for eCommerce operations looking for a scalable, cost-effective solution. You can deploy this solution for under $5 monthly using cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
 wexCommerce is composed of a frontend and an admin dashboard. From the frontend, customers can search for the products they want, add them to their cart and checkout. Customers can sign up with Google, Facebook, Apple or Email, and pay with Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link or other Stripe payment methods. Once logged in, they can have access to the history of their purshases and follow their orders. From the admin dashboard, admins can manage orders, payments, products, categories, customers and general settings such as the default language, the currency, delivery, shipping and payment methods accepted.
 
 A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
-
-wexCommerce can run in a Docker container. Follow this step by step [guide](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)) to walk you through on how to build wexCommerce Docker image and run it in a Docker container.
 
 # Features
 
