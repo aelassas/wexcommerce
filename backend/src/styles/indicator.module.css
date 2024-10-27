@@ -20,7 +20,7 @@ div.indicator {
   position: absolute;
   width: 55px;
   height: 55px;
-  border: 5px solid rgba(0, 0, 0, 0.8);
+  border: 5px solid rgba(0, 0, 0, 80%);
   border-top-color: transparent;
   border-radius: 50%;
 }

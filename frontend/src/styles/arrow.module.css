@@ -1,6 +1,6 @@
 .arrow,
 .arrow:hover {
-  background-color: rgba(0, 0, 0, .085);
+  background-color: rgba(0, 0, 0, 8.5%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +11,7 @@
 }
 
 .arrow:hover {
-  background-color: rgba(0, 0, 0, .25);
+  background-color: rgba(0, 0, 0, 25%);
 }
 
 .icon {
