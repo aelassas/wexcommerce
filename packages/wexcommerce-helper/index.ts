@@ -93,6 +93,20 @@ export const cloneArray = <T>(arr: T[]): T[] | undefined | null => {
 }
 
 /**
+ * Get promise result.
+ *
+ * @template T
+ * @param {PromiseSettledResult<T>} promiseResult
+ * @returns {T}
+ */
+export const getPromiseResult = <T>(promiseResult: PromiseSettledResult<T>): T => {
+  if (promiseResult.status === 'rejected') {
+    throw new Error(promiseResult.reason)
+  }
+  return promiseResult.value
+}
+
+/**
  * Removes a start line terminator character from a string.
  *
  * @export

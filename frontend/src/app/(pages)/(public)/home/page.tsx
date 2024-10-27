@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
+import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'
 import * as serverHelper from '@/common/serverHelper'
 import * as SettingService from '@/lib/SettingService'
@@ -35,22 +36,29 @@ const Home = async () => {
     const cartId = await CartService.getCartId()
     const userId = await UserService.getUserId()
     const wishlistId = await WishlistService.getWishlistId(userId)
-    featuredProducts = await ProductService.getFeaturedProducts(env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId)
+    const language = await SettingService.getLanguage()
+
+    const [featuredProductsRes, categoriesRes, categoryGroupsRes] = await Promise.allSettled([
+      ProductService.getFeaturedProducts(env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId),
+      CategoryService.getCategories(language, true),
+      CategoryService.getFeaturedCategories(language, env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId),
+    ])
+
+    featuredProducts = wexcommerceHelper.getPromiseResult(featuredProductsRes)
 
     for (const product of featuredProducts) {
       product.url = await serverHelper.getProductURL(product)
     }
 
-    const language = await SettingService.getLanguage()
-    categories = await CategoryService.getCategories(language, true)
-
-    categoryGroups = await CategoryService.getFeaturedCategories(language, env.FEATURED_PRODUCTS_SIZE, cartId, wishlistId)
+    categoryGroups = wexcommerceHelper.getPromiseResult(categoryGroupsRes)
 
     for (const categoryGroup of categoryGroups) {
       for (const product of categoryGroup.products) {
         product.url = await serverHelper.getProductURL(product)
       }
     }
+
+    categories = wexcommerceHelper.getPromiseResult(categoriesRes)
   } catch (err) {
     console.error(err)
   }
