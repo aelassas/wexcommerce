@@ -96,7 +96,7 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
               await ImageService.updateCategoryImage(categoryId!, file)
             const mainImg = wexcommerceHelper.clone(image) as ImageItem
             mainImg.filename = filename
-            mainImg.temp = !!!categoryId
+            mainImg.temp = !categoryId
             setImage(mainImg)
             if (onMainImageUpsert) {
               onMainImageUpsert(mainImg)
