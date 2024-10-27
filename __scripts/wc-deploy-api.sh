@@ -4,7 +4,6 @@ start_time=$(date +%s)
 echo "Deploying wexCommerce API..."
 
 cd /opt/wexcommerce/
-git reset --hard
 git pull
 chmod +x -R /opt/wexcommerce/__scripts
 

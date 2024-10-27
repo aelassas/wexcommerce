@@ -4,7 +4,6 @@ start_time=$(date +%s)
 echo "Deploying wexCommerce backend..."
 
 cd /opt/wexcommerce/
-git reset --hard
 git pull
 sudo chmod +x -R /opt/wexcommerce/__scripts
 
