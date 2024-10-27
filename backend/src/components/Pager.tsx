@@ -15,6 +15,7 @@ interface PagerProps {
   pageSize: number
   totalRecords: number
   rowCount: number
+  alwaysVisible?: boolean
   className?: string
   onNext: () => void
   onPrevious: () => void
@@ -25,10 +26,11 @@ const Pager: React.FC<PagerProps> = ({
   pageSize,
   totalRecords,
   rowCount,
+  alwaysVisible,
   className,
   onNext,
   onPrevious
-}) => totalRecords > 0 && (
+}) => totalRecords > 0 && (page > 1 || rowCount < totalRecords || alwaysVisible) && (
   <div className={`${styles.pagerContainer} ${className || ''}`}>
     <div className={styles.pager}>
       <div className={styles.rowCount}>{`${(page - 1) * pageSize + 1}-${rowCount} ${commonStrings.OF} ${totalRecords}`}</div>

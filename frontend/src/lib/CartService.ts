@@ -113,7 +113,7 @@ export const getCartCount = async (cartId?: string): Promise<number> => {
  * @param {string} id
  */
 export const setCartId = async (id: string) => {
-  cookies().set('wc-fe-cart', id, CookieOptions)
+  (await cookies()).set('wc-fe-cart', id, CookieOptions)
 }
 
 /**
@@ -121,7 +121,7 @@ export const setCartId = async (id: string) => {
  *
  * @returns {string}
  */
-export const getCartId = async () => cookies().get('wc-fe-cart')?.value || ''
+export const getCartId = async () => (await cookies()).get('wc-fe-cart')?.value || ''
 
 /**
  * Delete cart id.
@@ -130,7 +130,7 @@ export const getCartId = async () => cookies().get('wc-fe-cart')?.value || ''
  * @returns {*}
  */
 export const deleteCartId = async () => {
-  cookies().delete('wc-fe-cart')
+  (await cookies()).delete('wc-fe-cart')
 }
 
 /**
@@ -146,7 +146,7 @@ export const getUserCartId = async (userId: string): Promise<string> => (
       `/api/cart-id/${userId}`,
       [await UserService.authHeader()]
     )
-    .then((res) => res.data)
+    .then((res) => res.data || '')
 )
 
 /**

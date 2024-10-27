@@ -48,7 +48,7 @@ export const createProduct = async (data: wexcommerceTypes.CreateProductPayload)
     .POST(
       `/api/create-product`,
       data,
-      [await UserService.authHeader()]
+      [await UserService.authHeader()],
     )
     .then((res) => ({ status: res.status, data: res.data }))
 
@@ -58,15 +58,14 @@ export const createProduct = async (data: wexcommerceTypes.CreateProductPayload)
  * @param {wexcommerceTypes.UpdateProductPayload} data
  * @returns {Promise<number>}
  */
-export const updateProduct = async (data: wexcommerceTypes.UpdateProductPayload): Promise<number> =>
+export const updateProduct = async (data: wexcommerceTypes.UpdateProductPayload): Promise<wexcommerceTypes.Response<wexcommerceTypes.Product>> =>
   fetchInstance
     .PUT(
       `/api/update-product`,
       data,
       [await UserService.authHeader()],
-      true
     )
-    .then((res) => res.status)
+    .then((res) => ({ status: res.status, data: res.data }))
 
 /**
  * Check if a product is related to an order.

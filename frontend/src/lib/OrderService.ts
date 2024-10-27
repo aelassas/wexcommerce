@@ -72,7 +72,7 @@ export const getOrders = async (
  * @param {string} sessionId
  * @returns {Promise<number>}
  */
-export const deleteTempOrder = (orderId: string, sessionId: string): Promise<number> =>
+export const deleteTempOrder = async (orderId: string, sessionId: string): Promise<number> =>
   fetchInstance
     .DELETE(
       `/api/delete-temp-order/${orderId}/${sessionId}`,

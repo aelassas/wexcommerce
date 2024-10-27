@@ -31,13 +31,13 @@ function useDragDetection(): {
     }
 
     if (mouseDown) {
-      document.addEventListener("mouseup", handleMouseUp)
-      document.addEventListener("mousemove", handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+      document.addEventListener('mousemove', handleMouseMove)
     }
 
     return () => {
-      document.removeEventListener("mouseup", handleMouseUp)
-      document.removeEventListener("mousemove", handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('mousemove', handleMouseMove)
     }
   }, [mouseDown])
 
@@ -79,11 +79,10 @@ const Slick = forwardRef<ReactSlick, SlickProps>(({ children, ...props }, ref) =
       e.preventDefault()
     }
   }
-
+  // console.log(props)
   return (
     <ReactSlick
       ref={slickRef}
-      onSwipe={() => console.log('ddd')}
       {...props}
     >
       {React.Children.map(children, (child) => (

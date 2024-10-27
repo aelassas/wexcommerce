@@ -28,7 +28,7 @@ const Pager: React.FC<PagerProps> = ({
   className,
   onNext,
   onPrevious
-}) => totalRecords > 0 && (
+}) => totalRecords > 0 && (page > 1 || rowCount < totalRecords) && (
   <div className={`${styles.pagerContainer} ${className || ''}`}>
     <div className={styles.pager}>
       <div className={styles.rowCount}>{`${(page - 1) * pageSize + 1}-${rowCount} ${commonStrings.OF} ${totalRecords}`}</div>

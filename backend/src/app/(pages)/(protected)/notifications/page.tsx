@@ -8,7 +8,8 @@ import NotificationList, { EmptyList } from '@/components/NotificationList'
 
 import styles from '@/styles/notifications.module.css'
 
-const Notifications = async ({ searchParams }: { searchParams: SearchParams }) => {
+const Notifications = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams
   let page = 1
   const p = searchParams['p'] as string
   if (p) {

@@ -2,7 +2,8 @@
 
 import UserList from '@/components/UserList'
 
-const Users = ({ searchParams }: { searchParams: SearchParams }) => {
+const Users = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams
   let page = 0
   const p = searchParams['p'] as string
   if (p) {

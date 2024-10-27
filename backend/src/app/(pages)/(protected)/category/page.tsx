@@ -7,7 +7,8 @@ import CategoryForm from './page.client'
 import { EmptyList } from '@/components/CategoryList.client'
 
 
-const Category = async ({ searchParams }: { searchParams: SearchParams }) => {
+const Category = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams
   let category: wexcommerceTypes.CategoryInfo | null = null
   try {
     const language = await SettingService.getLanguage()

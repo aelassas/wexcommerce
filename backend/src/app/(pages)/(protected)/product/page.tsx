@@ -7,7 +7,8 @@ import { strings } from '@/lang/products'
 import CreateProductForm from './page.client'
 import EmptyList from '@/components/EmptyList'
 
-const CreateProduct = async ({ searchParams }: { searchParams: SearchParams }) => {
+const CreateProduct = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams
   let product: wexcommerceTypes.Product | null = null
   try {
     const language = await SettingService.getLanguage()

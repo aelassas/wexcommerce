@@ -42,6 +42,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
 
   const [productId, setProductId] = useState('')
   const [name, setName] = useState('')
+  const [initialDescription, setInitialDescription] = useState('')
   const [description, setDescription] = useState('')
   const [descriptionError, setDescriptionError] = useState(false)
   const [categories, setCategories] = useState<wexcommerceTypes.CategoryInfo[]>([])
@@ -65,6 +66,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
   useEffect(() => {
     setProductId(product._id)
     setName(product.name)
+    setInitialDescription(product.description)
     setDescription(product.description)
     setCategories(product.categories as wexcommerceTypes.CategoryInfo[])
     setPrice(product.price.toString())
@@ -124,11 +126,13 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
         data.image = tempImage
       }
 
-      const status = await ProductService.updateProduct(data)
+      const { status, data: p } = await ProductService.updateProduct(data)
 
       if (status === 200) {
-
-        router.refresh()
+        setImageUpdated(false)
+        setImage(p.image!)
+        setImages(p.images || [])
+        setTempImages([])
         helper.info(commonStrings.UPDATED)
       } else {
         helper.error()
@@ -194,7 +198,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
           <RichTextEditor
             language={language}
             className={styles.editor}
-            value={description}
+            value={initialDescription}
             onChange={handleRichTextEditorChange}
           />
         </FormControl>

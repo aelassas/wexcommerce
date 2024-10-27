@@ -51,7 +51,7 @@ export const GET = async (url: string, headers?: Record<string, string>[], noDat
     cache: 'no-store',
   })
   const { status } = res
-  const data = !noData && !skipStatuses.includes(status) && await res.json()
+  const data = !noData && !skipStatuses.includes(status) && (await res.json())
 
   return { status, data }
 }
@@ -72,7 +72,7 @@ export const POST = async (url: string, body?: any, headers?: Record<string, str
   })
 
   const { status } = res
-  const data = !noData && !skipStatuses.includes(status) && await res.json()
+  const data = !noData && !skipStatuses.includes(status) && (await res.json())
 
   return { status, data }
 }
@@ -93,7 +93,7 @@ export const PUT = async (url: string, body?: any, headers?: Record<string, stri
   })
 
   const { status } = res
-  const data = !noData && !skipStatuses.includes(status) && await res.json()
+  const data = !noData && !skipStatuses.includes(status) && (await res.json())
 
   return { status: res.status, data }
 }
@@ -106,7 +106,7 @@ export const DELETE = async (url: string, headers?: Record<string, string>[], no
   })
 
   const { status } = res
-  const data = !noData && !skipStatuses.includes(status) && await res.json()
+  const data = !noData && !skipStatuses.includes(status) && (await res.json())
 
   return { status, data }
 }

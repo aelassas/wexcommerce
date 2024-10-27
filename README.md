@@ -1,4 +1,4 @@
-[![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) [![](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexcommerce/wiki) [![](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/) [![](https://raw.githubusercontent.com/aelassas/wexcommerce/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml)
+[![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg?branch=next-15)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) [![](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexcommerce/wiki) [![](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/) [![](https://raw.githubusercontent.com/aelassas/wexcommerce/loc-next-15/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml)
 
 ![](https://wexcommerce.github.io/content/frontend-0-tiny.png)
 
@@ -47,4 +47,3 @@ A key design decision was made to use TypeScript instead of JavaScript due to it
 
 # License
 wexCommerce is [MIT licensed](https://github.com/aelassas/wexcommerce/blob/main/LICENSE).
-

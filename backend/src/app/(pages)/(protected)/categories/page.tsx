@@ -5,7 +5,8 @@ import CategoryList from '@/components/CategoryList'
 
 import styles from '@/styles/categories.module.css'
 
-const Categories = ({ searchParams }: { searchParams: SearchParams }) => {
+const Categories = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams
   const keyword = (searchParams['s'] as string) || ''
 
   return (

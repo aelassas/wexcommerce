@@ -46,7 +46,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
           {' '}
         </ul>
       </div>
-    ) : <></>,
+    ) : <div></div>,
 
     infinite,
     autoplay: !!autoplay,

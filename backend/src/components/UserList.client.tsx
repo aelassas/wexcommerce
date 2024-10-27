@@ -44,6 +44,7 @@ export const Pager: React.FC<PagerProps> = ({
       pageSize={env.PAGE_SIZE}
       rowCount={rowCount}
       totalRecords={totalRecords}
+      alwaysVisible
       className={styles.pager}
       onPrevious={() => router.push(`/users?${`p=${page - 1}`}${(keyword !== '' && `&k=${encodeURIComponent(keyword)}`) || ''}`)}
       onNext={() => router.push(`/users?${`p=${page + 1}`}${(keyword !== '' && `&k=${encodeURIComponent(keyword)}`) || ''}`)}

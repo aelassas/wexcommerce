@@ -9,7 +9,7 @@ git pull
 sudo chmod +x -R /opt/wexcommerce/__scripts
 
 cd /opt/wexcommerce/frontend
-npm install
+npm install --force
 sudo rm -rf .next
 npm run build
 

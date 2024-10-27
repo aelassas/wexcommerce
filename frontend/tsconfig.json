@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,17 +21,36 @@
         "name": "next"
       }
     ],
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"],
-      ":wexcommerce-types": ["../packages/wexcommerce-types"],
-      ":wexcommerce-helper": ["../packages/wexcommerce-helper"],
+      "@/*": [
+        "./src/*"
+      ],
+      ":wexcommerce-types": [
+        "../packages/wexcommerce-types"
+      ],
+      ":wexcommerce-helper": [
+        "../packages/wexcommerce-helper"
+      ]
     },
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "target": "ESNext"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "references": [
-    { "path": "../packages/wexcommerce-types" },
-    { "path": "../packages/wexcommerce-helper" }
+    {
+      "path": "../packages/wexcommerce-types"
+    },
+    {
+      "path": "../packages/wexcommerce-helper"
+    }
   ]
 }

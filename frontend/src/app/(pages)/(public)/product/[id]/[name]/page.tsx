@@ -1,5 +1,6 @@
 'use server'
 
+import { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import NoMatch from '@/components/NoMatch'
 import * as SettingService from '@/lib/SettingService'
@@ -8,8 +9,10 @@ import * as CartService from '@/lib/CartService'
 import * as UserService from '@/lib/UserService'
 import * as WishlistService from '@/lib/WishlistService'
 import ProductComponent from '@/components/Product'
+import Indicator from '@/components/Indicator'
 
-const Product = async ({ params }: { params: { id: string, name: string } }) => {
+const Product = async (props: { params: Promise<{ id: string, name: string }> }) => {
+  const params = await props.params
   const { id } = params
 
   if (!id) {
@@ -30,7 +33,9 @@ const Product = async ({ params }: { params: { id: string, name: string } }) => 
   }
 
   return product ? (
-    <ProductComponent product={product} />
+    <Suspense fallback={<Indicator />}>
+      <ProductComponent product={product} />
+    </Suspense>
   ) : (
     <NoMatch />
   )

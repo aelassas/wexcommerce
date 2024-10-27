@@ -183,37 +183,35 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }
 
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <CssBaseline>
-          <LanguageProvider>
-            <CurrencyProvider>
-              <UserProvider>
-                <NotificationProvider>
-                  <CartProvider>
-                    <WishlistProvider>
-                      {children}
-                    </WishlistProvider>
-                  </CartProvider>
-                </NotificationProvider>
-              </UserProvider>
-            </CurrencyProvider>
-          </LanguageProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline>
+        <LanguageProvider>
+          <CurrencyProvider>
+            <UserProvider>
+              <NotificationProvider>
+                <CartProvider>
+                  <WishlistProvider>
+                    {children}
+                  </WishlistProvider>
+                </CartProvider>
+              </NotificationProvider>
+            </UserProvider>
+          </CurrencyProvider>
+        </LanguageProvider>
 
-          <ToastContainer
-            position='top-right'
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            pauseOnFocusLoss={false}
-            draggable={false}
-            pauseOnHover={true}
-            theme='dark'
-            icon={<></>}
-          />
-        </CssBaseline>
-      </ThemeProvider>
+        <ToastContainer
+          position='top-right'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover={true}
+          theme='dark'
+          icon={<div></div>}
+        />
+      </CssBaseline>
 
       <ProgressBar
         height="2px"
@@ -221,7 +219,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         options={{ showSpinner: false }}
         shallowRouting
       />
-    </>
+    </ThemeProvider>
   )
 }
 

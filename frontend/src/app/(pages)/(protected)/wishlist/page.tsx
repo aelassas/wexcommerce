@@ -1,10 +1,12 @@
 'use server'
 
+import { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as serverHelper from '@/common/serverHelper'
 import * as UserService from '@/lib/UserService'
 import * as WishlistService from '@/lib/WishlistService'
 import WishlistComponent, { EmptyWishlist } from '@/components/Wishlist'
+import Indicator from '@/components/Indicator'
 
 const Wishlist = async () => {
   let wishlist: wexcommerceTypes.Wishlist | undefined = undefined
@@ -25,7 +27,9 @@ const Wishlist = async () => {
   }
 
   return wishlist ? (
-    <WishlistComponent wishlist={wishlist} />
+    <Suspense fallback={<Indicator />}>
+      <WishlistComponent wishlist={wishlist} />
+    </Suspense>
   ) : (
     <EmptyWishlist />
   )

@@ -5,7 +5,7 @@ WORKDIR /wexcommerce/backend
 COPY ./backend ./
 COPY ./backend/.env.docker .env
 COPY ./packages /wexcommerce/packages
-RUN npm install
+RUN npm install --force
 RUN npm run build
 
 CMD ["npm", "start"]

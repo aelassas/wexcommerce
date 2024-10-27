@@ -49,9 +49,9 @@ const ListBox: React.ComponentType<React.HTMLAttributes<HTMLElement>> = forwardR
 
   return (
     // eslint-disable-next-line
-    <ul {...rest} ref={innerRef} role="list-box">
+    (<ul {...rest} ref={innerRef} role="list-box">
       {children}
-    </ul>
+    </ul>)
   )
 })
 

@@ -437,6 +437,7 @@ export const getFeaturedCategories = async (req: Request, res: Response) => {
         },
       },
     ])
+
     return res.json(data)
   } catch (err) {
     logger.error(`[category.getFeaturedCategories] ${i18n.t('DB_ERROR')}`, err)

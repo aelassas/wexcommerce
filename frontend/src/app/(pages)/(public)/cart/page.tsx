@@ -1,8 +1,10 @@
 'use server'
 
+import { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as CartService from '@/lib/CartService'
 import CartComponent, { EmptyCart } from '@/components/Cart'
+import Indicator from '@/components/Indicator'
 
 const Cart = async () => {
   let cart: wexcommerceTypes.Cart | undefined = undefined
@@ -18,7 +20,9 @@ const Cart = async () => {
   }
 
   return cart ? (
-    <CartComponent cart={cart} />
+    <Suspense fallback={<Indicator />}>
+      <CartComponent cart={cart} />
+    </Suspense>
   ) : (
     <EmptyCart />
   )

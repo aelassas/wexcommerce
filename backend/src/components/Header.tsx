@@ -64,9 +64,11 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch }) => {
   const [searchKeyword, setSearchKeyword] = useState('')
   const [showPlaceholder, setShowPlaceholder] = React.useState(true)
   const [showMobileSearch, setShowMobileSearch] = useState(false)
+  
+  const searchRef = useRef<HTMLElement>(null)
+
   const showPlacehoder = () => setShowPlaceholder(true)
   const hidePlaceholder = () => setShowPlaceholder(false)
-  const searchRef = useRef<HTMLElement>()
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)

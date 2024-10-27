@@ -45,7 +45,7 @@ const Carrousel: React.FC<CarrouselProps> = ({
           {' '}
         </ul>
       </div>
-    ) : <></>,
+    ) : <div></div>,
 
     infinite,
     autoplay: !!autoplay,

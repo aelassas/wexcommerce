@@ -32,6 +32,7 @@ const CreateProduct: React.FC = () => {
   const { currency } = useCurrencyContext() as CurrencyContextType
 
   const [name, setName] = useState('')
+  const [initialDescription, setInitialDescription] = useState('')
   const [description, setDescription] = useState('')
   const [descriptionError, setDescriptionError] = useState(false)
   const [categories, setCategories] = useState<wexcommerceTypes.CategoryInfo[]>([])
@@ -101,6 +102,7 @@ const CreateProduct: React.FC = () => {
         // router.push('/products')
 
         setName('')
+        setInitialDescription('<p></p>')
         setDescription('')
         setCategories([])
         setPrice('')
@@ -172,7 +174,7 @@ const CreateProduct: React.FC = () => {
             <RichTextEditor
               language={language}
               className={styles.editor}
-              value={description}
+              value={initialDescription}
               onChange={handleRichTextEditorChange}
             />
           </FormControl>

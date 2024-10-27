@@ -27,7 +27,8 @@ import {
 
 import styles from '@/styles/orders.module.css'
 
-const Orders = async ({ searchParams }: { searchParams: SearchParams }) => {
+const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams
   const allPaymentTypes = helper.getPaymentTypes()
   const allDeliveryTypes = helper.getDeliveryTypes()
   const allStatuses = helper.getOrderStatuses()
@@ -43,7 +44,6 @@ const Orders = async ({ searchParams }: { searchParams: SearchParams }) => {
 
   const userIdFromSearchParams = (searchParams['u'] as string) || ''
   const keyword = (searchParams['o'] || searchParams['s'] || '') as string
-  console.log('keyword', keyword)
   const _from = searchParams['from'] as string
   const from = _from ? new Date(Number.parseInt(_from, 10)) : null
   const _to = searchParams['to'] as string

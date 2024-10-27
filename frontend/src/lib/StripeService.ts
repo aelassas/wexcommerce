@@ -9,7 +9,7 @@ import * as fetchInstance from './fetchInstance'
  * @param {wexcommerceTypes.CreatePaymentPayload} payload
  * @returns {Promise<wexcommerceTypes.PaymentResult>}
  */
-export const createCheckoutSession = (payload: wexcommerceTypes.CreatePaymentPayload): Promise<wexcommerceTypes.PaymentResult> =>
+export const createCheckoutSession = async (payload: wexcommerceTypes.CreatePaymentPayload): Promise<wexcommerceTypes.PaymentResult> =>
   fetchInstance
     .POST(
       '/api/create-checkout-session',
@@ -23,7 +23,7 @@ export const createCheckoutSession = (payload: wexcommerceTypes.CreatePaymentPay
  * @param {string} sessionId
  * @returns {Promise<number>}
  */
-export const checkCheckoutSession = (sessionId: string): Promise<number> =>
+export const checkCheckoutSession = async (sessionId: string): Promise<number> =>
   fetchInstance
     .POST(
       `/api/check-checkout-session/${sessionId}`,
@@ -39,7 +39,7 @@ export const checkCheckoutSession = (sessionId: string): Promise<number> =>
  * @param {wexcommerceTypes.CreatePaymentPayload} payload
  * @returns {Promise<wexcommerceTypes.CreatePaymentIntentResult>}
  */
-export const createPaymentIntent = (payload: wexcommerceTypes.CreatePaymentPayload): Promise<wexcommerceTypes.PaymentResult> =>
+export const createPaymentIntent = async (payload: wexcommerceTypes.CreatePaymentPayload): Promise<wexcommerceTypes.PaymentResult> =>
   fetchInstance
     .POST(
       '/api/create-payment-intent',

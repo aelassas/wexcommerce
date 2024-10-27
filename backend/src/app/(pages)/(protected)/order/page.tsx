@@ -5,7 +5,8 @@ import * as OrderService from '@/lib/OrderService'
 import OrderForm from './page.client'
 import EmptyOrderList from '@/components/EmptyOrderList'
 
-const Order = async ({ searchParams }: { searchParams: SearchParams }) => {
+const Order = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams
   const orderId = searchParams['o'] as string
   let order: wexcommerceTypes.OrderInfo | null = null
 

@@ -45,7 +45,7 @@ const CategoryList: React.FC<CategoryListProps> = (
           {' '}
         </ul>
       </div>
-    ) : <></>,
+    ) : <div></div>,
 
     infinite,
     autoplay: !!autoplay,

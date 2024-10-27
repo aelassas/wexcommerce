@@ -1,5 +1,6 @@
 'use server'
 
+import { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
 import * as serverHelper from '@/common/serverHelper'
@@ -14,6 +15,7 @@ import FeaturedProducts from '@/components/FeaturedProducts'
 import Carrousel from '@/components/Carrousel'
 import CategoryList from '@/components/CategoryList'
 import FeaturedCategories from '@/components/FeaturedCategories'
+import Indicator from '@/components/Indicator'
 
 import styles from '@/styles/home.module.css'
 
@@ -54,37 +56,39 @@ const Home = async () => {
   }
 
   return (
-    <div className={styles.main}>
+    <Suspense fallback={<Indicator />}>
+      <div className={styles.main}>
 
-      <div className={styles.carrousel}>
-        <Carrousel
-          images={slides}
-          autoplay
-          autoplaySpeed={4 * 1000}
-          showArrows={false}
-          showDots
-        />
+        <div className={styles.carrousel}>
+          <Carrousel
+            images={slides}
+            autoplay
+            autoplaySpeed={4 * 1000}
+            showArrows={false}
+            showDots
+          />
+        </div>
+
+        <div className={styles.featuredProducs}>
+          <FeaturedProducts
+            title={strings.FEATURED_PRODUCTS_TITLE}
+            products={featuredProducts}
+            autoplay
+            autoplaySpeed={5 * 1000}
+            showActions
+          />
+        </div>
+
+        <div className={styles.categories}>
+          <CategoryList title={strings.CATEGORIES_TITLE} categories={categories} showNavigation />
+        </div>
+
+        <div className={styles.featuredCategories}>
+          <FeaturedCategories categoryGroups={categoryGroups} />
+        </div>
+
       </div>
-
-      <div className={styles.featuredProducs}>
-        <FeaturedProducts
-          title={strings.FEATURED_PRODUCTS_TITLE}
-          products={featuredProducts}
-          autoplay
-          autoplaySpeed={5 * 1000}
-          showActions
-        />
-      </div>
-
-      <div className={styles.categories}>
-        <CategoryList title={strings.CATEGORIES_TITLE} categories={categories} showNavigation />
-      </div>
-
-      <div className={styles.featuredCategories}>
-        <FeaturedCategories categoryGroups={categoryGroups} />
-      </div>
-
-    </div>
+    </Suspense>
   )
 }
 

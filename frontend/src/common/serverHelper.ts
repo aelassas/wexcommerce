@@ -6,8 +6,9 @@ export const getProductURL = async (product: wexcommerceTypes.Product) => {
   //
   // Get reverse proxy headers
   //
-  const xForwardedProto = headers().get('x-forwarded-proto')
-  const xForwardedHost = headers().get('x-forwarded-host')
+  const headersList = await headers()
+  const xForwardedProto = headersList.get('x-forwarded-proto')
+  const xForwardedHost = headersList.get('x-forwarded-host')
 
   let host = ''
   if (xForwardedProto && xForwardedHost) {
@@ -15,7 +16,7 @@ export const getProductURL = async (product: wexcommerceTypes.Product) => {
     host = `${xForwardedProto}://${xForwardedHost}`
   } else {
     // direct access
-    const xURL = headers().get('x-url')
+    const xURL = headersList.get('x-url')
     host = xURL?.match(/((https?:\/\/)|(www.))(?:([a-zA-Z]+)|(\d+\.\d+.\d+.\d+)):\d{4}/g)![0] || ''
   }
 

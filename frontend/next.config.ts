@@ -1,10 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
   reactStrictMode: false,
   poweredByHeader: false,
   images: {
     //
-    // Add your backend domain here
+    // Add your frontend domain here
     //
     remotePatterns: [
       {
@@ -27,11 +28,18 @@ const nextConfig = {
   //
   compress: false,
   //
-  // Add your backend domain here
+  // Add your frontend domain here
   //
   experimental: {
     serverActions: {
-      allowedOrigins: ['localhost:8001', 'wexcommerce.dynv6.net:8001'],
+      allowedOrigins: ['localhost', 'wexcommerce.dynv6.net:8002'],
+    },
+    turbo: {
+      root: '..',
+      resolveAlias: {
+        ':wexcommerce-types': '../packages/wexcommerce-types',
+        ':wexcommerce-helper': '../packages/wexcommerce-helper',
+      },
     },
   },
 }

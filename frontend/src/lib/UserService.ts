@@ -15,7 +15,7 @@ import * as CartService from '@/lib/CartService'
 export const authHeader = async (): Promise<Record<string, string>> => {
   let user
 
-  const userCookie = cookies().get('wc-fe-user')
+  const userCookie = (await cookies()).get('wc-fe-user')
 
   if (userCookie) {
     user = JSON.parse(userCookie.value) as wexcommerceTypes.User
@@ -89,9 +89,9 @@ export const signin = async (data: wexcommerceTypes.SignInPayload): Promise<{ st
       `/api/sign-in/${env.APP_TYPE}`,
       data
     )
-    .then((res) => {
+    .then(async (res) => {
       if (res.data.accessToken) {
-        cookies().set('wc-fe-user', JSON.stringify(res.data), CookieOptions)
+        (await cookies()).set('wc-fe-user', JSON.stringify(res.data), CookieOptions)
       }
       return ({ status: res.status, data: res.data })
     })
@@ -109,8 +109,8 @@ export const socialSignin = async (data: wexcommerceTypes.SignInPayload): Promis
       '/api/social-sign-in',
       data,
     )
-    .then((res) => {
-      cookies().set('wc-fe-user', JSON.stringify(res.data), CookieOptions)
+    .then(async (res) => {
+      (await cookies()).set('wc-fe-user', JSON.stringify(res.data), CookieOptions)
       return { status: res.status, data: res.data }
     })
 
@@ -124,7 +124,7 @@ export const socialSignin = async (data: wexcommerceTypes.SignInPayload): Promis
  * @returns {*}
  */
 export const signout = async (_redirect = true, _redirectSignIn = false, _deleteCartId = false) => {
-  cookies().delete('wc-fe-user')
+  (await cookies()).delete('wc-fe-user')
 
   if (_deleteCartId) {
     await CartService.deleteCartId()
@@ -135,7 +135,7 @@ export const signout = async (_redirect = true, _redirectSignIn = false, _delete
   }
 
   if (_redirectSignIn) {
-    const xURL = headers().get('x-url')
+    const xURL = (await headers()).get('x-url')
 
     if (xURL) {
       const url = new URL(xURL)
@@ -253,8 +253,9 @@ export const deleteTokens = async (userId: string): Promise<number> => (
  */
 export const getLanguage = async (): Promise<string> => {
   let user
+  const cookieStore = await cookies()
+  const userCookie = cookieStore.get('wc-fe-user')
 
-  const userCookie = cookies().get('wc-fe-user')
   if (userCookie) {
     user = JSON.parse(userCookie.value) as wexcommerceTypes.User
   }
@@ -263,7 +264,7 @@ export const getLanguage = async (): Promise<string> => {
     return user.language
   } else {
     let lang: string | undefined
-    const langCookie = cookies().get('wc-fe-language')
+    const langCookie = cookieStore.get('wc-fe-language')
     if (langCookie) {
       lang = JSON.parse(langCookie.value) as string
     }
@@ -289,18 +290,19 @@ export const updateLanguage = async (data: wexcommerceTypes.UpdateLanguagePayloa
       [await authHeader()],
       true
     )
-    .then((res) => {
+    .then(async (res) => {
       if (res.status === 200) {
         let user
+        const cookieStore = await cookies()
 
-        const userCookie = cookies().get('wc-fe-user')
+        const userCookie = cookieStore.get('wc-fe-user')
         if (userCookie) {
           user = JSON.parse(userCookie.value)
         }
 
         if (user) {
           user.language = data.language
-          cookies().set('wc-fe-user', JSON.stringify(user), CookieOptions)
+          cookieStore.set('wc-fe-user', JSON.stringify(user), CookieOptions)
         }
       }
       return res.status
@@ -313,7 +315,7 @@ export const updateLanguage = async (data: wexcommerceTypes.UpdateLanguagePayloa
  * @param {string} lang
  */
 export const setLanguage = async (lang: string) => {
-  cookies().set('wc-fe-language', JSON.stringify(lang), CookieOptions)
+  (await cookies()).set('wc-fe-language', JSON.stringify(lang), CookieOptions)
 }
 
 /**
@@ -324,7 +326,7 @@ export const setLanguage = async (lang: string) => {
 export const getCurrentUser = async (): Promise<wexcommerceTypes.User | null> => {
   let user
 
-  const userCookie = cookies().get('wc-fe-user')
+  const userCookie = (await cookies()).get('wc-fe-user')
   if (userCookie) {
     user = JSON.parse(userCookie.value)
   }
@@ -438,7 +440,7 @@ export const hasPassword = async (id: string): Promise<number> =>
 * @returns {void}
 */
 export const setStayConnected = async (value: boolean) => {
-  cookies().set('wc-stay-connected', JSON.stringify(value), CookieOptions)
+  (await cookies()).set('wc-stay-connected', JSON.stringify(value), CookieOptions)
 }
 
 /**
@@ -448,6 +450,6 @@ export const setStayConnected = async (value: boolean) => {
  * @returns {boolean}
  */
 export const getStayConnected = async () => {
-  const value = JSON.parse(cookies().get('wc-stay-connected')?.value || 'false')
+  const value = JSON.parse((await cookies()).get('wc-stay-connected')?.value || 'false')
   return value as boolean
 }

@@ -14,7 +14,8 @@ import ProductsWrapper, { Pager, Tags } from './page.client'
 
 import styles from '@/styles/products-server.module.css'
 
-const Products = async ({ searchParams }: { searchParams: SearchParams }) => {
+const Products = async (props: { searchParams: Promise<SearchParams> }) => {
+  const searchParams = await props.searchParams
   let page = 0
   const p = searchParams['p'] as string
   if (p) {

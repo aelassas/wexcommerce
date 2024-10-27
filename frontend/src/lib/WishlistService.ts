@@ -105,7 +105,7 @@ export const getWishlistId = async (userId: string): Promise<string> => (
         `/api/wishlist-id/${userId}`,
         [await UserService.authHeader()]
       )
-      .then((res) => res.data)
+      .then((res) => res.data || '')
     : ''
 )
 
