@@ -6,7 +6,7 @@ if [ "$1" == "all" ]; then
   /bin/bash /opt/wexcommerce/__scripts/wc-deploy-frontend.sh
 elif [ "$1" == "ui" ]; then
   /bin/bash /opt/wexcommerce/__scripts/wc-deploy-backend.sh
-  /bin/bash /opt/wexcommerce/__scripts/wc-deploy-frontend.sh  
+  /bin/bash /opt/wexcommerce/__scripts/wc-deploy-frontend.sh
 elif [ "$1" == "api" ]; then
   /bin/bash /opt/wexcommerce/__scripts/wc-deploy-api.sh
 elif [ "$1" == "backend" ]; then
