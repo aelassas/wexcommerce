@@ -14,5 +14,5 @@ elif [ "$1" == "backend" ]; then
 elif [ "$1" == "frontend" ]; then
   /bin/bash /opt/wexcommerce/__scripts/wc-deploy-frontend.sh
 else
-  echo "Usage: wc-deploy all|api|backend|frontend"
+  echo "Usage: wc-deploy all|ui|api|backend|frontend"
 fi
