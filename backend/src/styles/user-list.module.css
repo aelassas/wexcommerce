@@ -64,8 +64,6 @@
   justify-content: center;
 }
 
-@media only screen and (width <=960px) {
-  .pager {
-    margin: 5px 10px 15px;
-  }
+.pager {
+  margin: 5px 10px 15px;
 }
