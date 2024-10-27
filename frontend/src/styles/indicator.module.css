@@ -16,29 +16,6 @@ div.indicator {
   }
 }
 
-.spinner div {
-  position: absolute;
-  width: 55px;
-  height: 55px;
-  border: 5px solid rgba(0, 0, 0, 0.8);
-  border-top-color: transparent;
-  border-radius: 50%;
-}
-
-.spinner div {
-  animation: spinner 1s linear infinite;
-  top: 50px;
-  left: 50px
-}
-
-.spinnerRolling {
-  width: 38px;
-  height: 38px;
-  display: inline-block;
-  overflow: hidden;
-  background: none;
-}
-
 .spinner {
   width: 100%;
   height: 100%;
@@ -49,5 +26,22 @@ div.indicator {
 }
 
 .spinner div {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  border: 5px solid rgb(0 0 0 / 80%);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spinner 1s linear infinite;
+  top: 50px;
+  left: 50px;
   box-sizing: content-box;
+}
+
+.spinnerRolling {
+  width: 38px;
+  height: 38px;
+  display: inline-block;
+  overflow: hidden;
+  background: none;
 }
