@@ -7,6 +7,8 @@ cd /opt/wexcommerce/
 git pull
 sudo chmod +x -R /opt/wexcommerce/__scripts
 
+/bin/bash /opt/wexcommerce/__scripts/free-mem.sh
+
 cd /opt/wexcommerce/backend/
 npm install --force
 sudo rm -rf .next

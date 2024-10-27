@@ -7,6 +7,8 @@ cd /opt/wexcommerce/
 git pull
 chmod +x -R /opt/wexcommerce/__scripts
 
+/bin/bash /opt/wexcommerce/__scripts/free-mem.sh
+
 cd /opt/wexcommerce/api
 
 npm install
