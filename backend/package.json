@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo -p 8005",
-    "build": "rimraf .next && tsc --build --verbose && next build",
+    "build": "rimraf .next && tsc --build --verbose && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
     "start": "next start -p 8005",
     "lint": "next lint",
     "ncu": "ncu -u -x typescript,eslint,date-fns",
@@ -23,6 +23,7 @@
     "@types/html-to-draftjs": "^1.4.3",
     "@types/react-draft-wysiwyg": "^1.13.8",
     "@types/validator": "^13.12.2",
+    "cross-env": "^7.0.3",
     "date-fns": "^2.30.0",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",

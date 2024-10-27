@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo -p 8006",
-    "build": "rimraf .next && tsc --build --verbose && next build",
+    "build": "rimraf .next && tsc --build --verbose && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
     "start": "next start -p 8006",
     "lint": "next lint",
     "ncu": "ncu -u -x typescript,eslint,date-fns",
@@ -22,6 +22,7 @@
     "@stripe/stripe-js": "^4.9.0",
     "@types/react-slick": "^0.23.13",
     "@types/validator": "^13.12.2",
+    "cross-env": "^7.0.3",
     "date-fns": "^2.30.0",
     "github-fork-ribbon-css": "^0.2.3",
     "next": "15.0.1",
