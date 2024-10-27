@@ -17,6 +17,8 @@ npm run build
 sudo systemctl restart wexcommerce-backend
 sudo systemctl status wexcommerce-backend --no-pager
 
+/bin/bash /opt/wexcommerce/__scripts/free-mem.sh
+
 #sudo rm -rf /var/cache/nginx
 #sudo systemctl restart nginx
 #sudo systemctl status nginx --no-pager

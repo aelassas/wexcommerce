@@ -17,6 +17,8 @@ npm run build
 sudo systemctl restart wexcommerce
 sudo systemctl status wexcommerce --no-pager
 
+/bin/bash /opt/wexcommerce/__scripts/free-mem.sh
+
 finish_time=$(date +%s)
 elapsed_time=$((finish_time - start_time))
 ((sec=elapsed_time%60, elapsed_time/=60, min=elapsed_time%60, hrs=elapsed_time/60))
