@@ -261,7 +261,7 @@ export const getCartId = async (req: Request, res: Response) => {
     return res.json(null)
   } catch (err) {
     logger.error(`[cart.getCartId] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    return res.status(400).json(null)
   }
 }
 

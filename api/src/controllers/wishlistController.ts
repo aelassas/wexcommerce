@@ -139,7 +139,7 @@ export const getWishlistId = async (req: Request, res: Response) => {
     return res.json(null)
   } catch (err) {
     logger.error(`[wishlist.getWishlistId] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    return res.status(400).json(null)
   }
 }
 
