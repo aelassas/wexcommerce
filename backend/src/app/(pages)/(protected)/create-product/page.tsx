@@ -60,7 +60,7 @@ const CreateProduct: React.FC = () => {
   }, [imageViewerOpen])
 
   const handleRichTextEditorChange = (value: string) => {
-    setDescriptionError(!!!value)
+    setDescriptionError(!value)
     setDescription(value)
   }
 

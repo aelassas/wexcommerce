@@ -91,7 +91,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
   }, [imageViewerOpen])
 
   const handleRichTextEditorChange = (value: string) => {
-    setDescriptionError(!!!value)
+    setDescriptionError(!value)
     setDescription(value)
   }
 
