@@ -1,5 +1,6 @@
 'use server'
 
+import { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { fr, enUS } from 'date-fns/locale'
@@ -24,6 +25,7 @@ import {
   Actions,
   Header,
 } from './page.client'
+import Indicator from '@/components/Indicator'
 
 import styles from '@/styles/orders.module.css'
 
@@ -146,153 +148,155 @@ const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
   const _locale = _fr ? fr : enUS
 
   return userId && (
-    <div className={styles.main}>
-      <div className={styles.leftPanel}>
-        <Filters
-          user={userId}
-          paymentTypes={paymentTypes}
-          deliveryTypes={deliveryTypes}
-          statuses={statuses}
-          keyword={keyword}
-          from={from}
-          to={to}
-          sortBy={sortBy}
-        />
-      </div>
+    <Suspense fallback={<Indicator />}>
+      <div className={styles.main}>
+        <div className={styles.leftPanel}>
+          <Filters
+            user={userId}
+            paymentTypes={paymentTypes}
+            deliveryTypes={deliveryTypes}
+            statuses={statuses}
+            keyword={keyword}
+            from={from}
+            to={to}
+            sortBy={sortBy}
+          />
+        </div>
 
-      <div className={styles.orders}>
+        <div className={styles.orders}>
 
-        <Header
-          user={userId}
-          page={page}
-          rowCount={rowCount}
-          totalRecords={totalRecords}
-          paymentTypes={paymentTypes}
-          deliveryTypes={deliveryTypes}
-          statuses={statuses}
-          keyword={keyword}
-          from={from}
-          to={to}
-          sortBy={sortBy}
-        />
+          <Header
+            user={userId}
+            page={page}
+            rowCount={rowCount}
+            totalRecords={totalRecords}
+            paymentTypes={paymentTypes}
+            deliveryTypes={deliveryTypes}
+            statuses={statuses}
+            keyword={keyword}
+            from={from}
+            to={to}
+            sortBy={sortBy}
+          />
 
-        {
-          (totalRecords === 0 || noMatch) && <EmptyOrderList />
-        }
+          {
+            (totalRecords === 0 || noMatch) && <EmptyOrderList />
+          }
 
-        {
-          totalRecords > 0 &&
-          <>
-            <div className={styles.orderList}>
-              {
-                orders.map((order) => (
-                  <article key={order._id}>
-                    <div className={styles.order}>
-                      <div className={styles.orderContent}>
-                        <div className={styles.orderInfo}>
-                          <span className={styles.orderLabel}>{strings.ID}</span>
-                          <span>{order._id}</span>
-                        </div>
-                        <div className={styles.orderInfo}>
-                          <span className={styles.orderLabel}>{strings.STATUS}</span>
-                          <OdrerStatusField value={order.status as wexcommerceTypes.OrderStatus} />
-                        </div>
-                        <div className={styles.orderInfo}>
-                          <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
-                          <PaymentTypeField value={(order.paymentType as wexcommerceTypes.PaymentTypeInfo).name} />
-                        </div>
-                        <div className={styles.orderInfo}>
-                          <span className={styles.orderLabel}>{strings.DELIVERY_TYPE}</span>
-                          <DeliveryTypeField value={(order.deliveryType as wexcommerceTypes.DeliveryTypeInfo).name} />
-                        </div>
-                        <div className={styles.orderInfo}>
-                          <span className={styles.orderLabel}>{strings.CLIENT}</span>
-                          <Link href={`/users?u=${(order.user as wexcommerceTypes.User)._id}`}>
-                            <span>{(order.user as wexcommerceTypes.User).fullName}</span>
-                          </Link>
-                        </div>
-                        <div className={styles.orderInfo}>
-                          <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
-                          <div className={styles.orderItems}>
-                            {
-                              (order.orderItems as wexcommerceTypes.OrderItem[]).map((orderItem) => (
-                                <div key={orderItem._id} className={styles.orderItem}>
-                                  <div className={styles.orderItemInfo}>
-                                    <span className={styles.image}>
-                                      <Image
-                                        width={0}
-                                        height={0}
-                                        sizes="100vwh"
-                                        priority={true}
-                                        alt=""
-                                        className={styles.orderItemInfo}
-                                        src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, (orderItem.product as wexcommerceTypes.Product).image)}
-                                      />
-                                    </span>
+          {
+            totalRecords > 0 &&
+            <>
+              <div className={styles.orderList}>
+                {
+                  orders.map((order) => (
+                    <article key={order._id}>
+                      <div className={styles.order}>
+                        <div className={styles.orderContent}>
+                          <div className={styles.orderInfo}>
+                            <span className={styles.orderLabel}>{strings.ID}</span>
+                            <span>{order._id}</span>
+                          </div>
+                          <div className={styles.orderInfo}>
+                            <span className={styles.orderLabel}>{strings.STATUS}</span>
+                            <OdrerStatusField value={order.status as wexcommerceTypes.OrderStatus} />
+                          </div>
+                          <div className={styles.orderInfo}>
+                            <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
+                            <PaymentTypeField value={(order.paymentType as wexcommerceTypes.PaymentTypeInfo).name} />
+                          </div>
+                          <div className={styles.orderInfo}>
+                            <span className={styles.orderLabel}>{strings.DELIVERY_TYPE}</span>
+                            <DeliveryTypeField value={(order.deliveryType as wexcommerceTypes.DeliveryTypeInfo).name} />
+                          </div>
+                          <div className={styles.orderInfo}>
+                            <span className={styles.orderLabel}>{strings.CLIENT}</span>
+                            <Link href={`/users?u=${(order.user as wexcommerceTypes.User)._id}`}>
+                              <span>{(order.user as wexcommerceTypes.User).fullName}</span>
+                            </Link>
+                          </div>
+                          <div className={styles.orderInfo}>
+                            <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
+                            <div className={styles.orderItems}>
+                              {
+                                (order.orderItems as wexcommerceTypes.OrderItem[]).map((orderItem) => (
+                                  <div key={orderItem._id} className={styles.orderItem}>
+                                    <div className={styles.orderItemInfo}>
+                                      <span className={styles.image}>
+                                        <Image
+                                          width={0}
+                                          height={0}
+                                          sizes="100vwh"
+                                          priority={true}
+                                          alt=""
+                                          className={styles.orderItemInfo}
+                                          src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, (orderItem.product as wexcommerceTypes.Product).image)}
+                                        />
+                                      </span>
+                                    </div>
+                                    <div className={styles.orderItemInfo}>
+                                      <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
+                                      <span>
+                                        <Link
+                                          href={`/product?p=${(orderItem.product as wexcommerceTypes.Product)._id}`}
+                                          className={styles.orderItemText}
+                                          title={(orderItem.product as wexcommerceTypes.Product).name}>
+
+                                          {(orderItem.product as wexcommerceTypes.Product).name}
+
+                                        </Link>
+                                      </span>
+                                    </div>
+                                    <div className={styles.orderItemInfo}>
+                                      <span className={styles.orderItemLabel}>{cpStrings.PRICE}</span>
+                                      <span>{`${wexcommerceHelper.formatPrice((orderItem.product as wexcommerceTypes.Product).price, currency, language)}`}</span>
+                                    </div>
+                                    <div className={styles.orderItemInfo}>
+                                      <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
+                                      <span>{orderItem.quantity}</span>
+                                    </div>
                                   </div>
-                                  <div className={styles.orderItemInfo}>
-                                    <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
-                                    <span>
-                                      <Link
-                                        href={`/product?p=${(orderItem.product as wexcommerceTypes.Product)._id}`}
-                                        className={styles.orderItemText}
-                                        title={(orderItem.product as wexcommerceTypes.Product).name}>
-
-                                        {(orderItem.product as wexcommerceTypes.Product).name}
-
-                                      </Link>
-                                    </span>
-                                  </div>
-                                  <div className={styles.orderItemInfo}>
-                                    <span className={styles.orderItemLabel}>{cpStrings.PRICE}</span>
-                                    <span>{`${wexcommerceHelper.formatPrice((orderItem.product as wexcommerceTypes.Product).price, currency, language)}`}</span>
-                                  </div>
-                                  <div className={styles.orderItemInfo}>
-                                    <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
-                                    <span>{orderItem.quantity}</span>
-                                  </div>
-                                </div>
-                              ))
-                            }
+                                ))
+                              }
+                            </div>
+                          </div>
+                          <div className={styles.orderInfo}>
+                            <span className={styles.orderLabel}>{strings.ORDERED_AT}</span>
+                            <span>{wexcommerceHelper.capitalize(format(new Date(order.createdAt!), _format, { locale: _locale }))}</span>
+                          </div>
+                          <div className={styles.orderInfo}>
+                            <span className={styles.orderLabel}>{strings.TOTAL}</span>
+                            <span>{`${wexcommerceHelper.formatPrice(order.total, currency, language)}`}</span>
                           </div>
                         </div>
-                        <div className={styles.orderInfo}>
-                          <span className={styles.orderLabel}>{strings.ORDERED_AT}</span>
-                          <span>{wexcommerceHelper.capitalize(format(new Date(order.createdAt!), _format, { locale: _locale }))}</span>
-                        </div>
-                        <div className={styles.orderInfo}>
-                          <span className={styles.orderLabel}>{strings.TOTAL}</span>
-                          <span>{`${wexcommerceHelper.formatPrice(order.total, currency, language)}`}</span>
-                        </div>
+
+                        <Actions orderId={order._id!} />
                       </div>
+                    </article>
+                  ))
+                }
+              </div>
 
-                      <Actions orderId={order._id!} />
-                    </div>
-                  </article>
-                ))
-              }
-            </div>
+              {!noMatch && (
+                <Pager
+                  page={page}
+                  rowCount={rowCount}
+                  totalRecords={totalRecords}
+                  keyword={keyword}
+                  paymentTypes={paymentTypes}
+                  deliveryTypes={deliveryTypes}
+                  statuses={statuses}
+                  from={from?.getTime()}
+                  to={to?.getTime()}
+                  sortBy={sortBy}
+                  className={styles.pager}
+                />
+              )}
+            </>
+          }
+        </div>
 
-            {!noMatch && (
-              <Pager
-                page={page}
-                rowCount={rowCount}
-                totalRecords={totalRecords}
-                keyword={keyword}
-                paymentTypes={paymentTypes}
-                deliveryTypes={deliveryTypes}
-                statuses={statuses}
-                from={from?.getTime()}
-                to={to?.getTime()}
-                sortBy={sortBy}
-                className={styles.pager}
-              />
-            )}
-          </>
-        }
       </div>
-
-    </div>
+    </Suspense>
   )
 }
 

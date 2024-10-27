@@ -1,6 +1,8 @@
 'use server'
 
+import { Suspense } from 'react'
 import UserList from '@/components/UserList'
+import Indicator from '@/components/Indicator'
 
 const Users = async (props: { searchParams: Promise<SearchParams> }) => {
   const searchParams = await props.searchParams
@@ -18,10 +20,12 @@ const Users = async (props: { searchParams: Promise<SearchParams> }) => {
   }
 
   return page > 0 && (
-    <UserList
-      keyword={(searchParams['s'] || searchParams['u'] || '') as string}
-      page={page}
-    />
+    <Suspense fallback={<Indicator />}>
+      <UserList
+        keyword={(searchParams['s'] || searchParams['u'] || '') as string}
+        page={page}
+      />
+    </Suspense>
   )
 }
 

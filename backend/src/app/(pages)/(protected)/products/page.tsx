@@ -1,5 +1,6 @@
 'use server'
 
+import { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -11,6 +12,7 @@ import * as ProductService from '@/lib/ProductService'
 import { strings } from '@/lang/products'
 import EmptyList from '@/components/EmptyList'
 import ProductsWrapper, { Pager, Tags } from './page.client'
+import Indicator from '@/components/Indicator'
 
 import styles from '@/styles/products-server.module.css'
 
@@ -87,57 +89,59 @@ const Products = async (props: { searchParams: Promise<SearchParams> }) => {
       totalRecords={totalRecords}
       page={page}
     >
-      <div className={styles.products}>
+      <Suspense fallback={<Indicator />}>
+        <div className={styles.products}>
 
-        {
-          (totalRecords === 0 || noMatch) && <EmptyList text={strings.EMPTY_LIST} />
-        }
+          {
+            (totalRecords === 0 || noMatch) && <EmptyList text={strings.EMPTY_LIST} />
+          }
 
-        {
-          totalRecords > 0 &&
-          <>
-            <div className={styles.productList}>
-              {
-                products.map((product) => (
-                  <article key={product._id} className={styles.product}>
-                    <Link href={`/product?p=${product._id}`} title={product.name}>
+          {
+            totalRecords > 0 &&
+            <>
+              <div className={styles.productList}>
+                {
+                  products.map((product) => (
+                    <article key={product._id} className={styles.product}>
+                      <Link href={`/product?p=${product._id}`} title={product.name}>
 
-                      <div className={styles.thumbnail}>
-                        <Image
-                          alt=""
-                          src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, product.image)}
-                          width={0}
-                          height={0}
-                          sizes='100vw'
-                          priority={true}
-                          className={styles.thumbnail}
-                        />
-                      </div>
-                      <Tags product={product} />
-                      <span className={styles.name} title={product.name}>{product.name}</span>
-                      <span className={styles.price}>{`${wexcommerceHelper.formatPrice(product.price, currency, language)}`}</span>
+                        <div className={styles.thumbnail}>
+                          <Image
+                            alt=""
+                            src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, product.image)}
+                            width={0}
+                            height={0}
+                            sizes='100vw'
+                            priority={true}
+                            className={styles.thumbnail}
+                          />
+                        </div>
+                        <Tags product={product} />
+                        <span className={styles.name} title={product.name}>{product.name}</span>
+                        <span className={styles.price}>{`${wexcommerceHelper.formatPrice(product.price, currency, language)}`}</span>
 
-                    </Link>
-                  </article>
-                ))
-              }
-            </div>
+                      </Link>
+                    </article>
+                  ))
+                }
+              </div>
 
-            {!noMatch && (
-              <Pager
-                page={page}
-                rowCount={rowCount}
-                totalRecords={totalRecords}
-                categoryId={categoryId}
-                keyword={keyword}
-                sortBy={sortBy}
-                className={styles.pager}
-              />
-            )}
+              {!noMatch && (
+                <Pager
+                  page={page}
+                  rowCount={rowCount}
+                  totalRecords={totalRecords}
+                  categoryId={categoryId}
+                  keyword={keyword}
+                  sortBy={sortBy}
+                  className={styles.pager}
+                />
+              )}
 
-          </>
-        }
-      </div>
+            </>
+          }
+        </div>
+      </Suspense>
     </ProductsWrapper>
   )
 }

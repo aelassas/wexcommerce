@@ -1,10 +1,12 @@
 'use server'
 
+import { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
 import * as UserService from '@/lib/UserService'
 import * as NotificationService from '@/lib/NotificationService'
 import NotificationList, { EmptyList } from '@/components/NotificationList'
+import Indicator from '@/components/Indicator'
 
 import styles from '@/styles/notifications.module.css'
 
@@ -50,21 +52,21 @@ const Notifications = async (props: { searchParams: Promise<SearchParams> }) => 
   }
 
   return (
-    <div className={styles.notifications}>
-      {
-        noMatch ? (
-          <EmptyList />
-        )
-          : (
+    <Suspense fallback={<Indicator />}>
+      <div className={styles.notifications}>
+        {
+          noMatch ?
+            <EmptyList />
+            :
             <NotificationList
               page={page}
               rowCount={rowCount}
               totalRecords={totalRecords}
               notifications={notifications}
             />
-          )
-      }
-    </div>
+        }
+      </div>
+    </Suspense>
   )
 }
 

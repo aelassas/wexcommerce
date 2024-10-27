@@ -1,9 +1,11 @@
 'use server'
 
+import { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as OrderService from '@/lib/OrderService'
 import OrderForm from './page.client'
 import EmptyOrderList from '@/components/EmptyOrderList'
+import Indicator from '@/components/Indicator'
 
 const Order = async (props: { searchParams: Promise<SearchParams> }) => {
   const searchParams = await props.searchParams
@@ -24,11 +26,9 @@ const Order = async (props: { searchParams: Promise<SearchParams> }) => {
   }
 
   return (
-    order ? (
-      <OrderForm order={order} />
-    ) : (
-      <EmptyOrderList />
-    )
+    <Suspense fallback={<Indicator />}>
+      {order ? <OrderForm order={order} /> : <EmptyOrderList />}
+    </Suspense>
   )
 }
 

@@ -1,11 +1,12 @@
 'use server'
 
+import { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as SettingService from '@/lib/SettingService'
 import * as CategoryService from '@/lib/CategoryService'
 import CategoryForm from './page.client'
 import { EmptyList } from '@/components/CategoryList.client'
-
+import Indicator from '@/components/Indicator'
 
 const Category = async (props: { searchParams: Promise<SearchParams> }) => {
   const searchParams = await props.searchParams
@@ -17,12 +18,11 @@ const Category = async (props: { searchParams: Promise<SearchParams> }) => {
     console.error(err)
   }
   return (
-    category ? (
-      <CategoryForm category={category} />
-    )
-      : (
-        <EmptyList />
-      )
+    <Suspense fallback={<Indicator />}>
+      {
+        category ? <CategoryForm category={category} /> : <EmptyList />
+      }
+    </Suspense>
   )
 }
 
