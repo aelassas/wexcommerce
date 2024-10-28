@@ -4,6 +4,8 @@
 
 wexCommerce is a minimalistic and powerful eCommerce platform built with Next.js using SSR, MongoDB and Stripe for payments.
 
+Building a marketplace with Next.js provides a solid foundation for scaling your business. Focus on performance, security, and user experience while maintaining code quality and documentation. Regular updates and monitoring will ensure your platform remains competitive and reliable.
+
 Next.js stands out as an excellent choice for eCommerce development due to its:
 
 - **Superior Performance**: Built-in optimizations for fast page loads and seamless user experiences
