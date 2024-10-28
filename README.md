@@ -13,6 +13,7 @@ Next.js stands out as an excellent choice for eCommerce development due to its:
 - **Developer Experience**: Intuitive development workflow with hot reloading and automatic routing
 
 For developers who value creative freedom and technical control, traditional eCommerce platforms like Shopify can feel restrictive. While Shopify's templates offer quick setup, and their Storefront API provides some flexibility, neither solution delivers the complete architectural freedom that modern developers crave.
+
 This project emerged from a desire to build without boundaries – a fully customizable eCommerce solution where every aspect is within your control. Built on Next.js for its powerful rendering capabilities, MongoDB for flexible data modeling, and Stripe for secure payment processing, this open-source platform empowers developers to:
 
 - **Own the UI/UX**: Design unique customer experiences without fighting against template limitations
