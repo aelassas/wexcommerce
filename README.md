@@ -10,7 +10,7 @@ wexCommerce is composed of a frontend and an admin dashboard. From the frontend,
 
 A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
 
-# Features
+## Features
 
 * Stock management
 * Order management
@@ -23,13 +23,13 @@ A key design decision was made to use TypeScript instead of JavaScript due to it
 * Multiple login options (Google, Facebook, Apple, Email)
 * Responsive backend and frontend
 
-# Live Demo
+## Live Demo
 
 * URL: https://wexcommerce.dynv6.net:8002/
 * Login: jdoe@wexcommerce.com
 * Password: sh0ppingC4rt
 
-# Resources
+## Resources
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
 2. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
@@ -45,5 +45,5 @@ A key design decision was made to use TypeScript instead of JavaScript due to it
 7. [Add New Language](https://github.com/aelassas/wexcommerce/wiki/Add-New-Language)
 8. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 
-# License
+## License
 wexCommerce is [MIT licensed](https://github.com/aelassas/wexcommerce/blob/main/LICENSE).
