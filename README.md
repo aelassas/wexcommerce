@@ -4,16 +4,6 @@
 
 wexCommerce is a minimalistic and powerful eCommerce platform built with Next.js using SSR, MongoDB and Stripe for payments.
 
-Building a marketplace with Next.js provides a solid foundation for scaling your business. Focus on performance, security, and user experience while maintaining code quality and documentation. Regular updates and monitoring will ensure your platform remains competitive and reliable.
-
-Next.js stands out as an excellent choice for eCommerce development due to its:
-
-- **Superior Performance**: Built-in optimizations for fast page loads and seamless user experiences
-- **SEO Advantages**: Server-side rendering capabilities that ensure your products are discoverable
-- **Scalability**: Enterprise-ready architecture that grows with your business
-- **Rich Ecosystem**: Vast collection of libraries and tools for rapid development
-- **Developer Experience**: Intuitive development workflow with hot reloading and automatic routing
-
 For developers who value creative freedom and technical control, traditional eCommerce platforms like Shopify can feel restrictive. While Shopify's templates offer quick setup, and their Storefront API provides some flexibility, neither solution delivers the complete architectural freedom that modern developers crave.
 
 This project emerged from a desire to build without boundaries – a fully customizable eCommerce solution where every aspect is within your control. Built on Next.js for its powerful rendering capabilities, MongoDB for flexible data modeling, and Stripe for secure payment processing, this open-source platform empowers developers to:
@@ -32,6 +22,18 @@ wexCommerce is composed of a frontend and an admin dashboard. From the frontend,
 A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
 
 I invested significant time and effort into building this open-source project to make it freely available to the community. If this open-source project has been helpful in your work, consider supporting its continued development and maintenance. You can contribute through [GitHub Sponsorship](https://github.com/sponsors/aelassas) (one-time or monthly), [PayPal](https://www.paypal.me/aelassaspp), or [Buy Me a Coffee](https://buymeacoffee.com/aelassas). Even a simple star on the GitHub repository helps spread the word and is greatly appreciated.
+
+## Why Next.js?
+
+Building a marketplace with Next.js provides a solid foundation for scaling your business. Focus on performance, security, and user experience while maintaining code quality and documentation. Regular updates and monitoring will ensure your platform remains competitive and reliable.
+
+Next.js stands out as an excellent choice for marketplace development due to its:
+
+- **Superior Performance**: Built-in optimizations for fast page loads and seamless user experiences
+- **SEO Advantages**: Server-side rendering capabilities that ensure your products are discoverable
+- **Scalability**: Enterprise-ready architecture that grows with your business
+- **Rich Ecosystem**: Vast collection of libraries and tools for rapid development
+- **Developer Experience**: Intuitive development workflow with hot reloading and automatic routing
 
 ## Features
 
