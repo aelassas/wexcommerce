@@ -344,6 +344,7 @@ const Checkout: React.FC = () => {
                           }}
                           autoComplete="off"
                           size="small"
+                          disabled={!!clientSecret}
                         />
                       </FormControl>
                       <FormControl fullWidth margin="normal" size="small">
@@ -368,6 +369,7 @@ const Checkout: React.FC = () => {
                           required
                           autoComplete="off"
                           size="small"
+                          disabled={!!clientSecret}
                         />
                         <FormHelperText error={!emailValid || emailRegistered}>
                           {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
@@ -398,6 +400,7 @@ const Checkout: React.FC = () => {
                           required
                           autoComplete="off"
                           size="small"
+                          disabled={!!clientSecret}
                         />
                         <FormHelperText error={!phoneValid}>
                           {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
@@ -416,6 +419,7 @@ const Checkout: React.FC = () => {
                           minRows={3}
                           value={address}
                           size="small"
+                          disabled={!!clientSecret}
                         />
                       </FormControl>
                     </div>
