@@ -1,5 +1,3 @@
-'use server'
-
 import { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'

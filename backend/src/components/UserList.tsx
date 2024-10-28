@@ -1,6 +1,4 @@
 
-'use server'
-
 import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
 import * as UserService from '@/lib/UserService'

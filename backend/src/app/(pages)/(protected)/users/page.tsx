@@ -1,5 +1,3 @@
-'use server'
-
 import { Suspense } from 'react'
 import UserList from '@/components/UserList'
 import Indicator from '@/components/Indicator'

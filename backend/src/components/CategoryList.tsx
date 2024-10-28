@@ -1,5 +1,3 @@
-'use server'
-
 import Image from 'next/image'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'

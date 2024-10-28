@@ -1,5 +1,3 @@
-'use server'
-
 import { Suspense } from 'react'
 import { NewCategoryButton } from './page.client'
 import CategoryList from '@/components/CategoryList'

@@ -1,5 +1,3 @@
-'use server'
-
 import { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as CartService from '@/lib/CartService'
