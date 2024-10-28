@@ -487,19 +487,24 @@ const Checkout: React.FC = () => {
                     }}>
                     {
                       paymentTypes.map((paymentType) => (
-                        <FormControlLabel key={paymentType.name} value={paymentType.name} control={<Radio />} label={
-                          <span className={styles.paymentButton}>
-                            <span>{
-                              helper.getPaymentType(paymentType.name, language)
-                            }</span>
-                            <span className={styles.paymentInfo}>{
-                              paymentType.name === wexcommerceTypes.PaymentType.CreditCard ? strings.CREDIT_CARD_INFO
-                                : paymentType.name === wexcommerceTypes.PaymentType.Cod ? strings.COD_INFO
-                                  : paymentType.name === wexcommerceTypes.PaymentType.WireTransfer ? strings.WIRE_TRANSFER_INFO
-                                    : ''
-                            }</span>
-                          </span>
-                        } />
+                        <FormControlLabel
+                          key={paymentType.name}
+                          value={paymentType.name}
+                          control={<Radio />}
+                          disabled={!!clientSecret}
+                          label={
+                            <span className={styles.paymentButton}>
+                              <span>{
+                                helper.getPaymentType(paymentType.name, language)
+                              }</span>
+                              <span className={styles.paymentInfo}>{
+                                paymentType.name === wexcommerceTypes.PaymentType.CreditCard ? strings.CREDIT_CARD_INFO
+                                  : paymentType.name === wexcommerceTypes.PaymentType.Cod ? strings.COD_INFO
+                                    : paymentType.name === wexcommerceTypes.PaymentType.WireTransfer ? strings.WIRE_TRANSFER_INFO
+                                      : ''
+                              }</span>
+                            </span>
+                          } />
                       ))
                     }
                   </RadioGroup>
@@ -523,7 +528,9 @@ const Checkout: React.FC = () => {
                         <FormControlLabel
                           key={deliveryType.name}
                           value={deliveryType.name}
-                          control={<Radio />} label={
+                          control={<Radio />}
+                          disabled={!!clientSecret}
+                          label={
                             <div className={styles.delivery}>
                               <span>{helper.getDeliveryType(deliveryType.name, language)}</span>
                               <span className={styles.deliveryPrice}>
