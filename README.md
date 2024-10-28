@@ -4,6 +4,24 @@
 
 wexCommerce is a minimalistic and powerful eCommerce platform built with Next.js using SSR, MongoDB and Stripe for payments.
 
+Next.js stands out as an excellent choice for eCommerce development due to its:
+
+- **Superior Performance**: Built-in optimizations for fast page loads and seamless user experiences
+- **SEO Advantages**: Server-side rendering capabilities that ensure your products are discoverable
+- **Scalability**: Enterprise-ready architecture that grows with your business
+- **Rich Ecosystem**: Vast collection of libraries and tools for rapid development
+- **Developer Experience**: Intuitive development workflow with hot reloading and automatic routing
+
+For developers who value creative freedom and technical control, traditional eCommerce platforms like Shopify can feel restrictive. While Shopify's templates offer quick setup, and their Storefront API provides some flexibility, neither solution delivers the complete architectural freedom that modern developers crave.
+This project emerged from a desire to build without boundaries – a fully customizable eCommerce solution where every aspect is within your control. Built on Next.js for its powerful rendering capabilities, MongoDB for flexible data modeling, and Stripe for secure payment processing, this open-source platform empowers developers to:
+
+- **Own the UI/UX**: Design unique customer experiences without fighting against template limitations
+- **Control the Backend**: Implement custom business logic and data structures that perfectly match your requirements
+- **Master DevOps**: Deploy, scale, and monitor your application with your preferred tools and workflows
+- **Extend Freely**: Add new features and integrations without platform constraints or additional fees
+
+By choosing this stack, you're not just building a store – you're investing in a foundation that can evolve with your needs, backed by robust open-source technologies and a growing developer community.
+
 Deploy your own customizable eCommerce solution at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). The platform integrates Stripe for secure payments, is optimized for SEO and can be efficiently hosted on a 1GB RAM droplet, making it an ideal choice for eCommerce operations looking for a scalable and cost-effective solution. You can deploy this solution for under $5 monthly using cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
 wexCommerce is composed of a frontend and an admin dashboard. From the frontend, customers can search for the products they want, add them to their cart and checkout. Customers can sign up with Google, Facebook, Apple or Email, and pay with Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link or other Stripe payment methods. Once logged in, they can have access to the history of their purshases and follow their orders. From the admin dashboard, admins can manage orders, payments, products, categories, customers and general settings such as the default language, the currency, delivery, shipping and payment methods accepted.
