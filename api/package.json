@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "rimraf dist && tsc --build --verbose && babel dist -d dist",
+    "build": "rimraf dist && cross-env NODE_OPTIONS=--max-old-space-size=1024 tsc --build --verbose && babel dist -d dist",
     "start": "npm run build && node dist/src",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .ts .",
@@ -36,6 +36,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "escape-string-regexp": "^5.0.0",
     "expo-server-sdk": "^3.11.0",
