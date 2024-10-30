@@ -13,7 +13,7 @@ interface NotificationProviderProps {
   children: ReactNode
 }
 
-export const NotificationProvider = ({ children }: NotificationProviderProps) => {
+export const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }) => {
   const [notificationCount, setNotificationCount] = useState(0)
   const value = useMemo(() => ({ notificationCount, setNotificationCount }), [notificationCount])
 

@@ -13,7 +13,7 @@ interface CartProviderProps {
   children: ReactNode
 }
 
-export const CartProvider = ({ children }: CartProviderProps) => {
+export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItemCount, setCartItemCount] = useState(0)
   const value = useMemo(() => ({ cartItemCount, setCartItemCount }), [cartItemCount])
 

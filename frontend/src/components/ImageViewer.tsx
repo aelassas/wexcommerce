@@ -19,7 +19,7 @@ interface ImageViewerProps {
   onClose?: () => void
 }
 
-const ImageViewer = ({
+const ImageViewer: React.FC<ImageViewerProps> = ({
   title,
   currentIndex: ivCurentIndex,
   src,
@@ -31,7 +31,7 @@ const ImageViewer = ({
   rightArrowComponent,
   imageStyle,
   onClose
-}: ImageViewerProps) => {
+}) => {
   const [currentIndex, setCurrentIndex] = useState(ivCurentIndex ?? 0)
   const thumbnails = useMemo<(HTMLDivElement | null)[]>(() => [], [])
 

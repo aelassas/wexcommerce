@@ -13,7 +13,7 @@ interface CurrencyProviderProps {
   children: ReactNode
 }
 
-export const CurrencyProvider = ({ children }: CurrencyProviderProps) => {
+export const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }) => {
   const [currency, setCurrency] = useState('')
   const value = useMemo(() => ({ currency, setCurrency }), [currency])
 

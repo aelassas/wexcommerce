@@ -31,14 +31,15 @@ interface SocialLoginProps {
   onBlackListed?: () => void
 }
 
-const SocialLogin = ({
+const SocialLogin: React.FC<SocialLoginProps> = ({
   facebook,
   apple,
   google = true,
   className,
   onError,
   onSignInError,
-  onBlackListed }: SocialLoginProps) => {
+  onBlackListed
+}) => {
   const router = useRouter()
 
   const loginSuccess = async (socialSignInType: wexcommerceTypes.SocialSignInType, accessToken: string, email: string, fullName: string, avatar?: string) => {

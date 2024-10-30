@@ -7,7 +7,7 @@ interface ReCaptchaProviderProps {
   children: ReactNode
 }
 
-const ReCaptchaProvider = ({ children }: ReCaptchaProviderProps) => {
+const ReCaptchaProvider: React.FC<ReCaptchaProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState('')
 
   const setRecaptchaVisibilty = (visible: boolean) => {

@@ -13,7 +13,7 @@ interface WishlistProviderProps {
   children: ReactNode
 }
 
-export const WishlistProvider = ({ children }: WishlistProviderProps) => {
+export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) => {
   const [wishlistCount, setWishlistCount] = useState(0)
   const value = useMemo(() => ({ wishlistCount, setWishlistCount }), [wishlistCount])
 

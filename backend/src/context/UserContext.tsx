@@ -14,7 +14,7 @@ interface UserProviderProps {
   children: ReactNode
 }
 
-export const UserProvider = ({ children }: UserProviderProps) => {
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<wexcommerceTypes.User | null>(null)
   const value = useMemo(() => ({ user, setUser }), [user])
 
