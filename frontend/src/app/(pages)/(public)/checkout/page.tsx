@@ -214,6 +214,10 @@ const Checkout: React.FC = () => {
       return
     }
 
+    if (env.RECAPTCHA_ENABLED && recaptchaError) {
+      return
+    }
+
     if (!user) {
       const emailValid = await validateEmail(email)
       if (!emailValid) {
@@ -223,10 +227,6 @@ const Checkout: React.FC = () => {
       const phoneValid = await validatePhone(phone)
       if (!phoneValid) {
         return setFormError(true)
-      }
-
-      if (env.RECAPTCHA_ENABLED && recaptchaError) {
-        return
       }
     }
 
