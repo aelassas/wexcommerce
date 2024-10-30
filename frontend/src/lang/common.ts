@@ -71,6 +71,7 @@ export const strings = new LocalizedStrings({
     RESULT: 'résultat',
     RESULTS: 'résultats',
     VIEW_WISHLIST: 'Consulter les favoris',
+    RECAPTCHA_ERROR: 'Erreur reCAPTCHA',
   },
   en: {
     GENERIC_ERROR: 'An unhandled error occurred.',
@@ -142,5 +143,6 @@ export const strings = new LocalizedStrings({
     RESULT: 'result',
     RESULTS: 'results',
     VIEW_WISHLIST: 'View wishlist',
+    RECAPTCHA_ERROR: 'reCAPTCHA error',
   }
 })

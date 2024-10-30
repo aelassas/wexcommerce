@@ -23,6 +23,8 @@ const env = {
   GOOGLE_ANALYTICS_ENABLED: (process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED && process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED.toLowerCase()) === 'true',
   GOOGLE_ANALYTICS_ID: String(process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ID),
   CARROUSEL_SIZE: 3,
+  RECAPTCHA_ENABLED: (process.env.NEXT_PUBLIC_WC_RECAPTCHA_ENABLED && process.env.NEXT_PUBLIC_WC_RECAPTCHA_ENABLED.toLowerCase()) === 'true',
+  RECAPTCHA_SITE_KEY: String(process.env.NEXT_PUBLIC_WC_RECAPTCHA_SITE_KEY),
 }
 
 export const CookieOptions: Partial<ResponseCookie> = {

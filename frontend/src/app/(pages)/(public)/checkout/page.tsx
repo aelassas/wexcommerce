@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { ReCaptcha } from 'next-recaptcha-v3'
 import {
   Button,
   FormControl,
@@ -49,6 +50,7 @@ import { CartContextType, useCartContext } from '@/context/CartContext'
 import Error from '@/components/Error'
 import Info from '@/components/Info'
 import NoMatch from '@/components/NoMatch'
+import ReCaptchaProvider from '@/components/ReCaptchaProvider'
 
 import styles from '@/styles/checkout.module.css'
 
@@ -89,6 +91,7 @@ const Checkout: React.FC = () => {
   const [orderId, setOrderId] = useState<string>()
   const [sessionId, setSessionId] = useState<string>()
   const [noMatch, setNoMatch] = useState(false)
+  const [recaptchaError, setRecaptchaError] = useState(false)
 
   useEffect(() => {
     const init = async () => {
@@ -191,6 +194,18 @@ const Checkout: React.FC = () => {
     }
   }
 
+  const handleRecaptchaVerify = useCallback(async (token: string) => {
+    try {
+      const ip = await UserService.getIP()
+      const status = await UserService.verifyRecaptcha(token, ip)
+      const valid = status === 200
+      setRecaptchaError(!valid)
+    } catch (err) {
+      helper.error(err)
+      setRecaptchaError(true)
+    }
+  }, [])
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -208,6 +223,10 @@ const Checkout: React.FC = () => {
       const phoneValid = await validatePhone(phone)
       if (!phoneValid) {
         return setFormError(true)
+      }
+
+      if (env.RECAPTCHA_ENABLED && recaptchaError) {
+        return
       }
     }
 
@@ -306,7 +325,7 @@ const Checkout: React.FC = () => {
 
   return (
     language &&
-    <>
+    <ReCaptchaProvider>
       <div className={styles.checkout}>
         {(cart && paymentTypes && deliveryTypes && paymentType && total > 0 && !success) &&
           <>
@@ -422,6 +441,11 @@ const Checkout: React.FC = () => {
                           disabled={!!clientSecret}
                         />
                       </FormControl>
+
+                      {env.RECAPTCHA_ENABLED && (
+                        <ReCaptcha onValidate={handleRecaptchaVerify} action="page_view" />
+                      )}
+
                     </div>
                   </div>
                 </>
@@ -617,6 +641,7 @@ const Checkout: React.FC = () => {
 
               <div className="form-error">
                 {formError && <Error message={commonStrings.FORM_ERROR} />}
+                {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
                 {error && <Error message={commonStrings.GENERIC_ERROR} />}
               </div>
             </form>
@@ -637,7 +662,7 @@ const Checkout: React.FC = () => {
           !success && noMatch && <NoMatch />
         }
       </div>
-    </>
+    </ReCaptchaProvider>
   )
 }
 

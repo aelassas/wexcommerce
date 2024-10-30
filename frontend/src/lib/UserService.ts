@@ -453,3 +453,36 @@ export const getStayConnected = async () => {
   const value = JSON.parse((await cookies()).get('wc-stay-connected')?.value || 'false')
   return value as boolean
 }
+
+/**
+ * Get client IP.
+ *
+ * @async
+ * @returns {Promise<string>}
+ */
+export const getIP = async (): Promise<string> => {
+  const res = await fetch('https://api.ipify.org/?format=json')
+  if (res.ok) {
+    const data = await res.json()
+    return data.ip
+  }
+
+  throw new Error(`Failed to fetch client IP`)
+}
+
+/**
+ * Validate Google reCAPTCHA v3 token.
+ *
+ * @param {string} token
+ * @param {string} ip
+ * @returns {Promise<number>}
+ */
+export const verifyRecaptcha = async (token: string, ip: string): Promise<number> =>
+  fetchInstance
+    .POST(
+      `/api/verify-recaptcha/${encodeURIComponent(token)}/${encodeURIComponent(ip)}`,
+      null,
+      [],
+      true
+    )
+    .then((res) => res.status)
