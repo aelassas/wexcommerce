@@ -10,24 +10,24 @@ interface ReCaptchaProviderProps {
 const ReCaptchaProvider = ({ children }: ReCaptchaProviderProps) => {
   const [language, setLanguage] = useState('')
 
+  const setRecaptchaVisibilty = (visible: boolean) => {
+    const recaptchaBadge = document.querySelector('.grecaptcha-badge') as HTMLElement
+    if (recaptchaBadge) {
+      recaptchaBadge.style.visibility = visible ? 'visible' : 'hidden'
+    }
+  }
+
   useEffect(() => {
     const fetchLanguage = async () => {
       const lang = await UserService.getLanguage()
       setLanguage(lang)
-
-      const recaptchaBadgeElement = document.querySelector('.grecaptcha-badge') as HTMLElement
-      if (recaptchaBadgeElement) {
-        recaptchaBadgeElement.style.visibility = 'visible'
-      }
+      setRecaptchaVisibilty(true)
     }
 
     fetchLanguage()
 
     return () => {
-      const recaptchaBadgeElement = document.querySelector('.grecaptcha-badge') as HTMLElement
-      if (recaptchaBadgeElement) {
-        recaptchaBadgeElement.style.visibility = 'hidden'
-      }
+      setRecaptchaVisibilty(false)
     }
   }, [])
 
