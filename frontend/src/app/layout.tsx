@@ -19,12 +19,15 @@ type RootLayoutProps = Readonly<{
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => (
   <html>
     <body>
-      <a
-        className="github-fork-ribbon fixed left-bottom"
-        href="https://github.com/aelassas/wexcommerce"
-        data-ribbon="Fork me on GitHub"
-        title="Fork me on GitHub">Fork me on GitHub
-      </a>
+      {
+        process.env.NODE_ENV === 'production' &&
+        <a
+          className="github-fork-ribbon fixed left-bottom"
+          href="https://github.com/aelassas/wexcommerce"
+          data-ribbon="Fork me on GitHub"
+          title="Fork me on GitHub">Fork me on GitHub
+        </a>
+      }
       {children}
     </body>
   </html>
