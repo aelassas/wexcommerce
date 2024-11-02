@@ -5,6 +5,7 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import * as databaseHelper from '../src/common/databaseHelper'
 import app from '../src/app'
 import * as env from '../src/config/env.config'
+import User from '../src/models/User'
 import * as testHelper from './testHelper'
 
 const { ADMIN_EMAIL } = testHelper
@@ -33,7 +34,7 @@ afterAll(async () => {
   }
 })
 
-describe('GET /api/user/:id', () => {
+describe('POST /api/sign-in/backend', () => {
   it('should authenticate from backend', async () => {
     const payload: wexcommerceTypes.SignInPayload = {
       email: ADMIN_EMAIL,
@@ -60,7 +61,7 @@ describe('GET /api/user/:id', () => {
   })
 })
 
-describe('GET /api/user/:id', () => {
+describe('POST /api/sign-in/frontend', () => {
   it('should authenticate to frontend', async () => {
     const payload: wexcommerceTypes.SignInPayload = {
       email: USER_EMAIL,
@@ -94,13 +95,50 @@ describe('GET /api/user/:id', () => {
 
 describe('GET /api/user/:id', () => {
   it('should authenticate through request header', async () => {
-    const token = await testHelper.signinAsAdmin()
+    let token = await testHelper.signinAsAdmin()
 
-    const res = await request(app)
+    let res = await request(app)
       .get(`/api/user/${USER_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
+      .set('Origin', env.BACKEND_HOST)
     expect(res.statusCode).toBe(200)
     expect(res.body.email).toBe(USER_EMAIL)
+
+    token = await testHelper.signinAsUser()
+
+    res = await request(app)
+      .get(`/api/user/${USER_ID}`)
+      .set(env.X_ACCESS_TOKEN, token)
+      .set('Origin', env.FRONTEND_HOST)
+    expect(res.statusCode).toBe(200)
+    expect(res.body.email).toBe(USER_EMAIL)
+
+    // Token not found
+    res = await request(app)
+      .get(`/api/user/${USER_ID}`)
+      .set('Origin', env.FRONTEND_HOST)
+    expect(res.statusCode).toBe(403)
+
+    // Token not valid
+    res = await request(app)
+      .get(`/api/user/${USER_ID}`)
+      .set(env.X_ACCESS_TOKEN, 'unknown')
+      .set('Origin', env.FRONTEND_HOST)
+    expect(res.statusCode).toBe(401)
+
+    // Token not valid: User not found
+    const user = await User.findById(USER_ID)
+    user!.blacklisted = true
+    await user?.save()
+
+    res = await request(app)
+      .get(`/api/user/${USER_ID}`)
+      .set(env.X_ACCESS_TOKEN, token)
+      .set('Origin', env.FRONTEND_HOST)
+    expect(res.statusCode).toBe(401)
+
+    user!.blacklisted = false
+    await user?.save()
   })
 })
 

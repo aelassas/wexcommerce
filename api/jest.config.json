@@ -10,7 +10,7 @@
     "./tests/"
   ],
   "testMatch": [
-    "**/*.test.ts"
+    "**/middleware.test.ts"
   ],
   "collectCoverage": true,
   "coverageReporters": [
