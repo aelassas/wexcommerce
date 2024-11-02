@@ -17,7 +17,7 @@ export default {
   update: '/api/update-user',
   updateLanguage: '/api/update-language',
   changePassword: '/api/change-password',
-  getUsers: '/api/users/:page/:size/:language',
+  getUsers: '/api/users/:page/:size',
   delete: '/api/delete-users',
   checkPassword: '/api/check-password/:id/:password',
   verifyRecaptcha: '/api/verify-recaptcha/:token/:ip',

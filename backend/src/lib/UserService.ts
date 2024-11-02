@@ -331,7 +331,7 @@ export const getUser = async (id: string): Promise<wexcommerceTypes.User> =>
 export const getUsers = async (keyword: string, page: number, size: number): Promise<wexcommerceTypes.Result<wexcommerceTypes.User>> =>
   fetchInstance
     .GET(
-      `/api/users/${page}/${size}/${getLanguage()}/?s=${encodeURIComponent(keyword)}`,
+      `/api/users/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
       [await authHeader()]
     )
     .then((res) => res.data)

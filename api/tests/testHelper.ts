@@ -100,17 +100,6 @@ export const signinAsAdmin = () => signin(wexcommerceTypes.AppType.Backend, ADMI
 
 export const signinAsUser = () => signin(wexcommerceTypes.AppType.Frontend, USER_EMAIL)
 
-export const signout = async (token: string) => {
-  const res = await request(app)
-    .post('/api/sign-out')
-    .set('Cookie', [`${env.X_ACCESS_TOKEN}=${token};`])
-  expect(res.statusCode).toBe(200)
-
-  const cookies = res.headers['set-cookie'] as unknown as string[]
-  expect(cookies.length).toBe(1)
-  expect(cookies[0]).toContain(`${env.X_ACCESS_TOKEN}=;`)
-}
-
 export const GetRandomEmail = () => `random.${uuid()}.${Date.now()}@test.wexcommerce.ma`
 
 export const GetRandromObjectId = () => new mongoose.Types.ObjectId()

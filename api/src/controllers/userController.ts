@@ -21,12 +21,16 @@ import * as helper from '../common/helper'
 import * as mailHelper from '../common/mailHelper'
 import * as authHelper from '../common/authHelper'
 
-const getStatusMessage = (lang: string, msg: string) => {
-  if (lang === 'ar') {
-    return `<!DOCTYPE html><html dir="rtl" lang="ar"><head></head><body><p>${msg}</p></body></html>`
-  }
-  return `<!DOCTYPE html><html lang="${lang}"><head></head><body><p>${msg}</p></body></html>`
-}
+/**
+ * Get status message as HTML.
+ *
+ * @param {string} lang
+ * @param {string} msg
+ * @returns {string}
+ */
+const getStatusMessage = (lang: string, msg: string) => (
+  `<!DOCTYPE html><html lang="'${lang}'"><head></head><body><p>${msg}</p></body></html>`
+)
 
 /**
  * Sign Up.
@@ -295,6 +299,9 @@ export const validateEmail = async (req: Request, res: Response) => {
 export const isAdmin = async (req: Request, res: Response) => {
   try {
     const { body }: { body: wexcommerceTypes.IsAdminPayload } = req
+    if (!body.email) {
+      throw new Error('Email not found')
+    }
     const exists = await User.exists({ email: body.email, type: wexcommerceTypes.UserType.Admin })
 
     if (exists) {
@@ -318,6 +325,9 @@ export const isAdmin = async (req: Request, res: Response) => {
 export const isUser = async (req: Request, res: Response) => {
   try {
     const { body }: { body: wexcommerceTypes.IsUserPayload } = req
+    if (!body.email) {
+      throw new Error('Email not found')
+    }
     const exists = await User.exists({ email: body.email, type: wexcommerceTypes.UserType.User })
 
     if (exists) {
@@ -1048,7 +1058,7 @@ export const verifyRecaptcha = async (req: Request, res: Response) => {
     }
     return res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.delete] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
+    logger.error(`[user.verifyRecaptcha] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -1087,7 +1097,7 @@ export const sendEmail = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.delete] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
+    logger.error(`[user.sendEmail] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
