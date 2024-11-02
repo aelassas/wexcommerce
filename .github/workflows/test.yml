@@ -1,0 +1,102 @@
+name: test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    environment: TEST
+    
+    strategy:
+      matrix:
+        node-version: [lts/*]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        
+    - name: test API
+      run: |
+           cd ./api
+           touch .env
+           echo NODE_ENV=$NODE_ENV >> .env
+           echo WC_HTTPS=$WC_HTTPS >> .env
+           echo WC_DB_URI=$WC_DB_URI >> .env
+           echo WC_DB_SSL=$WC_DB_SSL >> .env
+           echo WC_DB_DEBUG=$WC_DB_DEBUG >> .env
+           echo WC_COOKIE_SECRET=$WC_COOKIE_SECRET >> .env
+           echo WC_AUTH_COOKIE_DOMAIN=$WC_AUTH_COOKIE_DOMAIN >> .env
+           echo WC_JWT_SECRET=$WC_JWT_SECRET >> .env
+           echo WC_JWT_EXPIRE_AT=$WC_JWT_EXPIRE_AT >> .env
+           echo WC_TOKEN_EXPIRE_AT=$WC_TOKEN_EXPIRE_AT >> .env
+           echo WC_SMTP_HOST=$WC_SMTP_HOST >> .env
+           echo WC_SMTP_PORT=$WC_SMTP_PORT >> .env
+           echo WC_SMTP_USER=$WC_SMTP_USER >> .env
+           echo WC_SMTP_PASS=$WC_SMTP_PASS >> .env
+           echo WC_SMTP_FROM=$WC_SMTP_FROM >> .env
+           echo WC_DEFAULT_LANGUAGE=$WC_DEFAULT_LANGUAGE >> .env
+           echo WC_CDN_USERS=$WC_CDN_USERS >> .env
+           echo WC_CDN_TEMP_USERS=$WC_CDN_TEMP_USERS >> .env
+           echo WC_CDN_CATEGORIES=$WC_CDN_CATEGORIES >> .env
+           echo WC_CDN_TEMP_CATEGORIES=$WC_CDN_TEMP_CATEGORIES >> .env
+           echo WC_CDN_PRODUCTS=$WC_CDN_PRODUCTS >> .env
+           echo WC_CDN_TEMP_PRODUCTS=$WC_CDN_TEMP_PRODUCTS >> .env
+           echo WC_BACKEND_HOST=$WC_BACKEND_HOST >> .env
+           echo WC_FRONTEND_HOST=$WC_FRONTEND_HOST >> .env
+           echo WC_DEFAULT_CURRENCY=$WC_DEFAULT_CURRENCY >> .env
+           echo WC_DEFAULT_STRIPE_CURRENCY=$WC_DEFAULT_STRIPE_CURRENCY >> .env
+           echo WC_STRIPE_SECRET_KEY=$WC_STRIPE_SECRET_KEY >> .env
+           echo WC_STRIPE_SESSION_EXPIRE_AT=$WC_STRIPE_SESSION_EXPIRE_AT >> .env
+           echo WC_ADMIN_EMAIL=$WC_ADMIN_EMAIL >> .env
+           echo WC_RECAPTCHA_SECRET=$WC_RECAPTCHA_SECRET >> .env
+
+           npm install
+           npm test
+      env:
+        NODE_ENV: ${{ vars.NODE_ENV }}
+        WC_HTTPS: ${{ vars.WC_HTTPS }}
+        WC_DB_URI: ${{ secrets.WC_DB_URI }}
+        WC_DB_SSL: ${{ vars.WC_DB_SSL }}
+        WC_DB_DEBUG: ${{ vars.WC_DB_DEBUG }}
+        WC_COOKIE_SECRET: ${{ secrets.WC_COOKIE_SECRET }}
+        WC_AUTH_COOKIE_DOMAIN: ${{ vars.WC_AUTH_COOKIE_DOMAIN }}
+        WC_JWT_SECRET: ${{ secrets.WC_JWT_SECRET }}
+        WC_JWT_EXPIRE_AT: ${{ vars.WC_JWT_EXPIRE_AT }}
+        WC_TOKEN_EXPIRE_AT: ${{ vars.WC_TOKEN_EXPIRE_AT }}
+        WC_SMTP_HOST: ${{ secrets.WC_SMTP_HOST }}
+        WC_SMTP_PORT: ${{ secrets.WC_SMTP_PORT }}
+        WC_SMTP_USER: ${{ secrets.WC_SMTP_USER }}
+        WC_SMTP_PASS: ${{ secrets.WC_SMTP_PASS }}
+        WC_SMTP_FROM: ${{ secrets.WC_SMTP_FROM }}
+        WC_DEFAULT_LANGUAGE: ${{ vars.WC_DEFAULT_LANGUAGE }}
+        WC_CDN_USERS: ${{ vars.WC_CDN_USERS }}
+        WC_CDN_TEMP_USERS: ${{ vars.WC_CDN_TEMP_USERS }}
+        WC_CDN_CATEGORIES: ${{ vars.WC_CDN_CATEGORIES }}
+        WC_CDN_TEMP_CATEGORIES: ${{ vars.WC_CDN_TEMP_CATEGORIES }}
+        WC_CDN_PRODUCTS: ${{ vars.WC_CDN_PRODUCTS }}
+        WC_CDN_TEMP_PRODUCTS: ${{ vars.WC_CDN_TEMP_PRODUCTS }}
+        WC_BACKEND_HOST: ${{ vars.WC_BACKEND_HOST }}
+        WC_FRONTEND_HOST: ${{ vars.WC_FRONTEND_HOST }}
+        WC_DEFAULT_CURRENCY: ${{ vars.WC_DEFAULT_CURRENCY }}
+        WC_DEFAULT_STRIPE_CURRENCY: ${{ vars.WC_DEFAULT_STRIPE_CURRENCY }}
+        WC_STRIPE_SECRET_KEY: ${{ secrets.WC_STRIPE_SECRET_KEY }}
+        WC_STRIPE_SESSION_EXPIRE_AT: ${{ vars.WC_STRIPE_SESSION_EXPIRE_AT }}
+        WC_ADMIN_EMAIL: ${{ secrets.WC_ADMIN_EMAIL }}
+        WC_RECAPTCHA_SECRET: ${{ secrets.WC_RECAPTCHA_SECRET }}
+
+    # - name: Upload coverage reports to Codecov
+    #   uses: codecov/codecov-action@v4
+    #   with:
+    #       token: ${{ secrets.CODECOV_TOKEN }}
+    #       file: cobertura-coverage.xml
+    #       directory: ./api/coverage
+    #       fail_ci_if_error: true
