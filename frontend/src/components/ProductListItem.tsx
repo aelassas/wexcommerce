@@ -31,6 +31,7 @@ import { WishlistContextType, useWishlistContext } from '@/context/WishlistConte
 import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyContext'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import SoldOut from './SoldOut'
+import ToastCart from './ToastCart'
 
 import styles from '@/styles/product-list-item.module.css'
 
@@ -185,15 +186,22 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                     const res = await CartService.deleteItem(cartId, product._id)
 
                     if (res.status === 200) {
+                      const _cartItemCount = cartItemCount - res.data.quantity
                       setInCart(false)
-                      setCartItemCount(cartItemCount - res.data.quantity)
+                      setCartItemCount(_cartItemCount)
 
                       if (res.data.cartDeleted) {
                         await CartService.deleteCartId()
                       }
 
                       setOpenDeleteDialog(false)
-                      helper.info(commonStrings.ARTICLE_REMOVED)
+                      if (_cartItemCount === 0) {
+                        helper.info(commonStrings.ARTICLE_REMOVED)
+                      } else {
+                        helper.infoWithComponent(
+                          <ToastCart action="remove" />
+                        )
+                      }
                     } else {
                       helper.error()
                     }
@@ -223,24 +231,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                       setCartItemCount(cartItemCount + 1)
 
                       helper.infoWithComponent(
-                        <div style={helper.toastComponentContainerStyle}>
-                          <span style={helper.toastComponentTextStyle}>
-                            {commonStrings.ARTICLE_ADDED}
-                          </span>
-                          <Button
-                            variant="contained"
-                            size="small"
-                            style={helper.toastComponentButtonStyle}
-                            className="toastButton"
-                            onClick={() => {
-                              router.push('/cart')
-                              router.refresh()
-                            }}
-                          >
-                            {commonStrings.VIEW_CART}
-                          </Button>
-
-                        </div>
+                        <ToastCart action="add" />
                       )
                     } else {
                       helper.error()
