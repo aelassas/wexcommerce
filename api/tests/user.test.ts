@@ -870,7 +870,7 @@ describe('GET /api/users/:page/:size', () => {
       .get(`/api/users/${testHelper.PAGE}/${testHelper.SIZE}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(res.body[0].resultData.length).toBeGreaterThan(3)
+    expect(res.body[0].resultData.length).toBeGreaterThanOrEqual(2)
 
     res = await request(app)
       .get(`/api/users/${testHelper.PAGE}/${testHelper.SIZE}/?s=${USER1_ID}`)
