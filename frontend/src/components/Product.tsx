@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import {
   Button,
@@ -29,6 +28,8 @@ import { CartContextType, useCartContext } from '@/context/CartContext'
 import { WishlistContextType, useWishlistContext } from '@/context/WishlistContext'
 import ImageViewer from '@/components/ImageViewer'
 import SoldOut from '@/components/SoldOut'
+import ToastCart from '@/components/ToastCart'
+import ToastWishlist from '@/components/ToastWishlist'
 
 import styles from '@/styles/product.module.css'
 
@@ -37,7 +38,6 @@ interface ProductProps {
 }
 
 const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
-  const router = useRouter()
 
   const { language } = useLanguageContext() as LanguageContextType
   const { currency } = useCurrencyContext() as CurrencyContextType
@@ -153,16 +153,24 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                           const res = await CartService.deleteItem(cartId, product._id)
 
                           if (res.status === 200) {
+                            const _cartItemCount = cartItemCount - res.data.quantity
                             product.inCart = false
                             setProduct(product)
-                            setCartItemCount(cartItemCount - res.data.quantity)
+                            setCartItemCount(_cartItemCount)
 
                             if (res.data.cartDeleted) {
                               await CartService.deleteCartId()
                             }
 
                             setOpenDeleteDialog(false)
-                            helper.info(commonStrings.ARTICLE_REMOVED)
+
+                            if (_cartItemCount === 0) {
+                              helper.info(commonStrings.ARTICLE_REMOVED)
+                            } else {
+                              helper.infoWithComponent(
+                                <ToastCart action="remove" />
+                              )
+                            }
                           } else {
                             helper.error()
                           }
@@ -196,24 +204,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                             setCartItemCount(cartItemCount + 1)
 
                             helper.infoWithComponent(
-                              <div style={helper.toastComponentContainerStyle}>
-                                <span style={helper.toastComponentTextStyle}>
-                                  {commonStrings.ARTICLE_ADDED}
-                                </span>
-                                <Button
-                                  variant="contained"
-                                  size="small"
-                                  style={helper.toastComponentButtonStyle}
-                                  className="toastButton"
-                                  onClick={() => {
-                                    router.push('/cart')
-                                    router.refresh()
-                                  }}
-                                >
-                                  {commonStrings.VIEW_CART}
-                                </Button>
-
-                              </div>
+                              <ToastCart action="add" />
                             )
                           } else {
                             helper.error()
@@ -233,7 +224,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                       <Button
                         variant="outlined"
                         color='error'
-                        startIcon={<RemoveFromWishlistIcon />}
+                        startIcon={< RemoveFromWishlistIcon />}
                         title={commonStrings.REMOVE_FROM_WISHLIST}
                         className={styles.button}
                         onClick={async () => {
@@ -243,11 +234,18 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                             const res = await WishlistService.deleteItem(wishlistId, product._id)
 
                             if (res === 200) {
+                              const _wishlistCount = wishlistCount - 1
                               product.inWishlist = false
                               setProduct(product)
-                              setWishlistCount(wishlistCount - 1)
+                              setWishlistCount(_wishlistCount)
 
-                              helper.info(commonStrings.ARTICLE_REMOVED_FROM_WISH_LIST)
+                              if (_wishlistCount === 0) {
+                                helper.info(commonStrings.ARTICLE_REMOVED_FROM_WISH_LIST)
+                              } else {
+                                helper.infoWithComponent(
+                                  <ToastWishlist action="remove" />
+                                )
+                              }
                             } else {
                               helper.error()
                             }
@@ -277,23 +275,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                               setWishlistCount(wishlistCount + 1)
 
                               helper.infoWithComponent(
-                                <div style={helper.toastComponentContainerStyle}>
-                                  <span style={helper.toastComponentTextStyle}>
-                                    {commonStrings.ARTICLE_ADDED_TO_WISH_LIST}
-                                  </span>
-                                  <Button
-                                    variant="contained"
-                                    size="small"
-                                    style={helper.toastComponentButtonStyle}
-                                    className="toastButton"
-                                    onClick={() => {
-                                      router.push('/wishlist')
-                                      router.refresh()
-                                    }}
-                                  >
-                                    {commonStrings.VIEW_WISHLIST}
-                                  </Button>
-                                </div>
+                                <ToastWishlist action="add" />
                               )
                             } else {
                               helper.error()
@@ -367,7 +349,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
             }}>{commonStrings.REMOVE_FROM_CART}</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </div >
   )
 }
 

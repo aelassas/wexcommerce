@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import slugify from '@sindresorhus/slugify'
@@ -30,8 +29,9 @@ import { CartContextType, useCartContext } from '@/context/CartContext'
 import { WishlistContextType, useWishlistContext } from '@/context/WishlistContext'
 import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyContext'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
-import SoldOut from './SoldOut'
-import ToastCart from './ToastCart'
+import SoldOut from '@/components/SoldOut'
+import ToastCart from '@/components/ToastCart'
+import ToastWishlist from '@/components/ToastWishlist'
 
 import styles from '@/styles/product-list-item.module.css'
 
@@ -51,7 +51,6 @@ const ProductListItem: React.FC<ProductListItemProps> = (
     style,
     onRemoveWishlistItem
   }) => {
-  const router = useRouter()
 
   const { currency } = useCurrencyContext() as CurrencyContextType
   const { language } = useLanguageContext() as LanguageContextType
@@ -107,13 +106,20 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                     const res = await WishlistService.deleteItem(wishlistId, product._id)
 
                     if (res === 200) {
+                      const _wishlistCount = wishlistCount - 1
                       setInWishlist(false)
-                      setWishlistCount(wishlistCount - 1)
+                      setWishlistCount(_wishlistCount)
                       if (onRemoveWishlistItem) {
                         onRemoveWishlistItem(product._id)
                       }
 
-                      helper.info(commonStrings.ARTICLE_REMOVED_FROM_WISH_LIST)
+                      if (_wishlistCount === 0) {
+                        helper.info(commonStrings.ARTICLE_REMOVED_FROM_WISH_LIST)
+                      } else {
+                        helper.infoWithComponent(
+                          <ToastWishlist action="remove" />
+                        )
+                      }
                     } else {
                       helper.error()
                     }
@@ -141,23 +147,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                       setWishlistCount(wishlistCount + 1)
 
                       helper.infoWithComponent(
-                        <div style={helper.toastComponentContainerStyle}>
-                          <span style={helper.toastComponentTextStyle}>
-                            {commonStrings.ARTICLE_ADDED_TO_WISH_LIST}
-                          </span>
-                          <Button
-                            variant="contained"
-                            size="small"
-                            style={helper.toastComponentButtonStyle}
-                            className="toastButton"
-                            onClick={() => {
-                              router.push('/wishlist')
-                              router.refresh()
-                            }}
-                          >
-                            {commonStrings.VIEW_WISHLIST}
-                          </Button>
-                        </div>
+                        <ToastWishlist action="add" />
                       )
                     } else {
                       helper.error()
