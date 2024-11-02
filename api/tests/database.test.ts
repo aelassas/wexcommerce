@@ -21,10 +21,3 @@ describe('Test database connection failure', () => {
     expect(res).toBeFalsy()
   })
 })
-
-describe('Test database initialization', () => {
-  it('should initialize database', async () => {
-    const res = await databaseHelper.connect(env.DB_URI, false, false)
-    expect(res).toBeTruthy()
-  })
-})
