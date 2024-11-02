@@ -68,7 +68,8 @@ Next.js stands out as an excellent choice for marketplace development due to its
    2. [Docker](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#docker)
 6. [Change Language and Currency](https://github.com/aelassas/wexcommerce/wiki/Change-Language-and-Currency)
 7. [Add New Language](https://github.com/aelassas/wexcommerce/wiki/Add-New-Language)
-8. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
+8. [Unit Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Unit-Tests-and-Coverage)
+9. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 
 ## License
 wexCommerce is [MIT licensed](https://github.com/aelassas/wexcommerce/blob/main/LICENSE).
