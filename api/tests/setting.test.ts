@@ -49,6 +49,7 @@ describe('Initialize settings', () => {
 
     // restore
     if (settings) {
+      await Setting.deleteMany()
       await new Setting({
         language: settings.language,
         currency: settings.currency,
@@ -200,9 +201,17 @@ describe('PUT /api/update-settings', () => {
     const token = await testHelper.signinAsAdmin()
 
     // init
-    const settings = await Setting.findOne()
+    const settings = await Setting.findOne().lean()
     expect(settings).toBeTruthy()
-    const { language, currency, stripeCurrency } = settings!
+    const {
+      language,
+      currency,
+      stripeCurrency,
+      bankName,
+      accountHolder,
+      rib,
+      iban,
+    } = settings!
 
     // test success
     const payload: wexcommerceTypes.UpdateSettingsPayload = {
@@ -217,14 +226,7 @@ describe('PUT /api/update-settings', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
 
-    // restore
-    settings!.language = language
-    settings!.currency = currency
-    settings!.stripeCurrency = stripeCurrency
-    await settings!.save()
-
     // test not found
-    const _settings = await Setting.findOne().lean()
     await Setting.deleteMany()
     res = await request(app)
       .put('/api/update-settings')
@@ -232,17 +234,15 @@ describe('PUT /api/update-settings', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
-    if (_settings) {
-      await new Setting({
-        language: _settings.language,
-        currency: _settings.currency,
-        stripeCurrency: _settings.stripeCurrency,
-        bankName: _settings.bankName,
-        accountHolder: _settings.accountHolder,
-        rib: _settings.rib,
-        iban: _settings.iban,
-      }).save()
-    }
+    await new Setting({
+      language,
+      currency,
+      stripeCurrency,
+      bankName,
+      accountHolder,
+      rib,
+      iban,
+    }).save()
   })
 })
 
@@ -251,9 +251,17 @@ describe('PUT /api/update-bank-settings', () => {
     const token = await testHelper.signinAsAdmin()
 
     // init
-    const settings = await Setting.findOne()
+    const settings = await Setting.findOne().lean()
     expect(settings).toBeTruthy()
-    const { bankName, accountHolder, rib, iban } = settings!
+    const {
+      language,
+      currency,
+      stripeCurrency,
+      bankName,
+      accountHolder,
+      rib,
+      iban,
+    } = settings!
 
     // test success
     const payload: wexcommerceTypes.UpdateBankSettingsPayload = {
@@ -269,15 +277,7 @@ describe('PUT /api/update-bank-settings', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
 
-    // restore
-    settings!.bankName = bankName
-    settings!.accountHolder = accountHolder
-    settings!.rib = rib
-    settings!.iban = iban
-    await settings!.save()
-
     // test not found
-    const _settings = await Setting.findOne().lean()
     await Setting.deleteMany()
     res = await request(app)
       .put('/api/update-bank-settings')
@@ -285,16 +285,14 @@ describe('PUT /api/update-bank-settings', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
-    if (_settings) {
-      await new Setting({
-        language: _settings.language,
-        currency: _settings.currency,
-        stripeCurrency: _settings.stripeCurrency,
-        bankName: _settings.bankName,
-        accountHolder: _settings.accountHolder,
-        rib: _settings.rib,
-        iban: _settings.iban,
-      }).save()
-    }
+    await new Setting({
+      language,
+      currency,
+      stripeCurrency,
+      bankName,
+      accountHolder,
+      rib,
+      iban,
+    }).save()
   })
 })
