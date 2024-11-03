@@ -86,6 +86,12 @@ describe('GET /api/enabled-delivery-types', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.length).toBe(2)
 
+    // restore
+    shipping!.enabled = shippingEnabled
+    await shipping!.save()
+    withdrawal!.enabled = withdrawalEnabled
+    await withdrawal!.save()
+
     // test failure
     await databaseHelper.close()
     res = await request(app)
@@ -93,12 +99,6 @@ describe('GET /api/enabled-delivery-types', () => {
     expect(res.statusCode).toBe(400)
     const connRes = await databaseHelper.connect(env.DB_URI, false, false)
     expect(connRes).toBeTruthy()
-
-    // restore
-    shipping!.enabled = shippingEnabled
-    await shipping!.save()
-    withdrawal!.enabled = withdrawalEnabled
-    await withdrawal!.save()
   })
 })
 
@@ -147,12 +147,6 @@ describe('PUT /api/update-delivery-types', () => {
     expect(withdrawal!.enabled).toBe(!withdrawalEnabled)
     expect(withdrawal!.price).toBe(withdrawalPrice + 5)
 
-    // test failure (payload not provided)
-    res = await request(app)
-      .put('/api/update-delivery-types')
-      .set(env.X_ACCESS_TOKEN, token)
-    expect(res.statusCode).toBe(400)
-
     // restore
     shipping!.enabled = shippingEnabled
     shipping!.price = shippingPrice
@@ -161,5 +155,11 @@ describe('PUT /api/update-delivery-types', () => {
     withdrawal!.enabled = withdrawalEnabled
     withdrawal!.price = withdrawalPrice
     await withdrawal!.save()
+
+    // test failure (payload not provided)
+    res = await request(app)
+      .put('/api/update-delivery-types')
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(400)
   })
 })

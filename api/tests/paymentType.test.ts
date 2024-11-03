@@ -94,14 +94,6 @@ describe('GET /api/enabled-payment-types', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.length).toBe(3)
 
-    // test failure
-    await databaseHelper.close()
-    res = await request(app)
-      .get('/api/enabled-payment-types')
-    expect(res.statusCode).toBe(400)
-    const connRes = await databaseHelper.connect(env.DB_URI, false, false)
-    expect(connRes).toBeTruthy()
-
     // restore
     creditCard!.enabled = creditCardEnabled
     await creditCard!.save()
@@ -109,6 +101,14 @@ describe('GET /api/enabled-payment-types', () => {
     await cod!.save()
     wireTransfer!.enabled = wireTransferEnabled
     await wireTransfer!.save()
+
+    // test failure
+    await databaseHelper.close()
+    res = await request(app)
+      .get('/api/enabled-payment-types')
+    expect(res.statusCode).toBe(400)
+    const connRes = await databaseHelper.connect(env.DB_URI, false, false)
+    expect(connRes).toBeTruthy()
   })
 })
 
@@ -151,17 +151,17 @@ describe('PUT /api/update-payment-types', () => {
     expect(cod).not.toBeNull()
     expect(cod!.enabled).toBe(!codEnabled)
 
-    // test failure (payload not provided)
-    res = await request(app)
-      .put('/api/update-payment-types')
-      .set(env.X_ACCESS_TOKEN, token)
-    expect(res.statusCode).toBe(400)
-
     // restore
     creditCard!.enabled = creditCardEnabled
     await creditCard!.save()
 
     cod!.enabled = codEnabled
     await cod!.save()
+
+    // test failure (payload not provided)
+    res = await request(app)
+      .put('/api/update-payment-types')
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(400)
   })
 })
