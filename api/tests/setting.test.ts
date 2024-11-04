@@ -225,6 +225,11 @@ describe('PUT /api/update-settings', () => {
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
+    const _settings = await Setting.findOne()
+    expect(_settings).toBeTruthy()
+    expect(_settings!.language).toBe('fr')
+    expect(_settings!.currency).toBe('€')
+    expect(_settings!.stripeCurrency).toBe('EUR')
 
     // test not found
     await Setting.deleteMany()
@@ -276,6 +281,12 @@ describe('PUT /api/update-bank-settings', () => {
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
+    const _settings = await Setting.findOne()
+    expect(_settings).toBeTruthy()
+    expect(_settings!.bankName).toBe('BANK_NAME')
+    expect(_settings!.accountHolder).toBe('ACCOUNT_HOLDER')
+    expect(_settings!.rib).toBe('007780000125300000000023')
+    expect(_settings!.iban).toBe('GB007780000125300000000023')
 
     // test not found
     await Setting.deleteMany()
