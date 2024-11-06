@@ -16,6 +16,8 @@ export const getName = (prefix: string) => {
   return `${prefix}.${uuid()}`
 }
 
+export const getRandomString = () => getName(Date.now().toString())
+
 export const getSupplierName = () => getName('supplier')
 
 export const ADMIN_EMAIL = `${getName('admin')}@test.wexcommerce.ma`

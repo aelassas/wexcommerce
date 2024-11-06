@@ -26,6 +26,11 @@ import Wishlist from '../models/Wishlist'
 export const validate = async (req: Request, res: Response) => {
   try {
     const { language, value }: wexcommerceTypes.ValidateCategoryPayload = req.body
+
+    if (!language || !value) {
+      throw new Error('Missing language or value from payload')
+    }
+
     const keyword = escapeStringRegexp(value)
     const options = 'i'
 
@@ -72,9 +77,9 @@ export const validate = async (req: Request, res: Response) => {
  * @param {Response} res
  */
 export const checkCategory = async (req: Request, res: Response) => {
-  const id = new mongoose.Types.ObjectId(req.params.id)
-
   try {
+    const id = new mongoose.Types.ObjectId(req.params.id)
+
     const count = await Product.find({ categories: id })
       .limit(1)
       .countDocuments()
@@ -84,7 +89,7 @@ export const checkCategory = async (req: Request, res: Response) => {
     }
     return res.sendStatus(204)
   } catch (err) {
-    logger.error(`[category.checkCategory] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[category.checkCategory] ${i18n.t('DB_ERROR')} ${req.params.id}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -137,7 +142,7 @@ export const create = async (req: Request, res: Response) => {
       }
     }
 
-    return res.sendStatus(200)
+    return res.status(200).send(category)
   } catch (err) {
     logger.error(`[category.create] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
@@ -178,7 +183,7 @@ export const update = async (req: Request, res: Response) => {
         await category.save()
       }
     }
-    return res.sendStatus(200)
+    return res.status(200).send(category)
   } catch (err) {
     logger.error(`[category.update] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
@@ -196,6 +201,9 @@ export const update = async (req: Request, res: Response) => {
 export const deleteCategory = async (req: Request, res: Response) => {
   const { id } = req.params
   try {
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Id not valid')
+    }
     const category = await Category.findByIdAndDelete(id)
     if (category) {
       await Value.deleteMany({ _id: { $in: category.values } })
@@ -225,6 +233,12 @@ export const deleteCategory = async (req: Request, res: Response) => {
 export const getCategory = async (req: Request, res: Response) => {
   const { id, language } = req.params
   try {
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Id not valid')
+    }
+    if (language.length !== 2) {
+      throw new Error('Language not valid')
+    }
     const category = await Category.findById(id)
       .populate<{ values: env.Value[] }>('values')
       .lean()
@@ -252,6 +266,9 @@ export const getCategory = async (req: Request, res: Response) => {
 export const getCategories = async (req: Request, res: Response) => {
   try {
     const { language, imageRequired } = req.params
+    if (language.length !== 2) {
+      throw new Error('Language not valid')
+    }
     const _imageRequired = helper.StringToBoolean(imageRequired)
 
     let $match: mongoose.FilterQuery<env.Category> = {}
@@ -304,6 +321,9 @@ export const getCategories = async (req: Request, res: Response) => {
 export const getFeaturedCategories = async (req: Request, res: Response) => {
   try {
     const { language, size: _size } = req.params
+    if (language.length !== 2) {
+      throw new Error('Language not valid')
+    }
     const cartId = String(req.query.c || '')
     const wishlistId = String(req.query.w || '')
     const size = Number.parseInt(_size, 10)
@@ -456,6 +476,9 @@ export const getFeaturedCategories = async (req: Request, res: Response) => {
 export const searchCategories = async (req: Request, res: Response) => {
   try {
     const { language } = req.params
+    if (language.length !== 2) {
+      throw new Error('Language not valid')
+    }
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
 
@@ -531,9 +554,7 @@ export const updateImage = async (req: Request, res: Response) => {
 
   try {
     if (!req.file) {
-      const msg = '[category.updateImage] req.file not found'
-      logger.error(msg)
-      return res.status(400).send(msg)
+      throw new Error('[category.updateImage] req.file not found')
     }
 
     const { file } = req
@@ -578,6 +599,9 @@ export const deleteImage = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Id not valid')
+    }
     const category = await Category.findById(id)
 
     if (category) {
