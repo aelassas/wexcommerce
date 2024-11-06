@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as logger from '../common/logger'
 import i18n from '../lang/i18n'
+import * as helper from '../common/helper'
 import Wishlist from '../models/Wishlist'
 import User from '../models/User'
 
@@ -18,6 +19,14 @@ export const addItem = async (req: Request, res: Response) => {
   try {
     const { body }: { body: wexcommerceTypes.AddWishlistItemPayload } = req
     const { userId, productId } = body
+
+    if (!helper.isValidObjectId(userId)) {
+      throw new Error('User Id not valid')
+    }
+
+    if (!helper.isValidObjectId(productId)) {
+      throw new Error('Product Id not valid')
+    }
 
     const user = await User.findById(userId)
     if (!user) {
@@ -49,6 +58,15 @@ export const addItem = async (req: Request, res: Response) => {
 export const deleteItem = async (req: Request, res: Response) => {
   try {
     const { wishlist: wishlistId, product: productId } = req.params
+
+    if (!helper.isValidObjectId(wishlistId)) {
+      throw new Error('Wishlist Id not valid')
+    }
+
+    if (!helper.isValidObjectId(productId)) {
+      throw new Error('Product Id not valid')
+    }
+
     const wishlist = await Wishlist.findById(wishlistId)
 
     if (wishlist) {
@@ -73,6 +91,10 @@ export const deleteItem = async (req: Request, res: Response) => {
 export const getWishlist = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Wishlist Id not valid')
+    }
 
     const wishlist = await Wishlist
       .findById(id)
@@ -104,11 +126,14 @@ export const getWishlistCount = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    const wishlist = await Wishlist
-      .findById(id)
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Wishlist Id not valid')
+    }
+
+    const wishlist = await Wishlist.findById(id)
 
     if (wishlist) {
-      return res.json(wishlist?.products.length)
+      return res.json(wishlist.products.length)
     }
 
     return res.json(0)
@@ -129,6 +154,10 @@ export const getWishlistCount = async (req: Request, res: Response) => {
 export const getWishlistId = async (req: Request, res: Response) => {
   try {
     const { user } = req.params
+
+    if (!helper.isValidObjectId(user)) {
+      throw new Error('User Id not valid')
+    }
 
     const wishlist = await Wishlist.findOne({ user })
 
@@ -154,6 +183,10 @@ export const getWishlistId = async (req: Request, res: Response) => {
 export const clearWishlist = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Wishlist Id not valid')
+    }
 
     const wishlist = await Wishlist.findById(id)
 
@@ -208,6 +241,14 @@ export const update = async (req: Request, res: Response) => {
 export const check = async (req: Request, res: Response) => {
   try {
     const { id, user } = req.params
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Wishlist Id not valid')
+    }
+
+    if (!helper.isValidObjectId(user)) {
+      throw new Error('User Id not valid')
+    }
 
     const wishlist = await Wishlist.findOne({ user, _id: id })
 

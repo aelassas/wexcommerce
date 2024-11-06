@@ -5,9 +5,9 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import * as logger from '../common/logger'
 import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
+import * as helper from '../common/helper'
 import Cart from '../models/Cart'
 import CartItem from '../models/CartItem'
-import * as helper from '../common/helper'
 
 /**
  * Add item to cart.

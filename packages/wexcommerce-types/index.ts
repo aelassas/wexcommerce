@@ -155,7 +155,6 @@ export interface AddItemPayload {
 }
 
 export interface AddWishlistItemPayload {
-  wishlistId: string
   userId: string
   productId: string
 }
