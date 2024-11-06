@@ -138,9 +138,8 @@ const ProductListItem: React.FC<ProductListItemProps> = (
                 onClick={async () => {
                   try {
                     const userId = user._id!
-                    const wishlistId = await WishlistService.getWishlistId(userId)
 
-                    const res = await WishlistService.addItem(wishlistId, userId, product._id)
+                    const res = await WishlistService.addItem(userId, product._id)
 
                     if (res.status === 200) {
                       setInWishlist(true)

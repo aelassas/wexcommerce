@@ -12,8 +12,8 @@ import * as UserService from './UserService'
  * @param {string} productId
  * @returns {Promise<wexcommerceTypes.Response<string>>}
  */
-export const addItem = async (wishlistId: string, userId: string, productId: string): Promise<wexcommerceTypes.Response<string>> => {
-  const data: wexcommerceTypes.AddWishlistItemPayload = { wishlistId, userId, productId }
+export const addItem = async (userId: string, productId: string): Promise<wexcommerceTypes.Response<string>> => {
+  const data: wexcommerceTypes.AddWishlistItemPayload = { userId, productId }
 
   return fetchInstance
     .POST(
