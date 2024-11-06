@@ -1,11 +1,13 @@
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
+import validator from 'validator'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as logger from '../common/logger'
 import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import Cart from '../models/Cart'
 import CartItem from '../models/CartItem'
+import * as helper from '../common/helper'
 
 /**
  * Add item to cart.
@@ -18,7 +20,11 @@ import CartItem from '../models/CartItem'
 export const addItem = async (req: Request, res: Response) => {
   try {
     const { body }: { body: wexcommerceTypes.AddItemPayload } = req
-    const { cartId }: wexcommerceTypes.AddItemPayload = body
+    const { cartId, productId }: wexcommerceTypes.AddItemPayload = body
+
+    if (!helper.isValidObjectId(productId)) {
+      throw new Error('Product Id not valid')
+    }
 
     let cart
     if (cartId) {
@@ -47,7 +53,6 @@ export const addItem = async (req: Request, res: Response) => {
       await cart.save()
     }
 
-    const { productId } = body
     const cartItem = new CartItem({ product: productId })
     await cartItem.save()
     cart.cartItems.push(cartItem.id)
@@ -71,6 +76,10 @@ export const addItem = async (req: Request, res: Response) => {
 export const updateItem = async (req: Request, res: Response) => {
   try {
     const { cartItem: cartItemId, quantity } = req.params
+
+    if (!validator.isNumeric(quantity)) {
+      throw new Error('Quantity not valid')
+    }
 
     const cartItem = await CartItem.findById(cartItemId)
 
@@ -98,6 +107,9 @@ export const updateItem = async (req: Request, res: Response) => {
 export const deleteItem = async (req: Request, res: Response) => {
   try {
     const { cart: cartId, product: productId } = req.params
+    if (!helper.isValidObjectId(productId)) {
+      throw new Error('Product id not valid')
+    }
     const cart = await Cart
       .findById(cartId)
       .populate<{ cartItems: env.CartItem[] }>('cartItems')
@@ -126,10 +138,9 @@ export const deleteItem = async (req: Request, res: Response) => {
 
           return res.status(200).json({ cartDeleted, quantity })
         }
-        return res.sendStatus(204)
       }
-      return res.sendStatus(204)
     }
+
     return res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.deleteItem] ${i18n.t('DB_ERROR')} ${req.body}`, err)
@@ -149,6 +160,9 @@ export const deleteCart = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Id not valid')
+    }
     const cart = await Cart.findByIdAndDelete(id)
     if (cart) {
       await CartItem.deleteMany({ _id: { $in: cart.cartItems } })
@@ -172,6 +186,10 @@ export const deleteCart = async (req: Request, res: Response) => {
 export const getCart = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Id not valid')
+    }
 
     const cart = await Cart
       .findById(id)
@@ -205,6 +223,10 @@ export const getCart = async (req: Request, res: Response) => {
 export const getCartCount = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Id not valid')
+    }
 
     const data = await Cart.aggregate([
       { $match: { _id: { $eq: new mongoose.Types.ObjectId(id) } } },
@@ -252,6 +274,10 @@ export const getCartId = async (req: Request, res: Response) => {
   try {
     const { user } = req.params
 
+    if (!helper.isValidObjectId(user)) {
+      throw new Error('User id not valid')
+    }
+
     const cart = await Cart.findOne({ user })
 
     if (cart) {
@@ -276,6 +302,14 @@ export const getCartId = async (req: Request, res: Response) => {
 export const update = async (req: Request, res: Response) => {
   try {
     const { id, user } = req.params
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Cart id not valid')
+    }
+
+    if (!helper.isValidObjectId(user)) {
+      throw new Error('User id not valid')
+    }
 
     const cart = await Cart.findById(id)
 
@@ -304,6 +338,10 @@ export const check = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Cart id not valid')
+    }
+
     const cart = await Cart.findById(id)
 
     if (cart) {
@@ -328,7 +366,16 @@ export const clearOtherCarts = async (req: Request, res: Response) => {
   try {
     const { id, user } = req.params
 
-    const cart = await Cart.find({ user, _id: id })
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Cart id not valid')
+    }
+
+    if (!helper.isValidObjectId(user)) {
+      throw new Error('User id not valid')
+    }
+
+    const cart = await Cart.findOne({ user, _id: id })
+
     if (cart) {
       const otherCarts = await Cart.find({ user, _id: { $ne: id } })
 
