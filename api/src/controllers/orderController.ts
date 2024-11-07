@@ -123,9 +123,7 @@ export const checkout = async (req: Request, res: Response) => {
 
     const admin = await User.findOne({ email: env.ADMIN_EMAIL })
     if (!admin) {
-      const err = `[order.create] admin user ${env.ADMIN_EMAIL} not found.`
-      logger.error(err)
-      return res.status(204).send(err)
+      throw new Error(`Admin user ${env.ADMIN_EMAIL} not found`)
     }
 
     const settings = await Setting.findOne()
@@ -193,9 +191,7 @@ export const checkout = async (req: Request, res: Response) => {
       const { paymentIntentId, sessionId } = body
 
       if (!paymentIntentId && !sessionId) {
-        const message = 'Payment intent and session missing'
-        logger.error(message, body)
-        return res.status(400).send(message)
+        throw new Error('Payment intent and session missing')
       }
 
       _order.customerId = body.customerId
@@ -203,9 +199,7 @@ export const checkout = async (req: Request, res: Response) => {
       if (paymentIntentId) {
         const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
         if (paymentIntent.status !== 'succeeded') {
-          const message = `Payment failed: ${paymentIntent.status}`
-          logger.error(message, body)
-          return res.status(400).send(message)
+          throw new Error(`Payment failed: ${paymentIntent.status}`)
         }
 
         _order.paymentIntentId = paymentIntentId
@@ -249,7 +243,7 @@ export const checkout = async (req: Request, res: Response) => {
 
     return res.status(200).send({ orderId: __order.id })
   } catch (err) {
-    logger.error(`[order.create] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[order.checkout] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -267,11 +261,17 @@ export const update = async (req: Request, res: Response) => {
     const { user: userId, id } = req.params
     const { status }: wexcommerceTypes.UpdateOrderPayload = req.body
 
+    if (!helper.isValidObjectId(userId)) {
+      throw new Error('User id not valid')
+    }
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('User id not valid')
+    }
+
     const admin = await User.find({ _id: userId, type: wexcommerceTypes.UserType.Admin })
     if (!admin) {
-      const err = `[order.update] admin user ${userId} not found.`
-      logger.error(err)
-      return res.status(204).send(err)
+      throw new Error(`Admin user ${userId} not found.`)
     }
 
     const order = await Order
@@ -319,9 +319,10 @@ export const update = async (req: Request, res: Response) => {
 
       return res.sendStatus(200)
     }
+
     return res.sendStatus(204)
   } catch (err) {
-    logger.error(`[ordert.create] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[ordert.update] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -338,11 +339,17 @@ export const deleteOrder = async (req: Request, res: Response) => {
   try {
     const { user: userId, id } = req.params
 
+    if (!helper.isValidObjectId(userId)) {
+      throw new Error('User id not valid')
+    }
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('User id not valid')
+    }
+
     const admin = await User.find({ _id: userId, type: wexcommerceTypes.UserType.Admin })
     if (!admin) {
-      const err = `[order.deleteOrder] admin user ${userId} not found.`
-      logger.error(err)
-      return res.status(204).send(err)
+      throw new Error(`admin user ${userId} not found`)
     }
 
     const order = await Order.findByIdAndDelete(id)
@@ -369,11 +376,16 @@ export const deleteTempOrder = async (req: Request, res: Response) => {
   const { orderId, sessionId } = req.params
 
   try {
+    if (!helper.isValidObjectId(orderId)) {
+      throw new Error('Order id not valid')
+    }
+
     const order = await Order.findOne({ _id: orderId, sessionId, status: wexcommerceTypes.OrderStatus.Pending, expireAt: { $ne: null } })
     if (order) {
       const user = await User.findOne({ _id: order.user, verified: false, expireAt: { $ne: null } })
       await user?.deleteOne()
     }
+
     await order?.deleteOne()
     return res.sendStatus(200)
   } catch (err) {
@@ -392,8 +404,14 @@ export const deleteTempOrder = async (req: Request, res: Response) => {
  */
 export const getOrder = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Order id not valid')
+    }
+
     const data = await Order.aggregate([
-      { $match: { _id: new mongoose.Types.ObjectId(req.params.id) } },
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
       {
         $lookup: {
           from: 'User',
@@ -495,12 +513,14 @@ export const getOrders = async (req: Request, res: Response) => {
   try {
     const { user: userId } = req.params
 
+    if (!helper.isValidObjectId(userId)) {
+      throw new Error('User id not valid')
+    }
+
     const user = await User.findOne({ _id: userId })
 
     if (!user) {
-      const err = `[order.getOrders] user ${userId} not found.`
-      logger.error(err)
-      return res.status(204).send(err)
+      throw new Error(`User ${userId} not found`)
     }
 
     const page = parseInt(req.params.page, 10)
@@ -534,7 +554,7 @@ export const getOrders = async (req: Request, res: Response) => {
 
     let isObjectId = false
     if (keyword) {
-      isObjectId = mongoose.isValidObjectId(keyword)
+      isObjectId = helper.isValidObjectId(keyword)
 
       if (isObjectId) {
         $match.$and!.push({ _id: { $eq: new mongoose.Types.ObjectId(keyword) } })
