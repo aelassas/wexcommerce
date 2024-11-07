@@ -29,3 +29,17 @@ describe('Test trim', () => {
     expect(helper.trim('   xxxxxxxx   ', ' ')).toBe('xxxxxxxx')
   })
 })
+
+describe('Test getStripeLocale', () => {
+  it('should test getStripeLocale', () => {
+    expect(helper.getStripeLocale('en')).toBe('en')
+    expect(helper.getStripeLocale('')).toBe('auto')
+  })
+})
+
+describe('Test formatPrice', () => {
+  it('should test formatPrice', () => {
+    expect(helper.formatPrice(1000.5, '$', 'en')).toBe('$1,000.50')
+    expect(helper.formatPrice(1000, '€', 'fr')).toBe('1 000 €')
+  })
+})
