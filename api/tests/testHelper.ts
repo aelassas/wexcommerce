@@ -12,6 +12,7 @@ import NotificationCounter from '../src/models/NotificationCounter'
 import * as logger from '../src/common/logger'
 import * as paymentTypeController from '../src/controllers/paymentTypeController'
 import * as deliveryTypeController from '../src/controllers/deliveryTypeController'
+import * as settingController from '../src/controllers/settingController'
 
 export const getName = (prefix: string) => {
   expect(prefix.length).toBeGreaterThan(1)
@@ -22,8 +23,8 @@ export const getRandomString = () => getName(Date.now().toString())
 
 export const getSupplierName = () => getName('supplier')
 
-export const ADMIN_EMAIL = `${getName('admin')}@test.wexcommerce.ma`
-export const USER_EMAIL = `${getName('user')}@test.wexcommerce.ma`
+export const ADMIN_EMAIL = `${getName('admin')}@test.wexcommerce.com`
+export const USER_EMAIL = `${getName('user')}@test.wexcommerce.com`
 export const USER_FULL_NAME = 'user'
 export const PASSWORD = 'Un1tTest5'
 export const LANGUAGE = 'en'
@@ -69,6 +70,7 @@ export const initialize = async () => {
 
   await paymentTypeController.init()
   await deliveryTypeController.init()
+  await settingController.init()
 }
 
 export const getAdminUserId = () => ADMIN_USER_ID

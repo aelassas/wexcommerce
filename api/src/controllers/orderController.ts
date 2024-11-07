@@ -122,9 +122,9 @@ export const checkout = async (req: Request, res: Response) => {
     const { user, order } = body
 
     const admin = await User.findOne({ email: env.ADMIN_EMAIL })
-    if (!admin) {
-      throw new Error(`Admin user ${env.ADMIN_EMAIL} not found`)
-    }
+    // if (!admin) {
+    //   throw new Error(`Admin user ${env.ADMIN_EMAIL} not found`)
+    // }
 
     const settings = await Setting.findOne()
     if (!settings) {
@@ -238,7 +238,9 @@ export const checkout = async (req: Request, res: Response) => {
       await confirm(_user, __order, orderItems, settings, paymentType, deliveryType)
 
       // notify admin
-      await notify(admin, __order, _user, settings)
+      if (admin) {
+        await notify(admin, __order, _user, settings)
+      }
     }
 
     return res.status(200).send({ orderId: __order.id })
