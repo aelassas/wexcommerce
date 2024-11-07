@@ -124,7 +124,7 @@ export const checkout = async (req: Request, res: Response) => {
     const { body }: { body: wexcommerceTypes.CheckoutPayload } = req
     const { user, order } = body
 
-    // const admin = await User.findOne({ email: env.ADMIN_EMAIL })
+    // const admin = await User.findOne({ email: env.ADMIN_EMAIL, type: wexcommerceTypes.UserType.Admin })
     // if (!admin) {
     //   throw new Error(`Admin user ${env.ADMIN_EMAIL} not found`)
     // }
