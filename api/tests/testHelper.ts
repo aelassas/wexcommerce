@@ -10,6 +10,8 @@ import User from '../src/models/User'
 import Notification from '../src/models/Notification'
 import NotificationCounter from '../src/models/NotificationCounter'
 import * as logger from '../src/common/logger'
+import * as paymentTypeController from '../src/controllers/paymentTypeController'
+import * as deliveryTypeController from '../src/controllers/deliveryTypeController'
 
 export const getName = (prefix: string) => {
   expect(prefix.length).toBeGreaterThan(1)
@@ -64,6 +66,9 @@ export const initialize = async () => {
   await user.save()
   expect(user.id).toBeDefined()
   USER_ID = user.id
+
+  await paymentTypeController.init()
+  await deliveryTypeController.init()
 }
 
 export const getAdminUserId = () => ADMIN_USER_ID

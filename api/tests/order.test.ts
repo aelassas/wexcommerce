@@ -208,7 +208,7 @@ describe('GET /api/order/:id', () => {
       .get(`/api/order/${ORDER_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(res.body).toBeTruthy()
+    expect(res.body._id).toBeTruthy()
 
     // test order not found
     res = await request(app)

@@ -213,7 +213,7 @@ describe('GET /api/category/:id/:language', () => {
       .get(`/api/category/${CATEGORY_ID}/en`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(res.body).toBeTruthy()
+    expect(res.body._id).toBeTruthy()
 
     // test category not found
     res = await request(app)
