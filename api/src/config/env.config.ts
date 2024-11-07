@@ -513,7 +513,7 @@ export interface Product extends Document {
   description: string
   categories: Types.ObjectId[]
   image?: string
-  images?: string[]
+  images: string[]
   price: number
   quantity: number
   soldOut: boolean

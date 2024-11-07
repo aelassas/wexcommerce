@@ -98,12 +98,16 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
     setKeyword(searchParams.get('s') || '')
 
     let _sortBy = wexcommerceTypes.SortProductBy.featured
-    const o = searchParams.get('sb')
-    if (o) {
-      if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
+    const sb = searchParams.get('sb')
+    if (sb) {
+      if (sb.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
         _sortBy = wexcommerceTypes.SortProductBy.priceAsc
-      } else if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceDesc.toLowerCase()) {
+      } else if (sb.toLowerCase() === wexcommerceTypes.SortProductBy.priceDesc.toLowerCase()) {
         _sortBy = wexcommerceTypes.SortProductBy.priceDesc
+      } else if (sb.toLowerCase() === wexcommerceTypes.SortProductBy.dateDesc.toLowerCase()) {
+        _sortBy = wexcommerceTypes.SortProductBy.dateDesc
+      } else {
+        _sortBy = wexcommerceTypes.SortProductBy.featured
       }
     }
     setSortBy(_sortBy)
@@ -221,7 +225,8 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
                   totalRecords={totalRecords}
                   pageSize={env.PAGE_SIZE}
                 />
-                {sortBy && (
+
+                {sortBy &&
                   <FormControl margin="dense" className={styles.sort}>
                     <InputLabel>{commonStrings.SORT_BY}</InputLabel>
                     <Select
@@ -247,11 +252,11 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
                       }}
                     >
                       <MenuItem value={wexcommerceTypes.SortProductBy.featured.toString()}>{strings.ORDER_BY_FEATURED}</MenuItem>
+                      <MenuItem value={wexcommerceTypes.SortProductBy.dateDesc.toString()}>{strings.ORDER_BY_DATE_DESC}</MenuItem>
                       <MenuItem value={wexcommerceTypes.SortProductBy.priceAsc.toString()}>{strings.ORDER_BY_PRICE_ASC}</MenuItem>
                       <MenuItem value={wexcommerceTypes.SortProductBy.priceDesc.toString()}>{strings.ORDER_BY_PRICE_DESC}</MenuItem>
                     </Select>
-                  </FormControl>
-                )}
+                  </FormControl>}
               </div>
             )}
           {children}

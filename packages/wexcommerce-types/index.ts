@@ -378,6 +378,7 @@ export enum SortProductBy {
   featured = 'featured',
   priceAsc = 'priceAsc',
   priceDesc = 'priceDesc',
+  dateDesc = 'dateDesc',
 }
 
 export interface GetProductsPayload {

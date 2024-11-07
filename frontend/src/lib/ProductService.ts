@@ -39,7 +39,7 @@ export const getProducts = async (
   categoryId: string,
   cartId: string,
   wishlistId: string,
-  sortBy: wexcommerceTypes.SortProductBy = wexcommerceTypes.SortProductBy.featured
+  sortBy: wexcommerceTypes.SortProductBy,
 ): Promise<wexcommerceTypes.Result<wexcommerceTypes.Product>> => {
   const data: wexcommerceTypes.GetProductsPayload = { cart: cartId, wishlist: wishlistId, sortBy }
 

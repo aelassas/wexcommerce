@@ -53,9 +53,13 @@ export const uploadImage = async (req: Request, res: Response) => {
 export const deleteTempImage = async (req: Request, res: Response) => {
   try {
     const _image = path.join(env.CDN_TEMP_PRODUCTS, req.params.fileName)
-    if (await helper.exists(_image)) {
-      await fs.unlink(_image)
+
+    if (!await helper.exists(_image)) {
+      throw new Error(`[product.deleteTempImage] temp image ${_image} not found`)
     }
+
+    await fs.unlink(_image)
+
     return res.sendStatus(200)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
@@ -74,7 +78,9 @@ export const deleteTempImage = async (req: Request, res: Response) => {
 export const deleteImage = async (req: Request, res: Response) => {
   try {
     const { product: productId, image: imageFileName } = req.params
-
+    if (!helper.isValidObjectId(productId)) {
+      throw new Error('Product Id not valid')
+    }
     const product = await Product.findById(productId)
 
     if (product) {
@@ -89,8 +95,8 @@ export const deleteImage = async (req: Request, res: Response) => {
         await product.save()
         return res.sendStatus(200)
       }
-      return res.sendStatus(204)
     }
+
     return res.sendStatus(204)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
@@ -121,7 +127,7 @@ export const create = async (req: Request, res: Response) => {
       images,
       featured,
     }: wexcommerceTypes.CreateProductPayload = req.body
-    const __product = { name, description, categories, price, quantity, soldOut, hidden, featured }
+    const __product = { name, description, categories, price, quantity, soldOut, hidden, featured, images: [] }
 
     product = new Product(__product)
     await product.save()
@@ -136,20 +142,15 @@ export const create = async (req: Request, res: Response) => {
         await fs.rename(_image, newPath)
         product.image = filename
       } else {
-        await Product.deleteOne({ _id: product._id })
-        const err = 'Image file not found'
-        logger.error(i18n.t('DB_ERROR'), err)
-        return res.status(400).send(i18n.t('DB_ERROR') + err)
+        await product.deleteOne()
+        throw new Error('Image file not found')
       }
     } else {
-      await Product.deleteOne({ _id: product._id })
-      return res.status(400).send('Image field is required')
+      await product.deleteOne()
+      throw new Error('Image field is required')
     }
 
     // images
-    if (!product.images) {
-      product.images = []
-    }
     for (let i = 0; i < images.length; i += 1) {
       const image = images[i]
       const __image = path.join(env.CDN_TEMP_PRODUCTS, image)
@@ -159,19 +160,16 @@ export const create = async (req: Request, res: Response) => {
         const newPath = path.join(env.CDN_PRODUCTS, filename)
 
         await fs.rename(__image, newPath)
-        product.images.push(filename)
+        product.images!.push(filename)
       } else {
-        await Product.deleteOne({ _id: product._id })
-        const err = 'Image file not found'
-        logger.error(i18n.t('DB_ERROR'), err)
-        return res.status(400).send(i18n.t('DB_ERROR') + err)
+        await product.deleteOne()
+        throw new Error('Image file not found')
       }
     }
 
     await product.save()
     return res.status(200).json(product)
   } catch (err) {
-    if (product && product._id) await Product.deleteOne({ _id: product._id })
     logger.error(i18n.t('DB_ERROR'), err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
@@ -218,6 +216,12 @@ export const update = async (req: Request, res: Response) => {
       // }
 
       if (image) {
+        const tempImagePath = path.join(env.CDN_TEMP_PRODUCTS, image)
+
+        if (!await helper.exists(tempImagePath)) {
+          throw new Error(`${image} not found`)
+        }
+
         const oldImage = path.join(env.CDN_PRODUCTS, product.image!)
         if (await helper.exists(oldImage)) {
           await fs.unlink(oldImage)
@@ -226,31 +230,28 @@ export const update = async (req: Request, res: Response) => {
         const filename = `${product._id}_${Date.now()}${path.extname(image)}`
         const filepath = path.join(env.CDN_PRODUCTS, filename)
 
-        const tempImagePath = path.join(env.CDN_TEMP_PRODUCTS, image)
         await fs.rename(tempImagePath, filepath)
         product.image = filename
       }
 
       // delete deleted images
       const _images: string[] = []
-      if (images && product.images) {
-        if (images.length === 0) {
-          for (const img of product.images) {
+      if (images.length === 0) {
+        for (const img of product.images) {
+          const _image = path.join(env.CDN_PRODUCTS, img)
+          if (await helper.exists(_image)) {
+            await fs.unlink(_image)
+          }
+        }
+      } else {
+        for (const img of product.images) {
+          if (!images.includes(img)) {
             const _image = path.join(env.CDN_PRODUCTS, img)
             if (await helper.exists(_image)) {
               await fs.unlink(_image)
             }
-          }
-        } else {
-          for (const img of product.images) {
-            if (!images.includes(img)) {
-              const _image = path.join(env.CDN_PRODUCTS, img)
-              if (await helper.exists(_image)) {
-                await fs.unlink(_image)
-              }
-            } else {
-              _images.push(img)
-            }
+          } else {
+            _images.push(img)
           }
         }
       }
@@ -273,9 +274,8 @@ export const update = async (req: Request, res: Response) => {
       await product.save()
       return res.status(200).json(product)
     }
-    const err = `Product ${_id} not found`
-    logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+
+    throw new Error(`Product ${_id} not found`)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
@@ -293,6 +293,10 @@ export const update = async (req: Request, res: Response) => {
 export const checkProduct = async (req: Request, res: Response) => {
   const { id } = req.params
   try {
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Product id not valid')
+    }
+
     const count = await OrderItem.find({ product: id }).limit(1).countDocuments()
 
     if (count === 1) {
@@ -315,7 +319,13 @@ export const checkProduct = async (req: Request, res: Response) => {
  */
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id)
+    const { id } = req.params
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Product id not valid')
+    }
+
+    const product = await Product.findByIdAndDelete(id)
 
     if (product) {
       if (product.image) {
@@ -326,13 +336,11 @@ export const deleteProduct = async (req: Request, res: Response) => {
         }
       }
 
-      if (product.images) {
-        for (const image of product.images) {
-          const _image = path.join(env.CDN_PRODUCTS, image)
+      for (const image of product.images) {
+        const _image = path.join(env.CDN_PRODUCTS, image)
 
-          if (await helper.exists(_image)) {
-            await fs.unlink(_image)
-          }
+        if (await helper.exists(_image)) {
+          await fs.unlink(_image)
         }
       }
 
@@ -349,6 +357,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
       return res.sendStatus(200)
     }
+
     return res.sendStatus(204)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
@@ -366,8 +375,17 @@ export const deleteProduct = async (req: Request, res: Response) => {
  */
 export const getProduct = async (req: Request, res: Response) => {
   try {
-    const _id = new mongoose.Types.ObjectId(req.params.id)
-    const { language } = req.params
+    const { id, language } = req.params
+
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('Product id not valid')
+    }
+
+    if (language.length !== 2) {
+      throw new Error('Language not valid')
+    }
+
+    const _id = new mongoose.Types.ObjectId(id)
 
     const { body }: { body: wexcommerceTypes.GetProductPayload } = req
     const { cart: cartId, wishlist: wisthlistId } = body
@@ -449,6 +467,7 @@ export const getProduct = async (req: Request, res: Response) => {
     if (data.length > 0) {
       return res.json(data[0])
     }
+
     return res.sendStatus(204)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
@@ -469,12 +488,14 @@ export const getBackendProducts = async (req: Request, res: Response) => {
     const { body }: { body: wexcommerceTypes.GetBackendProductsPayload } = req
     const { user: userId } = req.params
 
-    const user = await User.find({ _id: userId, type: wexcommerceTypes.UserType.Admin })
+    if (!helper.isValidObjectId(userId)) {
+      throw new Error('User id not valid')
+    }
+
+    const user = await User.findOne({ _id: userId, type: wexcommerceTypes.UserType.Admin })
 
     if (!user) {
-      const err = `[product.getBackendProducts] admin user ${userId} not found.`
-      logger.error(err)
-      return res.status(204).send(err)
+      throw new Error('Admin user not found')
     }
 
     const page = parseInt(req.params.page, 10)
@@ -505,13 +526,17 @@ export const getBackendProducts = async (req: Request, res: Response) => {
       }
     }
 
-    let $sort: Record<string, 1 | -1 | Expression.Meta> = { createdAt: -1 } // featured
+    let $sort: Record<string, 1 | -1 | Expression.Meta> = { createdAt: -1 } // createdAt desc
     const { sortBy } = body
     if (sortBy) {
       if (sortBy === wexcommerceTypes.SortProductBy.priceAsc) {
-        $sort = { price: 1 }
+        $sort = { price: 1, createdAt: -1 }
       } else if (sortBy === wexcommerceTypes.SortProductBy.priceDesc) {
-        $sort = { price: -1 }
+        $sort = { price: -1, createdAt: -1 }
+      } else if (sortBy === wexcommerceTypes.SortProductBy.featured) {
+        $sort = { featured: -1, createdAt: -1 }
+      } else {
+        $sort = { createdAt: -1 }
       }
     }
 
@@ -622,13 +647,17 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
       }
     }
 
-    let $sort: Record<string, 1 | -1 | Expression.Meta> = { createdAt: -1 } // featured
+    let $sort: Record<string, 1 | -1 | Expression.Meta> = { createdAt: -1 } // createdAt desc
     const { sortBy } = body
     if (sortBy) {
       if (sortBy === wexcommerceTypes.SortProductBy.priceAsc) {
-        $sort = { price: 1 }
+        $sort = { price: 1, createdAt: -1 }
       } else if (sortBy === wexcommerceTypes.SortProductBy.priceDesc) {
-        $sort = { price: -1 }
+        $sort = { price: -1, createdAt: -1 }
+      } else if (sortBy === wexcommerceTypes.SortProductBy.featured) {
+        $sort = { featured: -1, createdAt: -1 }
+      } else {
+        $sort = { createdAt: -1 }
       }
     }
 

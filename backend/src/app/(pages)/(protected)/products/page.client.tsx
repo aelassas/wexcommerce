@@ -37,7 +37,7 @@ interface PagerProps {
   rowCount: number
   categoryId?: string
   keyword: string
-  sortBy: wexcommerceTypes.SortProductBy
+  sortBy?: wexcommerceTypes.SortProductBy
   className?: string
 }
 
@@ -120,13 +120,17 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
     setKeyword(searchParams.get('s') || '')
     setCategoryId(searchParams.get('c') || '')
 
-    let _sortBy = wexcommerceTypes.SortProductBy.featured
-    const o = searchParams.get('sb')
-    if (o) {
-      if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
+    let _sortBy = wexcommerceTypes.SortProductBy.dateDesc
+    const sb = searchParams.get('sb')
+    if (sb) {
+      if (sb.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
         _sortBy = wexcommerceTypes.SortProductBy.priceAsc
-      } else if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceDesc.toLowerCase()) {
+      } else if (sb.toLowerCase() === wexcommerceTypes.SortProductBy.priceDesc.toLowerCase()) {
         _sortBy = wexcommerceTypes.SortProductBy.priceDesc
+      } else if (sb.toLowerCase() === wexcommerceTypes.SortProductBy.featured.toLowerCase()) {
+        _sortBy = wexcommerceTypes.SortProductBy.featured
+      } else {
+        _sortBy = wexcommerceTypes.SortProductBy.dateDesc
       }
     }
     setSortBy(_sortBy)
@@ -272,6 +276,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
                   totalRecords={totalRecords}
                   pageSize={env.PAGE_SIZE}
                 />
+
                 {sortBy &&
                   <FormControl margin="dense" className={styles.sort}>
                     <InputLabel>{commonStrings.SORT_BY}</InputLabel>
@@ -281,7 +286,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
                       label={commonStrings.SORT_BY}
                       value={sortBy}
                       onChange={(e) => {
-                        const _sortBy = e.target.value as wexcommerceTypes.SortProductBy
+                        const _sortBy = e.target.value
 
                         let url = '/products'
 
@@ -297,6 +302,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
                         router.push(url)
                       }}
                     >
+                      <MenuItem value={wexcommerceTypes.SortProductBy.dateDesc.toString()}>{strings.ORDER_BY_DATE_DESC}</MenuItem>
                       <MenuItem value={wexcommerceTypes.SortProductBy.featured.toString()}>{strings.ORDER_BY_FEATURED}</MenuItem>
                       <MenuItem value={wexcommerceTypes.SortProductBy.priceAsc.toString()}>{strings.ORDER_BY_PRICE_ASC}</MenuItem>
                       <MenuItem value={wexcommerceTypes.SortProductBy.priceDesc.toString()}>{strings.ORDER_BY_PRICE_DESC}</MenuItem>

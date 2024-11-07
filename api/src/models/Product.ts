@@ -20,6 +20,7 @@ const productSchema = new Schema<env.Product>({
   },
   images: {
     type: [String],
+    default: [],
   },
   price: {
     type: Number,

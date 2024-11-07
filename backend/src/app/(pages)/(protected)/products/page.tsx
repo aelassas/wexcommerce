@@ -38,13 +38,17 @@ const Products = async (props: { searchParams: Promise<SearchParams> }) => {
   let totalRecords = 0
   let noMatch = false
 
-  let sortBy = wexcommerceTypes.SortProductBy.featured
-  const o = searchParams['sb'] as string
-  if (o) {
-    if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
+  let sortBy: wexcommerceTypes.SortProductBy = wexcommerceTypes.SortProductBy.dateDesc
+  const sb = searchParams['sb'] as string
+  if (sb) {
+    if (sb.toLowerCase() === wexcommerceTypes.SortProductBy.priceAsc.toLowerCase()) {
       sortBy = wexcommerceTypes.SortProductBy.priceAsc
-    } else if (o.toLowerCase() === wexcommerceTypes.SortProductBy.priceDesc.toLowerCase()) {
+    } else if (sb.toLowerCase() === wexcommerceTypes.SortProductBy.priceDesc.toLowerCase()) {
       sortBy = wexcommerceTypes.SortProductBy.priceDesc
+    } else if (sb.toLowerCase() === wexcommerceTypes.SortProductBy.featured.toLowerCase()) {
+      sortBy = wexcommerceTypes.SortProductBy.featured
+    } else {
+      sortBy = wexcommerceTypes.SortProductBy.dateDesc
     }
   }
 
