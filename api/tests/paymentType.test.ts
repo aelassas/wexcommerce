@@ -142,11 +142,9 @@ describe('PUT /api/update-payment-types', () => {
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
-
     creditCard = await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard })
     expect(creditCard).not.toBeNull()
     expect(creditCard!.enabled).toBe(!creditCardEnabled)
-
     cod = await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.Cod })
     expect(cod).not.toBeNull()
     expect(cod!.enabled).toBe(!codEnabled)
@@ -154,9 +152,16 @@ describe('PUT /api/update-payment-types', () => {
     // restore
     creditCard!.enabled = creditCardEnabled
     await creditCard!.save()
-
     cod!.enabled = codEnabled
     await cod!.save()
+
+    // test unknown paymentType
+    payload[0].name = 'unknown' as wexcommerceTypes.PaymentType
+    res = await request(app)
+      .put('/api/update-payment-types')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
 
     // test failure (payload not provided)
     res = await request(app)
