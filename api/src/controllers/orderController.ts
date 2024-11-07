@@ -78,14 +78,14 @@ export const confirm = async (_user: env.User, __order: env.Order, orderItems: e
  * @param {env.Setting} settings
  * @returns {*}
  */
-export const notify = async (admin: env.User, __order: env.Order, _user: env.User, settings: env.Setting) => {
+export const notify = async (adminEmail: string, __order: env.Order, _user: env.User, settings: env.Setting) => {
   i18n.locale = settings.language
   // admin email
   const mailOptions = {
     from: env.SMTP_FROM,
-    to: admin.email,
+    to: adminEmail,
     subject: `${i18n.t('NEW_ORDER_SUBJECT')} ${__order._id}`,
-    html: `<p>${i18n.t('HELLO')}${admin.fullName},<br><br>${i18n.t('NEW_ORDER_PART_1')}${__order._id}${i18n.t('NEW_ORDER_PART_2')}<br><br>${i18n.t('NEW_ORDER_PART_3')}<br><br>
+    html: `<p>${i18n.t('HELLO')}${adminEmail},<br><br>${i18n.t('NEW_ORDER_PART_1')}${__order._id}${i18n.t('NEW_ORDER_PART_2')}<br><br>${i18n.t('NEW_ORDER_PART_3')}<br><br>
     ${helper.joinURL(env.BACKEND_HOST, 'orders')}?o=${encodeURIComponent(__order.id)
       }<br><br>${i18n.t('REGARDS')}<br>`
       + '</p>',
@@ -93,17 +93,20 @@ export const notify = async (admin: env.User, __order: env.Order, _user: env.Use
   await mailHelper.sendMail(mailOptions)
 
   // admin notification
-  const message = `${_user.fullName} ${i18n.t('MADE_ORDER')} ${__order._id}.`
-  const notification = new Notification({ user: admin._id, message, order: __order._id })
+  const admin = await User.findOne({ email: env.ADMIN_EMAIL })
+  if (admin) {
+    const message = `${_user.fullName} ${i18n.t('MADE_ORDER')} ${__order._id}.`
+    const notification = new Notification({ user: admin._id, message, order: __order._id })
 
-  await notification.save()
-  let counter = await NotificationCounter.findOne({ user: admin._id })
-  if (counter) {
-    counter.count += 1
-    await counter.save()
-  } else {
-    counter = new NotificationCounter({ user: admin._id, count: 1 })
-    await counter.save()
+    await notification.save()
+    let counter = await NotificationCounter.findOne({ user: admin._id })
+    if (counter) {
+      counter.count += 1
+      await counter.save()
+    } else {
+      counter = new NotificationCounter({ user: admin._id, count: 1 })
+      await counter.save()
+    }
   }
 }
 
@@ -121,7 +124,7 @@ export const checkout = async (req: Request, res: Response) => {
     const { body }: { body: wexcommerceTypes.CheckoutPayload } = req
     const { user, order } = body
 
-    const admin = await User.findOne({ email: env.ADMIN_EMAIL })
+    // const admin = await User.findOne({ email: env.ADMIN_EMAIL })
     // if (!admin) {
     //   throw new Error(`Admin user ${env.ADMIN_EMAIL} not found`)
     // }
@@ -238,9 +241,7 @@ export const checkout = async (req: Request, res: Response) => {
       await confirm(_user, __order, orderItems, settings, paymentType, deliveryType)
 
       // notify admin
-      if (admin) {
-        await notify(admin, __order, _user, settings)
-      }
+      await notify(env.ADMIN_EMAIL, __order, _user, settings)
     }
 
     return res.status(200).send({ orderId: __order.id })

@@ -176,10 +176,11 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
       await orderController.confirm(user, order, order.orderItems, settings, paymentType, deliveryType)
 
       // Notify admin
-      const admin = !!env.ADMIN_EMAIL && await User.findOne({ email: env.ADMIN_EMAIL, type: wexcommerceTypes.UserType.Admin })
-      if (admin) {
-        await orderController.notify(admin, order, user, settings)
-      }
+      // const admin = !!env.ADMIN_EMAIL && await User.findOne({ email: env.ADMIN_EMAIL, type: wexcommerceTypes.UserType.Admin })
+      // if (admin) {
+      //   await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
+      // }
+      await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
 
       return res.sendStatus(200)
     }
