@@ -424,6 +424,12 @@ describe('POST /api/social-sign-in/:type', () => {
       .send(payload)
     expect(res.statusCode).toBe(400)
 
+    payload.socialSignInType = wexcommerceTypes.SocialSignInType.Apple
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
     payload.email = undefined
     res = await request(app)
       .post('/api/social-sign-in')
