@@ -82,6 +82,7 @@ const Home = async () => {
             autoplay
             autoplaySpeed={5 * 1000}
             showActions
+            infinite
           />
         </div>
 
