@@ -232,7 +232,7 @@ describe('PUT /api/update-settings', () => {
     expect(_settings!.stripeCurrency).toBe('EUR')
 
     // test not found
-    await Setting.deleteMany()
+    await Setting.deleteMany({})
     res = await request(app)
       .put('/api/update-settings')
       .set(env.X_ACCESS_TOKEN, token)
