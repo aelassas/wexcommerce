@@ -17,6 +17,7 @@ interface FeaturedProductsProps {
   autoplaySpeed?: number // in milliseconds
   showNavigation?: boolean
   showActions?: boolean
+  infinite?: boolean
 }
 
 const FeaturedProducts: React.FC<FeaturedProductsProps> = (
@@ -27,15 +28,16 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
     autoplaySpeed,
     showNavigation,
     showActions,
+    infinite: infiniteFromProps,
   }) => {
 
   const slider = useRef<ReactSlick>(null)
 
-  const infinite = products.length > env.CARROUSEL_SIZE
+  const infinite = infiniteFromProps && products.length > env.CARROUSEL_SIZE
 
   const sliderSettings = {
-    nextArrow: <Arrow to="next" visible={infinite} />,
-    prevArrow: <Arrow to="prev" visible={infinite} />,
+    nextArrow: <Arrow to="next" visible={!infiniteFromProps || infinite} />,
+    prevArrow: <Arrow to="prev" visible={!infiniteFromProps || infinite} />,
     dots: true,
     // eslint-disable-next-line react/no-unstable-nested-components
     appendDots: (dots: React.ReactNode) => showNavigation ? (

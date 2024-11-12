@@ -93,7 +93,7 @@ export const notify = async (adminEmail: string, __order: env.Order, _user: env.
   await mailHelper.sendMail(mailOptions)
 
   // admin notification
-  const admin = await User.findOne({ email: env.ADMIN_EMAIL })
+  const admin = await User.findOne({ email: env.ADMIN_EMAIL, type: wexcommerceTypes.UserType.Admin })
   if (admin) {
     const message = `${_user.fullName} ${i18n.t('MADE_ORDER')} ${__order._id}.`
     const notification = new Notification({ user: admin._id, message, order: __order._id })
@@ -124,7 +124,7 @@ export const checkout = async (req: Request, res: Response) => {
     const { body }: { body: wexcommerceTypes.CheckoutPayload } = req
     const { user, order } = body
 
-    // const admin = await User.findOne({ email: env.ADMIN_EMAIL })
+    // const admin = await User.findOne({ email: env.ADMIN_EMAIL, type: wexcommerceTypes.UserType.Admin })
     // if (!admin) {
     //   throw new Error(`Admin user ${env.ADMIN_EMAIL} not found`)
     // }

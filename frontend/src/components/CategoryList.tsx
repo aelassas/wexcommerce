@@ -18,6 +18,7 @@ interface CategoryListProps {
   autoplay?: boolean
   autoplaySpeed?: number // in milliseconds
   showNavigation?: boolean
+  infinite?: boolean
 }
 
 const CategoryList: React.FC<CategoryListProps> = (
@@ -27,15 +28,16 @@ const CategoryList: React.FC<CategoryListProps> = (
     autoplay,
     autoplaySpeed,
     showNavigation,
+    infinite: infiniteFromProps,
   }) => {
 
   const slider = useRef<ReactSlick>(null)
 
-  const infinite = categories.length > env.CARROUSEL_SIZE
+  const infinite = infiniteFromProps && categories.length > env.CARROUSEL_SIZE
 
   const sliderSettings = {
-    nextArrow: <Arrow to="next" visible={infinite} />,
-    prevArrow: <Arrow to="prev" visible={infinite} />,
+    nextArrow: <Arrow to="next" visible={!infiniteFromProps || infinite} />,
+    prevArrow: <Arrow to="prev" visible={!infiniteFromProps || infinite} />,
     dots: true,
     appendDots: (dots: React.ReactNode) => showNavigation ? (
       <div>

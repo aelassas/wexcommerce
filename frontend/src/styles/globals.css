@@ -319,3 +319,7 @@ input[type="number"] {
 .github-fork-ribbon::before {
   background-color: #272727;
 }
+
+.slick-disabled{
+  visibility: hidden;
+}

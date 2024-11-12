@@ -356,7 +356,7 @@ export const getFeaturedCategories = async (req: Request, res: Response) => {
         $match: { soldOut: false, hidden: false, quantity: { $gt: 0 } },
       },
       //
-      // Add inCart field
+      // Add inCart and inWishlist fields
       //
       {
         $addFields: {
