@@ -1,4 +1,11 @@
-import React, { ComponentPropsWithRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, {
+  ComponentPropsWithRef,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import ReactSlick from 'react-slick'
 
 import 'slick-carousel/slick/slick.css'
@@ -10,22 +17,21 @@ import 'slick-carousel/slick/slick-theme.css'
  */
 const MoveDragThreshold = 10
 
-
-function useDragDetection(): {
+const useDragDetection = (): {
   handleMouseDown: () => void
   dragging: boolean
-} {
+} => {
   const [mouseDown, setMouseDown] = useState(false)
   const [dragging, setDragging] = useState(false)
 
   useEffect(() => {
     let mouseMove = 0
 
-    function handleMouseUp(): void {
+    const handleMouseUp = () => {
       setMouseDown(false)
     }
 
-    function handleMouseMove(e: MouseEvent): void {
+    const handleMouseMove = (e: MouseEvent) => {
       mouseMove += Math.abs(e.movementX) + Math.abs(e.movementY)
       setDragging(mouseMove > MoveDragThreshold)
     }
@@ -41,7 +47,7 @@ function useDragDetection(): {
     }
   }, [mouseDown])
 
-  function handleMouseDown(): void {
+  const handleMouseDown = () => {
     setMouseDown(true)
     setDragging(false)
   }
@@ -72,14 +78,14 @@ const Slick = forwardRef<ReactSlick, SlickProps>(({ children, ...props }, ref) =
     dragging,
   } = useDragDetection()
 
-  function handleChildClick(
+  const handleChildClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ): void {
+  ) => {
     if (dragging) {
       e.preventDefault()
     }
   }
-  // console.log(props)
+
   return (
     <ReactSlick
       ref={slickRef}
