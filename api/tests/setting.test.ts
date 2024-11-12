@@ -39,7 +39,7 @@ describe('Initialize settings', () => {
   it('should initialize settings', async () => {
     // init
     const settings = await Setting.findOne().lean()
-    await Setting.deleteMany()
+    await Setting.deleteMany({})
 
     // test success
     let res = await settingController.init()
@@ -49,7 +49,7 @@ describe('Initialize settings', () => {
 
     // restore
     if (settings) {
-      await Setting.deleteMany()
+      await Setting.deleteMany({})
       await new Setting({
         language: settings.language,
         currency: settings.currency,
@@ -80,7 +80,7 @@ describe('GET /api/language', () => {
 
     // test default value
     const settings = await Setting.findOne().lean()
-    await Setting.deleteMany()
+    await Setting.deleteMany({})
     res = await request(app)
       .get('/api/language')
     expect(res.statusCode).toBe(200)
@@ -118,7 +118,7 @@ describe('GET /api/currency', () => {
 
     // test default value
     const settings = await Setting.findOne().lean()
-    await Setting.deleteMany()
+    await Setting.deleteMany({})
     res = await request(app)
       .get('/api/currency')
     expect(res.statusCode).toBe(200)
@@ -156,7 +156,7 @@ describe('GET /api/stripe-currency', () => {
 
     // test default value
     const settings = await Setting.findOne().lean()
-    await Setting.deleteMany()
+    await Setting.deleteMany({})
     res = await request(app)
       .get('/api/stripe-currency')
     expect(res.statusCode).toBe(200)
@@ -289,7 +289,7 @@ describe('PUT /api/update-bank-settings', () => {
     expect(_settings!.iban).toBe('GB007780000125300000000023')
 
     // test not found
-    await Setting.deleteMany()
+    await Setting.deleteMany({})
     res = await request(app)
       .put('/api/update-bank-settings')
       .set(env.X_ACCESS_TOKEN, token)
