@@ -50,9 +50,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 
 ## Live Demo
 
-* URL: https://wexcommerce.dynv6.net:8002/
-* Login: jdoe@wexcommerce.com
-* Password: sh0ppingC4rt
+* https://wexcommerce.dynv6.net:8002/
 
 ## Resources
 
