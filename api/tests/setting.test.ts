@@ -188,11 +188,12 @@ describe('GET /api/settings', () => {
   it('should get enabled delivery types', async () => {
     const token = await testHelper.signinAsAdmin()
 
+    // test success
     const res = await request(app)
       .get('/api/settings')
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(res.body).toBeDefined()
+    expect(res.body.language).toBeTruthy()
   })
 })
 
