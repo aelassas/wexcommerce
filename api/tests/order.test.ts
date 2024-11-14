@@ -166,7 +166,9 @@ describe('POST /api/checkout', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
-    await Order.deleteOne({ _id: res.body.orderId })
+    order = await Order.findById(res.body.orderId)
+    await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
+    await order!.deleteOne()
     const customer = await stripeAPI.customers.retrieve(customerId)
     if (customer) {
       await stripeAPI.customers.del(customerId)

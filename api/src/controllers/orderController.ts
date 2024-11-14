@@ -119,6 +119,7 @@ export const notify = async (adminEmail: string, __order: env.Order, _user: env.
  * @returns {unknown}
  */
 export const checkout = async (req: Request, res: Response) => {
+  let __order: env.Order | undefined
   const orderItems: env.OrderItem[] = []
   try {
     let _user
@@ -233,7 +234,7 @@ export const checkout = async (req: Request, res: Response) => {
       }
     }
 
-    const __order = new Order(_order)
+    __order = new Order(_order)
     await __order.save()
 
     if (paymentType !== wexcommerceTypes.PaymentType.CreditCard) {
@@ -248,6 +249,9 @@ export const checkout = async (req: Request, res: Response) => {
   } catch (err) {
     for (const orderItem of orderItems) {
       await orderItem.deleteOne()
+    }
+    if (__order?.id) {
+      await __order.deleteOne()
     }
     logger.error(`[order.checkout] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
@@ -390,9 +394,10 @@ export const deleteTempOrder = async (req: Request, res: Response) => {
     if (order) {
       const user = await User.findOne({ _id: order.user, verified: false, expireAt: { $ne: null } })
       await user?.deleteOne()
+      await OrderItem.deleteMany({ _id: { $in: order.orderItems } })
+      await order.deleteOne()
     }
 
-    await order?.deleteOne()
     return res.sendStatus(200)
   } catch (err) {
     logger.error(`[order.deleteTempOrder] ${i18n.t('DB_ERROR')} ${JSON.stringify({ orderId, sessionId })}`, err)
