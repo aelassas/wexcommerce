@@ -119,6 +119,7 @@ export const notify = async (adminEmail: string, __order: env.Order, _user: env.
  * @returns {unknown}
  */
 export const checkout = async (req: Request, res: Response) => {
+  const orderItems: env.OrderItem[] = []
   try {
     let _user
     const { body }: { body: wexcommerceTypes.CheckoutPayload } = req
@@ -177,7 +178,6 @@ export const checkout = async (req: Request, res: Response) => {
 
     // order.orderItems
     const __orderItems: string[] = []
-    const orderItems: env.OrderItem[] = []
     for (const orderItem of order.orderItems!) {
       const _orderItem = new OrderItem(orderItem)
       await _orderItem.save()
@@ -246,6 +246,9 @@ export const checkout = async (req: Request, res: Response) => {
 
     return res.status(200).send({ orderId: __order.id })
   } catch (err) {
+    for (const orderItem of orderItems) {
+      await orderItem.deleteOne()
+    }
     logger.error(`[order.checkout] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
