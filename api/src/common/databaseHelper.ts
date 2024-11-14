@@ -7,8 +7,8 @@ import Category from '../models/Category'
 import DeliveryType from '../models/DeliveryType'
 import Notification from '../models/Notification'
 import NotificationCounter from '../models/NotificationCounter'
+import OrderItem, { ORDER_ITEM_EXPIRE_AT_INDEX_NAME } from '../models/OrderItem'
 import Order, { ORDER_EXPIRE_AT_INDEX_NAME } from '../models/Order'
-import OrderItem from '../models/OrderItem'
 import PaymentType from '../models/PaymentType'
 import Product from '../models/Product'
 import Setting from '../models/Setting'
@@ -76,6 +76,16 @@ const createTokenIndex = async (): Promise<void> => {
 }
 
 /**
+ * Create OrderItem TTL index.
+ *
+ * @async
+ * @returns {Promise<void>}
+ */
+const createOrderItemIndex = async (): Promise<void> => {
+  await OrderItem.collection.createIndex({ expireAt: 1 }, { name: ORDER_ITEM_EXPIRE_AT_INDEX_NAME, expireAfterSeconds: env.ORDER_EXPIRE_AT, background: true })
+}
+
+/**
  * Create Order TTL index.
  *
  * @async
@@ -127,6 +137,22 @@ export const initialize = async (): Promise<boolean> => {
       await createCollection<env.Token>(Token)
       await createCollection<env.User>(User)
       await createCollection<env.Value>(Value)
+    }
+
+    //
+    // Update Order TTL index if configuration changes
+    //
+    const orderItemIndexes = await OrderItem.collection.indexes()
+    const orderItemIndex = orderItemIndexes.find((index: any) => index.name === ORDER_ITEM_EXPIRE_AT_INDEX_NAME && index.expireAfterSeconds !== env.ORDER_EXPIRE_AT)
+    if (orderItemIndex) {
+      try {
+        await OrderItem.collection.dropIndex(orderItemIndex.name!)
+      } catch (err) {
+        logger.error('Failed dropping OrderItem TTL index', err)
+      } finally {
+        await createOrderItemIndex()
+        await OrderItem.createIndexes()
+      }
     }
 
     //

@@ -6,6 +6,7 @@ import * as logger from '../common/logger'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as env from '../config/env.config'
 import * as helper from '../common/helper'
+import OrderItem from '../models/OrderItem'
 import Order from '../models/Order'
 import User from '../models/User'
 import Product from '../models/Product'
@@ -139,6 +140,11 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
     // (Set OrderStatus to Paid and remove expireAt TTL index)
     //
     if (session.payment_status === 'paid') {
+      for (const oi of order.orderItems) {
+        const orderItem = await OrderItem.findById(oi.id)
+        orderItem!.expireAt = undefined
+        await orderItem!.save()
+      }
       order.expireAt = undefined
       order.status = wexcommerceTypes.OrderStatus.Paid
       await order.save()

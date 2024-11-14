@@ -532,6 +532,7 @@ export interface Product extends Document {
 export interface OrderItem extends Document {
   product: Types.ObjectId | Product
   quantity: number
+  expireAt?: Date
 }
 
 /**

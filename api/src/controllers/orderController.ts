@@ -216,6 +216,12 @@ export const checkout = async (req: Request, res: Response) => {
         let expireAt = new Date()
         expireAt.setSeconds(expireAt.getSeconds() + env.ORDER_EXPIRE_AT)
 
+        for (const oi of orderItems) {
+          const orderItem = await OrderItem.findById(oi.id)
+          orderItem!.expireAt = expireAt
+          await orderItem!.save()
+        }
+
         _order.sessionId = body.sessionId
         _order.status = wexcommerceTypes.OrderStatus.Pending
         _order.expireAt = expireAt
