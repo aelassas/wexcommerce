@@ -6,6 +6,7 @@ import * as databaseHelper from '../src/common/databaseHelper'
 import * as testHelper from './testHelper'
 import app from '../src/app'
 import * as env from '../src/config/env.config'
+import stripeAPI from '../src/stripe'
 import Product from '../src/models/Product'
 import OrderItem from '../src/models/OrderItem'
 import Order from '../src/models/Order'
@@ -115,7 +116,8 @@ describe('POST /api/checkout', () => {
     await order!.deleteOne()
 
     // test success (stripe with no payment intent)
-    payload.order.paymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))!.id
+    const crediCardPaymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))!.id
+    payload.order.paymentType = crediCardPaymentType
     payload.paymentIntentId = undefined
     SESSION_ID = testHelper.GetRandromObjectIdAsString()
     payload.sessionId = SESSION_ID
@@ -125,6 +127,47 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     TEMP_ORDER_ID = res.body.orderId
+
+    // test failure (stripe with payment intent)
+    const receiptEmail = testHelper.GetRandomEmail()
+    const paymentIntentPayload: wexcommerceTypes.CreatePaymentPayload = {
+      amount: 234,
+      currency: 'usd',
+      receiptEmail,
+      customerName: 'John Doe',
+      description: 'BookCars Testing Service',
+      locale: 'en',
+      name: 'Test',
+    }
+    res = await request(app)
+      .post('/api/create-payment-intent')
+      .send(paymentIntentPayload)
+    expect(res.statusCode).toBe(200)
+    expect(res.body.paymentIntentId).not.toBeNull()
+    expect(res.body.customerId).not.toBeNull()
+    const { paymentIntentId, customerId } = res.body
+    payload.paymentIntentId = paymentIntentId
+    payload.customerId = customerId
+    res = await request(app)
+      .post('/api/checkout')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
+    // test success (stripe with payment intent)
+    await stripeAPI.paymentIntents.confirm(paymentIntentId, {
+      payment_method: 'pm_card_visa',
+    })
+    res = await request(app)
+      .post('/api/checkout')
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    expect(res.body.orderId).toBeTruthy()
+    await Order.deleteOne({ _id: res.body.orderId })
+    const customer = await stripeAPI.customers.retrieve(customerId)
+    if (customer) {
+      await stripeAPI.customers.del(customerId)
+    }
+    payload.paymentIntentId = undefined
 
     // test success (stripe and user verified)
     await User.updateOne({ _id: USER_ID }, { verified: true })
