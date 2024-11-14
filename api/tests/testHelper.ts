@@ -1,7 +1,7 @@
 import request from 'supertest'
 import cookieParser from 'cookie-parser'
 import bcrypt from 'bcrypt'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import app from '../src/app'
@@ -16,7 +16,7 @@ import * as settingController from '../src/controllers/settingController'
 
 export const getName = (prefix: string) => {
   expect(prefix.length).toBeGreaterThan(1)
-  return `${prefix}.${uuid()}`
+  return `${prefix}.${nanoid()}`.toLowerCase()
 }
 
 export const getRandomString = () => getName(Date.now().toString())
@@ -109,7 +109,7 @@ export const signinAsAdmin = () => signin(wexcommerceTypes.AppType.Backend, ADMI
 
 export const signinAsUser = () => signin(wexcommerceTypes.AppType.Frontend, USER_EMAIL)
 
-export const GetRandomEmail = () => `random.${uuid()}.${Date.now()}@test.wexcommerce.ma`
+export const GetRandomEmail = () => `random.${nanoid()}.${Date.now()}@test.wexcommerce.ma`
 
 export const GetRandromObjectId = () => new mongoose.Types.ObjectId()
 

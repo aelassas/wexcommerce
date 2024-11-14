@@ -1,7 +1,7 @@
 import mongoose, { Expression } from 'mongoose'
 import fs from 'fs/promises'
 import path from 'path'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import { Request, Response } from 'express'
 import escapeStringRegexp from 'escape-string-regexp'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -31,7 +31,7 @@ export const uploadImage = async (req: Request, res: Response) => {
       throw new Error('[product.uploadImage] req.file not found')
     }
 
-    const filename = `${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+    const filename = `${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_PRODUCTS, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
@@ -156,7 +156,7 @@ export const create = async (req: Request, res: Response) => {
       const __image = path.join(env.CDN_TEMP_PRODUCTS, image)
 
       if (await helper.exists(__image)) {
-        const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(image)}`
+        const filename = `${product._id}_${nanoid()}_${Date.now()}_${i}${path.extname(image)}`
         const newPath = path.join(env.CDN_PRODUCTS, filename)
 
         await fs.rename(__image, newPath)
@@ -263,7 +263,7 @@ export const update = async (req: Request, res: Response) => {
         const _image = path.join(env.CDN_TEMP_PRODUCTS, imageFile)
 
         if (await helper.exists(_image)) {
-          const filename = `${product._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
+          const filename = `${product._id}_${nanoid()}_${Date.now()}_${i}${path.extname(imageFile)}`
           const newPath = path.join(env.CDN_PRODUCTS, filename)
 
           await fs.rename(_image, newPath)

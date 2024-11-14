@@ -6,7 +6,7 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 import escapeStringRegexp from 'escape-string-regexp'
 import axios from 'axios'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as logger from '../common/logger'
 import i18n from '../lang/i18n'
@@ -1141,7 +1141,7 @@ export const createAvatar = async (req: Request, res: Response) => {
       throw new Error('[user.createAvatar] req.file not found')
     }
 
-    const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+    const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
     await fs.writeFile(filepath, req.file.buffer)

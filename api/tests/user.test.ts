@@ -3,7 +3,7 @@ import request from 'supertest'
 import url from 'url'
 import path from 'path'
 import fs from 'node:fs/promises'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import app from '../src/app'
@@ -50,7 +50,7 @@ afterAll(async () => {
   if (mongoose.connection.readyState) {
     await testHelper.close()
 
-    await Token.deleteMany({ user: { $in: [ADMIN_ID] } })
+    await Token.deleteMany({ user: { $in: [ADMIN_ID, USER1_ID] } })
 
     await databaseHelper.close()
   }
@@ -95,7 +95,7 @@ describe('POST /api/sign-up', () => {
 
     const email = testHelper.GetRandomEmail()
     payload.email = email
-    payload.avatar = `${uuid()}.jpg`
+    payload.avatar = `${nanoid()}.jpg`
     res = await request(app)
       .post('/api/sign-up')
       .send(payload)
@@ -170,7 +170,7 @@ describe('GET /api/check-token/:type/:userId/:email/:token', () => {
     expect(res.statusCode).toBe(204)
 
     res = await request(app)
-      .get(`/api/check-token/${wexcommerceTypes.AppType.Frontend}/${USER1_ID}/${USER1_EMAIL}/${uuid()}`)
+      .get(`/api/check-token/${wexcommerceTypes.AppType.Frontend}/${USER1_ID}/${USER1_EMAIL}/${nanoid()}`)
     expect(res.statusCode).toBe(204)
 
     res = await request(app)
@@ -238,11 +238,11 @@ describe('GET /api/confirm-email/:email/:token', () => {
     expect(res.statusCode).toBe(204)
 
     res = await request(app)
-      .get(`/api/confirm-email/${USER1_EMAIL}/${uuid()}`)
+      .get(`/api/confirm-email/${USER1_EMAIL}/${nanoid()}`)
     expect(res.statusCode).toBe(400)
 
     res = await request(app)
-      .get(`/api/confirm-email/unknown/${uuid()}`)
+      .get(`/api/confirm-email/unknown/${nanoid()}`)
     expect(res.statusCode).toBe(400)
   })
 })
@@ -499,7 +499,7 @@ describe('POST /api/validate-access-token', () => {
 
     res = await request(app)
       .post('/api/validate-access-token')
-      .set(env.X_ACCESS_TOKEN, uuid())
+      .set(env.X_ACCESS_TOKEN, nanoid())
 
     expect(res.statusCode).toBe(401)
 
@@ -646,7 +646,7 @@ describe('POST /api/update-avatar/:userId', () => {
     expect(user?.avatar).toBeDefined()
     expect(user?.avatar).not.toBeNull()
 
-    user!.avatar = `${uuid()}.jpg`
+    user!.avatar = `${nanoid()}.jpg`
     await user?.save()
     res = await request(app)
       .post(`/api/update-avatar/${USER1_ID}`)
@@ -706,7 +706,7 @@ describe('POST /api/delete-avatar/:userId', () => {
     expect(user).not.toBeNull()
     expect(user?.avatar).toBeUndefined()
 
-    user!.avatar = `${uuid()}.jpg`
+    user!.avatar = `${nanoid()}.jpg`
     await user?.save()
     res = await request(app)
       .post(`/api/delete-avatar/${USER1_ID}`)
