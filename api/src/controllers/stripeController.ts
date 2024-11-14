@@ -173,7 +173,7 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
       user.expireAt = undefined
       await user.save()
 
-      const settings = await Setting.findOne()
+      const settings = await Setting.findOne({})
       if (!settings) {
         throw new Error('Settings not found')
       }

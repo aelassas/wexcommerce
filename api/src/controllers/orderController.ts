@@ -131,7 +131,7 @@ export const checkout = async (req: Request, res: Response) => {
     //   throw new Error(`Admin user ${env.ADMIN_EMAIL} not found`)
     // }
 
-    const settings = await Setting.findOne()
+    const settings = await Setting.findOne({})
     if (!settings) {
       throw new Error('Settings not found')
     }
@@ -301,7 +301,7 @@ export const update = async (req: Request, res: Response) => {
       // user confirmation email
       const _user = order.user as env.User
 
-      const settings = await Setting.findOne()
+      const settings = await Setting.findOne({})
       if (!settings) {
         throw new Error('Settings not found')
       }

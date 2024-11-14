@@ -38,13 +38,13 @@ afterAll(async () => {
 describe('Initialize settings', () => {
   it('should initialize settings', async () => {
     // init
-    const settings = await Setting.findOne().lean()
+    const settings = await Setting.findOne({}).lean()
     await Setting.deleteMany({})
 
     // test success
     let res = await settingController.init()
     expect(res).toBeTruthy()
-    const count = await Setting.findOne().countDocuments()
+    const count = await Setting.findOne({}).countDocuments()
     expect(count).toBe(1)
 
     // restore
@@ -79,7 +79,7 @@ describe('GET /api/language', () => {
     expect(res.body).toBeDefined()
 
     // test default value
-    const settings = await Setting.findOne().lean()
+    const settings = await Setting.findOne({}).lean()
     await Setting.deleteMany({})
     res = await request(app)
       .get('/api/language')
@@ -117,7 +117,7 @@ describe('GET /api/currency', () => {
     expect(res.body).toBeDefined()
 
     // test default value
-    const settings = await Setting.findOne().lean()
+    const settings = await Setting.findOne({}).lean()
     await Setting.deleteMany({})
     res = await request(app)
       .get('/api/currency')
@@ -155,7 +155,7 @@ describe('GET /api/stripe-currency', () => {
     expect(res.body).toBeDefined()
 
     // test default value
-    const settings = await Setting.findOne().lean()
+    const settings = await Setting.findOne({}).lean()
     await Setting.deleteMany({})
     res = await request(app)
       .get('/api/stripe-currency')
@@ -202,7 +202,7 @@ describe('PUT /api/update-settings', () => {
     const token = await testHelper.signinAsAdmin()
 
     // init
-    const settings = await Setting.findOne().lean()
+    const settings = await Setting.findOne({}).lean()
     expect(settings).toBeTruthy()
     const {
       language,
@@ -226,7 +226,7 @@ describe('PUT /api/update-settings', () => {
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
-    const _settings = await Setting.findOne()
+    const _settings = await Setting.findOne({})
     expect(_settings).toBeTruthy()
     expect(_settings!.language).toBe('fr')
     expect(_settings!.currency).toBe('€')
@@ -257,7 +257,7 @@ describe('PUT /api/update-bank-settings', () => {
     const token = await testHelper.signinAsAdmin()
 
     // init
-    const settings = await Setting.findOne().lean()
+    const settings = await Setting.findOne({}).lean()
     expect(settings).toBeTruthy()
     const {
       language,
@@ -282,7 +282,7 @@ describe('PUT /api/update-bank-settings', () => {
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
-    const _settings = await Setting.findOne()
+    const _settings = await Setting.findOne({})
     expect(_settings).toBeTruthy()
     expect(_settings!.bankName).toBe('BANK_NAME')
     expect(_settings!.accountHolder).toBe('ACCOUNT_HOLDER')

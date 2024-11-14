@@ -13,7 +13,7 @@ import Setting from '../models/Setting'
  */
 export const init = async () => {
   try {
-    const count = await Setting.findOne().countDocuments()
+    const count = await Setting.findOne({}).countDocuments()
 
     if (count === 0) {
       await new Setting().save()
@@ -36,7 +36,7 @@ export const init = async () => {
  */
 export const getLanguage = async (req: Request, res: Response) => {
   try {
-    const settings = await Setting.findOne()
+    const settings = await Setting.findOne({})
 
     return res.json(settings?.language || env.DEFAULT_LANGUAGE)
   } catch (err) {
@@ -55,7 +55,7 @@ export const getLanguage = async (req: Request, res: Response) => {
  */
 export const getCurrency = async (req: Request, res: Response) => {
   try {
-    const settings = await Setting.findOne()
+    const settings = await Setting.findOne({})
 
     return res.json(settings?.currency || env.DEFAULT_CURRENCY)
   } catch (err) {
@@ -74,7 +74,7 @@ export const getCurrency = async (req: Request, res: Response) => {
  */
 export const getStripeCurrency = async (req: Request, res: Response) => {
   try {
-    const settings = await Setting.findOne()
+    const settings = await Setting.findOne({})
 
     return res.json(settings?.stripeCurrency || env.DEFAULT_STRIPE_CURRENCY)
   } catch (err) {
@@ -93,7 +93,7 @@ export const getStripeCurrency = async (req: Request, res: Response) => {
  */
 export const getSettings = async (req: Request, res: Response) => {
   try {
-    const settings = await Setting.findOne()
+    const settings = await Setting.findOne({})
 
     return res.json(settings)
   } catch (err) {
@@ -113,7 +113,7 @@ export const getSettings = async (req: Request, res: Response) => {
 export const updateSettings = async (req: Request, res: Response) => {
   try {
     const { language, currency, stripeCurrency }: wexcommerceTypes.UpdateSettingsPayload = req.body
-    const settings = await Setting.findOne()
+    const settings = await Setting.findOne({})
 
     if (settings) {
       settings.language = language
@@ -143,7 +143,7 @@ export const updateSettings = async (req: Request, res: Response) => {
 export const updateBankSettings = async (req: Request, res: Response) => {
   try {
     const { bankName, accountHolder, rib, iban }: wexcommerceTypes.UpdateBankSettingsPayload = req.body
-    const settings = await Setting.findOne()
+    const settings = await Setting.findOne({})
 
     if (settings) {
       settings.bankName = bankName
