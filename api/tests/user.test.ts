@@ -50,7 +50,7 @@ afterAll(async () => {
   if (mongoose.connection.readyState) {
     await testHelper.close()
 
-    await Token.deleteMany({ user: { $in: [ADMIN_ID, USER1_ID] } })
+    await Token.deleteMany({ user: { $in: [ADMIN_ID] } })
 
     await databaseHelper.close()
   }
@@ -102,11 +102,11 @@ describe('POST /api/sign-up', () => {
     expect(res.statusCode).toBe(200)
     user = await User.findOne({ email })
     expect(user).not.toBeNull()
-    await user?.deleteOne()
-    token = await Token.findOne({ user: user?._id })
+    await user!.deleteOne()
+    token = await Token.findOne({ user: user!.id })
     expect(token).not.toBeNull()
-    expect(token?.token.length).toBeGreaterThan(0)
-    await token?.deleteOne()
+    expect(token!.token.length).toBeGreaterThan(0)
+    await token!.deleteOne()
 
     res = await request(app)
       .post('/api/sign-up')
@@ -121,14 +121,12 @@ describe('POST /api/admin-sign-up', () => {
       password: testHelper.PASSWORD,
       fullName: 'admin',
       language: testHelper.LANGUAGE,
-
       phone: '09090909',
     }
 
     const res = await request(app)
       .post('/api/admin-sign-up')
       .send(payload)
-
     expect(res.statusCode).toBe(200)
 
     const user = await User.findOne({ email: ADMIN_EMAIL })

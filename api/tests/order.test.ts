@@ -13,6 +13,7 @@ import Order from '../src/models/Order'
 import DeliveryType from '../src/models/DeliveryType'
 import PaymentType from '../src/models/PaymentType'
 import User from '../src/models/User'
+import Token from '../src/models/Token'
 
 const CATEGORY_ID = testHelper.GetRandromObjectIdAsString()
 let USER_ID: string
@@ -99,7 +100,10 @@ describe('POST /api/checkout', () => {
     let order = await Order.findById(res.body.orderId)
     await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
     await order!.deleteOne()
-    await User.deleteOne({ email: payload.user.email })
+    const user = await User.findOne({ email: payload.user.email })
+    expect(user).toBeTruthy()
+    await user!.deleteOne()
+    await Token.deleteMany({ user: user!.id })
 
     // test success (Shipping, WireTransfer)
     payload.order.user = USER_ID
