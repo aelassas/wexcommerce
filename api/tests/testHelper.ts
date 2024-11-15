@@ -16,7 +16,7 @@ import * as settingController from '../src/controllers/settingController'
 
 export const getName = (prefix: string) => {
   expect(prefix.length).toBeGreaterThan(1)
-  return `${prefix}.${nanoid()}`.toLowerCase()
+  return `${prefix}.${nanoid()}.${Date.now()}`.toLowerCase()
 }
 
 export const getRandomString = () => getName(Date.now().toString())
@@ -109,7 +109,7 @@ export const signinAsAdmin = () => signin(wexcommerceTypes.AppType.Backend, ADMI
 
 export const signinAsUser = () => signin(wexcommerceTypes.AppType.Frontend, USER_EMAIL)
 
-export const GetRandomEmail = () => `random.${nanoid()}.${Date.now()}@test.wexcommerce.ma`
+export const GetRandomEmail = () => `${getName('random')}@test.wexcommerce.com`
 
 export const GetRandromObjectId = () => new mongoose.Types.ObjectId()
 
