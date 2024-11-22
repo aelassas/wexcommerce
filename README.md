@@ -21,9 +21,7 @@ wexCommerce is composed of a frontend and an admin dashboard. From the frontend,
 
 A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
 
-I invested significant time and effort into building this open-source project to make it freely available to the community. If this project has been helpful in your work, consider supporting its continued development and maintenance. You can contribute through [GitHub Sponsorship](https://github.com/sponsors/aelassas) (one-time or monthly), [PayPal](https://www.paypal.me/aelassaspp), or [Buy Me a Coffee](https://buymeacoffee.com/aelassas). Even a simple star on the GitHub repository helps spread the word and is greatly appreciated.
-
-## Why Next.js?
+# Why Next.js?
 
 Building a marketplace with Next.js provides a solid foundation for scaling your business. Focus on performance, security, and user experience while maintaining code quality and documentation. Regular updates and monitoring will ensure your platform remains competitive and reliable.
 
@@ -35,7 +33,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 - **Rich Ecosystem**: Vast collection of libraries and tools for rapid development
 - **Developer Experience**: Intuitive development workflow with hot reloading and automatic routing
 
-## Features
+# Features
 
 * Stock management
 * Order management
@@ -48,11 +46,11 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * Multiple login options (Google, Facebook, Apple, Email)
 * Responsive backend and frontend
 
-## Live Demo
+# Live Demo
 
 * https://wexcommerce.dynv6.net:8002/
 
-## Resources
+# Resources
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
 2. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
@@ -69,5 +67,5 @@ Next.js stands out as an excellent choice for marketplace development due to its
 8. [Unit Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Unit-Tests-and-Coverage)
 9. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 
-## License
+# License
 wexCommerce is [MIT licensed](https://github.com/aelassas/wexcommerce/blob/main/LICENSE).
