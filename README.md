@@ -44,7 +44,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * Multiple delivery options (Home delivery, Store withdrawal)
 * Multiple language support (English, French)
 * Multiple login options (Google, Facebook, Apple, Email)
-* Responsive backend and frontend
+* Responsive frontend and admin dashboard
 
 # Live Demo
 
@@ -53,6 +53,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 # Resources
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
+2. [Why Use wexCommerce](https://github.com/aelassas/wexcommerce/wiki/Why-Use-wexCommerce)
 2. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
 2. [Installing (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))
    1. [Docker Image](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#docker-image)
