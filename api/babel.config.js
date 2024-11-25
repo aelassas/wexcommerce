@@ -6,7 +6,6 @@ const babel = (api) => {
       'module-resolver',
       {
         alias: {
-          // '@': './dist/src',
           ':wexcommerce-types': '../packages/wexcommerce-types',
         },
       },
