@@ -24,7 +24,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         
-    - name: test API
+    - name: Run tests
       run: |
            cd ./api
            touch .env
@@ -106,6 +106,7 @@ jobs:
       uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        file: ./api/coverage/cobertura-coverage.xml
         fail-on-error: true
         debug: true
         measure: true
