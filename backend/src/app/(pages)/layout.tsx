@@ -191,16 +191,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </LanguageProvider>
 
         <ToastContainer
-          position='top-right'
+          position="top-right"
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
           pauseOnFocusLoss={false}
           draggable={false}
-          pauseOnHover={true}
-          theme='dark'
-          icon={<div></div>}
+          pauseOnHover
+          theme="dark"
+          icon={<div />}
         />
       </CssBaseline>
 
