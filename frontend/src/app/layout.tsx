@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import 'github-fork-ribbon-css/gh-fork-ribbon.css'
+// import 'github-fork-ribbon-css/gh-fork-ribbon.css'
 import '@/styles/globals.css'
 
 export const dynamic = 'force-dynamic'
@@ -19,7 +19,7 @@ type RootLayoutProps = Readonly<{
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => (
   <html>
     <body>
-      {
+      {/* {
         process.env.NODE_ENV === 'production' &&
         <a
           className="github-fork-ribbon fixed left-bottom"
@@ -27,7 +27,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => (
           data-ribbon="Fork me on GitHub"
           title="Fork me on GitHub">Fork me on GitHub
         </a>
-      }
+      } */}
       {children}
     </body>
   </html>
