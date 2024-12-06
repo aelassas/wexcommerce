@@ -14,9 +14,9 @@
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
-    "@mui/icons-material": "^6.1.8",
-    "@mui/material": "^6.1.8",
-    "@mui/x-date-pickers": "^7.22.3",
+    "@mui/icons-material": "^6.1.10",
+    "@mui/material": "^6.1.10",
+    "@mui/x-date-pickers": "^7.23.1",
     "@sindresorhus/slugify": "^2.2.1",
     "@stripe/react-stripe-js": "^3.0.0",
     "@stripe/stripe-js": "^5.2.0",
@@ -25,11 +25,11 @@
     "cross-env": "^7.0.3",
     "date-fns": "^2.30.0",
     "github-fork-ribbon-css": "^0.2.3",
-    "next": "15.0.3",
+    "next": "15.0.4",
     "next-nprogress-bar": "^2.3.15",
     "next-recaptcha-v3": "^1.5.0",
-    "react": "19.0.0-rc-69d4b800-20241021",
-    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-ga4": "^2.1.0",
     "react-localization": "^1.0.19",
     "react-slick": "^0.30.2",
@@ -40,17 +40,11 @@
   },
   "devDependencies": {
     "@types/node": "^22",
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "eslint": "^8",
-    "eslint-config-next": "15.0.3",
+    "eslint-config-next": "15.0.4",
     "npm-check-updates": "^17.1.11",
     "rimraf": "^6.0.1",
-    "stylelint": "^16.10.0",
+    "stylelint": "^16.11.0",
     "stylelint-config-standard": "^36.0.1"
-  },
-  "overrides": {
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
   }
 }
