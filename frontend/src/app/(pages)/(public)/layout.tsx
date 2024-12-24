@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import { Button } from '@mui/material'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyContext'
 import { UserContextType, useUserContext } from '@/context/UserContext'
@@ -16,6 +17,8 @@ import * as WishlistService from '@/lib/WishlistService'
 import { RecaptchaProvider } from '@/context/RecaptchaContext'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import * as helper from '@/common/helper'
+import { strings } from '@/lang/dashboard'
 
 type LayoutProps = Readonly<{
   children: React.ReactNode
@@ -24,7 +27,7 @@ type LayoutProps = Readonly<{
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const pathname = usePathname()
   const { language, setLanguage } = useLanguageContext() as LanguageContextType
-  const { setUser } = useUserContext() as UserContextType
+  const { user, setUser } = useUserContext() as UserContextType
   const { setCurrency } = useCurrencyContext() as CurrencyContextType
   const { setNotificationCount } = useNotificationContext() as NotificationContextType
   const { setCartItemCount } = useCartContext() as CartContextType
@@ -116,10 +119,43 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     init()
   }, [pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const handleResend = async (e: React.MouseEvent<HTMLElement>) => {
+    try {
+      e.preventDefault()
+      const data = { email: user!.email }
+
+      const status = await UserService.resendLink(data)
+
+      if (status === 200) {
+        helper.info(strings.VALIDATION_EMAIL_SENT)
+      } else {
+        helper.error(strings.VALIDATION_EMAIL_ERROR)
+      }
+
+    } catch (err) {
+      helper.error(err, strings.VALIDATION_EMAIL_ERROR)
+    }
+  }
+
   return language && (
     <RecaptchaProvider>
       <Header />
-      <div className='content'>{children}</div>
+      {
+        (!user || (user && user.verified))
+          ?
+          <div className='content'>{children}</div>
+          :
+          <div className="validate-email">
+            <span>{strings.VALIDATE_EMAIL}</span>
+            <Button
+              type="button"
+              variant="contained"
+              size="small"
+              className="btn-primary btn-resend"
+              onClick={handleResend}
+            >{strings.RESEND}</Button>
+          </div>
+      }
       <Footer />
     </RecaptchaProvider>
   )
