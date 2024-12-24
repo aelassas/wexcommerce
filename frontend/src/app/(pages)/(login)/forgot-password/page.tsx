@@ -35,7 +35,7 @@ const ForgotPassword: React.FC = () => {
       const currentUser = await UserService.getCurrentUser()
 
       if (currentUser) {
-        router.push('/orders')
+        router.push('/')
       } else {
         setVisible(true)
       }

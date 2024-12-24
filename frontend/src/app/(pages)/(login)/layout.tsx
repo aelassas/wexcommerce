@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import { UserContextType, useUserContext } from '@/context/UserContext'
@@ -23,10 +23,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { language, setLanguage } = useLanguageContext() as LanguageContextType
   const { setUser } = useUserContext() as UserContextType
   const { setCartItemCount } = useCartContext() as CartContextType
+  const [loading, setLoading] = useState(true)
 
   const signout = async (redirect: boolean) => {
     setUser(null)
     await UserService.signout(redirect)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -52,6 +54,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           console.error(err)
           await signout(false)
         }
+      } else {
+        setLoading(false)
       }
 
       const lang = await SettingService.getLanguage()
@@ -66,7 +70,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     init()
   }, [router, pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  return language && (
+  return language && !loading && (
     <RecaptchaProvider>
       <Header hideSearch />
       <div className='content'>{children}</div>
