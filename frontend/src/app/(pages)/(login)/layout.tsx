@@ -8,6 +8,7 @@ import { CartContextType, useCartContext } from '@/context/CartContext'
 import * as SettingService from '@/lib/SettingService'
 import * as UserService from '@/lib/UserService'
 import * as CartService from '@/lib/CartService'
+import { RecaptchaProvider } from '@/context/RecaptchaContext'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -66,11 +67,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [router, pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return language && (
-    <>
+    <RecaptchaProvider>
       <Header hideSearch />
       <div className='content'>{children}</div>
       <Footer />
-    </>
+    </RecaptchaProvider>
   )
 }
 

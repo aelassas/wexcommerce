@@ -13,6 +13,7 @@ import * as UserService from '@/lib/UserService'
 import * as NotificationService from '@/lib/NotificationService'
 import * as CartService from '@/lib/CartService'
 import * as WishlistService from '@/lib/WishlistService'
+import { RecaptchaProvider } from '@/context/RecaptchaContext'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -116,11 +117,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return language && (
-    <>
+    <RecaptchaProvider>
       <Header />
       <div className='content'>{children}</div>
       <Footer />
-    </>
+    </RecaptchaProvider>
   )
 }
 

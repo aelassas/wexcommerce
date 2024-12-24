@@ -3,6 +3,7 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as osStrings } from '@/lang/order-status'
 import { LocalizedStrings } from 'react-localization'
+import * as UserService from '@/lib/UserService'
 
 export const info = (message: string) => {
   toast.info(message)
@@ -96,4 +97,23 @@ export const total = (cartItems: wexcommerceTypes.CartItem[]) => {
     }
   }
   return total
+}
+
+/**
+ * Verify reCAPTCHA token.
+ *
+ * @async
+ * @param {string} token
+ * @returns {Promise<boolean>}
+ */
+export const verifyReCaptcha = async (token: string): Promise<boolean> => {
+  try {
+    const ip = await UserService.getIP()
+    const status = await UserService.verifyRecaptcha(token, ip)
+    const valid = status === 200
+    return valid
+  } catch (err) {
+    error(err)
+    return false
+  }
 }

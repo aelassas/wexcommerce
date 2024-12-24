@@ -19,12 +19,15 @@ import * as helper from '@/common/helper'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
 import SocialLogin from '@/components/SocialLogin'
+import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
+import { RecaptchaContextType, useRecaptchaContext } from '@/context/RecaptchaContext'
 
 import styles from '@/styles/signup.module.css'
-import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
+
 
 const SignUp: React.FC = () => {
   const router = useRouter()
+  const { reCaptchaLoaded, generateReCaptchaToken } = useRecaptchaContext() as RecaptchaContextType
 
   const { language } = useLanguageContext() as LanguageContextType
   const [fullName, setFullName] = useState('')
@@ -40,6 +43,7 @@ const SignUp: React.FC = () => {
   const [phone, setPhone] = useState('')
   const [phoneValid, setPhoneValid] = useState(true)
   const [address, setAddress] = useState('')
+  const [recaptchaError, setRecaptchaError] = useState(false)
 
   const handleOnChangeFullName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value)
@@ -138,6 +142,19 @@ const SignUp: React.FC = () => {
         setPasswordsDontMatch(true)
         setError(false)
         setPasswordError(false)
+        return
+      }
+
+      let recaptchaToken = ''
+      if (reCaptchaLoaded) {
+        recaptchaToken = await generateReCaptchaToken()
+        if (!(await helper.verifyReCaptcha(recaptchaToken))) {
+          recaptchaToken = ''
+        }
+      }
+
+      if (reCaptchaLoaded && !recaptchaToken) {
+        setRecaptchaError(true)
         return
       }
 
@@ -316,6 +333,7 @@ const SignUp: React.FC = () => {
           <div className="form-error">
             {passwordError && <Error message={commonStrings.PASSWORD_ERROR} />}
             {passwordsDontMatch && <Error message={commonStrings.PASSWORDS_DONT_MATCH} />}
+            {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
             {error && <Error message={strings.SIGN_UP_ERROR} />}
           </div>
         </form>
