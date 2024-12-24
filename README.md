@@ -60,7 +60,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 
 * https://wexcommerce.dynv6.net:8002/
 
-# Resources
+# Documentation
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
 2. [Why Use wexCommerce](https://github.com/aelassas/wexcommerce/wiki/Why-Use-wexCommerce)
