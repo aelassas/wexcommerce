@@ -30,7 +30,7 @@ With wexCommerce, you can deploy your own customizable ecommerce marketplace at 
 wexCommerce is composed of a frontend and an admin dashboard. From the frontend, customers can search for the products they want, add them to their cart and checkout. Customers can sign up with Google, Facebook, Apple or Email, and pay with Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link or other Stripe payment methods. Once logged in, they can have access to the history of their purshases and follow their orders. From the admin dashboard, admins can manage orders, payments, products, categories, customers and general settings such as the default language, the currency, delivery, shipping and payment methods accepted.
 
 <!--
-# Why Next.js?
+## Why Next.js?
 
 Building a marketplace with Next.js provides a solid foundation for scaling your business. Focus on performance, security, and user experience while maintaining code quality and documentation. Regular updates and monitoring will ensure your platform remains competitive and reliable.
 
@@ -43,7 +43,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 - **Developer Experience**: Intuitive development workflow with hot reloading and automatic routing
 -->
 
-# Features
+## Features
 
 * Stock management
 * Order management
@@ -56,11 +56,11 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * Multiple login options (Google, Facebook, Apple, Email)
 * Responsive frontend and admin dashboard
 
-# Live Demo
+## Live Demo
 
 * https://wexcommerce.dynv6.net:8002/
 
-# Documentation
+## Documentation
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
 2. [Why Use wexCommerce](https://github.com/aelassas/wexcommerce/wiki/Why-Use-wexCommerce)
@@ -78,5 +78,5 @@ Next.js stands out as an excellent choice for marketplace development due to its
 8. [Unit Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Unit-Tests-and-Coverage)
 9. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 
-# License
+## License
 wexCommerce is [MIT licensed](https://github.com/aelassas/wexcommerce/blob/main/LICENSE).
