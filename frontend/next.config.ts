@@ -41,6 +41,7 @@ const nextConfig: NextConfig = {
         ':wexcommerce-helper': '../packages/wexcommerce-helper',
       },
     },
+    // reactCompiler: true,
   },
   logging: {
     fetches: {

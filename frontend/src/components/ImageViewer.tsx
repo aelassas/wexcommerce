@@ -201,7 +201,8 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
                 <div
                   key={srcItem}
                   ref={(el) => {
-                    thumbnails[index] = el
+                    // thumbnails[index] = el
+                    thumbnails.splice(index, 0, el)
                   }}
                   className={`${styles.thumbnail}${currentIndex === index ? ` ${styles.selected}` : ''}`}
                   onClick={() => setCurrentIndex(index)}

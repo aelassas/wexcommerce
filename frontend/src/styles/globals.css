@@ -14,7 +14,12 @@ body {
 }
 
 @media only screen and (width>=480px) {
-  .Toastify__toast-container {
+  /* .Toastify__toast-container {
+    min-width: 340px !important;
+    width: fit-content !important;
+  } */
+
+  .Toastify__toast {
     min-width: 340px !important;
     width: fit-content !important;
   }
@@ -324,6 +329,6 @@ input[type="number"] {
   background-color: #272727;
 }
 
-.slick-disabled{
+.slick-disabled {
   visibility: hidden;
 }

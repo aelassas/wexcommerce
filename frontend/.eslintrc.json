@@ -3,6 +3,9 @@
     "next/core-web-vitals",
     "next/typescript"
   ],
+  "plugins": [
+    "react-compiler"
+  ],
   "rules": {
     "semi": [
       "error",
@@ -56,6 +59,7 @@
     "no-console": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "import/no-extraneous-dependencies": "off",
-    "@typescript-eslint/no-require-imports": "off"
+    "@typescript-eslint/no-require-imports": "off",
+    "react-compiler/react-compiler": "error"
   }
 }

@@ -186,7 +186,7 @@ const Settings: React.FC = () => {
 
           if (!setting.bankName || !setting.accountHolder || !setting.rib || !setting.iban) {
             const _paymentTypes = wexcommerceHelper.cloneArray(paymentTypes) as wexcommerceTypes.PaymentTypeInfo[]
-            paymentTypes[index].enabled = false
+            _paymentTypes[index].enabled = false
             setPaymentTypes(_paymentTypes)
             return setWireTransferWarning(true)
           }

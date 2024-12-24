@@ -39,8 +39,10 @@
   },
   "devDependencies": {
     "@types/node": "^22",
+    "babel-plugin-react-compiler": "^19.0.0-beta-b2e8e9c-20241220",
     "eslint": "^8",
     "eslint-config-next": "15.1.2",
+    "eslint-plugin-react-compiler": "^19.0.0-beta-b2e8e9c-20241220",
     "npm-check-updates": "^17.1.12",
     "rimraf": "^6.0.1",
     "stylelint": "^16.12.0",

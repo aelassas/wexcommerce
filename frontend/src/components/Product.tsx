@@ -154,8 +154,9 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
 
                           if (res.status === 200) {
                             const _cartItemCount = cartItemCount - res.data.quantity
-                            product.inCart = false
-                            setProduct(product)
+                            const _product = wexcommerceHelper.clone(product) as wexcommerceTypes.Product
+                            _product.inCart = false
+                            setProduct(_product)
                             setCartItemCount(_cartItemCount)
 
                             if (res.data.cartDeleted) {
@@ -199,8 +200,9 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                             if (!cartId) {
                               await CartService.setCartId(res.data)
                             }
-                            product.inCart = true
-                            setProduct(product)
+                            const _product = wexcommerceHelper.clone(product) as wexcommerceTypes.Product
+                            _product.inCart = true
+                            setProduct(_product)
                             setCartItemCount(cartItemCount + 1)
 
                             helper.infoWithComponent(
@@ -235,8 +237,9 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
 
                             if (res === 200) {
                               const _wishlistCount = wishlistCount - 1
-                              product.inWishlist = false
-                              setProduct(product)
+                              const _product = wexcommerceHelper.clone(product) as wexcommerceTypes.Product
+                              _product.inWishlist = false
+                              setProduct(_product)
                               setWishlistCount(_wishlistCount)
 
                               if (_wishlistCount === 0) {
@@ -269,8 +272,9 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                             const res = await WishlistService.addItem(userId, product._id)
 
                             if (res.status === 200) {
-                              product.inWishlist = true
-                              setProduct(product)
+                              const _product = wexcommerceHelper.clone(product) as wexcommerceTypes.Product
+                              _product.inWishlist = true
+                              setProduct(_product)
                               setWishlistCount(wishlistCount + 1)
 
                               helper.infoWithComponent(
@@ -328,8 +332,9 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                 const res = await CartService.deleteItem(cartId, product._id)
 
                 if (res.status === 200) {
-                  product.inCart = false
-                  setProduct(product)
+                  const _product = wexcommerceHelper.clone(product) as wexcommerceTypes.Product
+                  _product.inCart = false
+                  setProduct(_product)
                   setCartItemCount(cartItemCount - 1)
 
                   if (res.data.cartDeleted) {
