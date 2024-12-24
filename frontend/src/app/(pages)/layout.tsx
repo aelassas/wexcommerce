@@ -42,7 +42,6 @@ import { strings as signUpStrings } from '@/lang/sign-up'
 import { strings as soldOutStrings } from '@/lang/sold-out'
 import { strings as wishlistStrings } from '@/lang/wishlist'
 
-import 'react-toastify/dist/ReactToastify.min.css'
 import '@/styles/globals.css'
 
 if (env.GOOGLE_ANALYTICS_ENABLED) {

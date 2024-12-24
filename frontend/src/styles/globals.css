@@ -3,6 +3,10 @@
   --toastify-color-progress-bgo: .6 !important;
 }
 
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
+
 html,
 body {
   margin: 0;

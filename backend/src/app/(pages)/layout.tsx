@@ -39,7 +39,6 @@ import { strings as signInStrings } from '@/lang/sign-in'
 import { strings as signUpStrings } from '@/lang/sign-up'
 import { strings as userListStrings } from '@/lang/user-list'
 
-import 'react-toastify/dist/ReactToastify.min.css'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import '@/styles/globals.css'
 
