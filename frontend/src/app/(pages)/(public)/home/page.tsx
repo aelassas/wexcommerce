@@ -26,6 +26,9 @@ const slides = [
 ]
 
 const Home = async () => {
+  const language = await SettingService.getLanguage()
+  strings.setLanguage(language)
+  
   let featuredProducts: wexcommerceTypes.Product[] = []
   let categories: wexcommerceTypes.CategoryInfo[] = []
   let categoryGroups: wexcommerceTypes.FeaturedCategory[] = []

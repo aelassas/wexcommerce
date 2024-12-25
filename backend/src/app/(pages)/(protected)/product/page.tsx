@@ -9,6 +9,10 @@ import Indicator from '@/components/Indicator'
 
 const Product = async (props: { searchParams: Promise<SearchParams> }) => {
   const searchParams = await props.searchParams
+
+  const language = await SettingService.getLanguage()
+  strings.setLanguage(language)
+
   let product: wexcommerceTypes.Product | null = null
   try {
     const language = await SettingService.getLanguage()

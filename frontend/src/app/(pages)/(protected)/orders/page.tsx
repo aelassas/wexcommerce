@@ -32,6 +32,10 @@ const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
   const allDeliveryTypes = helper.getDeliveryTypes()
   const allStatuses = helper.getOrderStatuses()
 
+  const language = await SettingService.getLanguage()
+  strings.setLanguage(language)
+  commonStrings.setLanguage(language)
+
   let page = 1
   const p = searchParams['p'] as string
   if (p) {
@@ -91,7 +95,6 @@ const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
   let totalRecords = 0
   let noMatch = false
 
-  const language = await SettingService.getLanguage()
   const currency = await SettingService.getCurrency()
   const userId = await UserService.getUserId()
 

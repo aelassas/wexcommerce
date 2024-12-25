@@ -24,7 +24,6 @@ import { RecaptchaContextType, useRecaptchaContext } from '@/context/RecaptchaCo
 
 import styles from '@/styles/signup.module.css'
 
-
 const SignUp: React.FC = () => {
   const router = useRouter()
   const { reCaptchaLoaded, generateReCaptchaToken } = useRecaptchaContext() as RecaptchaContextType

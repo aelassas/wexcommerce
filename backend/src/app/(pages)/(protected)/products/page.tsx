@@ -16,6 +16,10 @@ import styles from '@/styles/products-server.module.css'
 
 const Products = async (props: { searchParams: Promise<SearchParams> }) => {
   const searchParams = await props.searchParams
+
+  const language = await SettingService.getLanguage()
+  strings.setLanguage(language)
+
   let page = 0
   const p = searchParams['p'] as string
   if (p) {
@@ -29,7 +33,6 @@ const Products = async (props: { searchParams: Promise<SearchParams> }) => {
     page = 1
   }
 
-  const language = await SettingService.getLanguage()
   const currency = await SettingService.getCurrency()
   const userId = (await UserService.getCurrentUser())?._id || ''
 

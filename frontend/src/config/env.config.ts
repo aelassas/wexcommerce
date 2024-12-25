@@ -6,7 +6,7 @@ const env = {
   isLandscape: () => window.innerHeight <= 566,
   isServer: () => typeof window === 'undefined',
   isProduction: () => process.env.NODE_ENV === 'production',
-  isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
+  isSafari: typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
 
   APP_TYPE: 'frontend',
   SERVER_API_HOST: process.env.NEXT_PUBLIC_WC_SERVER_API_HOST,
