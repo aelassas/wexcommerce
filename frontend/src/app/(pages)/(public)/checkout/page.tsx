@@ -606,7 +606,7 @@ const Checkout: React.FC = () => {
                 </Button>
               )}
               <Button
-                variant="contained"
+                variant="outlined"
                 className={`${styles.btnCancel} btn-margin-bottom`}
                 size="small"
                 onClick={async () => {

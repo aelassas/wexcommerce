@@ -1,4 +1,5 @@
-@media only screen and (width <= 550px) {
+@media only screen and (width <=550px) {
+
   .checkoutForm .signIn,
   .checkoutForm .box,
   .checkoutForm .payment,
@@ -12,7 +13,8 @@
   }
 }
 
-@media only screen and (width >= 550px) {
+@media only screen and (width >=550px) {
+
   .checkoutForm .signIn,
   .checkoutForm .box,
   .checkoutForm .payment,
@@ -77,8 +79,9 @@
   float: right;
 }
 
-.checkoutForm .buttons .btnCheckout,
-.checkoutForm .buttons .btnCancel {
+/* .checkoutForm .buttons .btnCheckout,
+.checkoutForm .buttons .btnCancel { */
+.checkoutForm .buttons .btnCheckout {
   font-size: 18px;
   line-height: 24px;
   font-weight: 500;
@@ -99,8 +102,17 @@
 }
 
 .checkoutForm .buttons .btnCancel {
-  background: #BBB;
+  height: 42px;
+  min-width: 75px;
+  width: 100%;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 500;
 }
+
+/* .checkoutForm .buttons .btnCancel {
+  background: #BBB;
+} */
 
 .checkoutForm div.article {
   display: flex;
