@@ -162,12 +162,12 @@ const SignIn: React.FC = () => {
 
           <div className={styles.signinButtons}>
             <Button
-              variant="contained"
+              variant="outlined"
               size="small"
               onClick={() => {
                 router.push('/sign-up')
               }}
-              className='btn-secondary btn-margin btn-margin-bottom'
+              className='btn-margin btn-margin-bottom'
             >
               {strings.SIGN_UP}
             </Button>

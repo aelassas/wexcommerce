@@ -322,10 +322,10 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
         <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
         <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+          <Button onClick={() => setOpenDeleteDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
           <Button
             variant='contained'
-            color='error'
+            color='primary'
             onClick={async () => {
               try {
                 const cartId = await CartService.getCartId()

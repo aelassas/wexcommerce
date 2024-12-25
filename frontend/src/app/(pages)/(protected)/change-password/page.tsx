@@ -190,9 +190,9 @@ const ChangePassword: React.FC = () => {
               {commonStrings.RESET_PASSWORD}
             </Button>
             <Button
-              className='btn-secondary btn-margin-bottom'
+              className='btn-margin-bottom'
               size="small"
-              variant='contained'
+              variant='outlined'
               onClick={() => {
                 router.push('/')
               }}

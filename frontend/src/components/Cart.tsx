@@ -211,35 +211,38 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
         <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
         <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
-          <Button onClick={async () => {
-            try {
-              const cartId = cart._id
-              const res = await CartService.deleteItem(cartId, productId!)
+          <Button onClick={() => setOpenDeleteDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={async () => {
+              try {
+                const cartId = cart._id
+                const res = await CartService.deleteItem(cartId, productId!)
 
-              if (res.status === 200) {
-                const _cartItems = wexcommerceHelper.cloneArray(cartItems) as wexcommerceTypes.CartItem[]
-                const cartItem = _cartItems.find((item) => item.product._id === productId)
-                const index = _cartItems.findIndex((item) => item.product._id === productId)
-                _cartItems.splice(index, 1)
-                setCartItems(_cartItems)
-                setCartItemCount(cartItemCount - cartItem!.quantity)
-                setTotal(helper.total(_cartItems))
+                if (res.status === 200) {
+                  const _cartItems = wexcommerceHelper.cloneArray(cartItems) as wexcommerceTypes.CartItem[]
+                  const cartItem = _cartItems.find((item) => item.product._id === productId)
+                  const index = _cartItems.findIndex((item) => item.product._id === productId)
+                  _cartItems.splice(index, 1)
+                  setCartItems(_cartItems)
+                  setCartItemCount(cartItemCount - cartItem!.quantity)
+                  setTotal(helper.total(_cartItems))
 
-                if (res.data.cartDeleted) {
-                  await CartService.deleteCartId()
+                  if (res.data.cartDeleted) {
+                    await CartService.deleteCartId()
+                  }
+
+                  helper.info(commonStrings.ARTICLE_REMOVED)
+                  setOpenDeleteDialog(false)
+                } else {
+                  helper.error()
                 }
-
-                helper.info(commonStrings.ARTICLE_REMOVED)
-                setOpenDeleteDialog(false)
-              } else {
+              } catch (err) {
+                console.error(err)
                 helper.error()
               }
-            } catch (err) {
-              console.error(err)
-              helper.error()
-            }
-          }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
+            }}>{commonStrings.REMOVE_FROM_CART}</Button>
         </DialogActions>
       </Dialog>
 
@@ -251,26 +254,29 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
         <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{strings.CLEAR_CART_CONFIRM}</DialogContent>
         <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenClearDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
-          <Button onClick={async () => {
-            try {
-              const cartId = cart._id
-              const status = await CartService.clearCart(cartId)
+          <Button onClick={() => setOpenClearDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={async () => {
+              try {
+                const cartId = cart._id
+                const status = await CartService.clearCart(cartId)
 
-              if (status === 200) {
-                await CartService.deleteCartId()
-                setCartItems([])
-                setCartItemCount(0)
-                setTotal(0)
-              } else {
+                if (status === 200) {
+                  await CartService.deleteCartId()
+                  setCartItems([])
+                  setCartItemCount(0)
+                  setTotal(0)
+                } else {
+                  helper.error()
+                }
+              } catch (err) {
+                console.error(err)
                 helper.error()
               }
-            } catch (err) {
-              console.error(err)
-              helper.error()
-            }
-            setOpenClearDialog(false)
-          }} variant='contained' color='error'>{strings.CLEAR_CART}</Button>
+              setOpenClearDialog(false)
+            }}>{strings.CLEAR_CART}</Button>
         </DialogActions>
       </Dialog>
     </div>

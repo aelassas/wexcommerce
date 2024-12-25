@@ -242,29 +242,32 @@ const ProductListItem: React.FC<ProductListItemProps> = (
             <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
             <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
             <DialogActions className='dialog-actions'>
-              <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
-              <Button onClick={async () => {
-                try {
-                  const cartId = await CartService.getCartId()
-                  const res = await CartService.deleteItem(cartId, product._id)
+              <Button onClick={() => setOpenDeleteDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={async () => {
+                  try {
+                    const cartId = await CartService.getCartId()
+                    const res = await CartService.deleteItem(cartId, product._id)
 
-                  if (res.status === 200) {
-                    setInCart(false)
-                    setCartItemCount(cartItemCount - 1)
+                    if (res.status === 200) {
+                      setInCart(false)
+                      setCartItemCount(cartItemCount - 1)
 
-                    if (res.data.cartDeleted) {
-                      await CartService.deleteCartId()
+                      if (res.data.cartDeleted) {
+                        await CartService.deleteCartId()
+                      }
+
+                      setOpenDeleteDialog(false)
+                      helper.info(commonStrings.ARTICLE_REMOVED)
+                    } else {
+                      helper.error()
                     }
-
-                    setOpenDeleteDialog(false)
-                    helper.info(commonStrings.ARTICLE_REMOVED)
-                  } else {
-                    helper.error()
+                  } catch (err) {
+                    helper.error(err)
                   }
-                } catch (err) {
-                  helper.error(err)
-                }
-              }} variant='contained' color='error'>{commonStrings.REMOVE_FROM_CART}</Button>
+                }}>{commonStrings.REMOVE_FROM_CART}</Button>
             </DialogActions>
           </Dialog>
         </div>

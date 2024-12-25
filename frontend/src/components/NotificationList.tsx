@@ -318,33 +318,40 @@ const NotificationList: React.FC<NotificationListProps> = (
         <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{selectedNotifications.length > 1 ? strings.DELETE_NOTIFICATIONS : strings.DELETE_NOTIFICATION}</DialogContent>
         <DialogActions className='dialog-actions'>
-          <Button onClick={() => {
-            setOpenDeleteDialog(false)
-          }} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
-          <Button onClick={async () => {
-            try {
-              const ids = selectedNotifications.map((row) => row._id)
-              const status = await NotificationService.deleteNotifications(user._id!, ids)
+          <Button
+            variant='outlined'
+            onClick={() => {
+              setOpenDeleteDialog(false)
+            }}>
+            {commonStrings.CANCEL}
+          </Button>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={async () => {
+              try {
+                const ids = selectedNotifications.map((row) => row._id)
+                const status = await NotificationService.deleteNotifications(user._id!, ids)
 
-              if (status === 200) {
-                if (selectedNotifications.length === notifications.length) {
-                  if (page === 1) {
-                    router.refresh()
+                if (status === 200) {
+                  if (selectedNotifications.length === notifications.length) {
+                    if (page === 1) {
+                      router.refresh()
+                    } else {
+                      router.replace('/notifications')
+                    }
                   } else {
-                    router.replace('/notifications')
+                    router.refresh()
                   }
+                  setNotificationCount(notificationCount - selectedNotifications.filter((row) => !row.isRead).length)
+                  setOpenDeleteDialog(false)
                 } else {
-                  router.refresh()
+                  helper.error()
                 }
-                setNotificationCount(notificationCount - selectedNotifications.filter((row) => !row.isRead).length)
-                setOpenDeleteDialog(false)
-              } else {
-                helper.error()
+              } catch (err) {
+                helper.error(err)
               }
-            } catch (err) {
-              helper.error(err)
-            }
-          }} variant='contained' color='error'>{commonStrings.DELETE}</Button>
+            }}>{commonStrings.DELETE}</Button>
         </DialogActions>
       </Dialog>
     </div>

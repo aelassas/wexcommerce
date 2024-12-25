@@ -181,9 +181,9 @@ const ForgotPassword: React.FC = () => {
                     {strings.RESET}
                   </Button>
                   <Button
-                    className='btn-secondary btn-margin-bottom'
+                    className='btn-margin-bottom'
                     size="small"
-                    variant='contained'
+                    variant='outlined'
                     onClick={() => {
                       router.push('/')
                     }}

@@ -79,24 +79,27 @@ const Wishlist: React.FC<WishlistProps> = ({ wishlist }) => {
         <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{strings.CLEAR_WISHLIST_CONFIRM}</DialogContent>
         <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenClearDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
-          <Button onClick={async () => {
-            try {
-              const wishlistId = wishlist._id
-              const status = await WishlistService.clearWishlist(wishlistId)
+          <Button onClick={() => setOpenClearDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={async () => {
+              try {
+                const wishlistId = wishlist._id
+                const status = await WishlistService.clearWishlist(wishlistId)
 
-              if (status === 200) {
-                setProducts([])
-                setWishlistCount(0)
-              } else {
+                if (status === 200) {
+                  setProducts([])
+                  setWishlistCount(0)
+                } else {
+                  helper.error()
+                }
+              } catch (err) {
+                console.error(err)
                 helper.error()
               }
-            } catch (err) {
-              console.error(err)
-              helper.error()
-            }
-            setOpenClearDialog(false)
-          }} variant='contained' color='error'>
+              setOpenClearDialog(false)
+            }}>
             {strings.CLEAR_WISHLIST}
           </Button>
         </DialogActions>

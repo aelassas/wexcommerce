@@ -254,9 +254,9 @@ const ResetPassword: React.FC = () => {
                   {commonStrings.SAVE}
                 </Button>
                 <Button
-                  className='btn-secondary btn-margin-bottom'
+                  className='btn-margin-bottom'
                   size="small"
-                  variant='contained'
+                  variant='outlined'
                   onClick={() => {
                     router.push('/')
                   }}

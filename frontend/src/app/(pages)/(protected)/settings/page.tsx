@@ -172,8 +172,8 @@ const Settings: React.FC = () => {
             {commonStrings.SAVE}
           </Button>
           <Button
-            variant="contained"
-            className='btn-secondary btn-margin-bottom'
+            variant="outlined"
+            className='btn-margin-bottom'
             size="small"
             onClick={() => {
               router.push('/')
