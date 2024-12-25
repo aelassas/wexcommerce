@@ -13,20 +13,35 @@ body {
   padding: 0;
 }
 
+.Toastify__toast {
+  min-width: 340px !important;
+  width: fit-content !important;
+  padding-right: 40px;
+}
+
 @media only screen and (width>=480px) {
   /* .Toastify__toast-container {
     min-width: 340px !important;
     width: fit-content !important;
   } */
 
-  .Toastify__toast {
+  /* .Toastify__toast {
     min-width: 340px !important;
     width: fit-content !important;
-  }
+  } */
 }
+
+/* @media only screen and (width<480px) {
+  .Toastify__toast {
+    display: flex;
+    justify-content: flex-end;
+  }
+} */
 
 .Toastify__toast-container>div:first-child {
   margin: 15px 0 !important;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .Toastify__toast-body>div:last-child {

@@ -218,7 +218,7 @@ const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
                               {
                                 (order.orderItems as wexcommerceTypes.OrderItem[]).map((orderItem) => (
                                   <div key={orderItem._id} className={styles.orderItem}>
-                                    <div className={styles.orderItemInfo}>
+                                    {/* <div className={styles.orderItemInfo}>
                                       <span className={styles.image}>
                                         <Image
                                           width={0}
@@ -230,7 +230,7 @@ const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
                                           src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, (orderItem.product as wexcommerceTypes.Product).image)}
                                         />
                                       </span>
-                                    </div>
+                                    </div> */}
                                     <div className={styles.orderItemInfo}>
                                       <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
                                       <span>
@@ -263,7 +263,7 @@ const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
                           </div>
                           <div className={styles.orderInfo}>
                             <span className={styles.orderLabel}>{strings.TOTAL}</span>
-                            <span>{`${wexcommerceHelper.formatPrice(order.total, currency, language)}`}</span>
+                            <span className={styles.total}>{`${wexcommerceHelper.formatPrice(order.total, currency, language)}`}</span>
                           </div>
                         </div>
 

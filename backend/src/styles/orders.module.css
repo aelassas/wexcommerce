@@ -108,6 +108,10 @@ div.orderList article div.orderContent div.orderInfo span.orderLabel {
   min-width: 120px;
 }
 
+div.orderList article div.orderContent div.orderInfo span.total {
+  font-weight: bold;
+}
+
 div.orderList article div.orderContent div.orderItems {
   /* background-color: #fafafa;
     border-top: #eaeaea 1px solid;

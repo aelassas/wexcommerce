@@ -60,6 +60,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/no-require-imports": "off",
+    "@typescript-eslint/no-unused-vars" : "off",
     "react-compiler/react-compiler": "error"
   }
 }
