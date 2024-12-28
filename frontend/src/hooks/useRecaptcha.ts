@@ -96,8 +96,8 @@ const useReCaptcha = (): RecaptchaType => {
 
     window.addEventListener('mousemove', loadRecaptchaScript, { once: true })
     window.addEventListener('touchstart', loadRecaptchaScript, { once: true })
-    window.addEventListener('touchmove', loadRecaptchaScript, { once: true })
-    window.addEventListener('touchend', loadRecaptchaScript, { once: true })
+    // window.addEventListener('touchmove', loadRecaptchaScript, { once: true })
+    // window.addEventListener('touchend', loadRecaptchaScript, { once: true })
   }, [reCaptchaLoaded])
 
   // Hide badge when unmount
@@ -105,6 +105,9 @@ const useReCaptcha = (): RecaptchaType => {
 
   // Get token
   const generateReCaptchaToken = (action: string = 'submit'): Promise<string> => new Promise((resolve, reject) => {
+    if (!env.RECAPTCHA_ENABLED) {
+      resolve('')
+    }
     if (env.isSafari) {
       resolve('')
     }
