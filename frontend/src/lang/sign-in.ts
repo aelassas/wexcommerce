@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization'
+import LocalizedStrings from 'localized-strings'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -20,4 +20,3 @@ export const strings = new LocalizedStrings({
         STAY_CONNECTED: 'Stay connected'
     }
 })
-

@@ -2,7 +2,7 @@ import { toast, ToastContent } from 'react-toastify'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as osStrings } from '@/lang/order-status'
-import { LocalizedStrings } from 'react-localization'
+import { LocalizedStrings } from 'localized-strings'
 import * as UserService from '@/lib/UserService'
 
 export const info = (message: string) => {

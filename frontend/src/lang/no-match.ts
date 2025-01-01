@@ -1,4 +1,4 @@
-import LocalizedStrings from 'react-localization'
+import LocalizedStrings from 'localized-strings'
 
 export const strings = new LocalizedStrings({
     fr: {
@@ -8,4 +8,3 @@ export const strings = new LocalizedStrings({
         NO_MATCH: 'Nothing to see here!'
     }
 })
-

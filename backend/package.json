@@ -28,12 +28,12 @@
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "html-to-draftjs": "^1.5.0",
+    "localized-strings": "^1.0.0",
     "next": "^15.1.2",
     "next-nprogress-bar": "^2.4.3",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-draft-wysiwyg": "^1.15.0",
-    "react-localization": "^1.0.19",
     "react-toastify": "^11.0.2",
     "validator": "^13.12.0"
   },
