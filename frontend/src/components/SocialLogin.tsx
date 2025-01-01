@@ -3,6 +3,7 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { IResolveParams } from ':reactjs-social-login'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import { strings as commonStrings } from '@/lang/common'
 import env from '@/config/env.config'
@@ -15,9 +16,9 @@ let LoginSocialFacebook = null
 let LoginSocialApple = null
 let REDIRECT_URI = null
 if (typeof window === 'object') {
-  LoginSocialGoogle = require('reactjs-social-login').LoginSocialGoogle
-  LoginSocialFacebook = require('reactjs-social-login').LoginSocialFacebook
-  LoginSocialApple = require('reactjs-social-login').LoginSocialApple
+  LoginSocialGoogle = require(':reactjs-social-login').LoginSocialGoogle
+  LoginSocialFacebook = require(':reactjs-social-login').LoginSocialFacebook
+  LoginSocialApple = require(':reactjs-social-login').LoginSocialApple
   REDIRECT_URI = window.location.href
 }
 

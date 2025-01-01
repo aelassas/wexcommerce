@@ -31,7 +31,10 @@
       ],
       ":wexcommerce-helper": [
         "../packages/wexcommerce-helper"
-      ]
+      ],
+      ":reactjs-social-login": [
+        "../packages/reactjs-social-login"
+      ],
     },
     "downlevelIteration": true,
     "target": "ESNext"
@@ -51,6 +54,9 @@
     },
     {
       "path": "../packages/wexcommerce-helper"
-    }
+    },
+    {
+      "path": "../packages/reactjs-social-login"
+    },
   ]
 }

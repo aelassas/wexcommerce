@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo -p 8006",
-    "build": "rimraf .next && tsc --build --verbose && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
+    "install:reactjs-social-login": "cd ../packages/reactjs-social-login && npm i && cd ../../frontend",
+    "install:dependencies": "npm run install:reactjs-social-login",
+    "ts:build": "npm run install:dependencies && tsc --build --verbose",
+    "dev": "npm run ts:build && next dev --turbo -p 8006",
+    "build": "rimraf .next && npm run ts:build && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
     "start": "next start -p 8006",
     "lint": "next lint",
     "ncu": "ncu -u -x typescript,eslint,date-fns,@types/react,@types/react-dom",
@@ -33,7 +36,6 @@
     "react-ga4": "^2.1.0",
     "react-slick": "^0.30.3",
     "react-toastify": "^11.0.2",
-    "reactjs-social-login": "^2.6.3",
     "slick-carousel": "^1.8.1",
     "validator": "^13.12.0"
   },
