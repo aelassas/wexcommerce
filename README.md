@@ -50,10 +50,10 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * Payment management
 * Customer management
 * Multiple payment options (Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link)
-* Operational Stripe Payment Gateway
 * Multiple delivery options (Home delivery, Store withdrawal)
 * Multiple language support (English, French)
 * Multiple login options (Google, Facebook, Apple, Email)
+* Operational Stripe Payment Gateway
 * Responsive frontend and admin dashboard
 
 ## Live Demo
