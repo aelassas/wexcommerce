@@ -74,7 +74,6 @@ const ProductListItem: React.FC<ProductListItemProps> = (
         title={product.name}
         onDragStart={handleDisableDragAndDrop}
         onDrop={handleDisableDragAndDrop}
-        scroll
       >
         <div className={styles.thumbnail}>
           <Image
