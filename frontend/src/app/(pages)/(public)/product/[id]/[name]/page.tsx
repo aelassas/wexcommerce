@@ -8,6 +8,7 @@ import * as UserService from '@/lib/UserService'
 import * as WishlistService from '@/lib/WishlistService'
 import ProductComponent from '@/components/Product'
 import Indicator from '@/components/Indicator'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const Product = async (props: { params: Promise<{ id: string, name: string }> }) => {
   const params = await props.params
@@ -30,12 +31,19 @@ const Product = async (props: { params: Promise<{ id: string, name: string }> })
     console.error(err)
   }
 
-  return product ? (
-    <Suspense fallback={<Indicator />}>
-      <ProductComponent product={product} />
-    </Suspense>
-  ) : (
-    <NoMatch />
+  return (
+    <>
+      <ScrollToTop />
+      {
+        product ? (
+          <Suspense fallback={<Indicator />}>
+            <ProductComponent product={product} />
+          </Suspense>
+        ) : (
+          <NoMatch />
+        )
+      }
+    </>
   )
 }
 
