@@ -12,6 +12,8 @@
 
 [![](https://wexcommerce.github.io/content/frontend-0-tiny.png)](https://wexcommerce.dynv6.net:8002/home)
 
+https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
+
 wexCommerce is a sleek and powerful ecommerce platform built on Next.js for its powerful rendering capabilities, MongoDB for flexible data modeling, and Stripe for secure payment processing.
 
 For developers who value creative freedom and technical control, traditional ecommerce platforms like Shopify can feel restrictive. While Shopify's templates offer quick setup, and their Storefront API provides some flexibility, neither solution delivers the complete architectural freedom that modern developers crave.
