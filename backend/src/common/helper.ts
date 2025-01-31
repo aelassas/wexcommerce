@@ -2,7 +2,7 @@ import { toast, ToastContent } from 'react-toastify'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as osStrings } from '@/lang/order-status'
-import { LocalizedStrings } from 'localized-strings'
+import LocalizedStrings from 'localized-strings'
 
 export const info = (message: string) => {
   toast.info(message)
@@ -23,7 +23,7 @@ export const error = (err?: unknown, message?: string) => {
   }
 }
 
-export const setLanguage = (strings: LocalizedStrings<any>, language: string) => {
+export const setLanguage = (strings: LocalizedStrings, language: string) => {
   strings.setLanguage(language)
 }
 
