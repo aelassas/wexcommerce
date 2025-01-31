@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use wexCommerce in your research or projects, please cite it using the following metadata."
+title: "wexCommerce: A Sleek and Powerful ecommerce Platform"
+authors:
+  - name: "Akram El Assas"
+year: 2025
+repository-code: "https://github.com/aelassas/bookcars"
+license: "MIT"
+keywords:
+  - ecommerce
+  - marketplace
+  - storefront
+  - web application
+  - next.js
+  - mongodb
+  - stripe
+url: "https://github.com/aelassas/bookcars"
+type: software
