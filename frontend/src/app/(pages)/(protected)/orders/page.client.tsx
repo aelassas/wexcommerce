@@ -22,9 +22,9 @@ import OrderStatus from '@/components/OrderStatus'
 import PaymentType from '@/components/PaymentType'
 import DeliveryType from '@/components/DeliveryType'
 import EmptyListComponent from '@/components/EmptyList'
+import RowCount from '@/components/RowCount'
 
 import styles from '@/styles/orders.module.css'
-import RowCount from '@/components/RowCount'
 
 interface FiltersProps {
   paymentTypes: wexcommerceTypes.PaymentType[]

@@ -18,6 +18,7 @@ import paymentTypeRoutes from './routes/paymentTypeRoutes'
 import settingRoutes from './routes/settingRoutes'
 import stripeRoutes from './routes/stripeRoutes'
 import wishlistRoutes from './routes/wishlistRoutes'
+import paypalRoutes from './routes/paypalRoutes'
 import * as helper from './common/helper'
 
 const app = express()
@@ -58,6 +59,7 @@ app.use('/', paymentTypeRoutes)
 app.use('/', settingRoutes)
 app.use('/', stripeRoutes)
 app.use('/', wishlistRoutes)
+app.use('/', paypalRoutes)
 
 i18n.locale = env.DEFAULT_LANGUAGE
 

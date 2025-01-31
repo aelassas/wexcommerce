@@ -220,12 +220,12 @@
   font-weight: bold;
 }
 
-.checkoutForm .stripe {
+.checkoutForm .paymentForm {
   width: 550px;
 }
 
 @media only screen and (width <=960px) {
-  .checkoutForm .stripe {
+  .checkoutForm .paymentForm {
     width: calc(100% - 20px);
   }
 }

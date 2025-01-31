@@ -15,6 +15,7 @@ import { UserProvider } from '@/context/UserContext'
 import { NotificationProvider } from '@/context/NotificationContext'
 import { CartProvider } from '@/context/CartContext'
 import { WishlistProvider } from '@/context/WishlistContext'
+import { PayPalProvider } from '@/context/PayPalContext'
 import env from '@/config/env.config'
 import * as helper from '@/common/helper'
 
@@ -197,7 +198,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <NotificationProvider>
                 <CartProvider>
                   <WishlistProvider>
-                    {children}
+                    <PayPalProvider>
+                      {children}
+                    </PayPalProvider>
                   </WishlistProvider>
                 </CartProvider>
               </NotificationProvider>

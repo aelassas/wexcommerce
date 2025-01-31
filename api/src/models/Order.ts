@@ -50,6 +50,9 @@ const orderSchema = new Schema<env.Order>({
   customerId: {
     type: String,
   },
+  paypalOrderId: {
+    type: String,
+  },
   expireAt: {
     //
     // Orders created from checkout with Stripe are temporary and

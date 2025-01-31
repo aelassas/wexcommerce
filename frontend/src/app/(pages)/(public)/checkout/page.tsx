@@ -27,6 +27,7 @@ import {
   EmbeddedCheckout,
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
+import { PayPalButtons } from '@paypal/react-paypal-js'
 import slugify from '@sindresorhus/slugify'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
@@ -37,6 +38,7 @@ import * as UserService from '@/lib/UserService'
 import * as CartService from '@/lib/CartService'
 import * as OrderService from '@/lib/OrderService'
 import * as StripeService from '@/lib/StripeService'
+import * as PayPalService from '@/lib/PayPalService'
 import env from '@/config/env.config'
 import * as helper from '@/common/helper'
 import { strings } from '@/lang/checkout'
@@ -50,6 +52,7 @@ import { RecaptchaContextType, useRecaptchaContext } from '@/context/RecaptchaCo
 import Error from '@/components/Error'
 import Info from '@/components/Info'
 import NoMatch from '@/components/NoMatch'
+import Backdrop from '@/components/SimpleBackdrop'
 
 import styles from '@/styles/checkout.module.css'
 
@@ -92,6 +95,10 @@ const Checkout: React.FC = () => {
   const [sessionId, setSessionId] = useState<string>()
   const [noMatch, setNoMatch] = useState(false)
   const [recaptchaError, setRecaptchaError] = useState(false)
+  const [payPalLoaded, setPayPalLoaded] = useState(false)
+  const [payPalInit, setPayPalInit] = useState(false)
+  const [payPalProcessing, setPayPalProcessing] = useState(false)
+  const [paymentFailed, setPaymentFailed] = useState(false)
 
   useEffect(() => {
     const init = async () => {
@@ -194,6 +201,14 @@ const Checkout: React.FC = () => {
     }
   }
 
+  const showSuccess = async () => {
+    await CartService.clearCart()
+    await CartService.deleteCartId()
+    setCartItemCount(0)
+    setSuccess(true)
+    window.scrollTo(0, 0)
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -248,21 +263,25 @@ const Checkout: React.FC = () => {
       //
       let _customerId: string | undefined
       let _sessionId: string | undefined
-      if (paymentType === wexcommerceTypes.PaymentType.CreditCard) {
-        const _email = (!authenticated ? email : user.email) as string
-        const payload: wexcommerceTypes.CreatePaymentPayload = {
-          amount: total,
-          currency: (await SettingService.getStripeCurrency()),
-          locale: language,
-          receiptEmail: _email,
-          name: `New order from ${_email}`,
-          description: 'wexCommerce',
-          customerName: (!authenticated ? fullName : user.fullName) as string,
+      if (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe) {
+        if (paymentType === wexcommerceTypes.PaymentType.CreditCard) {
+          const _email = (!authenticated ? email : user.email) as string
+          const payload: wexcommerceTypes.CreatePaymentPayload = {
+            amount: total,
+            currency: (await SettingService.getStripeCurrency()),
+            locale: language,
+            receiptEmail: _email,
+            name: `New order from ${_email}`,
+            description: 'wexCommerce',
+            customerName: (!authenticated ? fullName : user.fullName) as string,
+          }
+          const res = await StripeService.createCheckoutSession(payload)
+          setClientSecret(res.clientSecret)
+          _sessionId = res.sessionId
+          _customerId = res.customerId
         }
-        const res = await StripeService.createCheckoutSession(payload)
-        setClientSecret(res.clientSecret)
-        _sessionId = res.sessionId
-        _customerId = res.customerId
+      } else {
+        setPayPalLoaded(true)
       }
 
       // order
@@ -288,6 +307,7 @@ const Checkout: React.FC = () => {
         order,
         sessionId: _sessionId,
         customerId: _customerId,
+        payPal: env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.PayPal,
       }
       const { status, orderId: _orderId } = await OrderService.checkout(payload)
 
@@ -299,11 +319,7 @@ const Checkout: React.FC = () => {
           const _status = await CartService.clearCart(cart!._id)
 
           if (_status === 200) {
-            await CartService.clearCart()
-            await CartService.deleteCartId()
-            setCartItemCount(0)
-            setSuccess(true)
-            window.scrollTo(0, 0)
+            await showSuccess()
           } else {
             helper.error()
           }
@@ -576,35 +592,70 @@ const Checkout: React.FC = () => {
             }
 
             {
-              clientSecret && (
-                <div className={styles.stripe}>
-                  <EmbeddedCheckoutProvider
-                    stripe={stripePromise}
-                    options={{ clientSecret }}
-                  >
-                    <EmbeddedCheckout />
-                  </EmbeddedCheckoutProvider>
-                </div>
-              )
+              env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe
+                ? (clientSecret && (
+                  <div className={styles.paymentForm}>
+                    <EmbeddedCheckoutProvider
+                      stripe={stripePromise}
+                      options={{ clientSecret }}
+                    >
+                      <EmbeddedCheckout />
+                    </EmbeddedCheckoutProvider>
+                  </div>
+                ))
+                : payPalLoaded ? (
+                  <div className={styles.paymentForm}>
+                    <PayPalButtons
+                      createOrder={async () => {
+                        const name = `New order from ${email || user!.email}`
+                        const paypalCurrency = await SettingService.getStripeCurrency()
+                        const payPalOrderId = await PayPalService.createOrder(orderId!, total, paypalCurrency, name)
+                        return payPalOrderId
+                      }}
+                      onApprove={async (data) => {
+                        try {
+                          setPayPalProcessing(true)
+                          const { orderID } = data
+                          const status = await PayPalService.checkOrder(orderId!, orderID)
+
+                          if (status === 200) {
+                            await showSuccess()
+                          } else {
+                            setPaymentFailed(true)
+                          }
+                        } catch (err) {
+                          helper.error(err)
+                        } finally {
+                          setPayPalProcessing(false)
+                        }
+                      }}
+                      onInit={() => {
+                        setPayPalInit(true)
+                      }}
+                    />
+                  </div>
+                ) : null
             }
 
 
             <div className={styles.buttons}>
-              {!clientSecret && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  className={`${styles.btnCheckout} btn-margin-bottom`}
-                  size="small"
-
-                  disabled={loading}>
-                  {
-                    loading
-                      ? <CircularProgress color="inherit" size={24} />
-                      : strings.CHECKOUT
-                  }
-                </Button>
-              )}
+              {(
+                (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe && !clientSecret)
+                || (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.PayPal && !payPalInit)
+              ) && (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className={`${styles.btnCheckout} btn-margin-bottom`}
+                    size="small"
+                    disabled={loading || (payPalLoaded && !payPalInit)}>
+                    {
+                      (loading || (payPalLoaded && !payPalInit))
+                        ? <CircularProgress color="inherit" size={24} />
+                        : strings.CHECKOUT
+                    }
+                  </Button>
+                )}
               <Button
                 variant="outlined"
                 className={`${styles.btnCancel} btn-margin-bottom`}
@@ -635,6 +686,7 @@ const Checkout: React.FC = () => {
               {formError && <Error message={commonStrings.FORM_ERROR} />}
               {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
               {error && <Error message={commonStrings.GENERIC_ERROR} />}
+              {paymentFailed && <Error message={strings.PAYMENT_FAILED} />}
             </div>
           </form>
         </>
@@ -653,6 +705,8 @@ const Checkout: React.FC = () => {
       {
         !success && noMatch && <NoMatch />
       }
+
+      {payPalProcessing && <Backdrop text={strings.CHECKING} />}
     </div>
   )
 }

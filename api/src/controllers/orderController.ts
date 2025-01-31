@@ -192,13 +192,15 @@ export const checkout = async (req: Request, res: Response) => {
     const deliveryType = (await DeliveryType.findById(order.deliveryType))!.name
 
     if (paymentType === wexcommerceTypes.PaymentType.CreditCard) {
-      const { paymentIntentId, sessionId } = body
+      const { payPal, paymentIntentId, sessionId } = body
 
-      if (!paymentIntentId && !sessionId) {
+      if (!payPal && !paymentIntentId && !sessionId) {
         throw new Error('Payment intent and session missing')
       }
 
-      _order.customerId = body.customerId
+      if (!payPal) {
+        _order.customerId = body.customerId
+      }
 
       if (paymentIntentId) {
         const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
@@ -222,7 +224,7 @@ export const checkout = async (req: Request, res: Response) => {
           await orderItem!.save()
         }
 
-        _order.sessionId = body.sessionId
+        _order.sessionId = !payPal ? body.sessionId : undefined
         _order.status = wexcommerceTypes.OrderStatus.Pending
         _order.expireAt = expireAt
 

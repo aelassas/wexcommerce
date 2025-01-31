@@ -28,6 +28,11 @@ export enum DeliveryType {
   Withdrawal = 'withdrawal',
 }
 
+export enum PaymentGateway {
+  PayPal = 'payPal',
+  Stripe = 'stripe',
+}
+
 export interface SignUpPayload {
   email: string
   fullName: string
@@ -230,6 +235,7 @@ export interface OrderInfo {
   customerId?: string
   expireAt?: Date
   createdAt?: Date
+  paypalOrderId?: string
 }
 
 export interface CheckoutPayload {
@@ -238,6 +244,7 @@ export interface CheckoutPayload {
   paymentIntentId?: string
   sessionId?: string
   customerId?: string
+  payPal?: boolean
 }
 
 export interface UpdateOrderPayload {
@@ -277,6 +284,13 @@ export interface CreatePaymentPayload {
   customerName: string
   name: string
   description?: string
+}
+
+export interface CreatePayPalOrderPayload {
+  orderId: string
+  amount: number
+  currency: string
+  name: string
 }
 
 export interface PaymentResult {

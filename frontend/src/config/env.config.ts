@@ -1,4 +1,18 @@
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies'
+import * as wexcommerceTypes from ':wexcommerce-types'
+
+const getPaymentGateway = () => {
+  const paymentGateway = String(process.env.NEXT_PUBLIC_WC_PAYMENT_GATEWAY || 'stripe').toUpperCase()
+
+  if (paymentGateway === 'PAYPAL') {
+    return wexcommerceTypes.PaymentGateway.PayPal
+  }
+
+  // Default is Stripe
+  return wexcommerceTypes.PaymentGateway.Stripe
+}
+
+const PAYMENT_GATEWAY = getPaymentGateway()
 
 const env = {
   isMobile: () => window.innerWidth <= 960,
@@ -19,7 +33,9 @@ const env = {
   FB_APP_ID: String(process.env.NEXT_PUBLIC_WC_FB_APP_ID),
   APPLE_ID: String(process.env.NEXT_PUBLIC_WC_APPLE_ID),
   GG_APP_ID: String(process.env.NEXT_PUBLIC_WC_GG_APP_ID),
+  PAYMENT_GATEWAY,
   STRIPE_PUBLISHABLE_KEY: String(process.env.NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY),
+  PAYPAL_CLIENT_ID: String(process.env.NEXT_PUBLIC_WC_PAYPAL_CLIENT_ID),
   FEATURED_PRODUCTS_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_FEATURED_PRODUCTS_SIZE || '10', 10),
   GOOGLE_ANALYTICS_ENABLED: (process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED && process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED.toLowerCase()) === 'true',
   GOOGLE_ANALYTICS_ID: String(process.env.NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ID),
