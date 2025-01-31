@@ -19,7 +19,6 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
     console.log({ orderId, amount, currency, name })
 
     const paypalOrderId = await paypal.createOrder(orderId, amount, currency, name)
-    console.log('paypalOrderId', paypalOrderId)
 
     return res.json(paypalOrderId)
   } catch (err) {
