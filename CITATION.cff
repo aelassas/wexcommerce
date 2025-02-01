@@ -14,5 +14,6 @@ keywords:
   - next.js
   - mongodb
   - stripe
+  - paypal
 url: "https://github.com/aelassas/bookcars"
 type: software
