@@ -13,6 +13,14 @@ import PaymentType from '../models/PaymentType'
 import DeliveryType from '../models/DeliveryType'
 import * as orderController from './orderController'
 
+/**
+ * Create PayPal order.
+ *
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export const createPayPalOrder = async (req: Request, res: Response) => {
   try {
     const { orderId, amount, currency, name }: wexcommerceTypes.CreatePayPalOrderPayload = req.body
