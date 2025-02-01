@@ -52,7 +52,7 @@ describe('POST /api/create-paypal-order', () => {
 
 describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
   it('should check paypal order', async () => {
-    // test failure (order exists, order exists and payment failed)
+    // test failure (order exists, paypal order exists and payment failed)
     const expireAt = new Date()
     expireAt.setSeconds(expireAt.getSeconds() + env.ORDER_EXPIRE_AT)
     const from = new Date()
@@ -89,7 +89,7 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
         .post(`/api/check-paypal-order/${order.id}/${orderId}`)
       expect(res.statusCode).toBe(400)
 
-      // test failure (order exists, order does not exist)
+      // test failure (order exists, paypal order does not exist)
       res = await request(app)
         .post(`/api/check-paypal-order/${order.id}/${testHelper.GetRandromObjectIdAsString()}`)
       expect(res.statusCode).toBe(204)
