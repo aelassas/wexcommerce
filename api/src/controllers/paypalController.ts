@@ -16,7 +16,6 @@ import * as orderController from './orderController'
 export const createPayPalOrder = async (req: Request, res: Response) => {
   try {
     const { orderId, amount, currency, name }: wexcommerceTypes.CreatePayPalOrderPayload = req.body
-    console.log({ orderId, amount, currency, name })
 
     const paypalOrderId = await paypal.createOrder(orderId, amount, currency, name)
 
