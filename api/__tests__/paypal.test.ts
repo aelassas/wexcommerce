@@ -28,7 +28,7 @@ afterAll(async () => {
 
 describe('POST /api/create-paypal-order', () => {
   it('should create paypal order', async () => {
-    // test success (create checkout session whith non existant user)
+    // test success (create paypal order whith non existant user)
     const payload: wexcommerceTypes.CreatePayPalOrderPayload = {
       amount: 234,
       currency: 'USD',
@@ -41,7 +41,7 @@ describe('POST /api/create-paypal-order', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.length).toBeGreaterThan(0)
 
-    // test failure (create checkout sessions failure)
+    // test failure (create paypal order failure)
     payload.currency = 'xxxxxxxxxxxxxxx'
     res = await request(app)
       .post('/api/create-paypal-order')

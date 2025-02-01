@@ -34,7 +34,7 @@ export const createOrder = async (orderId: string, amount: number, currency: str
             landing_page: 'LOGIN',
             shipping_preference: 'GET_FROM_FILE',
             user_action: 'PAY_NOW',
-            // return_url: `${helper.trimEnd(env.FRONTEND_HOST, '/')}/checkout-session/${bookingId}`,
+            // return_url: `${helper.trimEnd(env.FRONTEND_HOST, '/')}/checkout-session/${orderId}`,
             // cancel_url: env.FRONTEND_HOST,
           },
         },
@@ -91,6 +91,7 @@ export const getOrder = async (orderId: string) => {
     `https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderId}`,
     {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     },

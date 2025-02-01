@@ -304,9 +304,10 @@ export const formatPrice = (price: number, currency: string, language: string) =
  * 1          1.00
  * 1.2        1.20
  * 1.341      1.34
- * 1.345      1.35
+ * 1.345      1.34
+ * 1.378      1.37
  *
  * @param {number} price
  * @returns {string}
  */
-export const formatPayPalPrice = (price: number) => (Math.round(price * 100) / 100).toFixed(2)
+export const formatPayPalPrice = (price: number) => (Math.floor(price * 100) / 100).toFixed(2)

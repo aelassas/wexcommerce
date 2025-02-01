@@ -61,12 +61,12 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     try {
       paypalOrder = await paypal.getOrder(paypalOrderId)
     } catch (err) {
-      logger.error(`[paypal.checkPaypalOrder] retrieve paypal order error: ${orderId}`, err)
+      logger.error(`[paypal.checkPayPalOrder] retrieve paypal order error: ${orderId}`, err)
     }
 
     if (!paypalOrder) {
       const msg = `Order ${paypalOrder} not found`
-      logger.info(`[paypal.checkPaypalOrder] ${msg}`)
+      logger.info(`[paypal.checkPayPalOrder] ${msg}`)
       return res.status(204).send(msg)
     }
 
@@ -132,7 +132,7 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     await order.deleteOne()
     return res.status(400).send(paypalOrder.status)
   } catch (err) {
-    logger.error(`[paypal.checkPaypalOrder] ${i18n.t('ERROR')}`, err)
+    logger.error(`[paypal.checkPayPalOrder] ${i18n.t('ERROR')}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
