@@ -272,7 +272,7 @@ const Checkout: React.FC = () => {
             locale: language,
             receiptEmail: _email,
             name: `New order from ${_email}`,
-            description: 'wexCommerce',
+            description: env.WEBSITE_NAME,
             customerName: (!authenticated ? fullName : user.fullName) as string,
           }
           const res = await StripeService.createCheckoutSession(payload)

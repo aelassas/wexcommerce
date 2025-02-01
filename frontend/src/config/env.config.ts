@@ -22,6 +22,7 @@ const env = {
   isProduction: () => process.env.NODE_ENV === 'production',
   isSafari: typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
 
+  WEBSITE_NAME: String(process.env.NEXT_PUBLIC_WC_WEBSITE_NAME || 'wexCommerce'),
   APP_TYPE: 'frontend',
   SERVER_API_HOST: process.env.NEXT_PUBLIC_WC_SERVER_API_HOST,
   CLIENT_API_HOST: process.env.NEXT_PUBLIC_WC_CLIENT_API_HOST,

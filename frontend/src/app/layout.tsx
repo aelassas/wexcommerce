@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import env from '@/config/env.config'
 
 // import 'github-fork-ribbon-css/gh-fork-ribbon.css'
 import '@/styles/globals.css'
@@ -8,7 +9,7 @@ export const dynamic = 'force-dynamic'
 export const fetchCache = 'force-no-store'
 
 export const metadata: Metadata = {
-  title: 'wexCommerce',
+  title: env.WEBSITE_NAME,
   description: 'Minimalistic but powerful eCommerce platform',
 }
 

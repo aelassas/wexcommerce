@@ -35,6 +35,13 @@ export const LANGUAGES = [
 ]
 
 /**
+ * Website Name.
+ *
+ * @type {string}
+ */
+export const WEBSITE_NAME = __env__('WC_WEBSITE_NAME', false, 'wexCommerce')
+
+/**
  * Server Port. Default is 4002.
  *
  * @type {number}
