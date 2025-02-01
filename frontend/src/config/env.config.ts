@@ -24,13 +24,13 @@ const env = {
 
   WEBSITE_NAME: String(process.env.NEXT_PUBLIC_WC_WEBSITE_NAME || 'wexCommerce'),
   APP_TYPE: 'frontend',
-  SERVER_API_HOST: process.env.NEXT_PUBLIC_WC_SERVER_API_HOST,
-  CLIENT_API_HOST: process.env.NEXT_PUBLIC_WC_CLIENT_API_HOST,
-  DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_WC_DEFAULT_LANGUAGE || 'en',
+  SERVER_API_HOST: String(process.env.NEXT_PUBLIC_WC_SERVER_API_HOST),
+  CLIENT_API_HOST: String(process.env.NEXT_PUBLIC_WC_CLIENT_API_HOST),
+  DEFAULT_LANGUAGE: String(process.env.NEXT_PUBLIC_WC_DEFAULT_LANGUAGE || 'en'),
   PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_PAGE_SIZE || '30'),
   ORDERS_PAGE_SIZE: Number.parseInt(process.env.NEXT_PUBLIC_WC_ORDERS_PAGE_SIZE || '4', 10),
-  CDN_PRODUCTS: process.env.NEXT_PUBLIC_WC_CDN_PRODUCTS,
-  CDN_CATEGORIES: process.env.NEXT_PUBLIC_WC_CDN_CATEGORIES,
+  CDN_PRODUCTS: String(process.env.NEXT_PUBLIC_WC_CDN_PRODUCTS),
+  CDN_CATEGORIES: String(process.env.NEXT_PUBLIC_WC_CDN_CATEGORIES),
   FB_APP_ID: String(process.env.NEXT_PUBLIC_WC_FB_APP_ID),
   APPLE_ID: String(process.env.NEXT_PUBLIC_WC_APPLE_ID),
   GG_APP_ID: String(process.env.NEXT_PUBLIC_WC_GG_APP_ID),
@@ -43,6 +43,7 @@ const env = {
   CARROUSEL_SIZE: 3,
   RECAPTCHA_ENABLED: (process.env.NEXT_PUBLIC_WC_RECAPTCHA_ENABLED && process.env.NEXT_PUBLIC_WC_RECAPTCHA_ENABLED.toLowerCase()) === 'true',
   RECAPTCHA_SITE_KEY: String(process.env.NEXT_PUBLIC_WC_RECAPTCHA_SITE_KEY),
+  CONTACT_EMAIL: String(process.env.NEXT_PUBLIC_WC_CONTACT_EMAIL),
 }
 
 export const CookieOptions: Partial<ResponseCookie> = {

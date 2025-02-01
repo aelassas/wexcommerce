@@ -14,6 +14,9 @@ export const strings = new LocalizedStrings({
     SEARCH_PRODUCTS_PLACEHOLDER: 'Rechercher des produits...',
     SEARCH_ORDERS_PLACEHOLDER: 'Rechercher des commandes...',
     WISHLIST: 'Mes favoris',
+    COOKIE_POLICY: 'Politique de cookies',
+    PRIVACY_POLICY: 'Politique de Confidentialité',
+    TOS: "Conditions d'utilisation",
   },
   en: {
     HOME: 'Home',
@@ -28,5 +31,8 @@ export const strings = new LocalizedStrings({
     SEARCH_PRODUCTS_PLACEHOLDER: 'Search products...',
     SEARCH_ORDERS_PLACEHOLDER: 'Search orders...',
     WISHLIST: 'Wishlist',
+    COOKIE_POLICY: 'Cookie Policy',
+    PRIVACY_POLICY: 'Privacy Policy',
+    TOS: 'Terms of Service',
   }
 })

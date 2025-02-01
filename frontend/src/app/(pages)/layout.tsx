@@ -25,6 +25,7 @@ import { strings as changePasswordStrings } from '@/lang/change-password'
 import { strings as checkoutSessionStrings } from '@/lang/checkout-session'
 import { strings as checkoutStrings } from '@/lang/checkout'
 import { strings as commonStrings } from '@/lang/common'
+import { strings as cookiePolicyStrings } from '@/lang/cookie-policy'
 import { strings as dashboardStrings } from '@/lang/dashboard'
 import { strings as footerStrings } from '@/lang/footer'
 import { strings as forgotPasswordStrings } from '@/lang/forgot-password'
@@ -34,6 +35,7 @@ import { strings as noMatchStrings } from '@/lang/no-match'
 import { strings as notificationListStrings } from '@/lang/notification-list'
 import { strings as orderDateFilterStrings } from '@/lang/order-date-filter'
 import { strings as ordersStrings } from '@/lang/orders'
+import { strings as privacyStrings } from '@/lang/privacy'
 import { strings as orderStatusStrings } from '@/lang/order-status'
 import { strings as productStrings } from '@/lang/product'
 import { strings as searchStrings } from '@/lang/search'
@@ -41,6 +43,7 @@ import { strings as settingsStrings } from '@/lang/settings'
 import { strings as signInStrings } from '@/lang/sign-in'
 import { strings as signUpStrings } from '@/lang/sign-up'
 import { strings as soldOutStrings } from '@/lang/sold-out'
+import { strings as tosStrings } from '@/lang/tos'
 import { strings as wishlistStrings } from '@/lang/wishlist'
 
 import '@/styles/globals.css'
@@ -67,6 +70,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       helper.setLanguage(changePasswordStrings, language)
       helper.setLanguage(checkoutSessionStrings, language)
       helper.setLanguage(commonStrings, language)
+      helper.setLanguage(cookiePolicyStrings, language)
       helper.setLanguage(dashboardStrings, language)
       helper.setLanguage(footerStrings, language)
       helper.setLanguage(forgotPasswordStrings, language)
@@ -76,6 +80,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       helper.setLanguage(notificationListStrings, language)
       helper.setLanguage(orderDateFilterStrings, language)
       helper.setLanguage(ordersStrings, language)
+      helper.setLanguage(privacyStrings, language)
       helper.setLanguage(orderStatusStrings, language)
       helper.setLanguage(productStrings, language)
       helper.setLanguage(searchStrings, language)
@@ -83,6 +88,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       helper.setLanguage(signInStrings, language)
       helper.setLanguage(signUpStrings, language)
       helper.setLanguage(soldOutStrings, language)
+      helper.setLanguage(tosStrings, language)
       helper.setLanguage(wishlistStrings, language)
 
       const theme = createTheme({

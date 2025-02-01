@@ -1,10 +1,12 @@
 import React from 'react'
-import { strings } from '../lang/footer'
+import { redirect } from 'next/navigation'
+import Image from 'next/image'
 import { Phone, Email } from '@mui/icons-material'
+import { strings } from '../lang/footer'
+import { strings as headerStrings } from '../lang/header'
+import { LanguageContextType, useLanguageContext } from "@/context/LanguageContext"
 
 import styles from '../styles/footer.module.css'
-import { LanguageContextType, useLanguageContext } from "@/context/LanguageContext"
-import Image from 'next/image'
 
 const Footer: React.FC = () => {
   const { language } = useLanguageContext() as LanguageContextType
@@ -14,6 +16,15 @@ const Footer: React.FC = () => {
     <div className={styles.footer}>
       <div className={styles.main}>
         <div className={styles.content}>
+          <div className={styles.mainSection}>
+            <div className={styles.title}>{strings.CORPORATE}</div>
+            <ul className={styles.links}>
+              {/* <li onClick={() => redirect('/about')}>{strings.ABOUT}</li> */}
+              <li onClick={() => redirect('/cookie-policy')}>{headerStrings.COOKIE_POLICY}</li>
+              <li onClick={() => redirect('/privacy')}>{headerStrings.PRIVACY_POLICY}</li>
+              <li onClick={() => redirect('/tos')}>{headerStrings.TOS}</li>
+            </ul>
+          </div>
           <div className={styles.info}>
 
             <span>{strings.ADDRESS}</span>

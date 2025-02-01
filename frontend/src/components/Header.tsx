@@ -28,6 +28,9 @@ import {
   Clear as ClearIcon,
   ShoppingCart as CartIcon,
   FavoriteBorder as WishlistIcon,
+  Cookie as CookiePolicyIcon,
+  PrivacyTip as PrivacyIcon,
+  Feed as TosIcon,
 } from '@mui/icons-material'
 import env from '@/config/env.config'
 import * as helper from '@/common/helper'
@@ -329,20 +332,16 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
             {
               isLoaded && !loading && !showMobileSearch &&
               <>
-                {
-                  (isSignedIn || env.isMobile()) &&
-                  <IconButton
-                    edge="start"
-                    sx={classes.menuButton}
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleSideMenuOpen}
-                    className={styles.iconButton}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                }
-
+                <IconButton
+                  edge="start"
+                  sx={classes.menuButton}
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleSideMenuOpen}
+                  className={styles.iconButton}
+                >
+                  <MenuIcon />
+                </IconButton>
 
                 <Link href='/' className={styles.logo}>
                   <Image
@@ -455,6 +454,24 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
                     </Link>
                   </li>
                 }
+                <li>
+                  <Link href="/cookie-policy" className={styles.menuItem} onClick={handleSideMenuClose}>
+                    <CookiePolicyIcon className={styles.menuItemIcon} />
+                    <span className={styles.menuItemText}>{strings.COOKIE_POLICY}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/privacy" className={styles.menuItem} onClick={handleSideMenuClose}>
+                    <PrivacyIcon className={styles.menuItemIcon} />
+                    <span className={styles.menuItemText}>{strings.PRIVACY_POLICY}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tos" className={styles.menuItem} onClick={handleSideMenuClose}>
+                    <TosIcon className={styles.menuItemIcon} />
+                    <span className={styles.menuItemText}>{strings.TOS}</span>
+                  </Link>
+                </li>
                 {!isSignedIn && env.isMobile() &&
                   <li>
                     <Link href="/sign-in" className={styles.menuItem} onClick={handleSideMenuClose}>

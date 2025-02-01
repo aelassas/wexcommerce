@@ -17,8 +17,36 @@ div.footer img.payment {
 
 div.footer div.main div.content {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+div.footer div.mainSection {
+  flex: 1 1 0%;
+  font-size: 0.875rem;
+}
+
+div.footer div.mainSection div.title {
+  text-align: left;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+div.footer ul.links {
+  margin: 0;
+  padding: 0;
+}
+
+div.footer ul.links li {
+  list-style: none;
+  cursor: pointer;
+  margin: 10px 0;
+  width: fit-content;
+}
+
+div.footer ul.links li:hover {
+  /* opacity: 0.85; */
+  text-decoration: underline;
 }
 
 div.footer div.main div.content div.info {
@@ -54,6 +82,16 @@ div.footer div.main div.copyright {
     margin-left: 15px;
     margin-top: 25px;
     padding-bottom: 130px;
+  }
+
+  div.footer div.main div.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  div.footer div.mainSection {
+    margin-bottom: 100px;
   }
 
   div.footer div.main div.copyright {
