@@ -16,7 +16,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.2",
     "@mui/material": "^6.4.2",
-    "@mui/x-date-pickers": "^7.24.1",
+    "@mui/x-date-pickers": "^7.25.0",
     "@sindresorhus/slugify": "^2.2.1",
     "@types/draft-js": "^0.11.18",
     "@types/draftjs-to-html": "^0.8.4",
