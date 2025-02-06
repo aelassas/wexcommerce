@@ -265,14 +265,18 @@ const Checkout: React.FC = () => {
       let _sessionId: string | undefined
       if (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe) {
         if (paymentType === wexcommerceTypes.PaymentType.CreditCard) {
+          const name = wexcommerceHelper.truncateString(`${env.WEBSITE_NAME} - Order ${orderId}`, StripeService.ORDER_NAME_MAX_LENGTH)
+          const _description = `${env.WEBSITE_NAME} - New order from ${email || user!.email}`
+          const description = wexcommerceHelper.truncateString(_description, StripeService.ORDER_DESCRIPTION_MAX_LENGTH)
           const _email = (!authenticated ? email : user.email) as string
+
           const payload: wexcommerceTypes.CreatePaymentPayload = {
             amount: total,
             currency: (await SettingService.getStripeCurrency()),
             locale: language,
             receiptEmail: _email,
-            name: `Order ${orderId}`,
-            description: `New order from ${_email}`,
+            name,
+            description,
             customerName: (!authenticated ? fullName : user.fullName) as string,
           }
           const res = await StripeService.createCheckoutSession(payload)
