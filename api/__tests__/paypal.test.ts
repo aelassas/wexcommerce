@@ -33,6 +33,7 @@ describe('POST /api/create-paypal-order', () => {
       amount: 234,
       currency: 'USD',
       name: 'Samsung A25',
+      description: 'Samsung A25',
       orderId: testHelper.GetRandromObjectIdAsString(),
     }
     let res = await request(app)
@@ -76,6 +77,7 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
         amount: order.total,
         currency: 'USD',
         name: 'Samsung A25',
+        description: 'Samsung A25',
         orderId: order.id,
       }
       let res = await request(app)
