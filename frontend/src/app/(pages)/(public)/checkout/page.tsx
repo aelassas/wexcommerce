@@ -271,8 +271,8 @@ const Checkout: React.FC = () => {
             currency: (await SettingService.getStripeCurrency()),
             locale: language,
             receiptEmail: _email,
-            name: `New order from ${_email}`,
-            description: env.WEBSITE_NAME,
+            name: `Order ${orderId}`,
+            description: `New order from ${_email}`,
             customerName: (!authenticated ? fullName : user.fullName) as string,
           }
           const res = await StripeService.createCheckoutSession(payload)
@@ -607,9 +607,11 @@ const Checkout: React.FC = () => {
                   <div className={styles.paymentForm}>
                     <PayPalButtons
                       createOrder={async () => {
-                        const name = `New order from ${email || user!.email}`
+                        const name = wexcommerceHelper.truncateString(`Order ${orderId}`, PayPalService.ORDER_NAME_MAX_LENGTH)
+                        const _description = `New order from ${email || user!.email}`
+                        const description = wexcommerceHelper.truncateString(_description, PayPalService.ORDER_DESCRIPTION_MAX_LENGTH)
                         const paypalCurrency = await SettingService.getStripeCurrency()
-                        const payPalOrderId = await PayPalService.createOrder(orderId!, total, paypalCurrency, name)
+                        const payPalOrderId = await PayPalService.createOrder(orderId!, total, paypalCurrency, name, description)
                         return payPalOrderId
                       }}
                       onApprove={async (data) => {

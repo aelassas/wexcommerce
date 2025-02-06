@@ -291,6 +291,7 @@ export interface CreatePayPalOrderPayload {
   amount: number
   currency: string
   name: string
+  description: string
 }
 
 export interface PaymentResult {

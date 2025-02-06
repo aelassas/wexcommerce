@@ -23,9 +23,9 @@ import * as orderController from './orderController'
  */
 export const createPayPalOrder = async (req: Request, res: Response) => {
   try {
-    const { orderId, amount, currency, name }: wexcommerceTypes.CreatePayPalOrderPayload = req.body
+    const { orderId, amount, currency, name, description }: wexcommerceTypes.CreatePayPalOrderPayload = req.body
 
-    const paypalOrderId = await paypal.createOrder(orderId, amount, currency, name)
+    const paypalOrderId = await paypal.createOrder(orderId, amount, currency, name, description)
 
     return res.json(paypalOrderId)
   } catch (err) {
@@ -35,7 +35,7 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
 }
 
 /**
- * Check Paypal order and update booking if the payment succeeded.
+ * Check Paypal order and update order if the payment succeeded.
  *
  * @async
  * @param {Request} req

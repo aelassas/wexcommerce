@@ -167,3 +167,22 @@ export const trimCarriageReturn = (str: string) => str.replace(/[\n\r]+/g, '')
  * @returns {("eee d LLLL yyyy, kk:mm" | "eee, d LLLL yyyy, kk:mm")}
  */
 export const getDateFormat = (language: string) => language === 'fr' ? 'eee d LLLL yyyy, kk:mm' : 'eee, d LLLL yyyy, kk:mm'
+
+/**
+ * Truncates a string.
+ *
+ * @param {string} str 
+ * @param {number} maxLength 
+ * @returns {string} 
+ */
+export const truncateString = (str: string, maxLength: number) => {
+  if (str.length <= maxLength) {
+    return str
+  }
+
+  if (maxLength >= 6) {
+    return `${str.slice(0, maxLength - 3)}...`
+  }
+
+  return str.slice(0, maxLength)
+}
