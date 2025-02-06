@@ -1,5 +1,3 @@
-'use server'
-
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as fetchInstance from './fetchInstance'
 

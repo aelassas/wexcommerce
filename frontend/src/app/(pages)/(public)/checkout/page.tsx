@@ -265,9 +265,9 @@ const Checkout: React.FC = () => {
       let _sessionId: string | undefined
       if (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe) {
         if (paymentType === wexcommerceTypes.PaymentType.CreditCard) {
-          const name = wexcommerceHelper.truncateString(`${env.WEBSITE_NAME} - Order ${orderId}`, StripeService.ORDER_NAME_MAX_LENGTH)
-          const _description = `${env.WEBSITE_NAME} - New order from ${email || user!.email}`
-          const description = wexcommerceHelper.truncateString(_description, StripeService.ORDER_DESCRIPTION_MAX_LENGTH)
+          const orderName = `${env.WEBSITE_NAME} - New order from ${email || user!.email}`
+          const name = wexcommerceHelper.truncateString(orderName, StripeService.ORDER_NAME_MAX_LENGTH)
+          const description = wexcommerceHelper.truncateString(orderName, StripeService.ORDER_DESCRIPTION_MAX_LENGTH)
           const _email = (!authenticated ? email : user.email) as string
 
           const payload: wexcommerceTypes.CreatePaymentPayload = {
