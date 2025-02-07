@@ -4,7 +4,7 @@ title: "wexCommerce: A Sleek and Powerful ecommerce Platform"
 authors:
   - name: "Akram El Assas"
 year: 2025
-repository-code: "https://github.com/aelassas/bookcars"
+repository-code: "https://github.com/aelassas/wexcommerce"
 license: "MIT"
 keywords:
   - ecommerce
@@ -15,5 +15,5 @@ keywords:
   - mongodb
   - stripe
   - paypal
-url: "https://github.com/aelassas/bookcars"
+url: "https://github.com/aelassas/wexcommerce"
 type: software
