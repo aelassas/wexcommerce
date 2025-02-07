@@ -422,7 +422,7 @@ export const parseJwt = async (token: string) => {
  * Check if password exists.
  *
  * @param {string} id
- * @returns {Promise<bookcarsTypes.User|null>}
+ * @returns {Promise<wexcommerceTypes.User|null>}
  */
 export const hasPassword = async (id: string): Promise<number> =>
   fetchInstance
