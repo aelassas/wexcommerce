@@ -139,7 +139,7 @@ describe('POST /api/checkout', () => {
       currency: 'usd',
       receiptEmail,
       customerName: 'John Doe',
-      description: 'BookCars Testing Service',
+      description: 'wexCommerce Testing Service',
       locale: 'en',
       name: 'Test',
     }
