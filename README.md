@@ -29,7 +29,7 @@ This project emerged from a desire to build without boundaries – a fully custo
 By choosing this stack, you're not just building a store – you're investing in a foundation that can evolve with your needs, backed by robust open-source technologies and a growing developer community.
 -->
 
-wexCommerce integrates Stripe and PayPal [payment gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways). If your country is not supported by [Stripe](https://stripe.com/global), you can check if it is supported by [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide). And if so, you can use PayPal payment gateway instead of Stripe.
+wexCommerce integrates Stripe and PayPal [payment gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways). If [Stripe](https://stripe.com/global) isn't available in your country, simply check if [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) is supported and use it as an alternative for a smooth and secure payments.
 
 With wexCommerce, you can deploy your own customizable ecommerce marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). The platform integrates Stripe and PayPal for secure payments, is optimized for SEO and can be efficiently hosted on a 1GB RAM droplet, making it an ideal choice for ecommerce operations looking for a scalable and cost-effective solution. You can deploy this solution for under $5 monthly using cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 <!--
