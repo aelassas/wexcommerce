@@ -6,6 +6,7 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import * as fetchInstance from './fetchInstance'
 import env, { CookieOptions } from '@/config/env.config'
 import * as CartService from '@/lib/CartService'
+import * as SettingService from '@/lib/SettingService'
 
 /**
  * Get auth header.
@@ -252,28 +253,8 @@ export const deleteTokens = async (userId: string): Promise<number> => (
  * @returns {string}
  */
 export const getLanguage = async (): Promise<string> => {
-  let user
-  const cookieStore = await cookies()
-  const userCookie = cookieStore.get('wc-fe-user')
-
-  if (userCookie) {
-    user = JSON.parse(userCookie.value) as wexcommerceTypes.User
-  }
-
-  if (user && user.language) {
-    return user.language
-  } else {
-    let lang: string | undefined
-    const langCookie = cookieStore.get('wc-fe-language')
-    if (langCookie) {
-      lang = JSON.parse(langCookie.value) as string
-    }
-
-    if (lang && lang.length === 2) {
-      return lang
-    }
-    return env.DEFAULT_LANGUAGE
-  }
+  const language = await SettingService.getLanguage()
+  return language
 }
 
 /**
@@ -290,23 +271,7 @@ export const updateLanguage = async (data: wexcommerceTypes.UpdateLanguagePayloa
       [await authHeader()],
       true
     )
-    .then(async (res) => {
-      if (res.status === 200) {
-        let user
-        const cookieStore = await cookies()
-
-        const userCookie = cookieStore.get('wc-fe-user')
-        if (userCookie) {
-          user = JSON.parse(userCookie.value)
-        }
-
-        if (user) {
-          user.language = data.language
-          cookieStore.set('wc-fe-user', JSON.stringify(user), CookieOptions)
-        }
-      }
-      return res.status
-    })
+    .then(async (res) => res.status)
 }
 
 /**
