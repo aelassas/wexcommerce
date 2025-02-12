@@ -12,6 +12,7 @@ import Setting from '../models/Setting'
 import PaymentType from '../models/PaymentType'
 import DeliveryType from '../models/DeliveryType'
 import * as orderController from './orderController'
+import * as ipinfoHelper from '../common/ipinfoHelper'
 
 /**
  * Create PayPal order.
@@ -25,7 +26,10 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
   try {
     const { orderId, amount, currency, name, description }: wexcommerceTypes.CreatePayPalOrderPayload = req.body
 
-    const paypalOrderId = await paypal.createOrder(orderId, amount, currency, name, description)
+    const clientIp = ipinfoHelper.getClientIp(req)
+    const countryCode = await ipinfoHelper.getCountryCode(clientIp)
+
+    const paypalOrderId = await paypal.createOrder(orderId, amount, currency, name, description, countryCode)
 
     return res.json(paypalOrderId)
   } catch (err) {
