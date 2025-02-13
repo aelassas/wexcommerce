@@ -203,9 +203,7 @@ export const initialize = async (): Promise<boolean> => {
       }
     }
 
-    const res = await deliveryTypeController.init()
-      && await paymentTypeController.init()
-      && await settingController.init()
+    const res = (await deliveryTypeController.init()) && (await paymentTypeController.init()) && (await settingController.init())
 
     return res
   } catch (err) {

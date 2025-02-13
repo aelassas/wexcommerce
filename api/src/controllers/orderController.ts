@@ -79,6 +79,9 @@ export const confirm = async (_user: env.User, __order: env.Order, orderItems: e
  * @returns {*}
  */
 export const notify = async (adminEmail: string, __order: env.Order, _user: env.User, settings: env.Setting) => {
+  if (!adminEmail) {
+    return
+  }
   i18n.locale = settings.language
   // admin email
   const mailOptions = {
@@ -93,7 +96,7 @@ export const notify = async (adminEmail: string, __order: env.Order, _user: env.
   await mailHelper.sendMail(mailOptions)
 
   // admin notification
-  const admin = await User.findOne({ email: env.ADMIN_EMAIL, type: wexcommerceTypes.UserType.Admin })
+  const admin = await User.findOne({ email: adminEmail, type: wexcommerceTypes.UserType.Admin })
   if (admin) {
     const message = `${_user.fullName} ${i18n.t('MADE_ORDER')} ${__order._id}.`
     const notification = new Notification({ user: admin._id, message, order: __order._id })
