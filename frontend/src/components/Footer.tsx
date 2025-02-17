@@ -2,6 +2,8 @@ import React from 'react'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import { Phone, Email } from '@mui/icons-material'
+import * as wexcommerceTypes from ':wexcommerce-types'
+import env from '@/config/env.config'
 import { strings } from '../lang/footer'
 import { strings as headerStrings } from '../lang/header'
 import { LanguageContextType, useLanguageContext } from "@/context/LanguageContext"
@@ -49,7 +51,8 @@ const Footer: React.FC = () => {
               sizes="100vwh"
               priority={true}
               alt=""
-              src="/secure-payment.png"
+              src={env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe ? '/stripe.png' : '/paypal.png'}
+              // className={env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe ? styles.stripe : styles.paypal}
               className={styles.payment}
             />
           </div>
