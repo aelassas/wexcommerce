@@ -618,9 +618,10 @@ const Checkout: React.FC = () => {
                         const payPalOrderId = await PayPalService.createOrder(orderId!, total, paypalCurrency, name, description)
                         return payPalOrderId
                       }}
-                      onApprove={async (data) => {
+                      onApprove={async (data, actions) => {
                         try {
                           setPayPalProcessing(true)
+                          await actions.order?.capture()
                           const { orderID } = data
                           const status = await PayPalService.checkOrder(orderId!, orderID)
 
