@@ -36,6 +36,7 @@ const PayPalProvider = ({ children }: PayPalProviderProps) => {
           intent: 'capture',
           locale,
           // buyerCountry: 'US',
+          debug: env.PAYPAL_DEBUG,
         }}
       >
         {children}
