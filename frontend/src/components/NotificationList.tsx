@@ -133,10 +133,11 @@ const NotificationList: React.FC<NotificationListProps> = (
                           const status = await NotificationService.markAsRead(user._id!, ids)
 
                           if (status === 200) {
-                            _notifications.forEach(row => {
+                            const __notifications = wexcommerceHelper.clone(notifications) as wexcommerceTypes.Notification[]
+                            __notifications.filter((row) => ids.includes(row._id)).forEach((row) => {
                               row.isRead = true
                             })
-                            setNotifications(wexcommerceHelper.cloneArray(notifications) as NotificationRow[])
+                            setNotifications(__notifications)
                             setNotificationCount(notificationCount - _notifications.length)
                           } else {
                             helper.error()
@@ -159,10 +160,11 @@ const NotificationList: React.FC<NotificationListProps> = (
                           const status = await NotificationService.markAsUnread(user._id!, ids)
 
                           if (status === 200) {
-                            _notifications.forEach(row => {
+                            const __notifications = wexcommerceHelper.clone(notifications) as wexcommerceTypes.Notification[]
+                            __notifications.filter((row) => ids.includes(row._id)).forEach((row) => {
                               row.isRead = false
                             })
-                            setNotifications(wexcommerceHelper.cloneArray(notifications) as NotificationRow[])
+                            setNotifications(__notifications)
                             setNotificationCount(notificationCount + _notifications.length)
                           } else {
                             helper.error()
