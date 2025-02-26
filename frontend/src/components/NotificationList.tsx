@@ -133,10 +133,11 @@ const NotificationList: React.FC<NotificationListProps> = (
                           const status = await NotificationService.markAsRead(user._id!, ids)
 
                           if (status === 200) {
-                            _notifications.forEach(row => {
+                            const __notifications = wexcommerceHelper.clone(notifications) as wexcommerceTypes.Notification[]
+                            __notifications.filter((row) => ids.includes(row._id)).forEach((row) => {
                               row.isRead = true
                             })
-                            setNotifications(wexcommerceHelper.cloneArray(notifications) as NotificationRow[])
+                            setNotifications(__notifications)
                             setNotificationCount(notificationCount - _notifications.length)
                           } else {
                             helper.error()
@@ -159,10 +160,11 @@ const NotificationList: React.FC<NotificationListProps> = (
                           const status = await NotificationService.markAsUnread(user._id!, ids)
 
                           if (status === 200) {
-                            _notifications.forEach(row => {
+                            const __notifications = wexcommerceHelper.clone(notifications) as wexcommerceTypes.Notification[]
+                            __notifications.filter((row) => ids.includes(row._id)).forEach((row) => {
                               row.isRead = false
                             })
-                            setNotifications(wexcommerceHelper.cloneArray(notifications) as NotificationRow[])
+                            setNotifications(__notifications)
                             setNotificationCount(notificationCount + _notifications.length)
                           } else {
                             helper.error()
@@ -189,7 +191,7 @@ const NotificationList: React.FC<NotificationListProps> = (
           </div>
           <div ref={notificationsListRef} className={styles.notificationList}>
             {
-              notifications.map((row) => (
+              notifications.map((row, index) => (
                 <div key={row._id} className={styles.notificationContainer}>
                   <div className={styles.notificationCheckbox}>
                     <Checkbox checked={row.checked} onChange={(event) => {
@@ -243,8 +245,9 @@ const NotificationList: React.FC<NotificationListProps> = (
                                   const status = await NotificationService.markAsRead(user._id!, [row._id])
 
                                   if (status === 200) {
-                                    row.isRead = true
-                                    setNotifications(wexcommerceHelper.cloneArray(notifications) as NotificationRow[])
+                                    const _notifications = wexcommerceHelper.cloneArray(notifications) as NotificationRow[]
+                                    _notifications[index].isRead = true
+                                    setNotifications(_notifications)
                                     setNotificationCount(notificationCount - 1)
                                   } else {
                                     helper.error()
@@ -263,8 +266,9 @@ const NotificationList: React.FC<NotificationListProps> = (
                                   const status = await NotificationService.markAsUnread(user._id!, [row._id])
 
                                   if (status === 200) {
-                                    row.isRead = false
-                                    setNotifications(wexcommerceHelper.cloneArray(notifications) as NotificationRow[])
+                                    const _notifications = wexcommerceHelper.cloneArray(notifications) as NotificationRow[]
+                                    _notifications[index].isRead = false
+                                    setNotifications(_notifications)
                                     setNotificationCount(notificationCount + 1)
                                   } else {
                                     helper.error()

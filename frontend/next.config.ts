@@ -1,5 +1,7 @@
 import type { NextConfig } from 'next'
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 const nextConfig: NextConfig = {
   reactStrictMode: false,
   poweredByHeader: false,
@@ -46,7 +48,7 @@ const nextConfig: NextConfig = {
   },
   logging: {
     fetches: {
-      fullUrl: true,
+      fullUrl: !isProduction,
     },
   },
 }
