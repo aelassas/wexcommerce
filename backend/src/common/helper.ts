@@ -13,8 +13,8 @@ export const infoWithComponent = (component: ToastContent<unknown>) => {
 }
 
 export const error = (err?: unknown, message?: string) => {
-  if (err && console && console.error) {
-    console.error(err)
+  if (err && console?.log) {
+    console.log(err)
   }
   if (message) {
     toast.error(message)

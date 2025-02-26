@@ -20,8 +20,8 @@ export const toastComponentTextStyle: React.CSSProperties = { display: 'flex', f
 export const toastComponentButtonStyle: React.CSSProperties = { backgroundColor: '#fff', color: '#121212', marginRight: 0 }
 
 export const error = (err?: unknown, message?: string) => {
-  if (err && console && console.error) {
-    console.error(err)
+  if (err && console?.log) {
+    console.log(err)
   }
   if (message) {
     toast.error(message)
