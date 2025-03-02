@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "private": true,
   "scripts": {
     "install:reactjs-social-login": "cd ../packages/reactjs-social-login && npm i && cd ../../frontend",
