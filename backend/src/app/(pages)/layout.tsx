@@ -190,7 +190,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </LanguageProvider>
 
         <ToastContainer
-          position="top-right"
+          position="bottom-left"
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}
