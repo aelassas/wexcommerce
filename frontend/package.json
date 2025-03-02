@@ -10,15 +10,15 @@
     "build": "rimraf .next && npm run ts:build && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
     "start": "next start -p 8006",
     "lint": "next lint",
-    "ncu": "ncu -u -x eslint",
+    "ncu": "ncu -u -x typescript,eslint",
     "stylelint": "stylelint \"**/*.css\"",
     "stylelint:fix": "stylelint \"**/*.css\" --fix"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.5",
-    "@mui/material": "^6.4.5",
+    "@mui/icons-material": "^6.4.6",
+    "@mui/material": "^6.4.6",
     "@mui/x-date-pickers": "^7.27.1",
     "@paypal/react-paypal-js": "^8.8.2",
     "@sindresorhus/slugify": "^2.2.1",
@@ -30,7 +30,7 @@
     "date-fns": "^4.1.0",
     "github-fork-ribbon-css": "^0.2.3",
     "localized-strings": "^2.0.3",
-    "next": "15.1.7",
+    "next": "15.2.0",
     "next-nprogress-bar": "^2.4.7",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -44,11 +44,11 @@
     "@types/node": "^22",
     "babel-plugin-react-compiler": "^19.0.0-beta-e1e972c-20250221",
     "eslint": "^8",
-    "eslint-config-next": "15.1.7",
+    "eslint-config-next": "15.2.0",
     "eslint-plugin-react-compiler": "^19.0.0-beta-e1e972c-20250221",
     "npm-check-updates": "^17.1.15",
     "rimraf": "^6.0.1",
-    "stylelint": "^16.14.1",
+    "stylelint": "^16.15.0",
     "stylelint-config-standard": "^37.0.0"
   }
 }
