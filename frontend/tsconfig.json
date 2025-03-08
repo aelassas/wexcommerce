@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,25 +12,16 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{"name": "next"}],
+
+    "typeRoots": ["./node_modules/@types", "./types", "./src/types"],
+
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      ":wexcommerce-types": [
-        "../packages/wexcommerce-types"
-      ],
-      ":wexcommerce-helper": [
-        "../packages/wexcommerce-helper"
-      ],
-      ":reactjs-social-login": [
-        "../packages/reactjs-social-login"
-      ],
+      "@/*": ["./src/*"],
+      ":wexcommerce-types": ["../packages/wexcommerce-types"],
+      ":wexcommerce-helper": ["../packages/wexcommerce-helper"],
+      ":reactjs-social-login": ["../packages/reactjs-social-login"],
     },
     "downlevelIteration": true,
     "target": "ESNext"
@@ -45,18 +32,10 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "references": [
-    {
-      "path": "../packages/wexcommerce-types"
-    },
-    {
-      "path": "../packages/wexcommerce-helper"
-    },
-    {
-      "path": "../packages/reactjs-social-login"
-    },
+    { "path": "../packages/wexcommerce-types" },
+    { "path": "../packages/wexcommerce-helper" },
+    { "path": "../packages/reactjs-social-login" },
   ]
 }

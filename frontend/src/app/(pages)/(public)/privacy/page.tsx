@@ -1,3 +1,4 @@
+import React from 'react'
 import { strings } from '@/lang/privacy'
 import ScrollToTop from '@/components/ScrollToTop'
 import * as SettingService from '@/lib/SettingService'

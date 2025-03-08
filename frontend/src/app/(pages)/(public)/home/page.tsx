@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import React, { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'
@@ -28,7 +28,7 @@ const slides = [
 const Home = async () => {
   const language = await SettingService.getLanguage()
   strings.setLanguage(language)
-  
+
   let featuredProducts: wexcommerceTypes.Product[] = []
   let categories: wexcommerceTypes.CategoryInfo[] = []
   let categoryGroups: wexcommerceTypes.FeaturedCategory[] = []

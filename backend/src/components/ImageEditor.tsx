@@ -24,8 +24,11 @@ interface ImageEditorProps {
   title?: string
   image?: ImageItem
   images?: ImageItem[]
+  // eslint-disable-next-line no-unused-vars
   onMainImageUpsert?: (image: ImageItem) => void
+  // eslint-disable-next-line no-unused-vars
   onAdd?: (image: ImageItem) => void
+  // eslint-disable-next-line no-unused-vars
   onDelete?: (image: ImageItem, index?: number) => void
   onImageViewerOpen?: () => void
   onImageViewerClose?: () => void

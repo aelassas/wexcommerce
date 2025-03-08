@@ -1,10 +1,10 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 
-interface NoSsr {
+interface NoSsrProps {
   children: ReactNode
 }
 
-const NoSsr: React.FC<NoSsr> = ({ children }) => {
+const NoSsr: React.FC<NoSsrProps> = ({ children }) => {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {

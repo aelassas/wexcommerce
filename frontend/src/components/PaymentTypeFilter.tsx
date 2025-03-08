@@ -14,6 +14,7 @@ interface PaymentTypeFilterProps {
   selectedOptions: wexcommerceTypes.PaymentType[]
   collapse?: boolean
   className?: string
+  // eslint-disable-next-line no-unused-vars
   onChange: (values: wexcommerceTypes.PaymentType[]) => void
 }
 

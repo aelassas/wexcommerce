@@ -14,6 +14,7 @@ interface OrderStatusFilterProps {
   selectedOptions: wexcommerceTypes.OrderStatus[]
   collapse?: boolean
   className?: string
+  // eslint-disable-next-line no-unused-vars
   onChange: (values: wexcommerceTypes.OrderStatus[]) => void
 }
 

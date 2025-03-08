@@ -1,3 +1,4 @@
+import React from 'react'
 import Image from 'next/image'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import env from '@/config/env.config'
@@ -7,11 +8,11 @@ import { Actions, EmptyList, EmptyCategoryIcon } from './CategoryList.client'
 
 import styles from '../styles/category-list.module.css'
 
-interface CategoryList {
+interface CategoryListProps {
   keyword: string
 }
 
-const CategoryList = async ({ keyword }: CategoryList) => {
+const CategoryList = async ({ keyword }: CategoryListProps) => {
   const language = await SettingService.getLanguage()
   const categories = await CategoryService.searchCategories(language, keyword)
 

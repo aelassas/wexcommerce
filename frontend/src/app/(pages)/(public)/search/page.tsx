@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import React, { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as serverHelper from '@/common/serverHelper'
 import env from '@/config/env.config'

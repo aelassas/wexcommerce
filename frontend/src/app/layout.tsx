@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import env from '@/config/env.config'
 

@@ -40,6 +40,7 @@ interface ProductListItemProps {
   hideActions?: boolean
   disableDragAndDrop?: boolean
   style?: React.CSSProperties
+  // eslint-disable-next-line no-unused-vars
   onRemoveWishlistItem?: (productId: string) => void
 }
 

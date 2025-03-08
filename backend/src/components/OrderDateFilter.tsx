@@ -15,6 +15,7 @@ interface OrderDateFilterProps {
   to?: Date | null
   collapse?: boolean
   className?: string
+  // eslint-disable-next-line no-unused-vars
   onSubmit: (value: { from: Date | null, to: Date | null }) => void
 }
 

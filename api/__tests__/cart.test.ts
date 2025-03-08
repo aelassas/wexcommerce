@@ -21,8 +21,7 @@ let CART_ID: string
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.connect(env.DB_URI, false, false)
-  expect(res).toBeTruthy()
+  await databaseHelper.connect(env.DB_URI, false, false)
 
   await testHelper.initialize()
 

@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "2.3.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "install:reactjs-social-login": "cd ../packages/reactjs-social-login && npm i && cd ../../frontend",
     "install:dependencies": "npm run install:reactjs-social-login",
@@ -41,11 +42,17 @@
     "validator": "^13.12.0"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^15.2.1",
     "@types/node": "^22",
+    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/parser": "^8.26.0",
     "babel-plugin-react-compiler": "^19.0.0-beta-e1e972c-20250221",
-    "eslint": "^8",
+    "eslint": "^9.22.0",
     "eslint-config-next": "15.2.0",
-    "eslint-plugin-react-compiler": "^19.0.0-beta-e1e972c-20250221",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-compiler": "^19.0.0-beta-40c6c23-20250301",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.0.0",
     "npm-check-updates": "^17.1.15",
     "rimraf": "^6.0.1",
     "stylelint": "^16.15.0",

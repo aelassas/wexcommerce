@@ -36,7 +36,7 @@ const Carrousel: React.FC<CarrouselProps> = ({
     nextArrow: <Arrow to="next" visible={showArrows} />,
     prevArrow: <Arrow to="prev" visible={showArrows} />,
     dots: true,
-    // eslint-disable-next-line react/no-unstable-nested-components
+
     appendDots: (dots: React.ReactNode) => showDots ? (
       <div>
         <ul style={{ margin: '0px', padding: '0px' }}>

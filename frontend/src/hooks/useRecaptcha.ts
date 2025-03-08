@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import env from '@/config/env.config'
 
 declare global {
+  // eslint-disable-next-line no-unused-vars
   interface Window {
     grecaptcha: any
   }
@@ -9,6 +10,7 @@ declare global {
 
 interface RecaptchaType {
   reCaptchaLoaded: boolean
+  // eslint-disable-next-line no-unused-vars
   generateReCaptchaToken: (action?: string) => Promise<string>
 }
 

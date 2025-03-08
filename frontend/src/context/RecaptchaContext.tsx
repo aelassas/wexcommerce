@@ -4,6 +4,7 @@ import useReCaptcha from '@/hooks/useRecaptcha'
 // Create context
 export interface RecaptchaContextType {
   reCaptchaLoaded: boolean,
+  // eslint-disable-next-line no-unused-vars
   generateReCaptchaToken: (action?: string) => Promise<string>
 }
 

@@ -33,10 +33,13 @@ interface MultipleSelectProps {
   hidePopupIcon?: boolean
   customOpen?: boolean
   freeSolo?: boolean
+  // eslint-disable-next-line no-unused-vars
   callbackFromMultipleSelect?: (newValue: any, _key: string, _reference: any) => void
   onFocus?: React.FocusEventHandler<HTMLDivElement>
+  // eslint-disable-next-line no-unused-vars
   onInputChange?: (event: React.SyntheticEvent<Element, Event>, value?: string, reason?: AutocompleteInputChangeReason) => void
   onClear?: () => void
+  // eslint-disable-next-line no-unused-vars
   onOpen?: (event: React.SyntheticEvent<Element, Event>) => void
 }
 
@@ -48,10 +51,9 @@ const ListBox: React.ComponentType<React.HTMLAttributes<HTMLElement>> = forwardR
   useImperativeHandle(ref, () => innerRef.current)
 
   return (
-    // eslint-disable-next-line
-    (<ul {...rest} ref={innerRef} role="list-box">
+    <ul {...rest} ref={innerRef} role="list-box">
       {children}
-    </ul>)
+    </ul>
   )
 })
 

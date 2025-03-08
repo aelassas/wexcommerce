@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import React, { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as SettingService from '@/lib/SettingService'
 import * as ProductService from '@/lib/ProductService'

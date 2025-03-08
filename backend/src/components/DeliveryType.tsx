@@ -10,6 +10,7 @@ import styles from '@/styles/delivery-type.module.css'
 interface DeliveryTypeProps {
   value: wexcommerceTypes.DeliveryType
   className?: string
+  // eslint-disable-next-line no-unused-vars
   onClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 

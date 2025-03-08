@@ -10,6 +10,7 @@ import styles from '@/styles/payment-type.module.css'
 interface PaymentTypeProps {
   value: wexcommerceTypes.PaymentType
   className?: string
+  // eslint-disable-next-line no-unused-vars
   onClick?: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void
 }
 

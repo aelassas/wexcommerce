@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import React, { Suspense } from 'react'
 import { NewCategoryButton } from './page.client'
 import CategoryList from '@/components/CategoryList'
 import Indicator from '@/components/Indicator'

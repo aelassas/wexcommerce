@@ -1,3 +1,4 @@
+import React from 'react'
 import styles from '@/styles/indicator.module.css'
 
 const Indicator = () => (

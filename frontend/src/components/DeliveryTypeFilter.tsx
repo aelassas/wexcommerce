@@ -14,6 +14,7 @@ interface DeliveryTypeFilterProps {
   selectedOptions: wexcommerceTypes.DeliveryType[]
   collapse?: boolean
   className?: string
+  // eslint-disable-next-line no-unused-vars
   onChange?: (values: wexcommerceTypes.DeliveryType[]) => void
 }
 

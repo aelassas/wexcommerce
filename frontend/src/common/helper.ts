@@ -1,3 +1,4 @@
+import React from 'react'
 import { toast, ToastContent } from 'react-toastify'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import { strings as commonStrings } from '@/lang/common'

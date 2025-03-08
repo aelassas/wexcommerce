@@ -10,6 +10,7 @@ import styles from '@/styles/order-status.module.css'
 interface OrderStatusProps {
   value: wexcommerceTypes.OrderStatus
   className?: string
+  // eslint-disable-next-line no-unused-vars
   onClick?: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void
 }
 

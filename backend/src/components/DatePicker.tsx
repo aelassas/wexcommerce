@@ -17,7 +17,9 @@ interface DatePickerProps {
   language?: string
   variant?: TextFieldVariants
   readOnly?: boolean
+  // eslint-disable-next-line no-unused-vars
   onChange?: (value: Date | null) => void
+  // eslint-disable-next-line no-unused-vars
   onError?: (error: DateValidationError, value: Date | null) => void
 }
 

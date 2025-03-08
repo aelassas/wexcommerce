@@ -9,6 +9,7 @@ import styles from '@/styles/search.module.css'
 
 interface SearchProps {
   className?: string
+  // eslint-disable-next-line no-unused-vars
   onSubmit?: (value: string) => void
 }
 

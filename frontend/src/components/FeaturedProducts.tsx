@@ -39,7 +39,6 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
     nextArrow: <Arrow to="next" visible={!infiniteFromProps || infinite} />,
     prevArrow: <Arrow to="prev" visible={!infiniteFromProps || infinite} />,
     dots: true,
-    // eslint-disable-next-line react/no-unstable-nested-components
     appendDots: (dots: React.ReactNode) => showNavigation ? (
       <div>
         <ul style={{ margin: '0px', padding: '0px' }}>

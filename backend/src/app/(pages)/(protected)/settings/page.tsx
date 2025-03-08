@@ -371,6 +371,7 @@ const Settings: React.FC = () => {
             <a
               href="https://docs.stripe.com/currencies"
               target="_blank"
+              rel="noreferrer"
               className={styles.stripeCurrencies}
             >
               https://docs.stripe.com/currencies

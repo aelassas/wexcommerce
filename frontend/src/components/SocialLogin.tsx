@@ -27,6 +27,7 @@ interface SocialLoginProps {
   apple?: boolean
   google?: boolean
   className?: string
+  // eslint-disable-next-line no-unused-vars
   onError?: (error: any) => void
   onSignInError?: () => void
   onBlackListed?: () => void

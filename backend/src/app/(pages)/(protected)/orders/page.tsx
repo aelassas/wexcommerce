@@ -1,6 +1,5 @@
-import { Suspense } from 'react'
+import React, { Suspense } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { fr, enUS } from 'date-fns/locale'
 import { format } from 'date-fns'
 import * as wexcommerceTypes from ':wexcommerce-types'

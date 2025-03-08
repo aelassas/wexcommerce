@@ -17,6 +17,7 @@ interface CategorySelectListProps {
   freeSolo?: boolean
   variant?: TextFieldVariants
   selectedOptions?: wexcommerceTypes.Option[]
+  // eslint-disable-next-line no-unused-vars
   onChange: (values: wexcommerceTypes.Option[]) => void
 }
 
