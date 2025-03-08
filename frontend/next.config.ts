@@ -1,4 +1,7 @@
 import type { NextConfig } from 'next'
+import dns from 'node:dns'
+
+dns.setDefaultResultOrder('ipv4first')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
