@@ -44,10 +44,17 @@ const fetchWithRetry = async (
   options: RequestInit = {},
   retries: number = 3,
   delay: number = 1000,
+  timeoutMs: number = 5000, // Timeout support to prevent hanging requests (5000ms default)
 ): Promise<globalThis.Response> => {
   for (let i = 0; i < retries; i++) {
     try {
-      const response = await fetch(url, options)
+      // Create an AbortController for timeout handling
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), timeoutMs)
+
+      const response = await fetch(url, { ...options, signal: controller.signal })
+      clearTimeout(timeout) // Clear timeout if successful
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`)
       }
