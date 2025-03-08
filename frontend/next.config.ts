@@ -44,7 +44,7 @@ const nextConfig: NextConfig = {
         ':reactjs-social-login': '../packages/reactjs-social-login',
       },
     },
-    // reactCompiler: true,
+    reactCompiler: true,
     // workerThreads: false,
   },
   logging: {

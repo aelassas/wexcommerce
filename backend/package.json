@@ -8,16 +8,16 @@
     "build": "rimraf .next && tsc --build --verbose && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
     "start": "next start -p 8005",
     "lint": "next lint",
-    "ncu": "ncu -u -x typescript,eslint",
+    "ncu": "ncu -u",
     "stylelint": "stylelint \"**/*.css\"",
     "stylelint:fix": "stylelint \"**/*.css\" --fix"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.6",
-    "@mui/material": "^6.4.6",
-    "@mui/x-date-pickers": "^7.27.1",
+    "@mui/icons-material": "^6.4.7",
+    "@mui/material": "^6.4.7",
+    "@mui/x-date-pickers": "^7.27.3",
     "@sindresorhus/slugify": "^2.2.1",
     "@types/draft-js": "^0.11.18",
     "@types/draftjs-to-html": "^0.8.4",
@@ -30,7 +30,7 @@
     "draftjs-to-html": "^0.9.1",
     "html-to-draftjs": "^1.5.0",
     "localized-strings": "^2.0.3",
-    "next": "^15.2.0",
+    "next": "^15.2.1",
     "next-nprogress-bar": "^2.4.7",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -46,7 +46,7 @@
     "@typescript-eslint/parser": "^8.26.0",
     "babel-plugin-react-compiler": "^19.0.0-beta-e1e972c-20250221",
     "eslint": "^9.22.0",
-    "eslint-config-next": "^15.2.0",
+    "eslint-config-next": "^15.2.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-compiler": "^19.0.0-beta-40c6c23-20250301",
@@ -57,6 +57,6 @@
     "rimraf": "^6.0.1",
     "stylelint": "^16.15.0",
     "stylelint-config-standard": "^37.0.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.2"
   }
 }

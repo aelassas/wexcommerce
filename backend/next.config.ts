@@ -43,7 +43,7 @@ const nextConfig: NextConfig = {
         ':wexcommerce-helper': '../packages/wexcommerce-helper',
       },
     },
-    // reactCompiler: true,
+    reactCompiler: true,
     // workerThreads: false,
   },
   logging: {
