@@ -43,8 +43,8 @@ const fetchWithRetry = async (
   url: string,
   options: RequestInit = {},
   retries: number = 5,
-  delay: number = 1000,
-  timeoutMs: number = 10000, // Timeout support to prevent hanging requests (10000ms default)
+  baseDelay: number = 1000,
+  timeoutMs: number = 15000, // Timeout support to prevent hanging requests (15000ms default)
 ): Promise<globalThis.Response> => {
   for (let i = 0; i < retries; i++) {
     try {
@@ -61,8 +61,15 @@ const fetchWithRetry = async (
       return response
     } catch (error) {
       console.error(`Fetch failed (attempt ${i + 1}):`, error)
+
+      if (error instanceof DOMException && error.name === "AbortError") {
+        console.error(`Fetch request timed out after ${timeoutMs}ms`)
+      }
+
       if (i < retries - 1) {
-        await new Promise((res) => setTimeout(res, delay))
+        const retryDelay = baseDelay * 2 ** i // Exponential backoff
+        console.log(`Retrying in ${retryDelay}ms...`)
+        await new Promise((res) => setTimeout(res, retryDelay))
       }
     }
   }
