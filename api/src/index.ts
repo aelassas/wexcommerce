@@ -18,11 +18,11 @@ if ((await databaseHelper.connect(env.DB_URI, env.DB_SSL, env.DB_DEBUG)) && (awa
     const credentials: ServerOptions = { key: privateKey, cert: certificate }
     server = https.createServer(credentials, app)
 
-    server.listen(env.PORT, () => {
+    server.listen(env.PORT, '0.0.0.0', () => {
       logger.info('HTTPS server is running on Port', env.PORT)
     })
   } else {
-    server = app.listen(env.PORT, () => {
+    server = app.listen(env.PORT, '0.0.0.0', () => {
       logger.info('HTTP server is running on Port', env.PORT)
     })
   }
