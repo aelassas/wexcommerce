@@ -16,9 +16,9 @@ const LANGUAGES = [
 ]
 
 const env = {
-  isMobile: () => window.innerWidth <= 960,
-  isTablet: () => window.innerWidth >= 500 && window.innerWidth <= 960,
-  isLandscape: () => window.innerHeight <= 566,
+  isMobile: () => window && window.innerWidth <= 960,
+  isTablet: () => window && window.innerWidth >= 500 && window.innerWidth <= 960,
+  isLandscape: () => window && window.innerHeight <= 566,
   isServer: () => typeof window === 'undefined',
 
   APP_TYPE: 'backend',
