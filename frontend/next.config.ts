@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
       },
     },
     // reactCompiler: true,
-    workerThreads: false,
+    // workerThreads: false,
   },
   logging: {
     fetches: {
