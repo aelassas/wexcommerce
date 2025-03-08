@@ -42,11 +42,11 @@ export const LANGUAGES = [
 export const WEBSITE_NAME = __env__('WC_WEBSITE_NAME', false, 'wexCommerce')
 
 /**
- * Server Port. Default is 4002.
+ * Server Port. Default is 4005.
  *
  * @type {number}
  */
-export const PORT = Number.parseInt(__env__('WC_PORT', false, '4004'), 10)
+export const PORT = Number.parseInt(__env__('WC_PORT', false, '4005'), 10)
 
 /**
  * Indicate whether HTTPS is enabled or not.
