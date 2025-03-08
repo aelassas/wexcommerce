@@ -44,7 +44,7 @@ const fetchWithRetry = async (
   options: RequestInit = {},
   retries: number = 3,
   delay: number = 1000,
-  timeoutMs: number = 5000, // Timeout support to prevent hanging requests (5000ms default)
+  timeoutMs: number = 10000, // Timeout support to prevent hanging requests (10000ms default)
 ): Promise<globalThis.Response> => {
   for (let i = 0; i < retries; i++) {
     try {
