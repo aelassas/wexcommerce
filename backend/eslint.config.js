@@ -129,7 +129,7 @@ export default [
       'import/no-extraneous-dependencies': 'off',
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
-      // 'react-compiler/react-compiler': 'error'
+      // 'react-compiler/react-compiler': 'error',
     }
   }
 ]
