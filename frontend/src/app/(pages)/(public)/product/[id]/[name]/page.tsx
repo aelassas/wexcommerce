@@ -34,6 +34,7 @@ const Product = async (props: { params: Promise<{ id: string, name: string }> })
   return (
     <>
       <ScrollToTop />
+
       {
         product ? (
           <Suspense fallback={<Indicator />}>

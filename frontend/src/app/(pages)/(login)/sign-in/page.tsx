@@ -114,81 +114,87 @@ const SignIn: React.FC = () => {
     }
   }
 
-  return visible && (
-    <div className={styles.signin}>
+  return (
+    <>
       <ScrollToTop />
 
-      <Paper className={styles.signinForm} elevation={10}>
-        <form onSubmit={handleSubmit}>
-          <h1 className={styles.signinFormTitle}>{strings.SIGN_IN_HEADING}</h1>
-          <FormControl fullWidth margin="normal" size="small">
-            <InputLabel>{commonStrings.EMAIL}</InputLabel>
-            <OutlinedInput
-              type="text"
-              label={commonStrings.EMAIL}
-              onChange={handleOnChangeEmail}
-              autoComplete="email"
-              size="small"
-              required
-            />
-          </FormControl>
-          <FormControl fullWidth margin="normal" size="small">
-            <InputLabel>{commonStrings.PASSWORD}</InputLabel>
-            <OutlinedInput
-              label={commonStrings.PASSWORD}
-              onChange={handleOnChangePassword}
-              onKeyDown={handleOnPasswordKeyDown}
-              autoComplete="password"
-              type="password"
-              size="small"
-              required
-            />
-          </FormControl>
+      {
+        visible && (
+          <div className={styles.signin}>
+            <Paper className={styles.signinForm} elevation={10}>
+              <form onSubmit={handleSubmit}>
+                <h1 className={styles.signinFormTitle}>{strings.SIGN_IN_HEADING}</h1>
+                <FormControl fullWidth margin="normal" size="small">
+                  <InputLabel>{commonStrings.EMAIL}</InputLabel>
+                  <OutlinedInput
+                    type="text"
+                    label={commonStrings.EMAIL}
+                    onChange={handleOnChangeEmail}
+                    autoComplete="email"
+                    size="small"
+                    required
+                  />
+                </FormControl>
+                <FormControl fullWidth margin="normal" size="small">
+                  <InputLabel>{commonStrings.PASSWORD}</InputLabel>
+                  <OutlinedInput
+                    label={commonStrings.PASSWORD}
+                    onChange={handleOnChangePassword}
+                    onKeyDown={handleOnPasswordKeyDown}
+                    autoComplete="password"
+                    type="password"
+                    size="small"
+                    required
+                  />
+                </FormControl>
 
-          <div className={styles.stayConnected}>
-            <input type='checkbox' onChange={async (e) => {
-              await UserService.setStayConnected(e.currentTarget.checked)
-            }} />
-            <label onClick={async (e) => {
-              const checkbox = e.currentTarget.previousSibling as HTMLInputElement
-              const checked = !checkbox.checked
-              checkbox.checked = checked
-              await UserService.setStayConnected(checked)
-            }}>{strings.STAY_CONNECTED}</label>
-          </div>
+                <div className={styles.stayConnected}>
+                  <input type='checkbox' onChange={async (e) => {
+                    await UserService.setStayConnected(e.currentTarget.checked)
+                  }} />
+                  <label onClick={async (e) => {
+                    const checkbox = e.currentTarget.previousSibling as HTMLInputElement
+                    const checked = !checkbox.checked
+                    checkbox.checked = checked
+                    await UserService.setStayConnected(checked)
+                  }}>{strings.STAY_CONNECTED}</label>
+                </div>
 
-          <div className={styles.resetPassword}>
-            <Link href='/forgot-password'>{strings.RESET_PASSWORD}</Link>
-          </div>
+                <div className={styles.resetPassword}>
+                  <Link href='/forgot-password'>{strings.RESET_PASSWORD}</Link>
+                </div>
 
-          <SocialLogin />
+                <SocialLogin />
 
-          <div className={styles.signinButtons}>
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => {
-                router.push('/sign-up')
-              }}
-              className='btn-margin btn-margin-bottom'
-            >
-              {strings.SIGN_UP}
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              size="small"
-              className='btn-primary btn-margin btn-margin-bottom'
-            >
-              {strings.SIGN_IN}
-            </Button>
+                <div className={styles.signinButtons}>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => {
+                      router.push('/sign-up')
+                    }}
+                    className='btn-margin btn-margin-bottom'
+                  >
+                    {strings.SIGN_UP}
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="small"
+                    className='btn-primary btn-margin btn-margin-bottom'
+                  >
+                    {strings.SIGN_IN}
+                  </Button>
+                </div>
+                <div className={styles.formError}>
+                  {error && <Error message={strings.ERROR_IN_SIGN_IN} />}
+                </div>
+              </form>
+            </Paper>
           </div>
-          <div className={styles.formError}>
-            {error && <Error message={strings.ERROR_IN_SIGN_IN} />}
-          </div>
-        </form>
-      </Paper>
-    </div>)
+        )}
+    </>
+  )
 }
 
 export default SignIn

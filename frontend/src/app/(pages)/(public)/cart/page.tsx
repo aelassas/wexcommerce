@@ -18,14 +18,19 @@ const Cart = async () => {
     console.error(err)
   }
 
-  return cart ? (
-    <Suspense fallback={<Indicator />}>
+  return (
+    <>
       <ScrollToTop />
 
-      <CartComponent cart={cart} />
-    </Suspense>
-  ) : (
-    <EmptyCart />
+      {cart ? (
+        <Suspense fallback={<Indicator />}>
+          <CartComponent cart={cart} />
+        </Suspense>
+      ) : (
+        <EmptyCart />
+      )
+      }
+    </>
   )
 }
 

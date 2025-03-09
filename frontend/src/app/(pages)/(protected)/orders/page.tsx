@@ -148,148 +148,152 @@ const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
   const _format = wexcommerceHelper.getDateFormat(language)
   const _locale = _fr ? fr : enUS
 
-  return userId && (
-    <Suspense fallback={<Indicator />}>
+  return (
+    <>
       <ScrollToTop />
 
-      <div className={styles.main}>
-        <div className={styles.leftPanel}>
-          <Filters
-            paymentTypes={paymentTypes}
-            deliveryTypes={deliveryTypes}
-            statuses={statuses}
-            keyword={keyword}
-            from={from}
-            to={to}
-            sortBy={sortBy}
-          />
-        </div>
+      {userId && (
+        <Suspense fallback={<Indicator />}>
+          <div className={styles.main}>
+            <div className={styles.leftPanel}>
+              <Filters
+                paymentTypes={paymentTypes}
+                deliveryTypes={deliveryTypes}
+                statuses={statuses}
+                keyword={keyword}
+                from={from}
+                to={to}
+                sortBy={sortBy}
+              />
+            </div>
 
-        <div className={styles.orders}>
+            <div className={styles.orders}>
 
-          <Header
-            page={page}
-            rowCount={rowCount}
-            totalRecords={totalRecords}
-            paymentTypes={paymentTypes}
-            deliveryTypes={deliveryTypes}
-            statuses={statuses}
-            keyword={keyword}
-            from={from}
-            to={to}
-            sortBy={sortBy}
-          />
+              <Header
+                page={page}
+                rowCount={rowCount}
+                totalRecords={totalRecords}
+                paymentTypes={paymentTypes}
+                deliveryTypes={deliveryTypes}
+                statuses={statuses}
+                keyword={keyword}
+                from={from}
+                to={to}
+                sortBy={sortBy}
+              />
 
-          {
-            (totalRecords === 0 || noMatch) && <EmptyList />
-          }
+              {
+                (totalRecords === 0 || noMatch) && <EmptyList />
+              }
 
-          {
-            totalRecords > 0 &&
-            <>
-              <div className={styles.orderList}>
-                {
-                  orders.map((order) => (
-                    <article key={order._id}>
-                      <div className={styles.order}>
-                        <div className={styles.orderContent}>
-                          <div className={styles.orderInfo}>
-                            <span className={styles.orderLabel}>{strings.ID}</span>
-                            <span>{order._id}</span>
-                          </div>
-                          <div className={styles.orderInfo}>
-                            <span className={styles.orderLabel}>{strings.STATUS}</span>
-                            <OdrerStatusField value={order.status as wexcommerceTypes.OrderStatus} />
-                          </div>
-                          <div className={styles.orderInfo}>
-                            <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
-                            <PaymentTypeField value={(order.paymentType as wexcommerceTypes.PaymentTypeInfo).name} />
-                          </div>
-                          <div className={styles.orderInfo}>
-                            <span className={styles.orderLabel}>{strings.DELIVERY_TYPE}</span>
-                            <DeliveryTypeField value={(order.deliveryType as wexcommerceTypes.DeliveryTypeInfo).name} />
-                          </div>
-                          <div className={styles.orderInfo}>
-                            <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
-                            <div className={styles.orderItems}>
-                              {
-                                (order.orderItems as wexcommerceTypes.OrderItem[]).map((orderItem) => (
-                                  <div key={orderItem._id} className={styles.orderItem}>
-                                    <div className={styles.orderItemInfo}>
-                                      <span className={styles.image}>
-                                        <Image
-                                          width={0}
-                                          height={0}
-                                          sizes="100vwh"
-                                          priority={true}
-                                          alt=""
-                                          className={styles.orderItemInfo}
-                                          src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, (orderItem.product as wexcommerceTypes.Product).image)}
-                                        />
-                                      </span>
-                                    </div>
+              {
+                totalRecords > 0 &&
+                <>
+                  <div className={styles.orderList}>
+                    {
+                      orders.map((order) => (
+                        <article key={order._id}>
+                          <div className={styles.order}>
+                            <div className={styles.orderContent}>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.ID}</span>
+                                <span>{order._id}</span>
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.STATUS}</span>
+                                <OdrerStatusField value={order.status as wexcommerceTypes.OrderStatus} />
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.PAYMENT_TYPE}</span>
+                                <PaymentTypeField value={(order.paymentType as wexcommerceTypes.PaymentTypeInfo).name} />
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.DELIVERY_TYPE}</span>
+                                <DeliveryTypeField value={(order.deliveryType as wexcommerceTypes.DeliveryTypeInfo).name} />
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.ORDER_ITEMS}</span>
+                                <div className={styles.orderItems}>
+                                  {
+                                    (order.orderItems as wexcommerceTypes.OrderItem[]).map((orderItem) => (
+                                      <div key={orderItem._id} className={styles.orderItem}>
+                                        <div className={styles.orderItemInfo}>
+                                          <span className={styles.image}>
+                                            <Image
+                                              width={0}
+                                              height={0}
+                                              sizes="100vwh"
+                                              priority={true}
+                                              alt=""
+                                              className={styles.orderItemInfo}
+                                              src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, (orderItem.product as wexcommerceTypes.Product).image)}
+                                            />
+                                          </span>
+                                        </div>
 
-                                    <div className={styles.orderItemInfo}>
-                                      <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
-                                      <span>
-                                        <Link
-                                          href={`/product/${(orderItem.product as wexcommerceTypes.Product)._id}/${slugify((orderItem.product as wexcommerceTypes.Product).name)}`}
-                                          className={styles.orderItemText}
-                                          title={(orderItem.product as wexcommerceTypes.Product).name}>
+                                        <div className={styles.orderItemInfo}>
+                                          <span className={styles.orderItemLabel}>{strings.PRODUCT}</span>
+                                          <span>
+                                            <Link
+                                              href={`/product/${(orderItem.product as wexcommerceTypes.Product)._id}/${slugify((orderItem.product as wexcommerceTypes.Product).name)}`}
+                                              className={styles.orderItemText}
+                                              title={(orderItem.product as wexcommerceTypes.Product).name}>
 
-                                          {(orderItem.product as wexcommerceTypes.Product).name}
+                                              {(orderItem.product as wexcommerceTypes.Product).name}
 
-                                        </Link>
-                                      </span>
-                                    </div>
-                                    <div className={styles.orderItemInfo}>
-                                      <span className={styles.orderItemLabel}>{commonStrings.PRICE}</span>
-                                      <span>{`${wexcommerceHelper.formatPrice((orderItem.product as wexcommerceTypes.Product).price, currency, language)}`}</span>
-                                    </div>
-                                    <div className={styles.orderItemInfo}>
-                                      <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
-                                      <span>{orderItem.quantity}</span>
-                                    </div>
-                                  </div>
-                                ))
-                              }
+                                            </Link>
+                                          </span>
+                                        </div>
+                                        <div className={styles.orderItemInfo}>
+                                          <span className={styles.orderItemLabel}>{commonStrings.PRICE}</span>
+                                          <span>{`${wexcommerceHelper.formatPrice((orderItem.product as wexcommerceTypes.Product).price, currency, language)}`}</span>
+                                        </div>
+                                        <div className={styles.orderItemInfo}>
+                                          <span className={styles.orderItemLabel}>{commonStrings.QUANTITY}</span>
+                                          <span>{orderItem.quantity}</span>
+                                        </div>
+                                      </div>
+                                    ))
+                                  }
+                                </div>
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.ORDERED_AT}</span>
+                                <span>{wexcommerceHelper.capitalize(format(new Date(order.createdAt!), _format, { locale: _locale }))}</span>
+                              </div>
+                              <div className={styles.orderInfo}>
+                                <span className={styles.orderLabel}>{strings.TOTAL}</span>
+                                <span>{`${wexcommerceHelper.formatPrice(order.total, currency, language)}`}</span>
+                              </div>
                             </div>
                           </div>
-                          <div className={styles.orderInfo}>
-                            <span className={styles.orderLabel}>{strings.ORDERED_AT}</span>
-                            <span>{wexcommerceHelper.capitalize(format(new Date(order.createdAt!), _format, { locale: _locale }))}</span>
-                          </div>
-                          <div className={styles.orderInfo}>
-                            <span className={styles.orderLabel}>{strings.TOTAL}</span>
-                            <span>{`${wexcommerceHelper.formatPrice(order.total, currency, language)}`}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </article>
-                  ))
-                }
-              </div>
+                        </article>
+                      ))
+                    }
+                  </div>
 
-              {!noMatch && (
-                <Pager
-                  page={page}
-                  rowCount={rowCount}
-                  totalRecords={totalRecords}
-                  keyword={keyword}
-                  paymentTypes={paymentTypes}
-                  deliveryTypes={deliveryTypes}
-                  statuses={statuses}
-                  from={from?.getTime()}
-                  to={to?.getTime()}
-                  sortBy={sortBy}
-                  className={styles.pager}
-                />
-              )}
-            </>
-          }
-        </div>
-      </div>
-    </Suspense>
+                  {!noMatch && (
+                    <Pager
+                      page={page}
+                      rowCount={rowCount}
+                      totalRecords={totalRecords}
+                      keyword={keyword}
+                      paymentTypes={paymentTypes}
+                      deliveryTypes={deliveryTypes}
+                      statuses={statuses}
+                      from={from?.getTime()}
+                      to={to?.getTime()}
+                      sortBy={sortBy}
+                      className={styles.pager}
+                    />
+                  )}
+                </>
+              }
+            </div>
+          </div>
+        </Suspense>
+      )}
+    </>
   )
 }
 

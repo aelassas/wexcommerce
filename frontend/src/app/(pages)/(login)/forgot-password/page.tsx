@@ -134,72 +134,74 @@ const ForgotPassword: React.FC = () => {
   }
 
   return (
-    visible && (
-      <>
-        <ScrollToTop />
+    <>
+      <ScrollToTop />
 
-        <div className={styles.forgotPassword}>
-          <Paper className={styles.forgotPasswordForm} elevation={10}>
-            <h1 className={styles.forgotPasswordTitle}> {strings.RESET_PASSWORD_HEADING} </h1>
-            {sent &&
-              <div>
-                <label>{strings.EMAIL_SENT}</label>
-                <p>
-                  <Link href='/'>
-                    {commonStrings.GO_TO_HOME}
-                  </Link>
-                </p>
-              </div>}
-            {!sent &&
-              <form onSubmit={handleSubmit}>
-                <label>{strings.RESET_PASSWORD}</label>
-                <FormControl fullWidth margin="normal" size="small">
-                  <InputLabel className='required'>
-                    {commonStrings.EMAIL}
-                  </InputLabel>
-                  <OutlinedInput
-                    label={commonStrings.EMAIL}
-                    onChange={handleEmailChange}
-                    onKeyDown={handleEmailKeyDown}
-                    onBlur={handleEmailBlur}
-                    type='text'
-                    error={error || !emailValid}
-                    autoComplete='off'
-                    size="small"
-                    required
-                  />
-                  <FormHelperText error={error || !emailValid}>
-                    {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
-                    {(error && strings.EMAIL_ERROR) || ''}
-                  </FormHelperText>
-                </FormControl>
+      {
+        visible && (
+          <div className={styles.forgotPassword}>
+            <Paper className={styles.forgotPasswordForm} elevation={10}>
+              <h1 className={styles.forgotPasswordTitle}> {strings.RESET_PASSWORD_HEADING} </h1>
+              {sent &&
+                <div>
+                  <label>{strings.EMAIL_SENT}</label>
+                  <p>
+                    <Link href='/'>
+                      {commonStrings.GO_TO_HOME}
+                    </Link>
+                  </p>
+                </div>}
+              {!sent &&
+                <form onSubmit={handleSubmit}>
+                  <label>{strings.RESET_PASSWORD}</label>
+                  <FormControl fullWidth margin="normal" size="small">
+                    <InputLabel className='required'>
+                      {commonStrings.EMAIL}
+                    </InputLabel>
+                    <OutlinedInput
+                      label={commonStrings.EMAIL}
+                      onChange={handleEmailChange}
+                      onKeyDown={handleEmailKeyDown}
+                      onBlur={handleEmailBlur}
+                      type='text'
+                      error={error || !emailValid}
+                      autoComplete='off'
+                      size="small"
+                      required
+                    />
+                    <FormHelperText error={error || !emailValid}>
+                      {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
+                      {(error && strings.EMAIL_ERROR) || ''}
+                    </FormHelperText>
+                  </FormControl>
 
-                <div className='buttons'>
-                  <Button
-                    type="submit"
-                    className='btn-primary btn-margin btn-margin-bottom'
-                    size="small"
-                    variant='contained'
-                  >
-                    {strings.RESET}
-                  </Button>
-                  <Button
-                    className='btn-margin-bottom'
-                    size="small"
-                    variant='outlined'
-                    onClick={() => {
-                      router.push('/')
-                    }}
-                  >
-                    {commonStrings.CANCEL}
-                  </Button>
-                </div>
-              </form>
-            }
-          </Paper>
-        </div>
-      </>
-    )
+                  <div className='buttons'>
+                    <Button
+                      type="submit"
+                      className='btn-primary btn-margin btn-margin-bottom'
+                      size="small"
+                      variant='contained'
+                    >
+                      {strings.RESET}
+                    </Button>
+                    <Button
+                      className='btn-margin-bottom'
+                      size="small"
+                      variant='outlined'
+                      onClick={() => {
+                        router.push('/')
+                      }}
+                    >
+                      {commonStrings.CANCEL}
+                    </Button>
+                  </div>
+                </form>
+              }
+            </Paper>
+          </div>
+        )
+      }
+    </>
   )
 }
 

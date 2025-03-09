@@ -53,6 +53,7 @@ import Error from '@/components/Error'
 import Info from '@/components/Info'
 import NoMatch from '@/components/NoMatch'
 import Backdrop from '@/components/SimpleBackdrop'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/checkout.module.css'
 
@@ -341,386 +342,392 @@ const Checkout: React.FC = () => {
   }
 
   return (
-    language &&
-    <div className={styles.checkout}>
-      {(cart && paymentTypes && deliveryTypes && paymentType && total > 0 && !success) &&
-        <>
-          <form onSubmit={handleSubmit} className={styles.checkoutForm}>
+    <>
+      <ScrollToTop />
 
-            {!user &&
-              <>
-                <div className={styles.signIn}>
-                  <p>{strings.REGISTERED}</p>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    size='small'
-                    className='btn-primary'
-                    onClick={() => {
-                      router.push('/sign-in?from=checkout')
-                    }}
-                  >{headerStrings.SIGN_IN}</Button>
+      {
+        language &&
+        <div className={styles.checkout}>
+          {(cart && paymentTypes && deliveryTypes && paymentType && total > 0 && !success) &&
+            <>
+              <form onSubmit={handleSubmit} className={styles.checkoutForm}>
+
+                {!user &&
+                  <>
+                    <div className={styles.signIn}>
+                      <p>{strings.REGISTERED}</p>
+                      <Button
+                        type="button"
+                        variant="contained"
+                        size='small'
+                        className='btn-primary'
+                        onClick={() => {
+                          router.push('/sign-in?from=checkout')
+                        }}
+                      >{headerStrings.SIGN_IN}</Button>
+                    </div>
+
+                    <div className={styles.box}>
+                      <div className={styles.boxInfo}>
+                        <UserIcon />
+                        <label>{strings.USER_DETAILS}</label>
+                      </div>
+                      <div className={styles.boxForm}>
+                        <FormControl fullWidth margin="normal" size="small">
+                          <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
+                          <OutlinedInput
+                            type="text"
+                            label={commonStrings.FULL_NAME}
+                            required
+                            onChange={(e) => {
+                              setFullName(e.target.value)
+                            }}
+                            autoComplete="off"
+                            size="small"
+                            disabled={!!clientSecret}
+                          />
+                        </FormControl>
+                        <FormControl fullWidth margin="normal" size="small">
+                          <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
+                          <OutlinedInput
+                            type="text"
+                            label={commonStrings.EMAIL}
+                            error={!emailValid || emailRegistered}
+                            onChange={(e) => {
+                              setEmail(e.target.value)
+                              setFormError(false)
+
+                              if (!e.target.value) {
+                                setEmailRegistered(false)
+                                setEmailValid(true)
+                                setEmailInfo(true)
+                              }
+                            }}
+                            onBlur={async (e) => {
+                              await validateEmail(e.target.value)
+                            }}
+                            required
+                            autoComplete="off"
+                            size="small"
+                            disabled={!!clientSecret}
+                          />
+                          <FormHelperText error={!emailValid || emailRegistered}>
+                            {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
+                            {(emailRegistered &&
+                              <span>
+                                <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
+                                <span> </span>
+                                <Link href='/sign-in'>{strings.SIGN_IN}</Link>
+                              </span>
+                            ) || ''}
+                            {(emailInfo && strings.EMAIL_INFO) || ''}
+                          </FormHelperText>
+                        </FormControl>
+                        <FormControl fullWidth margin="normal" size="small">
+                          <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
+                          <OutlinedInput
+                            type="text"
+                            label={commonStrings.PHONE}
+                            error={!phoneValid}
+                            value={phone}
+                            onBlur={(e) => {
+                              validatePhone(e.target.value)
+                            }}
+                            onChange={(e) => {
+                              setPhone(e.target.value)
+                              setPhoneValid(true)
+                            }}
+                            required
+                            autoComplete="off"
+                            size="small"
+                            disabled={!!clientSecret}
+                          />
+                          <FormHelperText error={!phoneValid}>
+                            {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
+                          </FormHelperText>
+                        </FormControl>
+                        <FormControl fullWidth margin="normal" size="small">
+                          <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
+                          <OutlinedInput
+                            label={commonStrings.ADDRESS}
+                            type="text"
+                            onChange={(e) => {
+                              setAddress(e.target.value)
+                            }}
+                            required
+                            multiline
+                            minRows={3}
+                            value={address}
+                            size="small"
+                            disabled={!!clientSecret}
+                          />
+                        </FormControl>
+
+                      </div>
+                    </div>
+                  </>
+                }
+
+                <div className={styles.box}>
+                  <div className={styles.boxInfo}>
+                    <ProductsIcon />
+                    <label>{strings.PRODUCTS}</label>
+                  </div>
+                  <div className={styles.articles}>
+                    {
+                      cart.cartItems.filter(cartItem => !cartItem.product.soldOut).map(cartItem => (
+
+                        <div key={cartItem._id} className={styles.article}>
+                          <Link href={`/product/${cartItem.product._id}/${slugify(cartItem.product.name)}`}>
+
+                            <div className={styles.thumbnail}>
+                              <Image
+                                width={0}
+                                height={0}
+                                sizes="100vw"
+                                priority={true}
+                                className={styles.thumbnail}
+                                alt=""
+                                src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, cartItem.product.image)}
+                              />
+                            </div>
+
+                          </Link>
+                          <div className={styles.articleInfo}>
+                            <Link href={`/product/${cartItem.product._id}/${slugify(cartItem.product.name)}`}>
+
+                              <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
+
+                            </Link>
+                            <span className={styles.price}>{wexcommerceHelper.formatPrice(cartItem.product.price, currency, language)}</span>
+                            <span className={styles.quantity}>
+                              <span className={styles.quantityLabel}>{strings.QUANTITY}</span>
+                              <span>{wexcommerceHelper.formatNumber(cartItem.quantity, language)}</span>
+                            </span>
+                          </div>
+                        </div>
+
+                      ))
+                    }
+
+                    <div className={styles.boxTotal}>
+                      <span className={styles.totalLabel}>{commonStrings.SUBTOTAL}</span>
+                      <span className={styles.total}>
+                        {wexcommerceHelper.formatPrice(helper.total(cart.cartItems), currency, language)}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 <div className={styles.box}>
                   <div className={styles.boxInfo}>
-                    <UserIcon />
-                    <label>{strings.USER_DETAILS}</label>
+                    <PaymentIcon />
+                    <label>{strings.PAYMENT_TYPE}</label>
                   </div>
                   <div className={styles.boxForm}>
-                    <FormControl fullWidth margin="normal" size="small">
-                      <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
-                      <OutlinedInput
-                        type="text"
-                        label={commonStrings.FULL_NAME}
-                        required
-                        onChange={(e) => {
-                          setFullName(e.target.value)
-                        }}
-                        autoComplete="off"
-                        size="small"
-                        disabled={!!clientSecret}
-                      />
-                    </FormControl>
-                    <FormControl fullWidth margin="normal" size="small">
-                      <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
-                      <OutlinedInput
-                        type="text"
-                        label={commonStrings.EMAIL}
-                        error={!emailValid || emailRegistered}
-                        onChange={(e) => {
-                          setEmail(e.target.value)
-                          setFormError(false)
-
-                          if (!e.target.value) {
-                            setEmailRegistered(false)
-                            setEmailValid(true)
-                            setEmailInfo(true)
-                          }
-                        }}
-                        onBlur={async (e) => {
-                          await validateEmail(e.target.value)
-                        }}
-                        required
-                        autoComplete="off"
-                        size="small"
-                        disabled={!!clientSecret}
-                      />
-                      <FormHelperText error={!emailValid || emailRegistered}>
-                        {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
-                        {(emailRegistered &&
-                          <span>
-                            <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
-                            <span> </span>
-                            <Link href='/sign-in'>{strings.SIGN_IN}</Link>
-                          </span>
-                        ) || ''}
-                        {(emailInfo && strings.EMAIL_INFO) || ''}
-                      </FormHelperText>
-                    </FormControl>
-                    <FormControl fullWidth margin="normal" size="small">
-                      <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
-                      <OutlinedInput
-                        type="text"
-                        label={commonStrings.PHONE}
-                        error={!phoneValid}
-                        value={phone}
-                        onBlur={(e) => {
-                          validatePhone(e.target.value)
-                        }}
-                        onChange={(e) => {
-                          setPhone(e.target.value)
-                          setPhoneValid(true)
-                        }}
-                        required
-                        autoComplete="off"
-                        size="small"
-                        disabled={!!clientSecret}
-                      />
-                      <FormHelperText error={!phoneValid}>
-                        {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
-                      </FormHelperText>
-                    </FormControl>
-                    <FormControl fullWidth margin="normal" size="small">
-                      <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
-                      <OutlinedInput
-                        label={commonStrings.ADDRESS}
-                        type="text"
-                        onChange={(e) => {
-                          setAddress(e.target.value)
-                        }}
-                        required
-                        multiline
-                        minRows={3}
-                        value={address}
-                        size="small"
-                        disabled={!!clientSecret}
-                      />
-                    </FormControl>
-
+                    <RadioGroup
+                      value={paymentType}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        setPaymentType(event.target.value as wexcommerceTypes.PaymentType)
+                      }}>
+                      {
+                        paymentTypes.map((paymentType) => (
+                          <FormControlLabel
+                            key={paymentType.name}
+                            value={paymentType.name}
+                            control={<Radio />}
+                            disabled={!!clientSecret}
+                            label={
+                              <span className={styles.paymentButton}>
+                                <span>{
+                                  helper.getPaymentType(paymentType.name, language)
+                                }</span>
+                                <span className={styles.paymentInfo}>{
+                                  paymentType.name === wexcommerceTypes.PaymentType.CreditCard ? strings.CREDIT_CARD_INFO
+                                    : paymentType.name === wexcommerceTypes.PaymentType.Cod ? strings.COD_INFO
+                                      : paymentType.name === wexcommerceTypes.PaymentType.WireTransfer ? strings.WIRE_TRANSFER_INFO
+                                        : ''
+                                }</span>
+                              </span>
+                            } />
+                        ))
+                      }
+                    </RadioGroup>
                   </div>
                 </div>
-              </>
-            }
 
-            <div className={styles.box}>
-              <div className={styles.boxInfo}>
-                <ProductsIcon />
-                <label>{strings.PRODUCTS}</label>
-              </div>
-              <div className={styles.articles}>
-                {
-                  cart.cartItems.filter(cartItem => !cartItem.product.soldOut).map(cartItem => (
+                <div className={styles.box}>
+                  <div className={styles.boxInfo}>
+                    <DeliveryIcon />
+                    <label>{strings.DELIVERY_TYPE}</label>
+                  </div>
+                  <div className={styles.boxForm}>
+                    <RadioGroup
+                      value={deliveryType}
+                      className={styles.deliveryRadio}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        setDeliveryType(event.target.value as wexcommerceTypes.DeliveryType)
+                      }}>
+                      {
+                        deliveryTypes.map((deliveryType) => (
+                          <FormControlLabel
+                            key={deliveryType.name}
+                            value={deliveryType.name}
+                            control={<Radio />}
+                            disabled={!!clientSecret}
+                            label={
+                              <div className={styles.delivery}>
+                                <span>{helper.getDeliveryType(deliveryType.name, language)}</span>
+                                <span className={styles.deliveryPrice}>
+                                  {deliveryType.price === 0 ? strings.FREE : `${deliveryType.price} ${currency}`}
+                                </span>
+                              </div>
+                            } />
+                        ))
+                      }
+                    </RadioGroup>
+                  </div>
+                </div>
 
-                    <div key={cartItem._id} className={styles.article}>
-                      <Link href={`/product/${cartItem.product._id}/${slugify(cartItem.product.name)}`}>
-
-                        <div className={styles.thumbnail}>
-                          <Image
-                            width={0}
-                            height={0}
-                            sizes="100vw"
-                            priority={true}
-                            className={styles.thumbnail}
-                            alt=""
-                            src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, cartItem.product.image)}
-                          />
-                        </div>
-
-                      </Link>
-                      <div className={styles.articleInfo}>
-                        <Link href={`/product/${cartItem.product._id}/${slugify(cartItem.product.name)}`}>
-
-                          <span className={styles.name} title={cartItem.product.name}>{cartItem.product.name}</span>
-
-                        </Link>
-                        <span className={styles.price}>{wexcommerceHelper.formatPrice(cartItem.product.price, currency, language)}</span>
-                        <span className={styles.quantity}>
-                          <span className={styles.quantityLabel}>{strings.QUANTITY}</span>
-                          <span>{wexcommerceHelper.formatNumber(cartItem.quantity, language)}</span>
-                        </span>
-                      </div>
-                    </div>
-
-                  ))
+                {[
+                  wexcommerceTypes.PaymentType.CreditCard,
+                  wexcommerceTypes.PaymentType.Cod,
+                  wexcommerceTypes.PaymentType.WireTransfer
+                ].includes(paymentType) &&
+                  <div className={`${styles.box} ${styles.boxTotal}`}>
+                    <span className={styles.totalLabel}>{strings.TOTAL_LABEL}</span>
+                    <span className={styles.total}>{wexcommerceHelper.formatPrice(total, currency, language)}</span>
+                  </div>
                 }
 
-                <div className={styles.boxTotal}>
-                  <span className={styles.totalLabel}>{commonStrings.SUBTOTAL}</span>
-                  <span className={styles.total}>
-                    {wexcommerceHelper.formatPrice(helper.total(cart.cartItems), currency, language)}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.box}>
-              <div className={styles.boxInfo}>
-                <PaymentIcon />
-                <label>{strings.PAYMENT_TYPE}</label>
-              </div>
-              <div className={styles.boxForm}>
-                <RadioGroup
-                  value={paymentType}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setPaymentType(event.target.value as wexcommerceTypes.PaymentType)
-                  }}>
-                  {
-                    paymentTypes.map((paymentType) => (
-                      <FormControlLabel
-                        key={paymentType.name}
-                        value={paymentType.name}
-                        control={<Radio />}
-                        disabled={!!clientSecret}
-                        label={
-                          <span className={styles.paymentButton}>
-                            <span>{
-                              helper.getPaymentType(paymentType.name, language)
-                            }</span>
-                            <span className={styles.paymentInfo}>{
-                              paymentType.name === wexcommerceTypes.PaymentType.CreditCard ? strings.CREDIT_CARD_INFO
-                                : paymentType.name === wexcommerceTypes.PaymentType.Cod ? strings.COD_INFO
-                                  : paymentType.name === wexcommerceTypes.PaymentType.WireTransfer ? strings.WIRE_TRANSFER_INFO
-                                    : ''
-                            }</span>
-                          </span>
-                        } />
+                {
+                  env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe
+                    ? (clientSecret && (
+                      <div className={styles.paymentForm}>
+                        <EmbeddedCheckoutProvider
+                          stripe={stripePromise}
+                          options={{ clientSecret }}
+                        >
+                          <EmbeddedCheckout />
+                        </EmbeddedCheckoutProvider>
+                      </div>
                     ))
-                  }
-                </RadioGroup>
-              </div>
-            </div>
+                    : payPalLoaded ? (
+                      <div className={styles.paymentForm}>
+                        <PayPalButtons
+                          createOrder={async () => {
+                            const name = wexcommerceHelper.truncateString(`Order ${orderId}`, PayPalService.ORDER_NAME_MAX_LENGTH)
+                            const _description = `New order from ${email || user!.email}`
+                            const description = wexcommerceHelper.truncateString(_description, PayPalService.ORDER_DESCRIPTION_MAX_LENGTH)
+                            const paypalCurrency = await SettingService.getStripeCurrency()
+                            const payPalOrderId = await PayPalService.createOrder(orderId!, total, paypalCurrency, name, description)
+                            return payPalOrderId
+                          }}
+                          onApprove={async (data, actions) => {
+                            try {
+                              setPayPalProcessing(true)
+                              await actions.order?.capture()
+                              const { orderID } = data
+                              const status = await PayPalService.checkOrder(orderId!, orderID)
 
-            <div className={styles.box}>
-              <div className={styles.boxInfo}>
-                <DeliveryIcon />
-                <label>{strings.DELIVERY_TYPE}</label>
-              </div>
-              <div className={styles.boxForm}>
-                <RadioGroup
-                  value={deliveryType}
-                  className={styles.deliveryRadio}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setDeliveryType(event.target.value as wexcommerceTypes.DeliveryType)
-                  }}>
-                  {
-                    deliveryTypes.map((deliveryType) => (
-                      <FormControlLabel
-                        key={deliveryType.name}
-                        value={deliveryType.name}
-                        control={<Radio />}
-                        disabled={!!clientSecret}
-                        label={
-                          <div className={styles.delivery}>
-                            <span>{helper.getDeliveryType(deliveryType.name, language)}</span>
-                            <span className={styles.deliveryPrice}>
-                              {deliveryType.price === 0 ? strings.FREE : `${deliveryType.price} ${currency}`}
-                            </span>
-                          </div>
-                        } />
-                    ))
-                  }
-                </RadioGroup>
-              </div>
-            </div>
+                              if (status === 200) {
+                                await showSuccess()
+                              } else {
+                                setPaymentFailed(true)
+                              }
+                            } catch (err) {
+                              helper.error(err)
+                            } finally {
+                              setPayPalProcessing(false)
+                            }
+                          }}
+                          onInit={() => {
+                            setPayPalInit(true)
+                          }}
+                          onCancel={() => {
+                            setPayPalProcessing(false)
+                          }}
+                          onError={() => {
+                            setPayPalProcessing(false)
+                          }}
+                        />
+                      </div>
+                    ) : null
+                }
 
-            {[
-              wexcommerceTypes.PaymentType.CreditCard,
-              wexcommerceTypes.PaymentType.Cod,
-              wexcommerceTypes.PaymentType.WireTransfer
-            ].includes(paymentType) &&
-              <div className={`${styles.box} ${styles.boxTotal}`}>
-                <span className={styles.totalLabel}>{strings.TOTAL_LABEL}</span>
-                <span className={styles.total}>{wexcommerceHelper.formatPrice(total, currency, language)}</span>
-              </div>
-            }
 
-            {
-              env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe
-                ? (clientSecret && (
-                  <div className={styles.paymentForm}>
-                    <EmbeddedCheckoutProvider
-                      stripe={stripePromise}
-                      options={{ clientSecret }}
-                    >
-                      <EmbeddedCheckout />
-                    </EmbeddedCheckoutProvider>
-                  </div>
-                ))
-                : payPalLoaded ? (
-                  <div className={styles.paymentForm}>
-                    <PayPalButtons
-                      createOrder={async () => {
-                        const name = wexcommerceHelper.truncateString(`Order ${orderId}`, PayPalService.ORDER_NAME_MAX_LENGTH)
-                        const _description = `New order from ${email || user!.email}`
-                        const description = wexcommerceHelper.truncateString(_description, PayPalService.ORDER_DESCRIPTION_MAX_LENGTH)
-                        const paypalCurrency = await SettingService.getStripeCurrency()
-                        const payPalOrderId = await PayPalService.createOrder(orderId!, total, paypalCurrency, name, description)
-                        return payPalOrderId
-                      }}
-                      onApprove={async (data, actions) => {
-                        try {
-                          setPayPalProcessing(true)
-                          await actions.order?.capture()
-                          const { orderID } = data
-                          const status = await PayPalService.checkOrder(orderId!, orderID)
-
-                          if (status === 200) {
-                            await showSuccess()
-                          } else {
-                            setPaymentFailed(true)
-                          }
-                        } catch (err) {
-                          helper.error(err)
-                        } finally {
-                          setPayPalProcessing(false)
+                <div className={styles.buttons}>
+                  {(
+                    (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe && !clientSecret)
+                    || (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.PayPal && !payPalInit)
+                  ) && (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        className={`${styles.btnCheckout} btn-margin-bottom`}
+                        size="small"
+                        disabled={loading || (payPalLoaded && !payPalInit)}>
+                        {
+                          (loading || (payPalLoaded && !payPalInit))
+                            ? <CircularProgress color="inherit" size={24} />
+                            : strings.CHECKOUT
                         }
-                      }}
-                      onInit={() => {
-                        setPayPalInit(true)
-                      }}
-                      onCancel={() => {
-                        setPayPalProcessing(false)
-                      }}
-                      onError={() => {
-                        setPayPalProcessing(false)
-                      }}
-                    />
-                  </div>
-                ) : null
-            }
-
-
-            <div className={styles.buttons}>
-              {(
-                (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe && !clientSecret)
-                || (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.PayPal && !payPalInit)
-              ) && (
+                      </Button>
+                    )}
                   <Button
-                    type="submit"
-                    variant="contained"
-                    className={`${styles.btnCheckout} btn-margin-bottom`}
+                    variant="outlined"
+                    className={`${styles.btnCancel} btn-margin-bottom`}
                     size="small"
-                    disabled={loading || (payPalLoaded && !payPalInit)}>
-                    {
-                      (loading || (payPalLoaded && !payPalInit))
-                        ? <CircularProgress color="inherit" size={24} />
-                        : strings.CHECKOUT
-                    }
+                    onClick={async () => {
+                      try {
+                        if (orderId && sessionId) {
+                          //
+                          // Delete temporary booking on cancel.
+                          // Otherwise, temporary bookings are
+                          // automatically deleted through a TTL index.
+                          //
+                          await OrderService.deleteTempOrder(orderId, sessionId)
+                        }
+                      } catch (err) {
+                        helper.error(err)
+                      } finally {
+                        router.push('/')
+                      }
+                    }}
+                  >
+                    {commonStrings.CANCEL}
                   </Button>
-                )}
-              <Button
-                variant="outlined"
-                className={`${styles.btnCancel} btn-margin-bottom`}
-                size="small"
-                onClick={async () => {
-                  try {
-                    if (orderId && sessionId) {
-                      //
-                      // Delete temporary booking on cancel.
-                      // Otherwise, temporary bookings are
-                      // automatically deleted through a TTL index.
-                      //
-                      await OrderService.deleteTempOrder(orderId, sessionId)
-                    }
-                  } catch (err) {
-                    helper.error(err)
-                  } finally {
-                    router.push('/')
-                  }
-                }}
-              >
-                {commonStrings.CANCEL}
-              </Button>
-            </div>
+                </div>
 
 
-            <div className="form-error">
-              {formError && <Error message={commonStrings.FORM_ERROR} />}
-              {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
-              {error && <Error message={commonStrings.GENERIC_ERROR} />}
-              {paymentFailed && <Error message={strings.PAYMENT_FAILED} />}
-            </div>
-          </form>
-        </>
+                <div className="form-error">
+                  {formError && <Error message={commonStrings.FORM_ERROR} />}
+                  {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
+                  {error && <Error message={commonStrings.GENERIC_ERROR} />}
+                  {paymentFailed && <Error message={strings.PAYMENT_FAILED} />}
+                </div>
+              </form>
+            </>
+          }
+
+          {
+            success &&
+            <Info message={
+              paymentType === wexcommerceTypes.PaymentType.CreditCard ? strings.CREDIT_CARD_SUCCESS
+                : paymentType === wexcommerceTypes.PaymentType.Cod ? strings.COD_SUCCESS
+                  : paymentType === wexcommerceTypes.PaymentType.WireTransfer ? strings.WIRE_TRANSFER_SUCCESS
+                    : ''
+            } />
+          }
+
+          {
+            !success && noMatch && <NoMatch />
+          }
+
+          {payPalProcessing && <Backdrop text={strings.CHECKING} />}
+        </div>
       }
-
-      {
-        success &&
-        <Info message={
-          paymentType === wexcommerceTypes.PaymentType.CreditCard ? strings.CREDIT_CARD_SUCCESS
-            : paymentType === wexcommerceTypes.PaymentType.Cod ? strings.COD_SUCCESS
-              : paymentType === wexcommerceTypes.PaymentType.WireTransfer ? strings.WIRE_TRANSFER_SUCCESS
-                : ''
-        } />
-      }
-
-      {
-        !success && noMatch && <NoMatch />
-      }
-
-      {payPalProcessing && <Backdrop text={strings.CHECKING} />}
-    </div>
+    </>
   )
 }
 

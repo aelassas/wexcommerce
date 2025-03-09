@@ -90,123 +90,128 @@ const ChangePassword: React.FC = () => {
     }
   }
 
-  return user && (
-    <div className={styles.content}>
+  return (
+    <>
       <ScrollToTop />
 
-      <Paper className={styles.form} elevation={10}>
-        <form onSubmit={handleSubmit}>
-          <h1 className={styles.formTitle}>{strings.CHANGE_PASSWORD_HEADING}</h1>
-          <FormControl fullWidth margin="normal" size="small">
-            <InputLabel
-              error={currentPasswordError}
-              className='required'
-            >
-              {strings.CURRENT_PASSWORD}
-            </InputLabel>
-            <OutlinedInput
-              label={strings.CURRENT_PASSWORD}
-              onChange={(e) => {
-                setCurrentPassword(e.target.value)
-                setCurrentPasswordError(false)
-              }}
-              value={currentPassword}
-              error={currentPasswordError}
-              type='password'
-              size="small"
-              required
-            />
-            <FormHelperText
-              error={currentPasswordError}
-            >
-              {(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}
-            </FormHelperText>
-          </FormControl>
-          <FormControl
-            fullWidth
-            margin="normal" size="small"
-          >
-            <InputLabel className='required'>
-              {strings.NEW_PASSWORD}
-            </InputLabel>
-            <OutlinedInput
-              label={strings.NEW_PASSWORD}
-              onChange={(e) => {
-                setNewPassword(e.target.value)
-                setPasswordLengthError(false)
-                setConfirmPasswordError(false)
-              }}
-              type='password'
-              value={newPassword}
-              error={passwordLengthError}
-              size="small"
-              required
-            />
-            <FormHelperText
-              error={passwordLengthError}
-            >
-              {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
-            </FormHelperText>
-          </FormControl>
-          <FormControl
-            fullWidth
-            margin="normal" size="small"
-            error={confirmPasswordError}
-          >
-            <InputLabel
-              error={confirmPasswordError}
-              className='required'
-            >
-              {commonStrings.CONFIRM_PASSWORD}
-            </InputLabel>
-            <OutlinedInput
-              label={commonStrings.CONFIRM_PASSWORD}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value)
-                setPasswordLengthError(false)
-                setConfirmPasswordError(false)
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleSubmit(e)
-                }
-              }}
-              error={confirmPasswordError}
-              type='password'
-              value={confirmPassword}
-              size="small"
-              required
-            />
-            <FormHelperText
-              error={confirmPasswordError}
-            >
-              {confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH}
-            </FormHelperText>
-          </FormControl>
-          <div className='buttons'>
-            <Button
-              type="submit"
-              className='btn-primary btn-margin btn-margin-bottom'
-              size="small"
-              variant='contained'
-            >
-              {commonStrings.RESET_PASSWORD}
-            </Button>
-            <Button
-              className='btn-margin-bottom'
-              size="small"
-              variant='outlined'
-              onClick={() => {
-                router.push('/')
-              }}
-            >
-              {commonStrings.CANCEL}
-            </Button>
-          </div>
-        </form>
+      {
+        user && (
+          <div className={styles.content}>
+            <Paper className={styles.form} elevation={10}>
+              <form onSubmit={handleSubmit}>
+                <h1 className={styles.formTitle}>{strings.CHANGE_PASSWORD_HEADING}</h1>
+                <FormControl fullWidth margin="normal" size="small">
+                  <InputLabel
+                    error={currentPasswordError}
+                    className='required'
+                  >
+                    {strings.CURRENT_PASSWORD}
+                  </InputLabel>
+                  <OutlinedInput
+                    label={strings.CURRENT_PASSWORD}
+                    onChange={(e) => {
+                      setCurrentPassword(e.target.value)
+                      setCurrentPasswordError(false)
+                    }}
+                    value={currentPassword}
+                    error={currentPasswordError}
+                    type='password'
+                    size="small"
+                    required
+                  />
+                  <FormHelperText
+                    error={currentPasswordError}
+                  >
+                    {(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}
+                  </FormHelperText>
+                </FormControl>
+                <FormControl
+                  fullWidth
+                  margin="normal" size="small"
+                >
+                  <InputLabel className='required'>
+                    {strings.NEW_PASSWORD}
+                  </InputLabel>
+                  <OutlinedInput
+                    label={strings.NEW_PASSWORD}
+                    onChange={(e) => {
+                      setNewPassword(e.target.value)
+                      setPasswordLengthError(false)
+                      setConfirmPasswordError(false)
+                    }}
+                    type='password'
+                    value={newPassword}
+                    error={passwordLengthError}
+                    size="small"
+                    required
+                  />
+                  <FormHelperText
+                    error={passwordLengthError}
+                  >
+                    {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
+                  </FormHelperText>
+                </FormControl>
+                <FormControl
+                  fullWidth
+                  margin="normal" size="small"
+                  error={confirmPasswordError}
+                >
+                  <InputLabel
+                    error={confirmPasswordError}
+                    className='required'
+                  >
+                    {commonStrings.CONFIRM_PASSWORD}
+                  </InputLabel>
+                  <OutlinedInput
+                    label={commonStrings.CONFIRM_PASSWORD}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value)
+                      setPasswordLengthError(false)
+                      setConfirmPasswordError(false)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSubmit(e)
+                      }
+                    }}
+                    error={confirmPasswordError}
+                    type='password'
+                    value={confirmPassword}
+                    size="small"
+                    required
+                  />
+                  <FormHelperText
+                    error={confirmPasswordError}
+                  >
+                    {confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH}
+                  </FormHelperText>
+                </FormControl>
+                <div className='buttons'>
+                  <Button
+                    type="submit"
+                    className='btn-primary btn-margin btn-margin-bottom'
+                    size="small"
+                    variant='contained'
+                  >
+                    {commonStrings.RESET_PASSWORD}
+                  </Button>
+                  <Button
+                    className='btn-margin-bottom'
+                    size="small"
+                    variant='outlined'
+                    onClick={() => {
+                      router.push('/')
+                    }}
+                  >
+                    {commonStrings.CANCEL}
+                  </Button>
+                </div>
+              </form>
 
-      </Paper>
-    </div>
+            </Paper>
+          </div>
+        )}
+    </>
   )
 }
 

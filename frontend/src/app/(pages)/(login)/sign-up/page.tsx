@@ -200,149 +200,151 @@ const SignUp: React.FC = () => {
   }
 
   return (
-    <div className={styles.signup}>
+    <>
       <ScrollToTop />
 
-      <Paper className={styles.signupForm} elevation={10}>
-        <h1 className={styles.signupFormTitle}> {strings.SIGN_UP_HEADING} </h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
-              <OutlinedInput
-                type="text"
-                label={commonStrings.FULL_NAME}
-                value={fullName}
-                required
-                onChange={handleOnChangeFullName}
-                autoComplete="off"
-                size="small"
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
-              <OutlinedInput
-                type="text"
-                label={commonStrings.EMAIL}
-                error={!emailValid || emailError}
-                value={email}
-                onBlur={handleEmailBlur}
-                onChange={handleEmailChange}
-                required
-                autoComplete="off"
-                size="small"
-              />
-              <FormHelperText error={!emailValid || emailError}>
-                {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
-                {(emailError && commonStrings.EMAIL_ALREADY_REGISTERED) || ''}
-              </FormHelperText>
-            </FormControl>
-            <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
-              <OutlinedInput
-                type="text"
-                label={commonStrings.PHONE}
-                error={!phoneValid}
-                value={phone}
-                onBlur={(e) => {
-                  validatePhone(e.target.value)
-                }}
-                onChange={(e) => {
-                  setPhone(e.target.value)
-                  setPhoneValid(true)
-                }}
-                required
-                autoComplete="off"
-                size="small"
-              />
-              <FormHelperText error={!phoneValid}>
-                {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
-              </FormHelperText>
-            </FormControl>
-            <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
-              <OutlinedInput
-                type="text"
-                label={commonStrings.ADDRESS}
-                onChange={(e) => {
-                  setAddress(e.target.value)
-                }}
-                required
-                multiline
-                minRows={3}
-                value={address}
-                size="small"
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.PASSWORD}</InputLabel>
-              <OutlinedInput
-                label={commonStrings.PASSWORD}
-                value={password}
-                onChange={handleOnChangePassword}
-                required
-                type="password"
-                inputProps={{
-                  autoComplete: 'new-password',
-                  form: {
-                    autoComplete: 'off',
-                  },
-                }}
-                size="small"
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.CONFIRM_PASSWORD}</InputLabel>
-              <OutlinedInput
-                label={commonStrings.CONFIRM_PASSWORD}
-                value={confirmPassword}
-                onChange={handleOnChangeConfirmPassword}
-                required
-                type="password"
-                inputProps={{
-                  autoComplete: 'new-password',
-                  form: {
-                    autoComplete: 'off',
-                  },
-                }}
-                size="small"
-              />
-            </FormControl>
+      <div className={styles.signup}>
+        <Paper className={styles.signupForm} elevation={10}>
+          <h1 className={styles.signupFormTitle}> {strings.SIGN_UP_HEADING} </h1>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <FormControl fullWidth margin="normal" size="small">
+                <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
+                <OutlinedInput
+                  type="text"
+                  label={commonStrings.FULL_NAME}
+                  value={fullName}
+                  required
+                  onChange={handleOnChangeFullName}
+                  autoComplete="off"
+                  size="small"
+                />
+              </FormControl>
+              <FormControl fullWidth margin="normal" size="small">
+                <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
+                <OutlinedInput
+                  type="text"
+                  label={commonStrings.EMAIL}
+                  error={!emailValid || emailError}
+                  value={email}
+                  onBlur={handleEmailBlur}
+                  onChange={handleEmailChange}
+                  required
+                  autoComplete="off"
+                  size="small"
+                />
+                <FormHelperText error={!emailValid || emailError}>
+                  {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
+                  {(emailError && commonStrings.EMAIL_ALREADY_REGISTERED) || ''}
+                </FormHelperText>
+              </FormControl>
+              <FormControl fullWidth margin="normal" size="small">
+                <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
+                <OutlinedInput
+                  type="text"
+                  label={commonStrings.PHONE}
+                  error={!phoneValid}
+                  value={phone}
+                  onBlur={(e) => {
+                    validatePhone(e.target.value)
+                  }}
+                  onChange={(e) => {
+                    setPhone(e.target.value)
+                    setPhoneValid(true)
+                  }}
+                  required
+                  autoComplete="off"
+                  size="small"
+                />
+                <FormHelperText error={!phoneValid}>
+                  {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
+                </FormHelperText>
+              </FormControl>
+              <FormControl fullWidth margin="normal" size="small">
+                <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
+                <OutlinedInput
+                  type="text"
+                  label={commonStrings.ADDRESS}
+                  onChange={(e) => {
+                    setAddress(e.target.value)
+                  }}
+                  required
+                  multiline
+                  minRows={3}
+                  value={address}
+                  size="small"
+                />
+              </FormControl>
+              <FormControl fullWidth margin="normal" size="small">
+                <InputLabel className='required'>{commonStrings.PASSWORD}</InputLabel>
+                <OutlinedInput
+                  label={commonStrings.PASSWORD}
+                  value={password}
+                  onChange={handleOnChangePassword}
+                  required
+                  type="password"
+                  inputProps={{
+                    autoComplete: 'new-password',
+                    form: {
+                      autoComplete: 'off',
+                    },
+                  }}
+                  size="small"
+                />
+              </FormControl>
+              <FormControl fullWidth margin="normal" size="small">
+                <InputLabel className='required'>{commonStrings.CONFIRM_PASSWORD}</InputLabel>
+                <OutlinedInput
+                  label={commonStrings.CONFIRM_PASSWORD}
+                  value={confirmPassword}
+                  onChange={handleOnChangeConfirmPassword}
+                  required
+                  type="password"
+                  inputProps={{
+                    autoComplete: 'new-password',
+                    form: {
+                      autoComplete: 'off',
+                    },
+                  }}
+                  size="small"
+                />
+              </FormControl>
 
-            <SocialLogin />
+              <SocialLogin />
 
-            <div className="buttons">
-              <Button
-                type="submit"
-                variant="contained"
-                className='btn-primary btn-margin-bottom'
-                size="small"
-              >
-                {strings.SIGN_UP}
-              </Button>
-              <Button
-                variant="outlined"
-                className='btn-margin-bottom'
-                size="small"
-                onClick={() => {
-                  router.push('/')
-                }}
-              >
-                {commonStrings.CANCEL}
-              </Button>
+              <div className="buttons">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className='btn-primary btn-margin-bottom'
+                  size="small"
+                >
+                  {strings.SIGN_UP}
+                </Button>
+                <Button
+                  variant="outlined"
+                  className='btn-margin-bottom'
+                  size="small"
+                  onClick={() => {
+                    router.push('/')
+                  }}
+                >
+                  {commonStrings.CANCEL}
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="form-error">
-            {passwordError && <Error message={commonStrings.PASSWORD_ERROR} />}
-            {passwordsDontMatch && <Error message={commonStrings.PASSWORDS_DONT_MATCH} />}
-            {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
-            {error && <Error message={strings.SIGN_UP_ERROR} />}
-          </div>
-        </form>
-      </Paper>
+            <div className="form-error">
+              {passwordError && <Error message={commonStrings.PASSWORD_ERROR} />}
+              {passwordsDontMatch && <Error message={commonStrings.PASSWORDS_DONT_MATCH} />}
+              {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
+              {error && <Error message={strings.SIGN_UP_ERROR} />}
+            </div>
+          </form>
+        </Paper>
 
-      {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
-    </div>
+        {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
+      </div>
+    </>
   )
 }
 

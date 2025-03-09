@@ -51,25 +51,27 @@ const Notifications = async (props: { searchParams: Promise<SearchParams> }) => 
   }
 
   return (
-    <Suspense fallback={<Indicator />}>
+    <>
       <ScrollToTop />
 
-      <div className={styles.notifications}>
-        {
-          noMatch ? (
-            <EmptyList />
-          )
-            : (
-              <NotificationList
-                page={page}
-                rowCount={rowCount}
-                totalRecords={totalRecords}
-                notifications={notifications}
-              />
+      <Suspense fallback={<Indicator />}>
+        <div className={styles.notifications}>
+          {
+            noMatch ? (
+              <EmptyList />
             )
-        }
-      </div>
-    </Suspense>
+              : (
+                <NotificationList
+                  page={page}
+                  rowCount={rowCount}
+                  totalRecords={totalRecords}
+                  notifications={notifications}
+                />
+              )
+          }
+        </div>
+      </Suspense>
+    </>
   )
 }
 

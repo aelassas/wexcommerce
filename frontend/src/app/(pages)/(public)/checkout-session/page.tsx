@@ -50,6 +50,7 @@ const CheckoutSession = () => {
   return (
     <>
       <ScrollToTop />
+
       {
         loading
           ? <Info message={strings.CHECKING} hideLink />

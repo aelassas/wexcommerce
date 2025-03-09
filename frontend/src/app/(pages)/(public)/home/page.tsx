@@ -66,42 +66,44 @@ const Home = async () => {
   }
 
   return (
-    <Suspense fallback={<Indicator />}>
+    <>
       <ScrollToTop />
 
-      <div className={styles.main}>
+      <Suspense fallback={<Indicator />}>
+        <div className={styles.main}>
 
-        <div className={styles.carrousel}>
-          <Carrousel
-            images={slides}
-            autoplay
-            autoplaySpeed={4 * 1000}
-            showArrows={false}
-            showDots
-          />
+          <div className={styles.carrousel}>
+            <Carrousel
+              images={slides}
+              autoplay
+              autoplaySpeed={4 * 1000}
+              showArrows={false}
+              showDots
+            />
+          </div>
+
+          <div className={styles.featuredProducs}>
+            <FeaturedProducts
+              title={strings.FEATURED_PRODUCTS_TITLE}
+              products={featuredProducts}
+              autoplay
+              autoplaySpeed={5 * 1000}
+              showActions
+              infinite
+            />
+          </div>
+
+          <div className={styles.categories}>
+            <CategoryList title={strings.CATEGORIES_TITLE} categories={categories} showNavigation />
+          </div>
+
+          <div className={styles.featuredCategories}>
+            <FeaturedCategories categoryGroups={categoryGroups} />
+          </div>
+
         </div>
-
-        <div className={styles.featuredProducs}>
-          <FeaturedProducts
-            title={strings.FEATURED_PRODUCTS_TITLE}
-            products={featuredProducts}
-            autoplay
-            autoplaySpeed={5 * 1000}
-            showActions
-            infinite
-          />
-        </div>
-
-        <div className={styles.categories}>
-          <CategoryList title={strings.CATEGORIES_TITLE} categories={categories} showNavigation />
-        </div>
-
-        <div className={styles.featuredCategories}>
-          <FeaturedCategories categoryGroups={categoryGroups} />
-        </div>
-
-      </div>
-    </Suspense>
+      </Suspense>
+    </>
   )
 }
 

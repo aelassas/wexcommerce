@@ -25,14 +25,18 @@ const Wishlist = async () => {
     console.error(err)
   }
 
-  return wishlist ? (
-    <Suspense fallback={<Indicator />}>
+  return (
+    <>
       <ScrollToTop />
 
-      <WishlistComponent wishlist={wishlist} />
-    </Suspense>
-  ) : (
-    <EmptyWishlist />
+      {wishlist ? (
+        <Suspense fallback={<Indicator />}>
+          <WishlistComponent wishlist={wishlist} />
+        </Suspense>
+      ) : (
+        <EmptyWishlist />
+      )}
+    </>
   )
 }
 

@@ -9,9 +9,9 @@ import * as WishlistService from '@/lib/WishlistService'
 import ProductsWrapper, { EmptyList, Pager } from './page.client'
 import ProductListItem from '@/components/ProductListItem'
 import Indicator from '@/components/Indicator'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/search-server.module.css'
-import ScrollToTop from '@/components/ScrollToTop'
 
 const Search = async (props: { searchParams: Promise<SearchParams> }) => {
   const searchParams = await props.searchParams
@@ -87,49 +87,55 @@ const Search = async (props: { searchParams: Promise<SearchParams> }) => {
     noMatch = true
   }
 
-  return page > 0 && (
-    <Suspense fallback={<Indicator />}>
+  return (
+    <>
       <ScrollToTop />
 
-      <ProductsWrapper
-        rowCount={rowCount}
-        totalRecords={totalRecords}
-        page={page}
-      >
-        <div className={styles.products}>
+      {
+        page > 0 && (
+          <Suspense fallback={<Indicator />}>
+            <ProductsWrapper
+              rowCount={rowCount}
+              totalRecords={totalRecords}
+              page={page}
+            >
+              <div className={styles.products}>
 
-          {
-            (totalRecords === 0 || noMatch) && <EmptyList />
-          }
-
-          {
-            totalRecords > 0 &&
-            <>
-              <div className={styles.productList}>
                 {
-                  products.map((product) => (
-                    <ProductListItem key={product._id} product={product} />
-                  ))
+                  (totalRecords === 0 || noMatch) && <EmptyList />
+                }
+
+                {
+                  totalRecords > 0 &&
+                  <>
+                    <div className={styles.productList}>
+                      {
+                        products.map((product) => (
+                          <ProductListItem key={product._id} product={product} />
+                        ))
+                      }
+                    </div>
+
+                    {!noMatch && (
+                      <Pager
+                        page={page}
+                        rowCount={rowCount}
+                        totalRecords={totalRecords}
+                        categoryId={categoryId}
+                        keyword={keyword}
+                        sortBy={sortBy}
+                        className={styles.pager}
+                      />
+                    )}
+
+                  </>
                 }
               </div>
-
-              {!noMatch && (
-                <Pager
-                  page={page}
-                  rowCount={rowCount}
-                  totalRecords={totalRecords}
-                  categoryId={categoryId}
-                  keyword={keyword}
-                  sortBy={sortBy}
-                  className={styles.pager}
-                />
-              )}
-
-            </>
-          }
-        </div>
-      </ProductsWrapper>
-    </Suspense>
+            </ProductsWrapper>
+          </Suspense>
+        )
+      }
+    </>
   )
 }
 
