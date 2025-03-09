@@ -16,6 +16,7 @@ import * as UserService from '@/lib/UserService'
 import { strings } from '@/lang/change-password'
 import { strings as commonStrings } from '@/lang/common'
 import * as helper from '@/common/helper'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/change-password.module.css'
 
@@ -91,6 +92,8 @@ const ChangePassword: React.FC = () => {
 
   return user && (
     <div className={styles.content}>
+      <ScrollToTop />
+
       <Paper className={styles.form} elevation={10}>
         <form onSubmit={handleSubmit}>
           <h1 className={styles.formTitle}>{strings.CHANGE_PASSWORD_HEADING}</h1>

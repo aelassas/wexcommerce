@@ -15,6 +15,7 @@ import Carrousel from '@/components/Carrousel'
 import CategoryList from '@/components/CategoryList'
 import FeaturedCategories from '@/components/FeaturedCategories'
 import Indicator from '@/components/Indicator'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/home.module.css'
 
@@ -66,6 +67,8 @@ const Home = async () => {
 
   return (
     <Suspense fallback={<Indicator />}>
+      <ScrollToTop />
+
       <div className={styles.main}>
 
         <div className={styles.carrousel}>

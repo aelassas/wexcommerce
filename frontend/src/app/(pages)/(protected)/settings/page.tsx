@@ -18,6 +18,7 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings as headerStrings } from '@/lang/header'
 import * as helper from '@/common/helper'
 import { UserContextType, useUserContext } from '@/context/UserContext'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/settings.module.css'
 
@@ -84,6 +85,8 @@ const Settings: React.FC = () => {
 
   return user && (
     <Paper className={styles.form} elevation={10}>
+      <ScrollToTop />
+
       <form onSubmit={handleSubmit}>
         <h1 className={styles.formTitle}>{headerStrings.SETTINGS}</h1>
         <FormControl fullWidth margin="normal" size="small">

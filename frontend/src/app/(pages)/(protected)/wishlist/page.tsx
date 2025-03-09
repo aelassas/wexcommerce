@@ -5,6 +5,7 @@ import * as UserService from '@/lib/UserService'
 import * as WishlistService from '@/lib/WishlistService'
 import WishlistComponent, { EmptyWishlist } from '@/components/Wishlist'
 import Indicator from '@/components/Indicator'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const Wishlist = async () => {
   let wishlist: wexcommerceTypes.Wishlist | undefined = undefined
@@ -26,6 +27,8 @@ const Wishlist = async () => {
 
   return wishlist ? (
     <Suspense fallback={<Indicator />}>
+      <ScrollToTop />
+
       <WishlistComponent wishlist={wishlist} />
     </Suspense>
   ) : (

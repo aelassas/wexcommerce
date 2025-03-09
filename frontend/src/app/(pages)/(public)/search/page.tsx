@@ -11,6 +11,7 @@ import ProductListItem from '@/components/ProductListItem'
 import Indicator from '@/components/Indicator'
 
 import styles from '@/styles/search-server.module.css'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const Search = async (props: { searchParams: Promise<SearchParams> }) => {
   const searchParams = await props.searchParams
@@ -88,6 +89,8 @@ const Search = async (props: { searchParams: Promise<SearchParams> }) => {
 
   return page > 0 && (
     <Suspense fallback={<Indicator />}>
+      <ScrollToTop />
+
       <ProductsWrapper
         rowCount={rowCount}
         totalRecords={totalRecords}

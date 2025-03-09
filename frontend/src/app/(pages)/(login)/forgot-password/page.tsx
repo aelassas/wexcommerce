@@ -16,9 +16,10 @@ import validator from 'validator'
 import * as helper from '@/common/helper'
 import { useRouter } from "next/navigation"
 import Link from 'next/link'
+import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/forgot-password.module.css'
-import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 
 const ForgotPassword: React.FC = () => {
   const router = useRouter()
@@ -135,6 +136,8 @@ const ForgotPassword: React.FC = () => {
   return (
     visible && (
       <>
+        <ScrollToTop />
+
         <div className={styles.forgotPassword}>
           <Paper className={styles.forgotPasswordForm} elevation={10}>
             <h1 className={styles.forgotPasswordTitle}> {strings.RESET_PASSWORD_HEADING} </h1>

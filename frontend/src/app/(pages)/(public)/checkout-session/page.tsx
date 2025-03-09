@@ -8,6 +8,7 @@ import * as StripeService from '@/lib/StripeService'
 import { CartContextType, useCartContext } from '@/context/CartContext'
 import Info from '@/components/Info'
 import NoMatch from '@/components/NoMatch'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const CheckoutSession = () => {
   const searchParams = useSearchParams()
@@ -47,17 +48,22 @@ const CheckoutSession = () => {
   }, [searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    loading
-      ? <Info message={strings.CHECKING} hideLink />
-      : (
-        noMatch
-          ? <NoMatch />
+    <>
+      <ScrollToTop />
+      {
+        loading
+          ? <Info message={strings.CHECKING} hideLink />
           : (
-            success
-              ? <Info message={strings.SUCCESS} />
-              : <Info message={strings.PAYMENT_FAILED} />
+            noMatch
+              ? <NoMatch />
+              : (
+                success
+                  ? <Info message={strings.SUCCESS} />
+                  : <Info message={strings.PAYMENT_FAILED} />
+              )
           )
-      )
+      }
+    </>
   )
 }
 

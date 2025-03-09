@@ -5,6 +5,7 @@ import * as UserService from '@/lib/UserService'
 import * as NotificationService from '@/lib/NotificationService'
 import NotificationList, { EmptyList } from '@/components/NotificationList'
 import Indicator from '@/components/Indicator'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/notifications.module.css'
 
@@ -51,6 +52,8 @@ const Notifications = async (props: { searchParams: Promise<SearchParams> }) => 
 
   return (
     <Suspense fallback={<Indicator />}>
+      <ScrollToTop />
+
       <div className={styles.notifications}>
         {
           noMatch ? (

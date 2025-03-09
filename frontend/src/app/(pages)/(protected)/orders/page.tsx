@@ -22,9 +22,10 @@ import {
   Header,
   EmptyList,
 } from './page.client'
+import Indicator from '@/components/Indicator'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/orders.module.css'
-import Indicator from '@/components/Indicator'
 
 const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
   const searchParams = await props.searchParams
@@ -149,6 +150,8 @@ const Orders = async (props: { searchParams: Promise<SearchParams> }) => {
 
   return userId && (
     <Suspense fallback={<Indicator />}>
+      <ScrollToTop />
+
       <div className={styles.main}>
         <div className={styles.leftPanel}>
           <Filters

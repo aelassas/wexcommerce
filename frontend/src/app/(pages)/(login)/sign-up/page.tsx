@@ -21,6 +21,7 @@ import Backdrop from '@/components/SimpleBackdrop'
 import SocialLogin from '@/components/SocialLogin'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import { RecaptchaContextType, useRecaptchaContext } from '@/context/RecaptchaContext'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/signup.module.css'
 
@@ -200,6 +201,8 @@ const SignUp: React.FC = () => {
 
   return (
     <div className={styles.signup}>
+      <ScrollToTop />
+
       <Paper className={styles.signupForm} elevation={10}>
         <h1 className={styles.signupFormTitle}> {strings.SIGN_UP_HEADING} </h1>
         <form onSubmit={handleSubmit}>

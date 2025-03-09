@@ -22,6 +22,7 @@ import {
   Paper
 } from '@mui/material'
 import * as helper from '@/common/helper'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/reset-password.module.css'
 
@@ -169,6 +170,8 @@ const ResetPassword: React.FC = () => {
 
   return (
     <>
+      <ScrollToTop />
+
       {resend && email &&
         <div className={styles.resend}>
           <Paper className={styles.resendForm} elevation={10}>

@@ -3,6 +3,7 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import * as CartService from '@/lib/CartService'
 import CartComponent, { EmptyCart } from '@/components/Cart'
 import Indicator from '@/components/Indicator'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const Cart = async () => {
   let cart: wexcommerceTypes.Cart | undefined = undefined
@@ -19,6 +20,8 @@ const Cart = async () => {
 
   return cart ? (
     <Suspense fallback={<Indicator />}>
+      <ScrollToTop />
+
       <CartComponent cart={cart} />
     </Suspense>
   ) : (

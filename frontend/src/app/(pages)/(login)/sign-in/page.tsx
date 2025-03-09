@@ -17,6 +17,7 @@ import { strings } from '@/lang/sign-in'
 import * as UserService from '@/lib/UserService'
 import Error from '@/components/Error'
 import SocialLogin from '@/components/SocialLogin'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/signin.module.css'
 
@@ -115,6 +116,8 @@ const SignIn: React.FC = () => {
 
   return visible && (
     <div className={styles.signin}>
+      <ScrollToTop />
+
       <Paper className={styles.signinForm} elevation={10}>
         <form onSubmit={handleSubmit}>
           <h1 className={styles.signinFormTitle}>{strings.SIGN_IN_HEADING}</h1>
