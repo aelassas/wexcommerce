@@ -38,7 +38,7 @@ export const authHeader = async (): Promise<Record<string, string>> => {
 export const signup = async (data: wexcommerceTypes.SignUpPayload): Promise<number> =>
   fetchInstance
     .POST(
-      '/api/sign-up/ ',
+      '/api/sign-up/',
       data,
       [],
       true
@@ -206,7 +206,7 @@ export const resend = async (email: string, reset = false): Promise<number> =>
 export const activate = async (data: wexcommerceTypes.ActivatePayload): Promise<number> => (
   fetchInstance
     .POST(
-      '/api/activate/ ',
+      '/api/activate/',
       data,
       [await authHeader()],
       true
