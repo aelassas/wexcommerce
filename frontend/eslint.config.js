@@ -26,7 +26,7 @@ export default [
   // Base recommended ESLint rules
   js.configs.recommended,
 
-  { ...reactPlugin.configs.flat.recommended, settings: { react: { version: "detect" } } },
+  { ...reactPlugin.configs.flat.recommended, settings: { react: { version: 'detect' } } },
   reactCompilerPlugin.configs.recommended,
 
   // Global variables
@@ -129,6 +129,8 @@ export default [
       'import/no-extraneous-dependencies': 'off',
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+      'quotes': ['error', 'single', { 'avoidEscape': true }],
+      'jsx-quotes': ['error', 'prefer-double'],
       // 'react-compiler/react-compiler': 'error',
     }
   }

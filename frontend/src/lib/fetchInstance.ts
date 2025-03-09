@@ -62,7 +62,7 @@ const fetchWithRetry = async (
     } catch (error) {
       console.error(`Fetch failed (attempt ${i + 1}):`, error)
 
-      if (error instanceof DOMException && error.name === "AbortError") {
+      if (error instanceof DOMException && error.name === 'AbortError') {
         console.error(`Fetch request timed out after ${timeoutMs}ms`)
       }
 
