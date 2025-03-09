@@ -1,5 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import ScrollToTop from '@/components/ScrollToTop'
+
 import '@/styles/globals.css'
 
 export const dynamic = 'force-dynamic'
@@ -17,7 +19,10 @@ type RootLayoutProps = Readonly<{
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => (
   <html>
-    <body>{children}</body>
+    <body>
+      <ScrollToTop />
+      {children}
+    </body>
   </html>
 )
 
