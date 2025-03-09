@@ -364,7 +364,7 @@ export const checkPassword = async (id: string, password: string): Promise<numbe
  */
 export const changePassword = async (data: wexcommerceTypes.ChangePasswordPayload): Promise<number> =>
   fetchInstance
-    .POST('/api/change-password/ ',
+    .POST('/api/change-password/',
       data, [await authHeader()],
       true
     )
