@@ -94,7 +94,7 @@ const CreateCategory: React.FC = () => {
         {
           env.LANGUAGES.map((language, index) => (
             <FormControl key={index} fullWidth margin="dense">
-              <InputLabel className='required'>{language.label}</InputLabel>
+              <InputLabel className="required">{language.label}</InputLabel>
               <Input
                 type="text"
                 value={(values[index] && values[index].value) || ''}
@@ -134,14 +134,14 @@ const CreateCategory: React.FC = () => {
           <Button
             type="submit"
             variant="contained"
-            className='btn-primary btn-margin-bottom'
+            className="btn-primary btn-margin-bottom"
             size="small"
           >
             {commonStrings.CREATE}
           </Button>
           <Button
             variant="contained"
-            className='btn-secondary btn-margin-bottom'
+            className="btn-secondary btn-margin-bottom"
             size="small"
             onClick={async () => {
               try {

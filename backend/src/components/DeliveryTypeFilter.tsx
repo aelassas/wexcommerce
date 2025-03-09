@@ -126,7 +126,7 @@ const DeliveryTypeFilter: React.FC<DeliveryTypeFilterProps> = (
                     refs.current[index] = ref
                   }
                 }}
-                type='checkbox'
+                type="checkbox"
                 data-value={deliveryType}
                 className={styles.deliveryTypeCheckbox}
                 onChange={handleCheckDeliveryTypeChange}

@@ -36,7 +36,7 @@ export const authHeader = async (): Promise<Record<string, string>> => {
 export const signup = async (data: wexcommerceTypes.SignUpPayload): Promise<number> =>
   fetchInstance
     .POST(
-      `/api/admin-sign-up/ `,
+      '/api/admin-sign-up/ ',
       data,
       [],
       true
@@ -52,7 +52,7 @@ export const signup = async (data: wexcommerceTypes.SignUpPayload): Promise<numb
 export const validateEmail = async (data: wexcommerceTypes.ValidateEmailPayload): Promise<number> =>
   fetchInstance
     .POST(
-      `/api/validate-email`,
+      '/api/validate-email',
       data,
       [],
       true
@@ -68,7 +68,7 @@ export const validateEmail = async (data: wexcommerceTypes.ValidateEmailPayload)
 export const isAdmin = async (email: string): Promise<number> =>
   fetchInstance
     .POST(
-      `/api/is-admin`,
+      '/api/is-admin',
       { email },
       [],
       true
@@ -125,7 +125,7 @@ export const signout = async (_redirect = true) => {
  */
 export const validateAccessToken = async (): Promise<number> => fetchInstance
   .POST(
-    `/api/validate-access-token`,
+    '/api/validate-access-token',
     null,
     [await authHeader()],
     true,
@@ -141,7 +141,7 @@ export const validateAccessToken = async (): Promise<number> => fetchInstance
 export const resendLink = async (data: wexcommerceTypes.ResendLinkPayload): Promise<number> =>
   fetchInstance
     .POST(
-      `/api/resend-link`,
+      '/api/resend-link',
       data,
       [await authHeader()],
       true
@@ -174,7 +174,7 @@ export const resend = async (email: string, reset = false): Promise<number> =>
 export const activate = async (data: wexcommerceTypes.ActivatePayload): Promise<number> => (
   fetchInstance
     .POST(
-      `/api/activate/ `,
+      '/api/activate/ ',
       data,
       [await authHeader()],
       true
@@ -254,7 +254,7 @@ export const getLanguage = async (): Promise<string> => {
 export const updateLanguage = async (data: wexcommerceTypes.UpdateLanguagePayload): Promise<number> => {
   return fetchInstance
     .POST(
-      `/api/update-language`,
+      '/api/update-language',
       data,
       [await authHeader()],
       true
@@ -345,7 +345,7 @@ export const getUsers = async (keyword: string, page: number, size: number): Pro
 export const updateUser = async (data: wexcommerceTypes.UpdateUserPayload): Promise<number> =>
   fetchInstance
     .POST(
-      `/api/update-user`,
+      '/api/update-user',
       data,
       [await authHeader()],
       true
@@ -376,7 +376,7 @@ export const checkPassword = async (id: string, password: string): Promise<numbe
  */
 export const changePassword = async (data: wexcommerceTypes.ChangePasswordPayload): Promise<number> =>
   fetchInstance
-    .POST(`/api/change-password/ `,
+    .POST('/api/change-password/ ',
       data, [await authHeader()],
       true
     )
@@ -391,7 +391,7 @@ export const changePassword = async (data: wexcommerceTypes.ChangePasswordPayloa
 export const deleteUsers = async (ids: string[]): Promise<number> =>
   fetchInstance
     .POST(
-      `/api/delete-users`,
+      '/api/delete-users',
       ids,
       [await authHeader()],
       true

@@ -184,7 +184,7 @@ const CreateProduct: React.FC = () => {
               label={strings.CATEGORIES}
               required
               multiple
-              variant='standard'
+              variant="standard"
               selectedOptions={categories}
               onChange={(values) => {
                 setCategories(values as wexcommerceTypes.CategoryInfo[])
@@ -260,14 +260,14 @@ const CreateProduct: React.FC = () => {
             <Button
               type="submit"
               variant="contained"
-              className='btn-primary btn-margin-bottom'
+              className="btn-primary btn-margin-bottom"
               size="small"
             >
               {commonStrings.CREATE}
             </Button>
             <Button
               variant="contained"
-              className='btn-secondary btn-margin-bottom'
+              className="btn-secondary btn-margin-bottom"
               size="small"
               onClick={async () => {
                 try {

@@ -116,7 +116,7 @@ const Products = async (props: { searchParams: Promise<SearchParams> }) => {
                             src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, product.image)}
                             width={0}
                             height={0}
-                            sizes='100vw'
+                            sizes="100vw"
                             priority={true}
                             className={styles.thumbnail}
                           />

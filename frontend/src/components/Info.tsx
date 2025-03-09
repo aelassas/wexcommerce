@@ -14,7 +14,7 @@ const Info: React.FC<InfoProps> = ({ message, hideLink, style, className }) => {
   return (
     <div style={style} className={`${className ? `${className} ` : ''}msg`}>
       <p>{message}</p>
-      {!hideLink && <Link href='/'>{commonStrings.GO_TO_HOME}</Link>}
+      {!hideLink && <Link href="/">{commonStrings.GO_TO_HOME}</Link>}
     </div>
   )
 }

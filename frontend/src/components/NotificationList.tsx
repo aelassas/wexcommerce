@@ -19,7 +19,7 @@ import {
   Visibility as ViewIcon
 } from '@mui/icons-material'
 import { format } from 'date-fns'
-import { fr, enUS } from "date-fns/locale"
+import { fr, enUS } from 'date-fns/locale'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
@@ -319,19 +319,19 @@ const NotificationList: React.FC<NotificationListProps> = (
         maxWidth="xs"
         open={openDeleteDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{selectedNotifications.length > 1 ? strings.DELETE_NOTIFICATIONS : strings.DELETE_NOTIFICATION}</DialogContent>
-        <DialogActions className='dialog-actions'>
+        <DialogActions className="dialog-actions">
           <Button
-            variant='outlined'
+            variant="outlined"
             onClick={() => {
               setOpenDeleteDialog(false)
             }}>
             {commonStrings.CANCEL}
           </Button>
           <Button
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             onClick={async () => {
               try {
                 const ids = selectedNotifications.map((row) => row._id)

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -197,7 +197,7 @@ const ResetPassword: React.FC = () => {
                   }
                 }}
               >{dashboardStrings.RESEND}</Button>
-              <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
+              <p><Link href="/">{commonStrings.GO_TO_HOME}</Link></p>
             </div>
           </Paper>
         </div>
@@ -209,14 +209,14 @@ const ResetPassword: React.FC = () => {
             <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
             <form onSubmit={handleSubmit}>
               <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className='required' error={passwordLengthError}>
+                <InputLabel className="required" error={passwordLengthError}>
                   {cpStrings.NEW_PASSWORD}
                 </InputLabel>
                 <OutlinedInput
                   label={cpStrings.NEW_PASSWORD}
                   onChange={handlePasswordChange}
                   onBlur={handlePasswordBlur}
-                  type='password'
+                  type="password"
                   error={passwordLengthError}
                   size="small"
                   required
@@ -228,7 +228,7 @@ const ResetPassword: React.FC = () => {
                 </FormHelperText>
               </FormControl>
               <FormControl fullWidth margin="normal" size="small" error={confirmPasswordError}>
-                <InputLabel error={confirmPasswordError} className='required'>
+                <InputLabel error={confirmPasswordError} className="required">
                   {commonStrings.CONFIRM_PASSWORD}
                 </InputLabel>
                 <OutlinedInput
@@ -237,7 +237,7 @@ const ResetPassword: React.FC = () => {
                   onKeyDown={handleConfirmPasswordKeyDown}
                   onBlur={handleConfirmPasswordBlur}
                   error={confirmPasswordError}
-                  type='password'
+                  type="password"
                   size="small"
                   required
                 />
@@ -247,19 +247,19 @@ const ResetPassword: React.FC = () => {
                   {(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
                 </FormHelperText>
               </FormControl>
-              <div className='buttons'>
+              <div className="buttons">
                 <Button
                   type="submit"
-                  className='btn-primary btn-margin btn-margin-bottom'
+                  className="btn-primary btn-margin btn-margin-bottom"
                   size="small"
-                  variant='contained'
+                  variant="contained"
                 >
                   {commonStrings.SAVE}
                 </Button>
                 <Button
-                  className='btn-margin-bottom'
+                  className="btn-margin-bottom"
                   size="small"
-                  variant='outlined'
+                  variant="outlined"
                   onClick={() => {
                     router.push('/')
                   }}

@@ -233,7 +233,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
           <ul className={styles.categories}>
             <li>
               <Link
-                href='/products'
+                href="/products"
                 className={!categoryId ? styles.selected : ''}
                 onClick={handleCategoryClick}
               >

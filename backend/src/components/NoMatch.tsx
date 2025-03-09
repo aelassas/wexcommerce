@@ -12,7 +12,7 @@ const NoMatch: React.FC = () => {
   return (
     <div className={styles.noMatch}>
       <h2>{strings.NO_MATCH}</h2>
-      <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>
+      <p><Link href="/">{commonStrings.GO_TO_HOME}</Link></p>
     </div>
   )
 }

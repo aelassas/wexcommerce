@@ -130,7 +130,7 @@ const SignIn: React.FC = () => {
           </FormControl>
 
           <div className={styles.stayConnected}>
-            <input type='checkbox' onChange={(e) => {
+            <input type="checkbox" onChange={(e) => {
               setStayConnected(e.currentTarget.checked)
             }} />
             <label onClick={(e) => {
@@ -142,7 +142,7 @@ const SignIn: React.FC = () => {
           </div>
 
           <div className={styles.resetPassword}>
-            <Link href='/forgot-password'>{strings.RESET_PASSWORD}</Link>
+            <Link href="/forgot-password">{strings.RESET_PASSWORD}</Link>
           </div>
 
           <div className={styles.signinButtons}>
@@ -150,7 +150,7 @@ const SignIn: React.FC = () => {
               type="submit"
               variant="contained"
               size="small"
-              className='btn-primary btn-margin btn-margin-bottom'
+              className="btn-primary btn-margin btn-margin-bottom"
             >
               {strings.SIGN_IN}
             </Button>

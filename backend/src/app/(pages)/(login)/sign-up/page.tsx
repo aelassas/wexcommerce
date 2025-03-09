@@ -19,7 +19,7 @@ import {
 import validator from 'validator'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import * as helper from '@/common/helper'
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 
 import styles from '@/styles/signup.module.css'
 
@@ -185,7 +185,7 @@ const SignUp: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <div>
             <FormControl fullWidth margin="dense">
-              <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
+              <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
               <Input
                 type="text"
                 value={fullName}
@@ -195,7 +195,7 @@ const SignUp: React.FC = () => {
               />
             </FormControl>
             <FormControl fullWidth margin="dense">
-              <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
+              <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
               <Input
                 type="text"
                 error={!emailValid || emailError}
@@ -211,7 +211,7 @@ const SignUp: React.FC = () => {
               </FormHelperText>
             </FormControl>
             <FormControl fullWidth margin="dense">
-              <InputLabel className='required'>{commonStrings.PASSWORD}</InputLabel>
+              <InputLabel className="required">{commonStrings.PASSWORD}</InputLabel>
               <Input
                 value={password}
                 onChange={handleOnChangePassword}
@@ -226,7 +226,7 @@ const SignUp: React.FC = () => {
               />
             </FormControl>
             <FormControl fullWidth margin="dense">
-              <InputLabel className='required'>{commonStrings.CONFIRM_PASSWORD}</InputLabel>
+              <InputLabel className="required">{commonStrings.CONFIRM_PASSWORD}</InputLabel>
               <Input
                 value={confirmPassword}
                 onChange={handleOnChangeConfirmPassword}
@@ -244,14 +244,14 @@ const SignUp: React.FC = () => {
               <Button
                 type="submit"
                 variant="contained"
-                className='btn-primary btn-margin-bottom'
+                className="btn-primary btn-margin-bottom"
                 size="small"
               >
                 {strings.SIGN_UP}
               </Button>
               <Button
                 variant="contained"
-                className='btn-secondary btn-margin-bottom'
+                className="btn-secondary btn-margin-bottom"
                 size="small"
                 onClick={() => {
                   router.push('/')

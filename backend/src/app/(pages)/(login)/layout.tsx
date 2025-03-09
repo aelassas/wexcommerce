@@ -59,7 +59,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return language && (
     <>
       <Header />
-      <div className='content'>{children}</div>
+      <div className="content">{children}</div>
     </>
   )
 }

@@ -143,7 +143,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {
         (!user || (user && user.verified))
           ?
-          <div className='content'>{children}</div>
+          <div className="content">{children}</div>
           :
           <div className="validate-email">
             <span>{strings.VALIDATE_EMAIL}</span>

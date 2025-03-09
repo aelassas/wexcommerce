@@ -126,7 +126,7 @@ const PaymentTypeFilter: React.FC<PaymentTypeFilterProps> = (
                     refs.current[index] = ref
                   }
                 }}
-                type='checkbox' data-value={paymentType}
+                type="checkbox" data-value={paymentType}
                 className={styles.paymentTypeCheckbox}
                 onChange={handleCheckPaymentTypeChange}
               />

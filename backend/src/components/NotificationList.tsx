@@ -19,7 +19,7 @@ import {
   Visibility as ViewIcon
 } from '@mui/icons-material'
 import { format } from 'date-fns'
-import { fr, enUS } from "date-fns/locale"
+import { fr, enUS } from 'date-fns/locale'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as wexcommerceHelper from ':wexcommerce-helper'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
@@ -318,12 +318,12 @@ const NotificationList: React.FC<NotificationListProps> = (
         maxWidth="xs"
         open={openDeleteDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{selectedNotifications.length > 1 ? strings.DELETE_NOTIFICATIONS : strings.DELETE_NOTIFICATION}</DialogContent>
-        <DialogActions className='dialog-actions'>
+        <DialogActions className="dialog-actions">
           <Button onClick={() => {
             setOpenDeleteDialog(false)
-          }} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+          }} variant="contained" className="btn-secondary">{commonStrings.CANCEL}</Button>
           <Button onClick={async () => {
             try {
               const ids = selectedNotifications.map((row) => row._id)
@@ -347,7 +347,7 @@ const NotificationList: React.FC<NotificationListProps> = (
             } catch (err) {
               helper.error(err)
             }
-          }} variant='contained' color='error'>{commonStrings.DELETE}</Button>
+          }} variant="contained" color="error">{commonStrings.DELETE}</Button>
         </DialogActions>
       </Dialog>
     </div>

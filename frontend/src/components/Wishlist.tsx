@@ -76,13 +76,13 @@ const Wishlist: React.FC<WishlistProps> = ({ wishlist }) => {
         maxWidth="xs"
         open={openClearDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{strings.CLEAR_WISHLIST_CONFIRM}</DialogContent>
-        <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenClearDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
+        <DialogActions className="dialog-actions">
+          <Button onClick={() => setOpenClearDialog(false)} variant="outlined">{commonStrings.CANCEL}</Button>
           <Button
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             onClick={async () => {
               try {
                 const wishlistId = wishlist._id

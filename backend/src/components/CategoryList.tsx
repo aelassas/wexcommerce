@@ -36,7 +36,7 @@ const CategoryList = async ({ keyword }: CategoryListProps) => {
                           src={wexcommerceHelper.joinURL(env.CDN_CATEGORIES, category.image)}
                           width={0}
                           height={0}
-                          sizes='100vw'
+                          sizes="100vw"
                           priority={true}
                           className={styles.categoryImage}
                         />

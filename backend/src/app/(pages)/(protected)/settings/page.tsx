@@ -232,7 +232,7 @@ const Settings: React.FC = () => {
           <h1 className={styles.formTitle}>{strings.USER_SETTINGS}</h1>
 
           <FormControl fullWidth margin="dense">
-            <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
+            <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
             <Input
               type="text"
               value={fullName}
@@ -245,7 +245,7 @@ const Settings: React.FC = () => {
           </FormControl>
 
           <FormControl fullWidth margin="dense">
-            <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
+            <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
             <Input
               type="text"
               value={user.email}
@@ -290,7 +290,7 @@ const Settings: React.FC = () => {
           <div className="buttons">
             <Button
               variant="contained"
-              className='btn-primary btn-margin-bottom'
+              className="btn-primary btn-margin-bottom"
               size="small"
               onClick={() => {
                 router.push('/change-password')
@@ -301,14 +301,14 @@ const Settings: React.FC = () => {
             <Button
               type="submit"
               variant="contained"
-              className='btn-primary btn-margin-bottom'
+              className="btn-primary btn-margin-bottom"
               size="small"
             >
               {commonStrings.SAVE}
             </Button>
             <Button
               variant="contained"
-              className='btn-secondary btn-margin-bottom'
+              className="btn-secondary btn-margin-bottom"
               size="small"
               onClick={() => {
                 router.push('/')
@@ -326,7 +326,7 @@ const Settings: React.FC = () => {
           <h1 className={styles.formTitle}>{strings.LOCALE_SETTINGS}</h1>
 
           <FormControl fullWidth margin="dense">
-            <InputLabel className='required'>{strings.LANGUAGE}</InputLabel>
+            <InputLabel className="required">{strings.LANGUAGE}</InputLabel>
 
             <Select
               variant="standard"
@@ -345,7 +345,7 @@ const Settings: React.FC = () => {
           </FormControl>
 
           <FormControl fullWidth margin="dense">
-            <InputLabel className='required'>{strings.CURRENCY}</InputLabel>
+            <InputLabel className="required">{strings.CURRENCY}</InputLabel>
             <Input
               type="text"
               value={currency}
@@ -358,7 +358,7 @@ const Settings: React.FC = () => {
           </FormControl>
 
           <FormControl fullWidth margin="dense">
-            <InputLabel className='required'>{strings.STRIPE_CURRENCY}</InputLabel>
+            <InputLabel className="required">{strings.STRIPE_CURRENCY}</InputLabel>
             <Input
               type="text"
               value={stripeCurrency}
@@ -382,14 +382,14 @@ const Settings: React.FC = () => {
             <Button
               type="submit"
               variant="contained"
-              className='btn-primary btn-margin-bottom'
+              className="btn-primary btn-margin-bottom"
               size="small"
             >
               {commonStrings.SAVE}
             </Button>
             <Button
               variant="contained"
-              className='btn-secondary btn-margin-bottom'
+              className="btn-secondary btn-margin-bottom"
               size="small"
               onClick={() => {
                 router.push('/')
@@ -456,14 +456,14 @@ const Settings: React.FC = () => {
             <Button
               type="submit"
               variant="contained"
-              className='btn-primary btn-margin-bottom'
+              className="btn-primary btn-margin-bottom"
               size="small"
             >
               {commonStrings.SAVE}
             </Button>
             <Button
               variant="contained"
-              className='btn-secondary btn-margin-bottom'
+              className="btn-secondary btn-margin-bottom"
               size="small"
               onClick={() => {
                 router.push('/')
@@ -507,14 +507,14 @@ const Settings: React.FC = () => {
             <Button
               type="submit"
               variant="contained"
-              className='btn-primary btn-margin-bottom'
+              className="btn-primary btn-margin-bottom"
               size="small"
             >
               {commonStrings.SAVE}
             </Button>
             <Button
               variant="contained"
-              className='btn-secondary btn-margin-bottom'
+              className="btn-secondary btn-margin-bottom"
               size="small"
               onClick={() => {
                 router.push('/')
@@ -584,14 +584,14 @@ const Settings: React.FC = () => {
             <Button
               type="submit"
               variant="contained"
-              className='btn-primary btn-margin-bottom'
+              className="btn-primary btn-margin-bottom"
               size="small"
             >
               {commonStrings.SAVE}
             </Button>
             <Button
               variant="contained"
-              className='btn-secondary btn-margin-bottom'
+              className="btn-secondary btn-margin-bottom"
               size="small"
               onClick={() => {
                 router.push('/')
@@ -608,7 +608,7 @@ const Settings: React.FC = () => {
         maxWidth="xs"
         open={deliveryTypesWarning || paymentTypesWarning || wireTransferWarning}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.INFO}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.INFO}</DialogTitle>
         <DialogContent>
           {
             deliveryTypesWarning ? strings.DELIVERY_SETTINGS_WARNING
@@ -617,7 +617,7 @@ const Settings: React.FC = () => {
                   : ''
           }
         </DialogContent>
-        <DialogActions className='dialog-actions'>
+        <DialogActions className="dialog-actions">
           <Button onClick={() => {
             if (deliveryTypesWarning) {
               setDeliveryTypesWarning(false)
@@ -628,7 +628,7 @@ const Settings: React.FC = () => {
             if (wireTransferWarning) {
               setWireTransferWarning(false)
             }
-          }} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
+          }} variant="contained" className="btn-secondary">{commonStrings.CLOSE}</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -124,7 +124,7 @@ const OrderStatusFilter: React.FC<OrderStatusFilterProps> = (
                     refs.current[index] = ref
                   }
                 }}
-                type='checkbox'
+                type="checkbox"
                 data-value={status}
                 className={styles.statusCheckbox}
                 onChange={handleCheckOrderStatusChange}

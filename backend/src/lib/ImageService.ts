@@ -16,7 +16,7 @@ export const uploadProductImage = async (file: Blob): Promise<string> => {
 
   return fetchInstance
     .POST(
-      `/api/upload-image`,
+      '/api/upload-image',
       formData,
       user && user.accessToken ?
         [{ 'x-access-token': user.accessToken }, { 'Content-Type': 'multipart/form-data' }]
@@ -40,7 +40,7 @@ export const createCategoryImage = async (file: Blob): Promise<string> => {
 
   return fetchInstance
     .POST(
-      `/api/create-category-image`,
+      '/api/create-category-image',
       formData,
       user && user.accessToken ?
         [{ 'x-access-token': user.accessToken }, { 'Content-Type': 'multipart/form-data' }]

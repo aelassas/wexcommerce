@@ -209,7 +209,7 @@ const SignUp: React.FC = () => {
           <form onSubmit={handleSubmit}>
             <div>
               <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
+                <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
                 <OutlinedInput
                   type="text"
                   label={commonStrings.FULL_NAME}
@@ -221,7 +221,7 @@ const SignUp: React.FC = () => {
                 />
               </FormControl>
               <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
+                <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
                 <OutlinedInput
                   type="text"
                   label={commonStrings.EMAIL}
@@ -239,7 +239,7 @@ const SignUp: React.FC = () => {
                 </FormHelperText>
               </FormControl>
               <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
+                <InputLabel className="required">{commonStrings.PHONE}</InputLabel>
                 <OutlinedInput
                   type="text"
                   label={commonStrings.PHONE}
@@ -261,7 +261,7 @@ const SignUp: React.FC = () => {
                 </FormHelperText>
               </FormControl>
               <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
+                <InputLabel className="required">{commonStrings.ADDRESS}</InputLabel>
                 <OutlinedInput
                   type="text"
                   label={commonStrings.ADDRESS}
@@ -276,7 +276,7 @@ const SignUp: React.FC = () => {
                 />
               </FormControl>
               <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className='required'>{commonStrings.PASSWORD}</InputLabel>
+                <InputLabel className="required">{commonStrings.PASSWORD}</InputLabel>
                 <OutlinedInput
                   label={commonStrings.PASSWORD}
                   value={password}
@@ -293,7 +293,7 @@ const SignUp: React.FC = () => {
                 />
               </FormControl>
               <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className='required'>{commonStrings.CONFIRM_PASSWORD}</InputLabel>
+                <InputLabel className="required">{commonStrings.CONFIRM_PASSWORD}</InputLabel>
                 <OutlinedInput
                   label={commonStrings.CONFIRM_PASSWORD}
                   value={confirmPassword}
@@ -316,14 +316,14 @@ const SignUp: React.FC = () => {
                 <Button
                   type="submit"
                   variant="contained"
-                  className='btn-primary btn-margin-bottom'
+                  className="btn-primary btn-margin-bottom"
                   size="small"
                 >
                   {strings.SIGN_UP}
                 </Button>
                 <Button
                   variant="outlined"
-                  className='btn-margin-bottom'
+                  className="btn-margin-bottom"
                   size="small"
                   onClick={() => {
                     router.push('/')

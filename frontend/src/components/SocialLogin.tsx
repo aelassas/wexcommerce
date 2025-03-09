@@ -105,7 +105,7 @@ const SocialLogin: React.FC<SocialLoginProps> = ({
             <Image
               width={0}
               height={0}
-              sizes='100vw'
+              sizes="100vw"
               priority={true}
               alt="Facebook"
               src="/facebook-icon.png"
@@ -131,7 +131,7 @@ const SocialLogin: React.FC<SocialLoginProps> = ({
             <Image
               width={0}
               height={0}
-              sizes='100vw'
+              sizes="100vw"
               priority={true}
               alt="Apple"
               src="/apple-icon.png"
@@ -157,7 +157,7 @@ const SocialLogin: React.FC<SocialLoginProps> = ({
             <Image
               width={0}
               height={0}
-              sizes='100vw'
+              sizes="100vw"
               priority={true}
               alt="Google"
               src="/google-icon.png"

@@ -82,7 +82,7 @@ const ProductListItem: React.FC<ProductListItemProps> = (
             src={wexcommerceHelper.joinURL(env.CDN_PRODUCTS, product.image)}
             width={0}
             height={0}
-            sizes='100vw'
+            sizes="100vw"
             priority={true}
             className={styles.thumbnail}
           />
@@ -240,13 +240,13 @@ const ProductListItem: React.FC<ProductListItemProps> = (
             maxWidth="xs"
             open={openDeleteDialog}
           >
-            <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+            <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
             <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
-            <DialogActions className='dialog-actions'>
-              <Button onClick={() => setOpenDeleteDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
+            <DialogActions className="dialog-actions">
+              <Button onClick={() => setOpenDeleteDialog(false)} variant="outlined">{commonStrings.CANCEL}</Button>
               <Button
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
                 onClick={async () => {
                   try {
                     const cartId = await CartService.getCartId()

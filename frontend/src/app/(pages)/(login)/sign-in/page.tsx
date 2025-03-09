@@ -93,7 +93,7 @@ const SignIn: React.FC = () => {
       if (res.status === 200) {
         const fromCheckout = searchParams.has('from') && searchParams.get('from') === 'checkout'
         if (fromCheckout) {
-          router.push(`/checkout`)
+          router.push('/checkout')
         } else {
           const o = searchParams.get('o')
           if (o) {
@@ -149,7 +149,7 @@ const SignIn: React.FC = () => {
                 </FormControl>
 
                 <div className={styles.stayConnected}>
-                  <input type='checkbox' onChange={async (e) => {
+                  <input type="checkbox" onChange={async (e) => {
                     await UserService.setStayConnected(e.currentTarget.checked)
                   }} />
                   <label onClick={async (e) => {
@@ -161,7 +161,7 @@ const SignIn: React.FC = () => {
                 </div>
 
                 <div className={styles.resetPassword}>
-                  <Link href='/forgot-password'>{strings.RESET_PASSWORD}</Link>
+                  <Link href="/forgot-password">{strings.RESET_PASSWORD}</Link>
                 </div>
 
                 <SocialLogin />
@@ -173,7 +173,7 @@ const SignIn: React.FC = () => {
                     onClick={() => {
                       router.push('/sign-up')
                     }}
-                    className='btn-margin btn-margin-bottom'
+                    className="btn-margin btn-margin-bottom"
                   >
                     {strings.SIGN_UP}
                   </Button>
@@ -181,7 +181,7 @@ const SignIn: React.FC = () => {
                     type="submit"
                     variant="contained"
                     size="small"
-                    className='btn-primary btn-margin btn-margin-bottom'
+                    className="btn-primary btn-margin btn-margin-bottom"
                   >
                     {strings.SIGN_IN}
                   </Button>

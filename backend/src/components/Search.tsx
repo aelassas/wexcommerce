@@ -35,7 +35,7 @@ const Search: React.FC<SearchProps> = ({ className, onSubmit }) => {
   return (
     <div className={className}>
       <TextField
-        variant='standard'
+        variant="standard"
         value={keyword}
         onKeyDown={handleSearchKeyDown}
         onChange={handleSearchChange}
@@ -43,13 +43,13 @@ const Search: React.FC<SearchProps> = ({ className, onSubmit }) => {
         slotProps={{
           input: {
             endAdornment: keyword ? (
-              <IconButton size='small' onClick={() => setKeyword('')}>
+              <IconButton size="small" onClick={() => setKeyword('')}>
                 <ClearIcon style={{ width: 20, height: 20 }} />
               </IconButton>
             ) : <></>
           }
         }}
-        autoComplete='off'
+        autoComplete="off"
         className={styles.searchInput}
       />
       <IconButton onClick={handleSearch}>

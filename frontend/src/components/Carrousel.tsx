@@ -92,7 +92,7 @@ const Carrousel: React.FC<CarrouselProps> = ({
                   src={image}
                   width={0}
                   height={0}
-                  sizes='100vw'
+                  sizes="100vw"
                   priority={true}
                   className={styles.image}
                 />

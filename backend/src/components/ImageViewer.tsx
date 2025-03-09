@@ -185,7 +185,7 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
               src={src[currentIndex]}
               width={0}
               height={0}
-              sizes='100vw'
+              sizes="100vw"
               priority={true}
               className={styles.image}
               style={imageStyle}
@@ -212,7 +212,7 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
                     src={srcItem}
                     width={0}
                     height={0}
-                    sizes='100vw'
+                    sizes="100vw"
                     priority={true}
                     className={styles.thumbnail}
                   />

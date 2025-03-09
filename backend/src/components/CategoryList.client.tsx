@@ -105,10 +105,10 @@ export const Actions: React.FC<ActionsProps> = ({ categoryId }) => {
         maxWidth="xs"
         open={openInfoDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.INFO}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.INFO}</DialogTitle>
         <DialogContent>{strings.CANNOT_DELETE_CATEGORY}</DialogContent>
-        <DialogActions className='dialog-actions'>
-          <Button onClick={handleCloseInfo} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
+        <DialogActions className="dialog-actions">
+          <Button onClick={handleCloseInfo} variant="contained" className="btn-secondary">{commonStrings.CLOSE}</Button>
         </DialogActions>
       </Dialog>
 
@@ -117,11 +117,11 @@ export const Actions: React.FC<ActionsProps> = ({ categoryId }) => {
         maxWidth="xs"
         open={openDeleteDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{strings.DELETE_CATEGORY}</DialogContent>
-        <DialogActions className='dialog-actions'>
-          <Button onClick={handleCancelDelete} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
-          <Button onClick={handleConfirmDelete} variant='contained' color='error'>{commonStrings.DELETE}</Button>
+        <DialogActions className="dialog-actions">
+          <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary">{commonStrings.CANCEL}</Button>
+          <Button onClick={handleConfirmDelete} variant="contained" color="error">{commonStrings.DELETE}</Button>
         </DialogActions>
       </Dialog>
     </div>

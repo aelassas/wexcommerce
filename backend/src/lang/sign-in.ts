@@ -5,7 +5,7 @@ export const strings = new LocalizedStrings({
         SIGN_IN_HEADING: 'Connexion',
         SIGN_IN: 'Se connecter',
         SIGN_UP: "S'inscrire",
-        ERROR_IN_SIGN_IN: "E-mail ou mot de passe incorrect.",
+        ERROR_IN_SIGN_IN: 'E-mail ou mot de passe incorrect.',
         IS_BLACKLISTED: 'Votre compte est suspendu.',
         RESET_PASSWORD: 'Mot de passe oublié ?',
         STAY_CONNECTED: 'Rester connecté'

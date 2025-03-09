@@ -92,7 +92,7 @@ const Settings: React.FC = () => {
           <form onSubmit={handleSubmit}>
             <h1 className={styles.formTitle}>{headerStrings.SETTINGS}</h1>
             <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
+              <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
               <OutlinedInput
                 label={commonStrings.FULL_NAME}
                 type="text"
@@ -107,7 +107,7 @@ const Settings: React.FC = () => {
             </FormControl>
 
             <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
+              <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
               <OutlinedInput
                 type="text"
                 label={commonStrings.EMAIL}
@@ -119,7 +119,7 @@ const Settings: React.FC = () => {
             </FormControl>
 
             <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
+              <InputLabel className="required">{commonStrings.PHONE}</InputLabel>
               <OutlinedInput
                 type="text"
                 label={commonStrings.PHONE}
@@ -142,7 +142,7 @@ const Settings: React.FC = () => {
             </FormControl>
 
             <FormControl fullWidth margin="normal" size="small">
-              <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
+              <InputLabel className="required">{commonStrings.ADDRESS}</InputLabel>
               <OutlinedInput
                 type="text"
                 label={commonStrings.ADDRESS}
@@ -160,7 +160,7 @@ const Settings: React.FC = () => {
             <div className="buttons">
               <Button
                 variant="contained"
-                className='btn-primary btn-margin-bottom'
+                className="btn-primary btn-margin-bottom"
                 size="small"
                 onClick={() => {
                   router.push('/change-password')
@@ -171,14 +171,14 @@ const Settings: React.FC = () => {
               <Button
                 type="submit"
                 variant="contained"
-                className='btn-primary btn-margin-bottom'
+                className="btn-primary btn-margin-bottom"
                 size="small"
               >
                 {commonStrings.SAVE}
               </Button>
               <Button
                 variant="outlined"
-                className='btn-margin-bottom'
+                className="btn-margin-bottom"
                 size="small"
                 onClick={() => {
                   router.push('/')

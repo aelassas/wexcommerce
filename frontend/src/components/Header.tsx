@@ -343,13 +343,13 @@ const Header: React.FC<HeaderProps> = ({ hidden, hideSearch, hideCart, hideNotif
                   <MenuIcon />
                 </IconButton>
 
-                <Link href='/' className={styles.logo}>
+                <Link href="/" className={styles.logo}>
                   <Image
                     alt=""
                     src="/logo.png"
                     width={0}
                     height={0}
-                    sizes='100vw'
+                    sizes="100vw"
                     priority={true}
                     className={styles.logo}
                   />

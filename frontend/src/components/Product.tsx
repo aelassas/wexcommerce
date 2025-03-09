@@ -93,7 +93,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
               <Image
                 width={0}
                 height={0}
-                sizes='100vw'
+                sizes="100vw"
                 priority={true}
                 className={styles.thumbnail}
                 alt=""
@@ -114,7 +114,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                     <Image
                       width={0}
                       height={0}
-                      sizes='100vw'
+                      sizes="100vw"
                       priority={true}
                       alt=""
                       className={styles.image}
@@ -145,7 +145,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                   product.inCart ?
                     <Button
                       variant="outlined"
-                      color='error'
+                      color="error"
                       className={styles.button}
                       onClick={async () => {
                         try {
@@ -225,7 +225,7 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
                     product.inWishlist ?
                       <Button
                         variant="outlined"
-                        color='error'
+                        color="error"
                         startIcon={< RemoveFromWishlistIcon />}
                         title={commonStrings.REMOVE_FROM_WISHLIST}
                         className={styles.button}
@@ -319,13 +319,13 @@ const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
         maxWidth="xs"
         open={openDeleteDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
-        <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenDeleteDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
+        <DialogActions className="dialog-actions">
+          <Button onClick={() => setOpenDeleteDialog(false)} variant="outlined">{commonStrings.CANCEL}</Button>
           <Button
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             onClick={async () => {
               try {
                 const cartId = await CartService.getCartId()

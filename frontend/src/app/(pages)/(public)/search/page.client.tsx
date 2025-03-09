@@ -184,7 +184,7 @@ const ProductsWrapper: React.FC<ProductsWrapperProps> = (
           <ul className={styles.categories}>
             <li>
               <Link
-                href='/search'
+                href="/search"
                 className={!categoryId ? styles.selected : ''}
                 onClick={handleCategoryClick}
               >

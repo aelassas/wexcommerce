@@ -6,7 +6,7 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import env from '@/config/env.config'
 import { strings } from '../lang/footer'
 import { strings as headerStrings } from '../lang/header'
-import { LanguageContextType, useLanguageContext } from "@/context/LanguageContext"
+import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 
 import styles from '../styles/footer.module.css'
 

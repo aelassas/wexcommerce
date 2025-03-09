@@ -100,7 +100,7 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
               <div className={styles.actions}>
                 <Button
                   variant="outlined"
-                  color='error'
+                  color="error"
                   onClick={async () => {
                     setProductId(cartItem.product._id)
                     setOpenDeleteDialog(true)
@@ -113,7 +113,7 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
                     ? <SoldOut className={styles.label} />
                     : <div className={styles.quantity}>
                       <IconButton
-                        className='btn-primary'
+                        className="btn-primary"
                         disabled={cartItem.quantity === 1}
                         sx={iconStyle}
                         onClick={async () => {
@@ -140,7 +140,7 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
                       </IconButton>
                       <span className={styles.quantity}>{cartItem.quantity}</span>
                       <IconButton
-                        className='btn-primary'
+                        className="btn-primary"
                         disabled={cartItem.quantity >= cartItem.product.quantity}
                         sx={iconStyle}
                         onClick={async () => {
@@ -208,13 +208,13 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
         maxWidth="xs"
         open={openDeleteDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{commonStrings.REMOVE_FROM_CART_CONFIRM}</DialogContent>
-        <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenDeleteDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
+        <DialogActions className="dialog-actions">
+          <Button onClick={() => setOpenDeleteDialog(false)} variant="outlined">{commonStrings.CANCEL}</Button>
           <Button
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             onClick={async () => {
               try {
                 const cartId = cart._id
@@ -251,13 +251,13 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
         maxWidth="xs"
         open={openClearDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{strings.CLEAR_CART_CONFIRM}</DialogContent>
-        <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenClearDialog(false)} variant='outlined'>{commonStrings.CANCEL}</Button>
+        <DialogActions className="dialog-actions">
+          <Button onClick={() => setOpenClearDialog(false)} variant="outlined">{commonStrings.CANCEL}</Button>
           <Button
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             onClick={async () => {
               try {
                 const cartId = cart._id

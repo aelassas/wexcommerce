@@ -73,7 +73,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return language && !loading && (
     <RecaptchaProvider>
       <Header hideSearch />
-      <div className='content'>{children}</div>
+      <div className="content">{children}</div>
       <Footer />
     </RecaptchaProvider>
   )

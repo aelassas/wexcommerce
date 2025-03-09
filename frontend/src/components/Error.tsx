@@ -20,7 +20,7 @@ const Error: React.FC<ErrorProps> = ({ message, style, className, homeLink }) =>
       <div className={styles.error}>
         <span className={styles.message}>{message || commonStrings.GENERIC_ERROR}</span>
       </div>
-      {homeLink && <p><Link href='/'>{commonStrings.GO_TO_HOME}</Link></p>}
+      {homeLink && <p><Link href="/">{commonStrings.GO_TO_HOME}</Link></p>}
     </div>
   )
 }

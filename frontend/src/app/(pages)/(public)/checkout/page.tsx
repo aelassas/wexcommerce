@@ -359,8 +359,8 @@ const Checkout: React.FC = () => {
                       <Button
                         type="button"
                         variant="contained"
-                        size='small'
-                        className='btn-primary'
+                        size="small"
+                        className="btn-primary"
                         onClick={() => {
                           router.push('/sign-in?from=checkout')
                         }}
@@ -374,7 +374,7 @@ const Checkout: React.FC = () => {
                       </div>
                       <div className={styles.boxForm}>
                         <FormControl fullWidth margin="normal" size="small">
-                          <InputLabel className='required'>{commonStrings.FULL_NAME}</InputLabel>
+                          <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
                           <OutlinedInput
                             type="text"
                             label={commonStrings.FULL_NAME}
@@ -388,7 +388,7 @@ const Checkout: React.FC = () => {
                           />
                         </FormControl>
                         <FormControl fullWidth margin="normal" size="small">
-                          <InputLabel className='required'>{commonStrings.EMAIL}</InputLabel>
+                          <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
                           <OutlinedInput
                             type="text"
                             label={commonStrings.EMAIL}
@@ -417,14 +417,14 @@ const Checkout: React.FC = () => {
                               <span>
                                 <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
                                 <span> </span>
-                                <Link href='/sign-in'>{strings.SIGN_IN}</Link>
+                                <Link href="/sign-in">{strings.SIGN_IN}</Link>
                               </span>
                             ) || ''}
                             {(emailInfo && strings.EMAIL_INFO) || ''}
                           </FormHelperText>
                         </FormControl>
                         <FormControl fullWidth margin="normal" size="small">
-                          <InputLabel className='required'>{commonStrings.PHONE}</InputLabel>
+                          <InputLabel className="required">{commonStrings.PHONE}</InputLabel>
                           <OutlinedInput
                             type="text"
                             label={commonStrings.PHONE}
@@ -447,7 +447,7 @@ const Checkout: React.FC = () => {
                           </FormHelperText>
                         </FormControl>
                         <FormControl fullWidth margin="normal" size="small">
-                          <InputLabel className='required'>{commonStrings.ADDRESS}</InputLabel>
+                          <InputLabel className="required">{commonStrings.ADDRESS}</InputLabel>
                           <OutlinedInput
                             label={commonStrings.ADDRESS}
                             type="text"

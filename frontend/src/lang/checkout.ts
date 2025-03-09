@@ -17,7 +17,7 @@ export const strings = new LocalizedStrings({
     CVV: 'Code de sécurité',
     CVV_NOT_VALID: 'Code de sécurité non valide',
     CARD_DATE_ERROR: 'Date de carte non valide.',
-    CHECKOUT: "Confirmer la commande",
+    CHECKOUT: 'Confirmer la commande',
 
     CREDIT_CARD_SUCCESS: 'Votre paiement a été effectué avec succès. Nous vous avons envoyé un e-mail de confirmation.',
     COD_SUCCESS: 'Votre commande a bien été confirmée. Nous vous avons envoyé un e-mail de confirmation.',

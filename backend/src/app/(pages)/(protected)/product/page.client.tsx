@@ -208,7 +208,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
             label={cpStrings.CATEGORIES}
             required
             multiple
-            variant='standard'
+            variant="standard"
             selectedOptions={categories}
             onChange={(values) => {
               setCategories(values as wexcommerceTypes.CategoryInfo[])
@@ -284,7 +284,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
           <Button
             type="submit"
             variant="contained"
-            className='btn-primary btn-margin-bottom'
+            className="btn-primary btn-margin-bottom"
             size="small"
           >
             {commonStrings.SAVE}
@@ -292,8 +292,8 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
 
           <Button
             variant="contained"
-            className='btn-margin-bottom'
-            color='error'
+            className="btn-margin-bottom"
+            color="error"
             size="small"
             onClick={async () => {
               try {
@@ -316,7 +316,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
 
           <Button
             variant="contained"
-            className='btn-secondary btn-margin-bottom'
+            className="btn-secondary btn-margin-bottom"
             size="small"
             onClick={async () => {
               try {
@@ -345,10 +345,10 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
         maxWidth="xs"
         open={openInfoDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.INFO}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.INFO}</DialogTitle>
         <DialogContent>{strings.CANNOT_DELETE_PRODUCT}</DialogContent>
-        <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenInfoDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CLOSE}</Button>
+        <DialogActions className="dialog-actions">
+          <Button onClick={() => setOpenInfoDialog(false)} variant="contained" className="btn-secondary">{commonStrings.CLOSE}</Button>
         </DialogActions>
       </Dialog>
 
@@ -357,10 +357,10 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
         maxWidth="xs"
         open={openDeleteDialog}
       >
-        <DialogTitle className='dialog-header'>{commonStrings.CONFIRM_TITLE}</DialogTitle>
+        <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{strings.DELETE_PRODUCT}</DialogContent>
-        <DialogActions className='dialog-actions'>
-          <Button onClick={() => setOpenDeleteDialog(false)} variant='contained' className='btn-secondary'>{commonStrings.CANCEL}</Button>
+        <DialogActions className="dialog-actions">
+          <Button onClick={() => setOpenDeleteDialog(false)} variant="contained" className="btn-secondary">{commonStrings.CANCEL}</Button>
           <Button onClick={async () => {
             try {
               const status = await ProductService.deleteProduct(productId)
@@ -376,7 +376,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
             } catch (err) {
               helper.error(err)
             }
-          }} variant='contained' color='error'>{commonStrings.DELETE}</Button>
+          }} variant="contained" color="error">{commonStrings.DELETE}</Button>
         </DialogActions>
       </Dialog>
     </Paper>

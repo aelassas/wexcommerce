@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import validator from 'validator'
 import * as helper from '@/common/helper'
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import ScrollToTop from '@/components/ScrollToTop'
@@ -146,7 +146,7 @@ const ForgotPassword: React.FC = () => {
                 <div>
                   <label>{strings.EMAIL_SENT}</label>
                   <p>
-                    <Link href='/'>
+                    <Link href="/">
                       {commonStrings.GO_TO_HOME}
                     </Link>
                   </p>
@@ -155,7 +155,7 @@ const ForgotPassword: React.FC = () => {
                 <form onSubmit={handleSubmit}>
                   <label>{strings.RESET_PASSWORD}</label>
                   <FormControl fullWidth margin="normal" size="small">
-                    <InputLabel className='required'>
+                    <InputLabel className="required">
                       {commonStrings.EMAIL}
                     </InputLabel>
                     <OutlinedInput
@@ -163,9 +163,9 @@ const ForgotPassword: React.FC = () => {
                       onChange={handleEmailChange}
                       onKeyDown={handleEmailKeyDown}
                       onBlur={handleEmailBlur}
-                      type='text'
+                      type="text"
                       error={error || !emailValid}
-                      autoComplete='off'
+                      autoComplete="off"
                       size="small"
                       required
                     />
@@ -175,19 +175,19 @@ const ForgotPassword: React.FC = () => {
                     </FormHelperText>
                   </FormControl>
 
-                  <div className='buttons'>
+                  <div className="buttons">
                     <Button
                       type="submit"
-                      className='btn-primary btn-margin btn-margin-bottom'
+                      className="btn-primary btn-margin btn-margin-bottom"
                       size="small"
-                      variant='contained'
+                      variant="contained"
                     >
                       {strings.RESET}
                     </Button>
                     <Button
-                      className='btn-margin-bottom'
+                      className="btn-margin-bottom"
                       size="small"
-                      variant='outlined'
+                      variant="outlined"
                       onClick={() => {
                         router.push('/')
                       }}

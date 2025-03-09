@@ -8,6 +8,7 @@
     "build": "rimraf .next && tsc --build --verbose && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
     "start": "next start -p 8005",
     "lint": "next lint",
+    "fix": "next lint --fix",
     "ncu": "ncu -u",
     "stylelint": "stylelint \"**/*.css\"",
     "stylelint:fix": "stylelint \"**/*.css\" --fix"

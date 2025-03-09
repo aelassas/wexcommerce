@@ -46,7 +46,7 @@ export const deleteImage = async (productId: string, fileName: string): Promise<
 export const createProduct = async (data: wexcommerceTypes.CreateProductPayload): Promise<wexcommerceTypes.Response<wexcommerceTypes.Product>> =>
   fetchInstance
     .POST(
-      `/api/create-product`,
+      '/api/create-product',
       data,
       [await UserService.authHeader()],
     )
@@ -61,7 +61,7 @@ export const createProduct = async (data: wexcommerceTypes.CreateProductPayload)
 export const updateProduct = async (data: wexcommerceTypes.UpdateProductPayload): Promise<wexcommerceTypes.Response<wexcommerceTypes.Product>> =>
   fetchInstance
     .PUT(
-      `/api/update-product`,
+      '/api/update-product',
       data,
       [await UserService.authHeader()],
     )

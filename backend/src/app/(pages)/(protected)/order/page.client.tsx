@@ -156,7 +156,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
 
             <Button
               variant="contained"
-              className='btn-primary btn-margin-bottom'
+              className="btn-primary btn-margin-bottom"
               size="small"
               type="submit"
             >
@@ -165,7 +165,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
 
             <Button
               variant="contained"
-              className='btn-secondary btn-margin-bottom'
+              className="btn-secondary btn-margin-bottom"
               size="small"
               onClick={async () => {
                 router.push('/orders')

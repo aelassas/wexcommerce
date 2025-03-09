@@ -151,7 +151,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
         {
           category.values!.map((value, index) => (
             <FormControl key={index} fullWidth margin="dense">
-              <InputLabel className='required'>{env.LANGUAGES.filter(l => l.code === value.language)[0].label}</InputLabel>
+              <InputLabel className="required">{env.LANGUAGES.filter(l => l.code === value.language)[0].label}</InputLabel>
               <Input
                 type="text"
                 value={(values[index] && values[index].value) || ''}
@@ -191,14 +191,14 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
           <Button
             type="submit"
             variant="contained"
-            className='btn-primary btn-margin-bottom'
+            className="btn-primary btn-margin-bottom"
             size="small"
           >
             {commonStrings.SAVE}
           </Button>
           <Button
             variant="contained"
-            className='btn-secondary btn-margin-bottom'
+            className="btn-secondary btn-margin-bottom"
             size="small"
             onClick={() => {
               router.push('/categories')

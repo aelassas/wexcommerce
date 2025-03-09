@@ -103,7 +103,7 @@ const ChangePassword: React.FC = () => {
                 <FormControl fullWidth margin="normal" size="small">
                   <InputLabel
                     error={currentPasswordError}
-                    className='required'
+                    className="required"
                   >
                     {strings.CURRENT_PASSWORD}
                   </InputLabel>
@@ -115,7 +115,7 @@ const ChangePassword: React.FC = () => {
                     }}
                     value={currentPassword}
                     error={currentPasswordError}
-                    type='password'
+                    type="password"
                     size="small"
                     required
                   />
@@ -129,7 +129,7 @@ const ChangePassword: React.FC = () => {
                   fullWidth
                   margin="normal" size="small"
                 >
-                  <InputLabel className='required'>
+                  <InputLabel className="required">
                     {strings.NEW_PASSWORD}
                   </InputLabel>
                   <OutlinedInput
@@ -139,7 +139,7 @@ const ChangePassword: React.FC = () => {
                       setPasswordLengthError(false)
                       setConfirmPasswordError(false)
                     }}
-                    type='password'
+                    type="password"
                     value={newPassword}
                     error={passwordLengthError}
                     size="small"
@@ -158,7 +158,7 @@ const ChangePassword: React.FC = () => {
                 >
                   <InputLabel
                     error={confirmPasswordError}
-                    className='required'
+                    className="required"
                   >
                     {commonStrings.CONFIRM_PASSWORD}
                   </InputLabel>
@@ -175,7 +175,7 @@ const ChangePassword: React.FC = () => {
                       }
                     }}
                     error={confirmPasswordError}
-                    type='password'
+                    type="password"
                     value={confirmPassword}
                     size="small"
                     required
@@ -186,19 +186,19 @@ const ChangePassword: React.FC = () => {
                     {confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH}
                   </FormHelperText>
                 </FormControl>
-                <div className='buttons'>
+                <div className="buttons">
                   <Button
                     type="submit"
-                    className='btn-primary btn-margin btn-margin-bottom'
+                    className="btn-primary btn-margin btn-margin-bottom"
                     size="small"
-                    variant='contained'
+                    variant="contained"
                   >
                     {commonStrings.RESET_PASSWORD}
                   </Button>
                   <Button
-                    className='btn-margin-bottom'
+                    className="btn-margin-bottom"
                     size="small"
-                    variant='outlined'
+                    variant="outlined"
                     onClick={() => {
                       router.push('/')
                     }}

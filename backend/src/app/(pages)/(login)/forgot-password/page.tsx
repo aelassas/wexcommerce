@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import validator from 'validator'
 import * as helper from '@/common/helper'
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 import styles from '@/styles/forgot-password.module.css'
@@ -142,7 +142,7 @@ const ForgotPassword: React.FC = () => {
               <div>
                 <label>{strings.EMAIL_SENT}</label>
                 <p>
-                  <Link href='/'>
+                  <Link href="/">
                     {commonStrings.GO_TO_HOME}
                   </Link>
                 </p>
@@ -151,16 +151,16 @@ const ForgotPassword: React.FC = () => {
               <form onSubmit={handleSubmit}>
                 <label>{strings.RESET_PASSWORD}</label>
                 <FormControl fullWidth margin="dense">
-                  <InputLabel className='required'>
+                  <InputLabel className="required">
                     {commonStrings.EMAIL}
                   </InputLabel>
                   <Input
                     onChange={handleEmailChange}
                     onKeyDown={handleEmailKeyDown}
                     onBlur={handleEmailBlur}
-                    type='text'
+                    type="text"
                     error={error || !emailValid}
-                    autoComplete='off'
+                    autoComplete="off"
                     required
                   />
                   <FormHelperText error={error || !emailValid}>
@@ -169,19 +169,19 @@ const ForgotPassword: React.FC = () => {
                   </FormHelperText>
                 </FormControl>
 
-                <div className='buttons'>
+                <div className="buttons">
                   <Button
                     type="submit"
-                    className='btn-primary btn-margin btn-margin-bottom'
+                    className="btn-primary btn-margin btn-margin-bottom"
                     size="small"
-                    variant='contained'
+                    variant="contained"
                   >
                     {strings.RESET}
                   </Button>
                   <Button
-                    className='btn-secondary btn-margin-bottom'
+                    className="btn-secondary btn-margin-bottom"
                     size="small"
-                    variant='contained'
+                    variant="contained"
                     onClick={() => {
                       router.push('/')
                     }}
