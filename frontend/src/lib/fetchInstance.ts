@@ -42,11 +42,11 @@ const getHeaders = (initialValue: Record<string, string> = {}, headers?: Record<
 const fetchWithRetry = async (
   url: string,
   options: RequestInit = {},
-  retries: number = 5,
+  retries: number = 3,
   baseDelay: number = 1000,
   timeoutMs: number = 15000, // Timeout support to prevent hanging requests (15000ms default)
 ): Promise<globalThis.Response> => {
-  for (let i = 0; i < retries; i++) {
+  for (let i = 0; i <= retries; i++) {
     try {
       // Create an AbortController for timeout handling
       const controller = new AbortController()
