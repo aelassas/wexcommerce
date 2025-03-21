@@ -99,7 +99,6 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
     e.preventDefault()
 
     try {
-
       if (descriptionError) {
         return
       }

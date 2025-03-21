@@ -27,7 +27,6 @@ const Carrousel: React.FC<CarrouselProps> = ({
   showArrows,
   showDots,
 }) => {
-
   const slider = useRef<ReactSlick>(null)
 
   const infinite = images.length > env.CARROUSEL_SIZE

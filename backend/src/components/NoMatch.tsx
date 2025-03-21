@@ -8,7 +8,6 @@ import { strings } from '@/lang/no-match'
 import styles from '@/styles/no-match.module.css'
 
 const NoMatch: React.FC = () => {
-
   return (
     <div className={styles.noMatch}>
       <h2>{strings.NO_MATCH}</h2>

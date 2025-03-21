@@ -146,7 +146,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
               </div>
               <div className={styles.orderInfo}>
                 <span className={styles.orderLabel}>{strings.TOTAL}</span>
-                <span  className={styles.total}>{`${wexcommerceHelper.formatPrice(order.total, currency, language)}`}</span>
+                <span className={styles.total}>{`${wexcommerceHelper.formatPrice(order.total, currency, language)}`}</span>
               </div>
             </div>
 

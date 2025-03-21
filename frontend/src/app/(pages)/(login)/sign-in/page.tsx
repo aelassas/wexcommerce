@@ -102,9 +102,6 @@ const SignIn: React.FC = () => {
             router.push('/')
           }
         }
-
-
-
       } else {
         setError(true)
       }

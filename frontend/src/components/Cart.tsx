@@ -281,7 +281,6 @@ const Cart: React.FC<CartProps> = ({ cart }) => {
       </Dialog>
     </div>
   )
-
 }
 
 export default Cart

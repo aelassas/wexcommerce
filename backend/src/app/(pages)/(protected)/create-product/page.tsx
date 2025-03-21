@@ -68,8 +68,6 @@ const CreateProduct: React.FC = () => {
     e.preventDefault()
 
     try {
-
-
       if (!image) {
         setImageError(true)
         return

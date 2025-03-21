@@ -212,7 +212,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
 
     </Paper>
   )
-
 }
 
 export default CategoryForm

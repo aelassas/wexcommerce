@@ -84,7 +84,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       } else {
         helper.error(strings.VALIDATION_EMAIL_ERROR)
       }
-
     } catch (err) {
       helper.error(err, strings.VALIDATION_EMAIL_ERROR)
     }

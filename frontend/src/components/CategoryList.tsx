@@ -30,7 +30,6 @@ const CategoryList: React.FC<CategoryListProps> = (
     showNavigation,
     infinite: infiniteFromProps,
   }) => {
-
   const slider = useRef<ReactSlick>(null)
 
   const infinite = infiniteFromProps && categories.length > env.CARROUSEL_SIZE

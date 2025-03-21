@@ -136,7 +136,6 @@ const Checkout: React.FC = () => {
 
   useEffect(() => {
     if (cart && deliveryTypes) {
-
       const total = helper.total(cart.cartItems)
 
       if (total === 0) {
@@ -332,7 +331,6 @@ const Checkout: React.FC = () => {
       } else {
         helper.error()
       }
-
     } catch (err) {
       console.error(err)
       setError(true)

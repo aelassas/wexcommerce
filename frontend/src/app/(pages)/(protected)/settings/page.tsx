@@ -60,7 +60,6 @@ const Settings: React.FC = () => {
     e.preventDefault()
 
     try {
-
       if (!user) {
         return
       }

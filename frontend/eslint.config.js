@@ -131,6 +131,10 @@ export default [
       '@typescript-eslint/no-unused-vars': 'off',
       'quotes': ['error', 'single', { 'avoidEscape': true }],
       'jsx-quotes': ['error', 'prefer-double'],
+      'no-multiple-empty-lines': 'error',
+      'no-multi-spaces': 'error',
+      'padded-blocks': ['error', 'never'],
+      'no-irregular-whitespace': 'error',
       // 'react-compiler/react-compiler': 'error',
     }
   }

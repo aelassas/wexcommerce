@@ -34,7 +34,6 @@ const ChangePassword: React.FC = () => {
     e.preventDefault()
 
     try {
-
       if (!user) {
         return
       }

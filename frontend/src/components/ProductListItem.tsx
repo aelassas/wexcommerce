@@ -52,7 +52,6 @@ const ProductListItem: React.FC<ProductListItemProps> = (
     style,
     onRemoveWishlistItem
   }) => {
-
   const { currency } = useCurrencyContext() as CurrencyContextType
   const { language } = useLanguageContext() as LanguageContextType
   const { user } = useUserContext() as UserContextType

@@ -34,6 +34,4 @@ const ToastCart: React.FC<ToastCartProps> = ({ action }) => {
   )
 }
 
-
-
 export default ToastCart

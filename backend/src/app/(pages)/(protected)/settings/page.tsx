@@ -153,7 +153,6 @@ const Settings: React.FC = () => {
       const count = deliveryTypes.filter(pt => pt.enabled).length
 
       if (count > 0) {
-
         const status = await DeliveryTypeService.updateDeliveryTypes(deliveryTypes)
 
         if (status === 200) {
@@ -174,11 +173,9 @@ const Settings: React.FC = () => {
     e.preventDefault()
 
     try {
-
       const count = paymentTypes.filter(pt => pt.enabled).length
 
       if (count > 0) {
-
         const index = paymentTypes.findIndex(pt => pt.enabled && pt.name === wexcommerceTypes.PaymentType.WireTransfer)
 
         if (index > -1) {

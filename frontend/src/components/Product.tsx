@@ -38,7 +38,6 @@ interface ProductProps {
 }
 
 const Product: React.FC<ProductProps> = ({ product: productFromProps }) => {
-
   const { language } = useLanguageContext() as LanguageContextType
   const { currency } = useCurrencyContext() as CurrencyContextType
   const { user } = useUserContext() as UserContextType

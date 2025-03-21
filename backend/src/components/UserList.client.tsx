@@ -92,7 +92,6 @@ interface SubscribedAtProps {
 }
 
 export const SubscribedAt: React.FC<SubscribedAtProps> = ({ value }) => {
-
   const { language } = useLanguageContext() as LanguageContextType
   const _fr = language === 'fr'
   const _format = wexcommerceHelper.getDateFormat(language)

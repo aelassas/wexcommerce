@@ -14,7 +14,6 @@ interface ErrorProps {
 }
 
 const Error: React.FC<ErrorProps> = ({ message, style, className, homeLink }) => {
-
   return (
     <div style={style} className={className}>
       <div className={styles.error}>

@@ -10,7 +10,6 @@ interface InfoProps {
 }
 
 const Info: React.FC<InfoProps> = ({ message, hideLink, style, className }) => {
-
   return (
     <div style={style} className={`${className ? `${className} ` : ''}msg`}>
       <p>{message}</p>

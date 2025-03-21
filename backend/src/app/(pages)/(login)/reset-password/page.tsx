@@ -73,7 +73,6 @@ const ResetPassword: React.FC = () => {
         //
         setNoMatch(true)
       }
-
     }
 
     if (language) {
@@ -158,7 +157,6 @@ const ResetPassword: React.FC = () => {
         } else {
           helper.error()
         }
-
       } else {
         helper.error()
       }

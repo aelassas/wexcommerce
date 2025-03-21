@@ -26,7 +26,6 @@ const Accordion: React.FC<AccordionProps> = ({
     const _collapse = panel.classList.contains(styles.panelCollapse)
 
     if (panel.style.maxHeight || _collapse) {
-
       if (_collapse) {
         panel.classList.remove(styles.panelCollapse)
         panel.classList.add(styles.panel)

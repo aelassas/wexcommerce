@@ -30,7 +30,6 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = (
     showActions,
     infinite: infiniteFromProps,
   }) => {
-
   const slider = useRef<ReactSlick>(null)
 
   const infinite = infiniteFromProps && products.length > env.CARROUSEL_SIZE

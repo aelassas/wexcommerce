@@ -50,7 +50,6 @@ const ForgotPassword: React.FC = () => {
     setEmail(e.target.value)
 
     if (!e.target.value) {
-
       setError(false)
       setEmailValid(true)
     }
@@ -89,7 +88,6 @@ const ForgotPassword: React.FC = () => {
         return false
       }
     } else {
-
       setError(false)
       setEmailValid(true)
       return false

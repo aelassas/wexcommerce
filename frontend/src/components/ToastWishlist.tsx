@@ -34,6 +34,4 @@ const ToastWishlist: React.FC<ToastWishlistProps> = ({ action }) => {
   )
 }
 
-
-
 export default ToastWishlist

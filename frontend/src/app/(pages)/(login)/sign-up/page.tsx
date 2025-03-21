@@ -188,8 +188,6 @@ const SignUp: React.FC = () => {
         setPasswordsDontMatch(false)
         setLoading(false)
       }
-
-
     } catch (err) {
       helper.error(err)
       setError(true)
