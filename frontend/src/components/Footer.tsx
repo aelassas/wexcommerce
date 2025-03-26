@@ -44,7 +44,7 @@ const Footer: React.FC = () => {
         </div>
         <div className={styles.copyright}>
           <span>{strings.COPYRIGHT}</span>
-          <div className={styles.payment}>
+          <div className={env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe ? styles.stripe : styles.paypal}>
             <Image
               width={0}
               height={0}
@@ -52,8 +52,7 @@ const Footer: React.FC = () => {
               priority={true}
               alt=""
               src={env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe ? '/stripe.png' : '/paypal.png'}
-              // className={env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe ? styles.stripe : styles.paypal}
-              className={styles.payment}
+              className={env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.Stripe ? styles.stripe : styles.paypal}
             />
           </div>
         </div>

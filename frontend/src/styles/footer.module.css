@@ -3,12 +3,18 @@ div.footer {
   border-top: 1px solid #ddd;
 }
 
-div.footer div.payment {
+div.footer div.stripe {
   width: auto;
-  height: 68px;
+  height: auto;
 }
 
-div.footer img.payment {
+div.footer div.paypal {
+  width: auto;
+  height: 52px;
+}
+
+div.footer img.stripe,
+div.footer img.paypal {
   width: auto;
   height: auto;
   max-width: 100%;
@@ -104,7 +110,8 @@ div.footer div.main div.copyright {
     margin-bottom: 20px;
   }
 
-  div.footer div.payment {
+  div.footer div.stripe,
+  div.footer div.paypal {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
