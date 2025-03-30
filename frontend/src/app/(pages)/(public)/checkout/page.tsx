@@ -382,7 +382,7 @@ const Checkout: React.FC = () => {
                             }}
                             autoComplete="off"
                             size="small"
-                            disabled={!!clientSecret}
+                            disabled={!!clientSecret || payPalLoaded}
                           />
                         </FormControl>
                         <FormControl fullWidth margin="normal" size="small">
@@ -407,7 +407,7 @@ const Checkout: React.FC = () => {
                             required
                             autoComplete="off"
                             size="small"
-                            disabled={!!clientSecret}
+                            disabled={!!clientSecret || payPalLoaded}
                           />
                           <FormHelperText error={!emailValid || emailRegistered}>
                             {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
@@ -438,7 +438,7 @@ const Checkout: React.FC = () => {
                             required
                             autoComplete="off"
                             size="small"
-                            disabled={!!clientSecret}
+                            disabled={!!clientSecret || payPalLoaded}
                           />
                           <FormHelperText error={!phoneValid}>
                             {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
@@ -457,7 +457,7 @@ const Checkout: React.FC = () => {
                             minRows={3}
                             value={address}
                             size="small"
-                            disabled={!!clientSecret}
+                            disabled={!!clientSecret || payPalLoaded}
                           />
                         </FormControl>
 
@@ -534,7 +534,7 @@ const Checkout: React.FC = () => {
                             key={paymentType.name}
                             value={paymentType.name}
                             control={<Radio />}
-                            disabled={!!clientSecret}
+                            disabled={!!clientSecret || payPalLoaded}
                             label={
                               <span className={styles.paymentButton}>
                                 <span>{
@@ -572,7 +572,7 @@ const Checkout: React.FC = () => {
                             key={deliveryType.name}
                             value={deliveryType.name}
                             control={<Radio />}
-                            disabled={!!clientSecret}
+                            disabled={!!clientSecret || payPalLoaded}
                             label={
                               <div className={styles.delivery}>
                                 <span>{helper.getDeliveryType(deliveryType.name, language)}</span>
