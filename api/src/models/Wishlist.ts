@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
+import * as logger from '../common/logger'
 
 const wishlistSchema = new Schema<env.Wishlist>({
   user: {
@@ -16,6 +17,14 @@ const wishlistSchema = new Schema<env.Wishlist>({
   collection: 'Wishlist',
 })
 
-const Cart = model<env.Wishlist>('Wishlist', wishlistSchema)
+// Add custom indexes
+wishlistSchema.index({ user: 1 })
 
-export default Cart
+const Wishlist = model<env.Wishlist>('Wishlist', wishlistSchema)
+
+// Create indexes manually and handle potential errors
+Wishlist.syncIndexes().catch((err) => {
+  logger.error('Error creating Wishlist indexes:', err)
+})
+
+export default Wishlist

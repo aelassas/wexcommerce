@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
+import * as logger from '../common/logger'
 
 const productSchema = new Schema<env.Product>({
   name: {
@@ -52,6 +53,20 @@ const productSchema = new Schema<env.Product>({
   collection: 'Product',
 })
 
+// Add indexes to optimize queries
+productSchema.index({ categories: 1, name: 1, hidden: 1 }) // Optimizes category + name + hidden filter
+productSchema.index({ name: 1, hidden: 1 }) // For cases without category filtering
+productSchema.index({ name: 'text' }) // Optimizes regex search on 'name' (switch to text search if possible)
+productSchema.index({ price: 1, createdAt: -1 }) // For price sorting with createdAt as tie-breaker
+productSchema.index({ price: -1, createdAt: -1 }) // For price descending sorting with createdAt as tie-breaker
+productSchema.index({ featured: -1, createdAt: -1 }) // For featured sorting with createdAt as tie-breaker
+productSchema.index({ createdAt: -1 }) // Default sorting by createdAt
+
 const Product = model<env.Product>('Product', productSchema)
+
+// Create indexes manually and handle potential errors
+Product.syncIndexes().catch((err) => {
+  logger.error('Error creating Product indexes:', err)
+})
 
 export default Product

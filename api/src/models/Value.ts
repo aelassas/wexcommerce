@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
+import * as logger from '../common/logger'
 
-const locationValueSchema = new Schema<env.Value>(
+const valueSchema = new Schema<env.Value>(
   {
     language: {
       type: String,
@@ -26,6 +27,16 @@ const locationValueSchema = new Schema<env.Value>(
   },
 )
 
-const Value = model<env.Value>('Value', locationValueSchema)
+// Add custom indexes
+valueSchema.index({ language: 1, value: 1 })
+valueSchema.index({ value: 'text' })
+
+const Value = model<env.Value>('Value', valueSchema)
+
+// Create indexes manually and handle potential errors
+Value.syncIndexes().catch((err) => {
+  logger.error('Error creating Value indexes:', err)
+})
+
 
 export default Value
