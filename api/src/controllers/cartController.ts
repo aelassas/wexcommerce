@@ -58,10 +58,10 @@ export const addItem = async (req: Request, res: Response) => {
     cart.cartItems.push(cartItem.id)
     await cart.save()
 
-    return res.status(200).json(cart._id)
+    res.status(200).json(cart._id)
   } catch (err) {
     logger.error(`[cart.addItem] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -87,12 +87,13 @@ export const updateItem = async (req: Request, res: Response) => {
       cartItem.quantity = Number(quantity)
       await cartItem.save()
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.updateItem] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -136,15 +137,16 @@ export const deleteItem = async (req: Request, res: Response) => {
             }
           }
 
-          return res.status(200).json({ cartDeleted, quantity })
+          res.status(200).json({ cartDeleted, quantity })
+          return
         }
       }
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.deleteItem] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -166,12 +168,13 @@ export const deleteCart = async (req: Request, res: Response) => {
     const cart = await Cart.findByIdAndDelete(id)
     if (cart) {
       await CartItem.deleteMany({ _id: { $in: cart.cartItems } })
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.deleteCart] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -203,12 +206,13 @@ export const getCart = async (req: Request, res: Response) => {
       .lean()
 
     if (cart) {
-      return res.json(cart)
+      res.json(cart)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.getCart] ${i18n.t('DB_ERROR')} ${req.params.id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -253,12 +257,13 @@ export const getCartCount = async (req: Request, res: Response) => {
     ])
 
     if (data.length > 0) {
-      return res.json(data[0].cartCount)
+      res.json(data[0].cartCount)
+      return
     }
-    return res.json(0)
+    res.json(0)
   } catch (err) {
     logger.error(`[cart.getCartCount] ${i18n.t('DB_ERROR')} ${req.params.id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -281,13 +286,14 @@ export const getCartId = async (req: Request, res: Response) => {
     const cart = await Cart.findOne({ user })
 
     if (cart) {
-      return res.json(cart._id)
+      res.json(cart._id)
+      return
     }
 
-    return res.json(null)
+    res.json(null)
   } catch (err) {
     logger.error(`[cart.getCartId] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).json(null)
+    res.status(400).json(null)
   }
 }
 
@@ -317,12 +323,13 @@ export const update = async (req: Request, res: Response) => {
       cart.user = new mongoose.Types.ObjectId(user)
       await cart.save()
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.update] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -345,12 +352,13 @@ export const check = async (req: Request, res: Response) => {
     const cart = await Cart.findById(id)
 
     if (cart) {
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.check] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -384,11 +392,12 @@ export const clearOtherCarts = async (req: Request, res: Response) => {
         await otherCart.deleteOne()
       }
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.clearOtherCarts] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

@@ -75,7 +75,7 @@ describe('POST /api/upload-image', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1)
-    if (!await helper.exists(image)) {
+    if (!(await helper.exists(image))) {
       await fs.copyFile(IMAGE1_PATH, image)
     }
 
@@ -106,7 +106,7 @@ describe('POST /api/delete-temp-image/:fileName', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1)
-    if (!await helper.exists(image)) {
+    if (!(await helper.exists(image))) {
       await fs.copyFile(IMAGE1_PATH, image)
     }
 
@@ -130,11 +130,11 @@ describe('POST /api/delete-image/:product/:image', () => {
 
     // init
     const image1 = path.join(env.CDN_PRODUCTS, IMAGE1_1)
-    if (!await helper.exists(image1)) {
+    if (!(await helper.exists(image1))) {
       await fs.copyFile(IMAGE1_1_PATH, image1)
     }
     const image2 = path.join(env.CDN_PRODUCTS, IMAGE1_2)
-    if (!await helper.exists(image2)) {
+    if (!(await helper.exists(image2))) {
       await fs.copyFile(IMAGE1_2_PATH, image2)
     }
     const product = new Product({
@@ -191,15 +191,15 @@ describe('POST /api/create-product', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1)
-    if (!await helper.exists(image)) {
+    if (!(await helper.exists(image))) {
       await fs.copyFile(IMAGE1_PATH, image)
     }
     const image1 = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1_1)
-    if (!await helper.exists(image1)) {
+    if (!(await helper.exists(image1))) {
       await fs.copyFile(IMAGE1_1_PATH, image1)
     }
     const image2 = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1_2)
-    if (!await helper.exists(image2)) {
+    if (!(await helper.exists(image2))) {
       await fs.copyFile(IMAGE1_2_PATH, image2)
     }
 
@@ -276,15 +276,15 @@ describe('PUT /api/update-product', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_PRODUCTS, IMAGE2)
-    if (!await helper.exists(image)) {
+    if (!(await helper.exists(image))) {
       await fs.copyFile(IMAGE2_PATH, image)
     }
     const image1 = path.join(env.CDN_TEMP_PRODUCTS, IMAGE2_1)
-    if (!await helper.exists(image1)) {
+    if (!(await helper.exists(image1))) {
       await fs.copyFile(IMAGE2_1_PATH, image1)
     }
     const image2 = path.join(env.CDN_TEMP_PRODUCTS, IMAGE2_2)
-    if (!await helper.exists(image2)) {
+    if (!(await helper.exists(image2))) {
       await fs.copyFile(IMAGE2_2_PATH, image2)
     }
 

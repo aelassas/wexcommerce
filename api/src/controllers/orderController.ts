@@ -256,7 +256,7 @@ export const checkout = async (req: Request, res: Response) => {
       await notify(env.ADMIN_EMAIL, __order, _user, settings)
     }
 
-    return res.status(200).send({ orderId: __order.id })
+    res.status(200).send({ orderId: __order.id })
   } catch (err) {
     for (const orderItem of orderItems) {
       await orderItem.deleteOne()
@@ -265,7 +265,7 @@ export const checkout = async (req: Request, res: Response) => {
       await __order.deleteOne()
     }
     logger.error(`[order.checkout] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -338,13 +338,14 @@ export const update = async (req: Request, res: Response) => {
         await counter.save()
       }
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[ordert.update] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -376,12 +377,13 @@ export const deleteOrder = async (req: Request, res: Response) => {
     const order = await Order.findByIdAndDelete(id)
     if (order) {
       await OrderItem.deleteMany({ _id: { $in: order.orderItems } })
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[order.delete] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -409,10 +411,10 @@ export const deleteTempOrder = async (req: Request, res: Response) => {
       await order.deleteOne()
     }
 
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[order.deleteTempOrder] ${i18n.t('DB_ERROR')} ${JSON.stringify({ orderId, sessionId })}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -514,12 +516,13 @@ export const getOrder = async (req: Request, res: Response) => {
       const order = data[0]
       const { _id, fullName } = order.user
       order.user = { _id, fullName }
-      return res.json(order)
+      res.json(order)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[order.getOrder] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -712,9 +715,9 @@ export const getOrders = async (req: Request, res: Response) => {
       }
     }
 
-    return res.json(data)
+    res.json(data)
   } catch (err) {
     logger.error(`[order.getOrders] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

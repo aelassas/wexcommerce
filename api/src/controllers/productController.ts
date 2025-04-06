@@ -35,10 +35,10 @@ export const uploadImage = async (req: Request, res: Response) => {
     const filepath = path.join(env.CDN_TEMP_PRODUCTS, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
-    return res.json(filename)
+    res.json(filename)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -54,16 +54,16 @@ export const deleteTempImage = async (req: Request, res: Response) => {
   try {
     const _image = path.join(env.CDN_TEMP_PRODUCTS, req.params.fileName)
 
-    if (!await helper.exists(_image)) {
+    if (!(await helper.exists(_image))) {
       throw new Error(`[product.deleteTempImage] temp image ${_image} not found`)
     }
 
     await fs.unlink(_image)
 
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -93,14 +93,15 @@ export const deleteImage = async (req: Request, res: Response) => {
         }
         product.images!.splice(index, 1)
         await product.save()
-        return res.sendStatus(200)
+        res.sendStatus(200)
+        return
       }
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -168,10 +169,10 @@ export const create = async (req: Request, res: Response) => {
     }
 
     await product.save()
-    return res.status(200).json(product)
+    res.status(200).json(product)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -218,7 +219,7 @@ export const update = async (req: Request, res: Response) => {
       if (image) {
         const tempImagePath = path.join(env.CDN_TEMP_PRODUCTS, image)
 
-        if (!await helper.exists(tempImagePath)) {
+        if (!(await helper.exists(tempImagePath))) {
           throw new Error(`${image} not found`)
         }
 
@@ -272,13 +273,14 @@ export const update = async (req: Request, res: Response) => {
       }
 
       await product.save()
-      return res.status(200).json(product)
+      res.status(200).json(product)
+      return
     }
 
     throw new Error(`Product ${_id} not found`)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -300,12 +302,13 @@ export const checkProduct = async (req: Request, res: Response) => {
     const count = await OrderItem.find({ product: id }).limit(1).countDocuments()
 
     if (count === 1) {
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[product.checkProduct] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -355,13 +358,14 @@ export const deleteProduct = async (req: Request, res: Response) => {
       }
       await OrderItem.deleteMany({ product: product.id })
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -465,13 +469,14 @@ export const getProduct = async (req: Request, res: Response) => {
     ])
 
     if (data.length > 0) {
-      return res.json(data[0])
+      res.json(data[0])
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -566,10 +571,10 @@ export const getBackendProducts = async (req: Request, res: Response) => {
       },
     ], { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } })
 
-    return res.json(products)
+    res.json(products)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -697,10 +702,10 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
       },
     ], { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } })
 
-    return res.json(products)
+    res.json(products)
   } catch (err) {
     logger.error(i18n.t('DB_ERROR'), err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -771,9 +776,9 @@ export const getFeaturedProducts = async (req: Request, res: Response) => {
       },
     ], { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } })
 
-    return res.json(products)
+    res.json(products)
   } catch (err) {
     logger.error(`[product.getFeaturedProducts] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

@@ -31,10 +31,10 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
 
     const paypalOrderId = await paypal.createOrder(orderId, amount, currency, name, description, countryCode)
 
-    return res.json(paypalOrderId)
+    res.json(paypalOrderId)
   } catch (err) {
     logger.error(`[paypal.createPayPalOrder] ${i18n.t('ERROR')}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -66,7 +66,8 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     if (!order) {
       const msg = `Order ${orderId} not found`
       logger.info(`[paypal.checkCheckoutSession] ${msg}`)
-      return res.status(204).send(msg)
+      res.status(204).send(msg)
+      return
     }
 
     let paypalOrder
@@ -79,7 +80,8 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     if (!paypalOrder) {
       const msg = `Order ${paypalOrder} not found`
       logger.info(`[paypal.checkPayPalOrder] ${msg}`)
-      return res.status(204).send(msg)
+      res.status(204).send(msg)
+      return
     }
 
     //
@@ -114,7 +116,8 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
       const user = await User.findById(order.user)
       if (!user) {
         logger.info(`User ${order.user} not found`)
-        return res.sendStatus(204)
+        res.sendStatus(204)
+        return
       }
 
       user.expireAt = undefined
@@ -135,16 +138,17 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
       // }
       await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
     //
     // 3. Delete Booking if the payment didn't succeed
     //
     await order.deleteOne()
-    return res.status(400).send(paypalOrder.status)
+    res.status(400).send(paypalOrder.status)
   } catch (err) {
     logger.error(`[paypal.checkPayPalOrder] ${i18n.t('ERROR')}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }

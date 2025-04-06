@@ -29,10 +29,10 @@ export const getDeliveryTypes = async (req: Request, res: Response) => {
   try {
     const deliveryTypes = await DeliveryType.find().sort({ createdAt: 1 })
 
-    return res.json(deliveryTypes)
+    res.json(deliveryTypes)
   } catch (err) {
     logger.error(`[deliveryType.getDeliveryTypes] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -40,10 +40,10 @@ export const getEnabledDeliveryTypes = async (req: Request, res: Response) => {
   try {
     const deliveryTypes = await DeliveryType.find({ enabled: true }).sort({ createdAt: 1 })
 
-    return res.json(deliveryTypes)
+    res.json(deliveryTypes)
   } catch (err) {
     logger.error(`[deliveryType.getEnabledDeliveryTypes] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -60,9 +60,9 @@ export const updateDeliveryTypes = async (req: Request, res: Response) => {
       }
     }
 
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[deliveryType.updateDeliveryTypes] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

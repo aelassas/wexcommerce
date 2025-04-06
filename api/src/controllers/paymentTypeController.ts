@@ -30,10 +30,10 @@ export const getPaymentTypes = async (req: Request, res: Response) => {
   try {
     const paymentTypes = await PaymentType.find().sort({ createdAt: 1 })
 
-    return res.json(paymentTypes)
+    res.json(paymentTypes)
   } catch (err) {
     logger.error(`[paymentType.getPaymentTypes] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -41,10 +41,10 @@ export const getEnabledPaymentTypes = async (req: Request, res: Response) => {
   try {
     const paymentTypes = await PaymentType.find({ enabled: true }).sort({ createdAt: 1 })
 
-    return res.json(paymentTypes)
+    res.json(paymentTypes)
   } catch (err) {
     logger.error(`[paymentType.getEnabledPaymentTypes] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -60,9 +60,9 @@ export const updatePaymentTypes = async (req: Request, res: Response) => {
       }
     }
 
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[paymentType.updatePaymentTypes] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

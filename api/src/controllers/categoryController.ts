@@ -60,13 +60,14 @@ export const validate = async (req: Request, res: Response) => {
     ])
 
     if (categories.length > 0 && categories[0].count > 0) {
-      return res.sendStatus(204)
+      res.sendStatus(204)
+      return
     }
 
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[category.validate] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -85,12 +86,13 @@ export const checkCategory = async (req: Request, res: Response) => {
       .countDocuments()
 
     if (count === 1) {
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[category.checkCategory] ${i18n.t('DB_ERROR')} ${req.params.id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -110,9 +112,10 @@ export const create = async (req: Request, res: Response) => {
     if (image) {
       const _image = path.join(env.CDN_TEMP_CATEGORIES, image)
 
-      if (!await helper.exists(_image)) {
+      if (!(await helper.exists(_image))) {
         logger.error(i18n.t('CATEGORY_IMAGE_NOT_FOUND'), body)
-        return res.status(400).send(i18n.t('CATEGORY_IMAGE_NOT_FOUND'))
+        res.status(400).send(i18n.t('CATEGORY_IMAGE_NOT_FOUND'))
+        return
       }
     }
 
@@ -142,10 +145,10 @@ export const create = async (req: Request, res: Response) => {
       }
     }
 
-    return res.status(200).send(category)
+    res.status(200).send(category)
   } catch (err) {
     logger.error(`[category.create] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -161,7 +164,8 @@ export const update = async (req: Request, res: Response) => {
     const category = await Category.findById(req.params.id).populate<{ values: env.Value[] }>('values')
 
     if (!category) {
-      return res.sendStatus(204)
+      res.sendStatus(204)
+      return
     }
 
     const { body }: { body: wexcommerceTypes.UpsertCategoryPayload } = req
@@ -183,10 +187,10 @@ export const update = async (req: Request, res: Response) => {
         await category.save()
       }
     }
-    return res.status(200).send(category)
+    res.status(200).send(category)
   } catch (err) {
     logger.error(`[category.update] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -213,12 +217,13 @@ export const deleteCategory = async (req: Request, res: Response) => {
           await fs.unlink(image)
         }
       }
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[category.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -245,13 +250,14 @@ export const getCategory = async (req: Request, res: Response) => {
 
     if (category) {
       const name = category.values.filter((value) => value.language === language)[0].value
-      return res.json({ _id: category._id, name, values: category.values, image: category.image, featured: category.featured })
+      res.json({ _id: category._id, name, values: category.values, image: category.image, featured: category.featured })
+      return
     }
     logger.error('[category.getCategory] Category not found:', id)
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[category.getCategory] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -303,10 +309,10 @@ export const getCategories = async (req: Request, res: Response) => {
       { $sort: { name: 1 } },
     ], { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } })
 
-    return res.json(categories)
+    res.json(categories)
   } catch (err) {
     logger.error(`[category.getCategories] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -458,10 +464,10 @@ export const getFeaturedCategories = async (req: Request, res: Response) => {
       },
     ])
 
-    return res.json(data)
+    res.json(data)
   } catch (err) {
     logger.error(`[category.getFeaturedCategories] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -507,10 +513,10 @@ export const searchCategories = async (req: Request, res: Response) => {
       { $sort: { name: 1 } },
     ], { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } })
 
-    return res.json(categories)
+    res.json(categories)
   } catch (err) {
     logger.error(`[category.getCategories] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -533,10 +539,10 @@ export const createImage = async (req: Request, res: Response) => {
     const filepath = path.join(env.CDN_TEMP_CATEGORIES, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
-    return res.json(filename)
+    res.json(filename)
   } catch (err) {
     logger.error(`[category.createImage] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -575,14 +581,15 @@ export const updateImage = async (req: Request, res: Response) => {
       await fs.writeFile(filepath, file.buffer)
       category.image = filename
       await category.save()
-      return res.json(filename)
+      res.json(filename)
+      return
     }
 
     logger.error('[category.updateImage] Category not found:', id)
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[category.updateImage] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -614,13 +621,14 @@ export const deleteImage = async (req: Request, res: Response) => {
       category.image = undefined
 
       await category.save()
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
     logger.error('[category.deleteImage] Category not found:', id)
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[category.deleteImage] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -638,7 +646,7 @@ export const deleteTempImage = async (req: Request, res: Response) => {
 
   try {
     const imageFile = path.join(env.CDN_TEMP_CATEGORIES, image)
-    if (!await helper.exists(imageFile)) {
+    if (!(await helper.exists(imageFile))) {
       throw new Error(`[category.deleteTempImage] temp image ${imageFile} not found`)
     }
 

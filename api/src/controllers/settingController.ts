@@ -38,10 +38,10 @@ export const getLanguage = async (req: Request, res: Response) => {
   try {
     const settings = await Setting.findOne({})
 
-    return res.json(settings?.language || env.DEFAULT_LANGUAGE)
+    res.json(settings?.language || env.DEFAULT_LANGUAGE)
   } catch (err) {
     logger.error(`[setting.getLanguage] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -57,10 +57,10 @@ export const getCurrency = async (req: Request, res: Response) => {
   try {
     const settings = await Setting.findOne({})
 
-    return res.json(settings?.currency || env.DEFAULT_CURRENCY)
+    res.json(settings?.currency || env.DEFAULT_CURRENCY)
   } catch (err) {
     logger.error(`[setting.getCurrency] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -76,10 +76,10 @@ export const getStripeCurrency = async (req: Request, res: Response) => {
   try {
     const settings = await Setting.findOne({})
 
-    return res.json(settings?.stripeCurrency || env.DEFAULT_STRIPE_CURRENCY)
+    res.json(settings?.stripeCurrency || env.DEFAULT_STRIPE_CURRENCY)
   } catch (err) {
     logger.error(`[setting.getCurrency] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -95,10 +95,10 @@ export const getSettings = async (req: Request, res: Response) => {
   try {
     const settings = await Setting.findOne({})
 
-    return res.json(settings)
+    res.json(settings)
   } catch (err) {
     logger.error(`[setting.getSettings] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -122,13 +122,14 @@ export const updateSettings = async (req: Request, res: Response) => {
 
       await settings.save()
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[setting.updateSettings] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -153,12 +154,13 @@ export const updateBankSettings = async (req: Request, res: Response) => {
 
       await settings.save()
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[setting.updateBankSettings] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

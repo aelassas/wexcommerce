@@ -63,7 +63,7 @@ afterAll(async () => {
 describe('POST /api/sign-up', () => {
   it('should create a user', async () => {
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
-    if (!await helper.exists(tempAvatar)) {
+    if (!(await helper.exists(tempAvatar))) {
       await fs.copyFile(AVATAR1_PATH, tempAvatar)
     }
 
@@ -206,7 +206,7 @@ describe('POST /api/activate', () => {
 
     res = await request(app)
       .post('/api/activate')
-    expect(res.statusCode).toBe(400)
+    expect(res.statusCode).toBe(500)
   })
 })
 
@@ -457,7 +457,7 @@ describe('POST /api/social-sign-in/:type', () => {
 
     res = await request(app)
       .post('/api/social-sign-in')
-    expect(res.statusCode).toBe(400)
+    expect(res.statusCode).toBe(500)
   })
 })
 
@@ -735,7 +735,7 @@ describe('POST /api/delete-temp-avatar/:avatar', () => {
     const token = await testHelper.signinAsAdmin()
 
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
-    if (!await helper.exists(tempAvatar)) {
+    if (!(await helper.exists(tempAvatar))) {
       await fs.copyFile(AVATAR1_PATH, tempAvatar)
     }
     let res = await request(app)
@@ -913,7 +913,7 @@ describe('POST /api/is-user', () => {
 
     res = await request(app)
       .post('/api/is-user')
-    expect(res.statusCode).toBe(400)
+    expect(res.statusCode).toBe(500)
   })
 })
 
@@ -935,7 +935,7 @@ describe('POST /api/is-admin', () => {
 
     res = await request(app)
       .post('/api/is-admin')
-    expect(res.statusCode).toBe(400)
+    expect(res.statusCode).toBe(500)
   })
 })
 

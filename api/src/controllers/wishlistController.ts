@@ -40,10 +40,10 @@ export const addItem = async (req: Request, res: Response) => {
     wishlist.products.push(new mongoose.Types.ObjectId(productId))
     await wishlist.save()
 
-    return res.status(200).json(wishlist._id)
+    res.status(200).json(wishlist._id)
   } catch (err) {
     logger.error(`[wishlist.addItem] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -71,12 +71,13 @@ export const deleteItem = async (req: Request, res: Response) => {
 
     if (wishlist) {
       await wishlist.updateOne({ $pull: { products: new mongoose.Types.ObjectId(productId) } })
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[wishlist.deleteItem] ${i18n.t('DB_ERROR')} ${req.body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -105,12 +106,13 @@ export const getWishlist = async (req: Request, res: Response) => {
       for (const product of wishlist.products) {
         product.inWishlist = true
       }
-      return res.json(wishlist)
+      res.json(wishlist)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[wishlist.getWishlist] ${i18n.t('DB_ERROR')} ${req.params.id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -133,13 +135,14 @@ export const getWishlistCount = async (req: Request, res: Response) => {
     const wishlist = await Wishlist.findById(id)
 
     if (wishlist) {
-      return res.json(wishlist.products.length)
+      res.json(wishlist.products.length)
+      return
     }
 
-    return res.json(0)
+    res.json(0)
   } catch (err) {
     logger.error(`[wishlist.getWishlistCount] ${i18n.t('DB_ERROR')} ${req.params.id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -162,13 +165,14 @@ export const getWishlistId = async (req: Request, res: Response) => {
     const wishlist = await Wishlist.findOne({ user })
 
     if (wishlist) {
-      return res.json(wishlist.id)
+      res.json(wishlist.id)
+      return
     }
 
-    return res.json(null)
+    res.json(null)
   } catch (err) {
     logger.error(`[wishlist.getWishlistId] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).json(null)
+    res.status(400).json(null)
   }
 }
 
@@ -193,13 +197,14 @@ export const clearWishlist = async (req: Request, res: Response) => {
     if (wishlist) {
       wishlist.products = []
       await wishlist.save()
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[wishlist.getWishlistId] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -221,12 +226,13 @@ export const update = async (req: Request, res: Response) => {
       wishlist.user = new mongoose.Types.ObjectId(user)
       await wishlist.save()
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.update] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -253,12 +259,13 @@ export const check = async (req: Request, res: Response) => {
     const wishlist = await Wishlist.findOne({ user, _id: id })
 
     if (wishlist) {
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[cart.update] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

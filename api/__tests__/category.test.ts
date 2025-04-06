@@ -129,7 +129,7 @@ describe('POST /api/create-category', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_CATEGORIES, IMAGE1)
-    if (!await helper.exists(image)) {
+    if (!(await helper.exists(image))) {
       await fs.copyFile(IMAGE1_PATH, image)
     }
     const payload: wexcommerceTypes.UpsertCategoryPayload = {
@@ -164,7 +164,7 @@ describe('POST /api/create-category', () => {
     res = await request(app)
       .post('/api/create-category')
       .set(env.X_ACCESS_TOKEN, token)
-    expect(res.statusCode).toBe(400)
+    expect(res.statusCode).toBe(500)
   })
 })
 
@@ -412,7 +412,7 @@ describe('POST /api/delete-temp-category-image/:image', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_CATEGORIES, IMAGE1)
-    if (!await helper.exists(image)) {
+    if (!(await helper.exists(image))) {
       await fs.copyFile(IMAGE1_PATH, image)
     }
 
