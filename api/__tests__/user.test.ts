@@ -204,6 +204,12 @@ describe('POST /api/activate', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
+    payload.userId = '0'
+    res = await request(app)
+      .post('/api/activate')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
     res = await request(app)
       .post('/api/activate')
     expect(res.statusCode).toBe(500)
@@ -911,6 +917,12 @@ describe('POST /api/is-user', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
+    payload.email = ''
+    res = await request(app)
+      .post('/api/is-user')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
     res = await request(app)
       .post('/api/is-user')
     expect(res.statusCode).toBe(500)
@@ -932,6 +944,12 @@ describe('POST /api/is-admin', () => {
       .post('/api/is-admin')
       .send(payload)
     expect(res.statusCode).toBe(204)
+
+    payload.email = ''
+    res = await request(app)
+      .post('/api/is-admin')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
 
     res = await request(app)
       .post('/api/is-admin')

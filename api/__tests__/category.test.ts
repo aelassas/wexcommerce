@@ -78,6 +78,14 @@ describe('POST /api/validate-category', () => {
     await value.deleteOne()
     await cat.deleteOne()
 
+    // test failure (no language)
+    payload.language = ''
+    res = await request(app)
+      .post('/api/validate-category')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
     // test failure (no payload)
     res = await request(app)
       .post('/api/validate-category')
