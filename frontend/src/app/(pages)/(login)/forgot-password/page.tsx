@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import ScrollToTop from '@/components/ScrollToTop'
+import SocialLogin from '@/components/SocialLogin'
 
 import styles from '@/styles/forgot-password.module.css'
 
@@ -172,6 +173,8 @@ const ForgotPassword: React.FC = () => {
                       {(error && strings.EMAIL_ERROR) || ''}
                     </FormHelperText>
                   </FormControl>
+
+                  <SocialLogin />
 
                   <div className="buttons">
                     <Button

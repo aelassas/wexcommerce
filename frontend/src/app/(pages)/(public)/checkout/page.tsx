@@ -54,6 +54,7 @@ import Info from '@/components/Info'
 import NoMatch from '@/components/NoMatch'
 import Backdrop from '@/components/SimpleBackdrop'
 import ScrollToTop from '@/components/ScrollToTop'
+import SocialLogin from '@/components/SocialLogin'
 
 import styles from '@/styles/checkout.module.css'
 
@@ -360,7 +361,7 @@ const Checkout: React.FC = () => {
                         size="small"
                         className="btn-primary"
                         onClick={() => {
-                          router.push('/sign-in?from=checkout')
+                          router.push('/sign-in?from=checkout?from=checkout')
                         }}
                       >{headerStrings.SIGN_IN}</Button>
                     </div>
@@ -415,7 +416,7 @@ const Checkout: React.FC = () => {
                               <span>
                                 <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
                                 <span> </span>
-                                <Link href="/sign-in">{strings.SIGN_IN}</Link>
+                                <Link href="/sign-in?from=checkout">{strings.SIGN_IN}</Link>
                               </span>
                             ) || ''}
                             {(emailInfo && strings.EMAIL_INFO) || ''}
@@ -460,6 +461,9 @@ const Checkout: React.FC = () => {
                             disabled={!!clientSecret || payPalLoaded}
                           />
                         </FormControl>
+
+
+                        <SocialLogin reloadPage />
 
                       </div>
                     </div>

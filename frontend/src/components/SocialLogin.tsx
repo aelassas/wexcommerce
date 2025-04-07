@@ -26,6 +26,8 @@ interface SocialLoginProps {
   facebook?: boolean
   apple?: boolean
   google?: boolean
+  redirectToHomepage?: boolean
+  reloadPage?: boolean
   className?: string
   // eslint-disable-next-line no-unused-vars
   onError?: (error: any) => void
@@ -37,6 +39,7 @@ const SocialLogin: React.FC<SocialLoginProps> = ({
   facebook,
   apple,
   google = true,
+  reloadPage,
   className,
   onError,
   onSignInError,
@@ -61,7 +64,11 @@ const SocialLogin: React.FC<SocialLoginProps> = ({
           onBlackListed()
         }
       } else {
-        router.replace('/')
+        if (reloadPage) {
+          window.location.reload()
+        } else {
+          router.replace('/')
+        }
       }
     } else if (onSignInError) {
       onSignInError()
