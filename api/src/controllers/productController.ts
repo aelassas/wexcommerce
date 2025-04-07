@@ -391,7 +391,7 @@ export const getProduct = async (req: Request, res: Response) => {
 
     const _id = new mongoose.Types.ObjectId(id)
 
-    const { body }: { body: wexcommerceTypes.GetProductPayload } = req
+    const body: wexcommerceTypes.GetProductPayload = req.body || {}
     const { cart: cartId, wishlist: wisthlistId } = body
     let cartProducts: mongoose.Types.ObjectId[] = []
     if (cartId) {
