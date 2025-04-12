@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next'
 import dns from 'node:dns'
+import path from 'node:path'
 
 dns.setDefaultResultOrder('ipv4first')
 
@@ -26,6 +27,14 @@ const nextConfig: NextConfig = {
     ],
     unoptimized: true,
   },
+  turbopack: {
+    root: path.resolve(__dirname, '..'), // makes it absolute
+    resolveAlias: {
+      ':wexcommerce-types': '../packages/wexcommerce-types',
+      ':wexcommerce-helper': '../packages/wexcommerce-helper',
+      ':reactjs-social-login': '../packages/reactjs-social-login',
+    },
+  },
   //
   // Nginx will do gzip compression. We disable
   // compression here so we can prevent buffering
@@ -38,14 +47,6 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       allowedOrigins: ['localhost', 'wexcommerce.dynv6.net:8002'],
-    },
-    turbo: {
-      root: '..',
-      resolveAlias: {
-        ':wexcommerce-types': '../packages/wexcommerce-types',
-        ':wexcommerce-helper': '../packages/wexcommerce-helper',
-        ':reactjs-social-login': '../packages/reactjs-social-login',
-      },
     },
     reactCompiler: true,
     // workerThreads: false,
