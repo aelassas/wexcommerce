@@ -16,6 +16,7 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/sign-up'
 import * as UserService from '@/lib/UserService'
 import * as helper from '@/common/helper'
+import env from '@/config/env.config'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
 import SocialLogin from '@/components/SocialLogin'
@@ -153,7 +154,7 @@ const SignUp: React.FC = () => {
         }
       }
 
-      if (reCaptchaLoaded && !recaptchaToken) {
+      if (env.RECAPTCHA_ENABLED && !recaptchaToken) {
         setRecaptchaError(true)
         return
       }
