@@ -79,6 +79,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 3. [Payment Gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
 3. [Setup Stripe](https://github.com/aelassas/wexcommerce/wiki/Setup-Stripe)
 4. [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)
+5. [Run from Source (Docker)](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source-(Docker))
 5. [Demo Database](https://github.com/aelassas/wexcommerce/wiki/Demo-Database)
    1. [Windows, Linux and macOS](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#windows-linux-and-macos)
    2. [Docker](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#docker)
