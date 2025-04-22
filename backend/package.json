@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbo -p 8005",
+    "ts:docker-build": "tsc --build --verbose",
+    "dev:docker": "npm run ts:docker-build && next dev -p 8005",
     "build": "rimraf .next && tsc --build --verbose && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
     "start": "next start -p 8005",
     "lint": "next lint",

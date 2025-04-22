@@ -1,11 +1,9 @@
-version: "3.8"
 services:
   mongo:
     image: mongo:latest
     command: mongod --quiet --logpath /dev/null
     restart: always
     environment:
-      # Provide your credentials here
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
     ports:
@@ -26,10 +24,11 @@ services:
     depends_on:
       - mongo
 
-  wc-api:
+  wc-dev-api:
     build:
       context: .
-      dockerfile: ./api/Dockerfile
+      dockerfile: ./api/Dockerfile.dev
+    env_file: ./api/.env.docker.development
     restart: always
     ports:
       - 4005:4005
@@ -37,52 +36,43 @@ services:
       - mongo
     volumes:
       - cdn:/var/www/cdn/wexcommerce
+      - ./api:/wexcommerce/api
+      - /wexcommerce/api/node_modules
       - api_logs:/wexcommerce/api/logs
 
-  wc-backend:
+  wc-dev-backend:
     build:
       context: .
-      dockerfile: ./backend/Dockerfile
+      dockerfile: ./backend/Dockerfile.dev
+    env_file: ./backend/.env.docker.development
+    restart: always
     depends_on:
-      - wc-api
+      - wc-dev-api
     ports:
       - 8005:8005
-    restart: always
+    volumes:
+      - ./backend:/wexcommerce/backend
+      - /wexcommerce/backend/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
 
-  wc-nginx-backend:
+  wc-dev-frontend:
     build:
       context: .
-      dockerfile: ./backend/nginx/Dockerfile
-    depends_on:
-      - wc-backend
-    ports:
-      - 8001:8001
+      dockerfile: ./frontend/Dockerfile.dev
+    env_file: ./frontend/.env.docker.development
     restart: always
-
-  wc-frontend:
-    build:
-      context: .
-      dockerfile: ./frontend/Dockerfile
     depends_on:
-      - wc-api
+      - wc-dev-api
     ports:
       - 8006:8006
     volumes:
-      - cdn:/var/www/cdn/wexcommerce
-    restart: always
-
-  wc-nginx-frontend:
-    build:
-      context: .
-      dockerfile: ./frontend/nginx/Dockerfile
-    depends_on:
-      - wc-frontend
-    ports:
-      - 8080:80
-      - 4443:443
-    volumes:
-      - cdn:/var/www/cdn/wexcommerce
-    restart: always
+      - ./frontend:/wexcommerce/frontend
+      - /wexcommerce/frontend/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
 
 volumes:
   cdn:

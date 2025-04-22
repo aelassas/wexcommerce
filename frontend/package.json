@@ -8,6 +8,8 @@
     "install:dependencies": "npm run install:reactjs-social-login",
     "ts:build": "npm run install:dependencies && tsc --build --verbose",
     "dev": "npm run ts:build && next dev --turbo -p 8006",
+    "ts:docker-build": "tsc --build --verbose",
+    "dev:docker": "npm run ts:docker-build && next dev -p 8006",
     "build": "rimraf .next && npm run ts:build && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
     "start": "next start -p 8006",
     "lint": "next lint",

@@ -92,6 +92,7 @@ const _signup = async (req: Request, res: Response, userType: wexcommerceTypes.U
     // Send email
     i18n.locale = user.language
 
+    // req.headers.host is not working with docker
     const mailOptions: nodemailer.SendMailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
@@ -100,7 +101,7 @@ const _signup = async (req: Request, res: Response, userType: wexcommerceTypes.U
         `<p>
     ${i18n.t('HELLO')}${user.fullName},<br><br>
     ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
-    http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
+    http${env.HTTPS ? 's' : ''}://${env.AUTH_COOKIE_DOMAIN}:${env.PORT}/api/confirm-email/${user.email}/${token.token}<br><br>
     ${i18n.t('REGARDS')}<br>
     </p>`,
     }
@@ -238,6 +239,7 @@ export const resendLink = async (req: Request, res: Response) => {
     await token.save()
 
     // Send email
+    // req.headers.host is not working with docker
     i18n.locale = user.language
     const mailOptions: nodemailer.SendMailOptions = {
       from: env.SMTP_FROM,
@@ -247,7 +249,7 @@ export const resendLink = async (req: Request, res: Response) => {
         `<p>
         ${i18n.t('HELLO')}${user.fullName},<br><br>
         ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
-        http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
+        http${env.HTTPS ? 's' : ''}://${env.AUTH_COOKIE_DOMAIN}:${env.PORT}/api/confirm-email/${user.email}/${token.token}<br><br>
         ${i18n.t('REGARDS')}<br>
         </p>`,
     }

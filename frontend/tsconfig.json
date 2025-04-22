@@ -32,7 +32,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", ".next"],
   "references": [
     { "path": "../packages/wexcommerce-types" },
     { "path": "../packages/wexcommerce-helper" },
