@@ -1,0 +1,39 @@
+{
+  "name": "wexcommerce",
+  "version": "2.8.0",
+  "description": "Sleek and Powerful ecommerce Platform",
+  "keywords": [
+    "react",
+    "ecommerce",
+    "marketplace",
+    "paypal",
+    "mongodb",
+    "commerce",
+    "stripe",
+    "nextjs",
+    "storefront",
+    "ecommerce-platform",
+    "headless-cms",
+    "wexcommerce"
+  ],
+  "homepage": "https://github.com/aelassas/wexcommerce#readme",
+  "bugs": {
+    "url": "https://github.com/aelassas/wexcommerce/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aelassas/wexcommerce.git"
+  },
+  "license": "MIT",
+  "author": "Akram El Assas",
+  "type": "module",
+  "main": "pre-commit.js",
+  "scripts": {
+    "pre-commit": "node pre-commit.js",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "chalk": "^5.4.1",
+    "husky": "^8.0.0"
+  }
+}

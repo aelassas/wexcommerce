@@ -12,8 +12,9 @@
     "dev:docker": "npm run ts:docker-build && next dev -p 8006",
     "build": "rimraf .next && npm run ts:build && cross-env NODE_OPTIONS=--max-old-space-size=1024 next build",
     "start": "next start -p 8006",
-    "lint": "next lint",
-    "fix": "next lint --fix",
+    "lint": "eslint . --cache --cache-location .eslintcache",
+    "fix": "eslint --fix",
+    "type-check": "tsc --noEmit",
     "ncu": "ncu -u",
     "stylelint": "stylelint \"**/*.css\"",
     "stylelint:fix": "stylelint \"**/*.css\" --fix"

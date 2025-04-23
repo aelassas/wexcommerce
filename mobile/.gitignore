@@ -100,5 +100,6 @@ expo-env.d.ts
 /mobile/android/
 /mobile/ios/
 
+.eslintcache
 
 # @end expo-cli
