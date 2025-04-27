@@ -5,6 +5,16 @@ import asyncFs from 'node:fs/promises'
 
 const execAsync = promisify(exec)
 
+const folders = ['api', 'backend', 'frontend']
+
+const containerMap = {
+  api: 'wc-dev-api',
+  backend: 'wc-dev-backend',
+  frontend: 'wc-dev-frontend',
+}
+
+const dockerComposeFile = 'docker-compose.dev.yml'
+
 function fixMessage(message) {
   // Check if we're running inside VSCode's integrated terminal
   const isVSCodeTerminal = process.env.TERM_PROGRAM?.includes('vscode')
@@ -40,16 +50,6 @@ function logFolderError(folder, message, ...args) {
 const label = 'pre-commit'
 console.time(label)
 log('🚀 Starting pre-commit checks...')
-
-const folders = ['api', 'backend', 'frontend']
-
-const containerMap = {
-  api: 'wc-dev-api',
-  backend: 'wc-dev-backend',
-  frontend: 'wc-dev-frontend',
-}
-
-const dockerComposeFile = 'docker-compose.dev.yml'
 
 async function isInsideDocker() {
   try {
