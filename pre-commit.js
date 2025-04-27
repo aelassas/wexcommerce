@@ -49,6 +49,15 @@ async function isContainerRunning(containerName) {
 }
 
 function getMessage(folder, message) {
+  // Check if we're running inside VSCode's integrated terminal
+  const isVSCodeTerminal = process.env.TERM_PROGRAM?.includes('vscode')
+
+  // If we are in VSCode terminal, add one space after ℹ️ and ⚠️ emojis
+  if (isVSCodeTerminal) {
+    message = message.replace(/(ℹ️|⚠️)/g, '$1 ')
+  }
+
+  // Return the formatted message with the folder name and updated message
   return `[${folder}] ${message}`
 }
 
@@ -63,11 +72,11 @@ async function getChangedFiles() {
 }
 
 function groupFilesByFolder(files) {
-  const projectFiles = Object.fromEntries(folders.map((f) => [f, []]))
+  const projectFiles = Object.fromEntries(folders.map((folder) => [folder, []]))
 
   for (const file of files) {
     for (const folder of folders) {
-      if (file.startsWith(folder + '/')) {
+      if (file.startsWith(`${folder}/`)) {
         const relativePath = file.substring(folder.length + 1)
         projectFiles[folder].push(relativePath)
         break
@@ -95,12 +104,11 @@ async function runLintStep(folder, files, runInDocker) {
 
   console.log(getMessage(folder, `🔍 Running ESLint on ${files.length} file(s)...`))
 
-  const lintTargets = files.filter((f) =>
-    f.endsWith('.ts') || f.endsWith('.tsx') || f.endsWith('.js') || f.endsWith('.jsx')
-  )
+  // Filter files to include only TypeScript and JavaScript files (.ts, .tsx, .js, .jsx)
+  const lintTargets = files.filter((file) => /\.(ts|tsx|js|jsx)$/.test(file))
 
   if (lintTargets.length === 0) {
-    console.log(getMessage(folder, `ℹ️  No lintable files.`))
+    console.log(getMessage(folder, `ℹ️ No lintable files.`))
     return
   }
 
@@ -166,10 +174,10 @@ async function runTypeCheckStep(folder, runInDocker) {
         console.log('🐳 Docker and containers are running. Running checks inside Docker...')
         runInDocker = true
       } else {
-        console.log('⚠️  Docker is running, but some containers are not. Running checks locally...')
+        console.log('⚠️ Docker is running, but some containers are not. Running checks locally...')
       }
     } else {
-      console.log('⚠️  Docker is not running. Running checks locally...')
+      console.log('⚠️ Docker is not running. Running checks locally...')
     }
 
     const changedFiles = await getChangedFiles()
@@ -179,7 +187,7 @@ async function runTypeCheckStep(folder, runInDocker) {
 
     for (const folder of folders) {
       if (!fs.existsSync(folder)) {
-        console.log(`⚠️  Skipping missing folder: ${folder}`)
+        console.log(`⚠️ Skipping missing folder: ${folder}`)
         continue
       }
 
@@ -189,7 +197,7 @@ async function runTypeCheckStep(folder, runInDocker) {
         tasks.push(runLintStep(folder, files, runInDocker))
         tasks.push(runTypeCheckStep(folder, runInDocker))
       } else {
-        console.log(getMessage(folder, 'ℹ️  No changed files. Skipping.'))
+        console.log(getMessage(folder, 'ℹ️ No changed files. Skipping.'))
       }
     }
 
