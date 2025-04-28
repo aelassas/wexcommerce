@@ -16,14 +16,10 @@ const containerMap = {
 const dockerComposeFile = 'docker-compose.dev.yml'
 
 function fixMessage(message) {
-  // Check if we're running inside VSCode's integrated terminal
   const isVSCodeTerminal = process.env.TERM_PROGRAM?.includes('vscode')
-
-  // If we are in VSCode terminal, add one space after ℹ️ and ⚠️ emojis
   if (isVSCodeTerminal) {
     message = message.replace(/(ℹ️|⚠️)/g, '$1 ')
   }
-
   return message
 }
 
@@ -153,8 +149,20 @@ async function lint(folder, files, runInDocker) {
   }
 }
 
-async function typeCheck(folder, runInDocker) {
+async function typeCheck(folder, files, runInDocker) {
+  if (files.length === 0) {
+    return
+  }
+
   logFolder(folder, `🔍 Running TypeScript check...`)
+
+  // Filter files to include only TypeScript files (.ts, .tsx)
+  const targets = files.filter((file) => /\.(ts|tsx)$/.test(file))
+
+  if (targets.length === 0) {
+    logFolder(folder, `ℹ️ No TypeScript files to check.`)
+    return
+  }
 
   try {
     await runInContext(folder, `npm run type-check`, runInDocker)
@@ -165,7 +173,7 @@ async function typeCheck(folder, runInDocker) {
   }
 }
 
-async function runPreCommitChecks() {
+(async function () {
   const label = 'pre-commit'
   console.time(label)
   log('🚀 Starting pre-commit checks...')
@@ -183,11 +191,11 @@ async function runPreCommitChecks() {
       const runningContainers = await Promise.all(containersNeeded.map(isContainerRunning))
       runInDocker = runningContainers.every(Boolean)
 
-      log(
-        runInDocker
-          ? '🐳 Docker and containers are running. Running checks inside Docker...'
-          : '⚠️ Docker is running, but some containers are not. Running checks locally...'
-      )
+      if (runInDocker) {
+        log('🐳 Docker and containers are running. Running checks inside Docker...')
+      } else {
+        log('⚠️ Docker is running, but some containers are not. Running checks locally...')
+      }
     } else {
       log('⚠️ Docker is not running. Running checks locally...')
     }
@@ -210,8 +218,13 @@ async function runPreCommitChecks() {
         continue
       }
 
-      tasks.push(lint(folder, files, runInDocker))
-      tasks.push(typeCheck(folder, runInDocker))
+      // Run lint and type-check in parallel per folder
+      tasks.push(
+        Promise.all([
+          lint(folder, files, runInDocker),
+          typeCheck(folder, files, runInDocker),
+        ])
+      )
     }
 
     // Wait for all tasks to complete, and if any fails, it will throw an error
@@ -225,6 +238,5 @@ async function runPreCommitChecks() {
     console.timeEnd(label)
     process.exit(1)
   }
-}
+}())
 
-runPreCommitChecks()
