@@ -173,7 +173,7 @@ async function typeCheck(folder, files, runInDocker) {
   }
 }
 
-(async function () {
+; (async function () {
   const label = 'pre-commit'
   console.time(label)
   log('🚀 Starting pre-commit checks...')
