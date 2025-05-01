@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import url from 'node:url'
 import path from 'node:path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -137,8 +137,8 @@ describe('POST /api/create-category', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_CATEGORIES, IMAGE1)
-    if (!(await helper.exists(image))) {
-      await fs.copyFile(IMAGE1_PATH, image)
+    if (!(await helper.pathExists(image))) {
+      await asyncFs.copyFile(IMAGE1_PATH, image)
     }
     const payload: wexcommerceTypes.UpsertCategoryPayload = {
       values: [
@@ -156,8 +156,8 @@ describe('POST /api/create-category', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
-    expect(await helper.exists(image)).toBeFalsy()
-    expect(await helper.exists(path.join(env.CDN_CATEGORIES, res.body.image))).toBeTruthy()
+    expect(await helper.pathExists(image)).toBeFalsy()
+    expect(await helper.pathExists(path.join(env.CDN_CATEGORIES, res.body.image))).toBeTruthy()
     CATEGORY_ID = res.body._id
 
     // test failure (image not found)
@@ -334,8 +334,8 @@ describe('POST /api/create-category-image', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeTruthy()
     const imagePath = path.join(env.CDN_TEMP_CATEGORIES, res.body)
-    expect(await helper.exists(imagePath)).toBeTruthy()
-    await fs.unlink(imagePath)
+    expect(await helper.pathExists(imagePath)).toBeTruthy()
+    await asyncFs.unlink(imagePath)
 
     // test failure (no file)
     res = await request(app)
@@ -352,14 +352,14 @@ describe('POST /api/delete-category-image/:id', () => {
     // init
     const cat = await Category.findById(CATEGORY_ID)
     const imagePath = path.join(env.CDN_CATEGORIES, cat!.image!)
-    expect(await helper.exists(imagePath)).toBeTruthy()
+    expect(await helper.pathExists(imagePath)).toBeTruthy()
 
     // test success
     let res = await request(app)
       .post(`/api/delete-category-image/${CATEGORY_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(await helper.exists(imagePath)).toBeFalsy()
+    expect(await helper.pathExists(imagePath)).toBeFalsy()
 
     // test category not found
     res = await request(app)
@@ -387,7 +387,7 @@ describe('POST /api/update-category-image/:id', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeTruthy()
     let imagePath = path.join(env.CDN_CATEGORIES, res.body)
-    expect(await helper.exists(imagePath)).toBeTruthy()
+    expect(await helper.pathExists(imagePath)).toBeTruthy()
 
     // test success (image already exists)
     res = await request(app)
@@ -397,7 +397,7 @@ describe('POST /api/update-category-image/:id', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeTruthy()
     imagePath = path.join(env.CDN_CATEGORIES, res.body)
-    expect(await helper.exists(imagePath)).toBeTruthy()
+    expect(await helper.pathExists(imagePath)).toBeTruthy()
 
     // test category not found
     res = await request(app)
@@ -420,8 +420,8 @@ describe('POST /api/delete-temp-category-image/:image', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_CATEGORIES, IMAGE1)
-    if (!(await helper.exists(image))) {
-      await fs.copyFile(IMAGE1_PATH, image)
+    if (!(await helper.pathExists(image))) {
+      await asyncFs.copyFile(IMAGE1_PATH, image)
     }
 
     // test success
@@ -446,7 +446,7 @@ describe('DELETE /api/delete-category/:id', () => {
     let cat = await Category.findById(CATEGORY_ID)
     const image = path.join(env.CDN_CATEGORIES, cat!.image!)
     expect(cat).toBeTruthy()
-    expect(await helper.exists(image)).toBeTruthy()
+    expect(await helper.pathExists(image)).toBeTruthy()
 
     // test success
     let res = await request(app)
@@ -455,7 +455,7 @@ describe('DELETE /api/delete-category/:id', () => {
     expect(res.statusCode).toBe(200)
     cat = await Category.findById(CATEGORY_ID)
     expect(cat).toBeFalsy()
-    expect(await helper.exists(image)).toBeFalsy()
+    expect(await helper.pathExists(image)).toBeFalsy()
 
     // test category not found
     res = await request(app)

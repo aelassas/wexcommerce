@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import url from 'node:url'
 import path from 'node:path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -75,8 +75,8 @@ describe('POST /api/upload-image', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1)
-    if (!(await helper.exists(image))) {
-      await fs.copyFile(IMAGE1_PATH, image)
+    if (!(await helper.pathExists(image))) {
+      await asyncFs.copyFile(IMAGE1_PATH, image)
     }
 
     // test success
@@ -87,10 +87,10 @@ describe('POST /api/upload-image', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeTruthy()
     const imagePath = path.join(env.CDN_TEMP_PRODUCTS, res.body)
-    expect(await helper.exists(imagePath)).toBeTruthy()
+    expect(await helper.pathExists(imagePath)).toBeTruthy()
 
     // cleanup
-    await fs.unlink(imagePath)
+    await asyncFs.unlink(imagePath)
 
     // test failure (no file)
     res = await request(app)
@@ -106,8 +106,8 @@ describe('POST /api/delete-temp-image/:fileName', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1)
-    if (!(await helper.exists(image))) {
-      await fs.copyFile(IMAGE1_PATH, image)
+    if (!(await helper.pathExists(image))) {
+      await asyncFs.copyFile(IMAGE1_PATH, image)
     }
 
     // test success
@@ -130,12 +130,12 @@ describe('POST /api/delete-image/:product/:image', () => {
 
     // init
     const image1 = path.join(env.CDN_PRODUCTS, IMAGE1_1)
-    if (!(await helper.exists(image1))) {
-      await fs.copyFile(IMAGE1_1_PATH, image1)
+    if (!(await helper.pathExists(image1))) {
+      await asyncFs.copyFile(IMAGE1_1_PATH, image1)
     }
     const image2 = path.join(env.CDN_PRODUCTS, IMAGE1_2)
-    if (!(await helper.exists(image2))) {
-      await fs.copyFile(IMAGE1_2_PATH, image2)
+    if (!(await helper.pathExists(image2))) {
+      await asyncFs.copyFile(IMAGE1_2_PATH, image2)
     }
     const product = new Product({
       name: 'Product',
@@ -152,8 +152,8 @@ describe('POST /api/delete-image/:product/:image', () => {
       .post(`/api/delete-image/${product.id}/${IMAGE1_2}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(await helper.exists(image1)).toBeTruthy()
-    expect(await helper.exists(image2)).toBeFalsy()
+    expect(await helper.pathExists(image1)).toBeTruthy()
+    expect(await helper.pathExists(image2)).toBeFalsy()
 
     // test success (file not found)
     res = await request(app)
@@ -168,7 +168,7 @@ describe('POST /api/delete-image/:product/:image', () => {
     expect(res.statusCode).toBe(204)
 
     // cleanup
-    await fs.unlink(image1)
+    await asyncFs.unlink(image1)
     await product.deleteOne()
 
     // test product not found
@@ -191,16 +191,16 @@ describe('POST /api/create-product', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1)
-    if (!(await helper.exists(image))) {
-      await fs.copyFile(IMAGE1_PATH, image)
+    if (!(await helper.pathExists(image))) {
+      await asyncFs.copyFile(IMAGE1_PATH, image)
     }
     const image1 = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1_1)
-    if (!(await helper.exists(image1))) {
-      await fs.copyFile(IMAGE1_1_PATH, image1)
+    if (!(await helper.pathExists(image1))) {
+      await asyncFs.copyFile(IMAGE1_1_PATH, image1)
     }
     const image2 = path.join(env.CDN_TEMP_PRODUCTS, IMAGE1_2)
-    if (!(await helper.exists(image2))) {
-      await fs.copyFile(IMAGE1_2_PATH, image2)
+    if (!(await helper.pathExists(image2))) {
+      await asyncFs.copyFile(IMAGE1_2_PATH, image2)
     }
 
     // test success
@@ -226,9 +226,9 @@ describe('POST /api/create-product', () => {
     expect(res.body.description).toBe(payload.description)
     expect(res.body.categories).toStrictEqual(payload.categories)
     const imagePath = path.join(env.CDN_PRODUCTS, res.body.image)
-    expect(await helper.exists(imagePath)).toBeTruthy()
+    expect(await helper.pathExists(imagePath)).toBeTruthy()
     for (const img of res.body.images) {
-      expect(await helper.exists(path.join(env.CDN_PRODUCTS, img))).toBeTruthy()
+      expect(await helper.pathExists(path.join(env.CDN_PRODUCTS, img))).toBeTruthy()
     }
     expect(res.body.price).toBe(payload.price)
     expect(res.body.quantity).toBe(payload.quantity)
@@ -260,7 +260,7 @@ describe('POST /api/create-product', () => {
     expect(res.statusCode).toBe(400)
 
     // test failure (additional image not found)
-    await fs.copyFile(IMAGE1_PATH, image)
+    await asyncFs.copyFile(IMAGE1_PATH, image)
     payload.image = IMAGE1
     res = await request(app)
       .post('/api/create-product')
@@ -276,16 +276,16 @@ describe('PUT /api/update-product', () => {
 
     // init
     const image = path.join(env.CDN_TEMP_PRODUCTS, IMAGE2)
-    if (!(await helper.exists(image))) {
-      await fs.copyFile(IMAGE2_PATH, image)
+    if (!(await helper.pathExists(image))) {
+      await asyncFs.copyFile(IMAGE2_PATH, image)
     }
     const image1 = path.join(env.CDN_TEMP_PRODUCTS, IMAGE2_1)
-    if (!(await helper.exists(image1))) {
-      await fs.copyFile(IMAGE2_1_PATH, image1)
+    if (!(await helper.pathExists(image1))) {
+      await asyncFs.copyFile(IMAGE2_1_PATH, image1)
     }
     const image2 = path.join(env.CDN_TEMP_PRODUCTS, IMAGE2_2)
-    if (!(await helper.exists(image2))) {
-      await fs.copyFile(IMAGE2_2_PATH, image2)
+    if (!(await helper.pathExists(image2))) {
+      await asyncFs.copyFile(IMAGE2_2_PATH, image2)
     }
 
     // test success
@@ -312,10 +312,10 @@ describe('PUT /api/update-product', () => {
     expect(res.body.name).toBe(payload.name)
     expect(res.body.description).toBe(payload.description)
     expect(res.body.categories).toStrictEqual(payload.categories)
-    expect(await helper.exists(path.join(env.CDN_PRODUCTS, res.body.image))).toBeTruthy()
+    expect(await helper.pathExists(path.join(env.CDN_PRODUCTS, res.body.image))).toBeTruthy()
     expect(res.body.images.length).toBe(1)
     for (const img of res.body.images) {
-      expect(await helper.exists(path.join(env.CDN_PRODUCTS, img))).toBeTruthy()
+      expect(await helper.pathExists(path.join(env.CDN_PRODUCTS, img))).toBeTruthy()
     }
     expect(res.body.price).toBe(payload.price)
     expect(res.body.quantity).toBe(payload.quantity)
@@ -324,10 +324,10 @@ describe('PUT /api/update-product', () => {
     expect(res.body.featured).toBe(payload.featured)
 
     // test success (add image to existing images)
-    await fs.copyFile(IMAGE1_PATH, path.join(env.CDN_PRODUCTS, IMAGE1))
-    await fs.copyFile(IMAGE2_PATH, image)
-    await fs.copyFile(IMAGE2_1_PATH, image1)
-    await fs.copyFile(IMAGE2_2_PATH, image2)
+    await asyncFs.copyFile(IMAGE1_PATH, path.join(env.CDN_PRODUCTS, IMAGE1))
+    await asyncFs.copyFile(IMAGE2_PATH, image)
+    await asyncFs.copyFile(IMAGE2_1_PATH, image1)
+    await asyncFs.copyFile(IMAGE2_2_PATH, image2)
     let product = await Product.findById(PRODUCT_ID)
     product!.images = [...res.body.images, IMAGE1, 'not-found.jpg']
     await product!.save()
@@ -341,15 +341,15 @@ describe('PUT /api/update-product', () => {
     expect(res.body).toBeTruthy()
     expect(res.body.images.length).toBe(3)
     for (const img of res.body.images) {
-      expect(await helper.exists(path.join(env.CDN_PRODUCTS, img))).toBeTruthy()
+      expect(await helper.pathExists(path.join(env.CDN_PRODUCTS, img))).toBeTruthy()
     }
     const mainImage = res.body.image
 
     // test success (add image and delete all other images)
-    await fs.copyFile(IMAGE1_PATH, path.join(env.CDN_PRODUCTS, IMAGE1))
-    await fs.copyFile(IMAGE2_PATH, image)
-    await fs.copyFile(IMAGE2_1_PATH, image1)
-    await fs.copyFile(IMAGE2_2_PATH, image2)
+    await asyncFs.copyFile(IMAGE1_PATH, path.join(env.CDN_PRODUCTS, IMAGE1))
+    await asyncFs.copyFile(IMAGE2_PATH, image)
+    await asyncFs.copyFile(IMAGE2_1_PATH, image1)
+    await asyncFs.copyFile(IMAGE2_2_PATH, image2)
     product = await Product.findById(PRODUCT_ID)
     product!.image = 'not-found.jpg'
     product!.images = [...res.body.images, IMAGE1, 'not-found.jpg']
@@ -364,7 +364,7 @@ describe('PUT /api/update-product', () => {
     expect(res.body).toBeTruthy()
     expect(res.body.images.length).toBe(2)
     for (const img of res.body.images) {
-      expect(await helper.exists(path.join(env.CDN_PRODUCTS, img))).toBeTruthy()
+      expect(await helper.pathExists(path.join(env.CDN_PRODUCTS, img))).toBeTruthy()
     }
     product!.image = mainImage
     await product!.save()
@@ -719,9 +719,9 @@ describe('DELETE /api/delete-product/:id', () => {
       .delete(`/api/delete-product/${PRODUCT_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(await helper.exists(path.join(env.CDN_PRODUCTS, product!.image!))).toBeFalsy()
+    expect(await helper.pathExists(path.join(env.CDN_PRODUCTS, product!.image!))).toBeFalsy()
     for (const img of product!.images) {
-      expect(await helper.exists(path.join(env.CDN_PRODUCTS, img))).toBeFalsy()
+      expect(await helper.pathExists(path.join(env.CDN_PRODUCTS, img))).toBeFalsy()
     }
     expect(await OrderItem.findById(orderItem.id)).toBeFalsy()
     expect(await Order.findById(order.id)).toBeFalsy()

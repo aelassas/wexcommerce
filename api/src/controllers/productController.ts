@@ -54,7 +54,7 @@ export const deleteTempImage = async (req: Request, res: Response) => {
   try {
     const _image = path.join(env.CDN_TEMP_PRODUCTS, req.params.fileName)
 
-    if (!(await helper.exists(_image))) {
+    if (!(await helper.pathExists(_image))) {
       throw new Error(`[product.deleteTempImage] temp image ${_image} not found`)
     }
 
@@ -88,7 +88,7 @@ export const deleteImage = async (req: Request, res: Response) => {
 
       if (index > -1) {
         const _image = path.join(env.CDN_PRODUCTS, imageFileName)
-        if (await helper.exists(_image)) {
+        if (await helper.pathExists(_image)) {
           await fs.unlink(_image)
         }
         product.images!.splice(index, 1)
@@ -136,7 +136,7 @@ export const create = async (req: Request, res: Response) => {
     // image
     if (imageFile) {
       const _image = path.join(env.CDN_TEMP_PRODUCTS, imageFile)
-      if (await helper.exists(_image)) {
+      if (await helper.pathExists(_image)) {
         const filename = `${product._id}_${Date.now()}${path.extname(imageFile)}`
         const newPath = path.join(env.CDN_PRODUCTS, filename)
 
@@ -156,7 +156,7 @@ export const create = async (req: Request, res: Response) => {
       const image = images[i]
       const __image = path.join(env.CDN_TEMP_PRODUCTS, image)
 
-      if (await helper.exists(__image)) {
+      if (await helper.pathExists(__image)) {
         const filename = `${product._id}_${nanoid()}_${Date.now()}_${i}${path.extname(image)}`
         const newPath = path.join(env.CDN_PRODUCTS, filename)
 
@@ -219,12 +219,12 @@ export const update = async (req: Request, res: Response) => {
       if (image) {
         const tempImagePath = path.join(env.CDN_TEMP_PRODUCTS, image)
 
-        if (!(await helper.exists(tempImagePath))) {
+        if (!(await helper.pathExists(tempImagePath))) {
           throw new Error(`${image} not found`)
         }
 
         const oldImage = path.join(env.CDN_PRODUCTS, product.image!)
-        if (await helper.exists(oldImage)) {
+        if (await helper.pathExists(oldImage)) {
           await fs.unlink(oldImage)
         }
 
@@ -240,7 +240,7 @@ export const update = async (req: Request, res: Response) => {
       if (images.length === 0) {
         for (const img of product.images) {
           const _image = path.join(env.CDN_PRODUCTS, img)
-          if (await helper.exists(_image)) {
+          if (await helper.pathExists(_image)) {
             await fs.unlink(_image)
           }
         }
@@ -248,7 +248,7 @@ export const update = async (req: Request, res: Response) => {
         for (const img of product.images) {
           if (!images.includes(img)) {
             const _image = path.join(env.CDN_PRODUCTS, img)
-            if (await helper.exists(_image)) {
+            if (await helper.pathExists(_image)) {
               await fs.unlink(_image)
             }
           } else {
@@ -263,7 +263,7 @@ export const update = async (req: Request, res: Response) => {
         const imageFile = tempImages[i]
         const _image = path.join(env.CDN_TEMP_PRODUCTS, imageFile)
 
-        if (await helper.exists(_image)) {
+        if (await helper.pathExists(_image)) {
           const filename = `${product._id}_${nanoid()}_${Date.now()}_${i}${path.extname(imageFile)}`
           const newPath = path.join(env.CDN_PRODUCTS, filename)
 
@@ -334,7 +334,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
       if (product.image) {
         const _image = path.join(env.CDN_PRODUCTS, product.image)
 
-        if (await helper.exists(_image)) {
+        if (await helper.pathExists(_image)) {
           await fs.unlink(_image)
         }
       }
@@ -342,7 +342,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
       for (const image of product.images) {
         const _image = path.join(env.CDN_PRODUCTS, image)
 
-        if (await helper.exists(_image)) {
+        if (await helper.pathExists(_image)) {
           await fs.unlink(_image)
         }
       }

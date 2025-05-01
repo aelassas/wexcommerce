@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import path from 'node:path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import { nanoid } from 'nanoid'
 import escapeStringRegexp from 'escape-string-regexp'
 import { Request, Response } from 'express'
@@ -112,7 +112,7 @@ export const create = async (req: Request, res: Response) => {
     if (image) {
       const _image = path.join(env.CDN_TEMP_CATEGORIES, image)
 
-      if (!(await helper.exists(_image))) {
+      if (!(await helper.pathExists(_image))) {
         logger.error(i18n.t('CATEGORY_IMAGE_NOT_FOUND'), body)
         res.status(400).send(i18n.t('CATEGORY_IMAGE_NOT_FOUND'))
         return
@@ -135,11 +135,11 @@ export const create = async (req: Request, res: Response) => {
     if (image) {
       const _image = path.join(env.CDN_TEMP_CATEGORIES, image)
 
-      if (await helper.exists(_image)) {
+      if (await helper.pathExists(_image)) {
         const filename = `${category._id}_${Date.now()}${path.extname(image)}`
         const newPath = path.join(env.CDN_CATEGORIES, filename)
 
-        await fs.rename(_image, newPath)
+        await asyncFs.rename(_image, newPath)
         category.image = filename
         await category.save()
       }
@@ -213,8 +213,8 @@ export const deleteCategory = async (req: Request, res: Response) => {
       await Value.deleteMany({ _id: { $in: category.values } })
       if (category.image) {
         const image = path.join(env.CDN_CATEGORIES, category.image)
-        if (await helper.exists(image)) {
-          await fs.unlink(image)
+        if (await helper.pathExists(image)) {
+          await asyncFs.unlink(image)
         }
       }
       res.sendStatus(200)
@@ -538,7 +538,7 @@ export const createImage = async (req: Request, res: Response) => {
     const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_CATEGORIES, filename)
 
-    await fs.writeFile(filepath, req.file.buffer)
+    await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
   } catch (err) {
     logger.error(`[category.createImage] ${i18n.t('DB_ERROR')}`, err)
@@ -570,15 +570,15 @@ export const updateImage = async (req: Request, res: Response) => {
     if (category) {
       if (category.image) {
         const image = path.join(env.CDN_CATEGORIES, category.image)
-        if (await helper.exists(image)) {
-          await fs.unlink(image)
+        if (await helper.pathExists(image)) {
+          await asyncFs.unlink(image)
         }
       }
 
       const filename = `${category._id}_${Date.now()}${path.extname(file.originalname)}`
       const filepath = path.join(env.CDN_CATEGORIES, filename)
 
-      await fs.writeFile(filepath, file.buffer)
+      await asyncFs.writeFile(filepath, file.buffer)
       category.image = filename
       await category.save()
       res.json(filename)
@@ -614,8 +614,8 @@ export const deleteImage = async (req: Request, res: Response) => {
     if (category) {
       if (category.image) {
         const image = path.join(env.CDN_CATEGORIES, category.image)
-        if (await helper.exists(image)) {
-          await fs.unlink(image)
+        if (await helper.pathExists(image)) {
+          await asyncFs.unlink(image)
         }
       }
       category.image = undefined
@@ -646,11 +646,11 @@ export const deleteTempImage = async (req: Request, res: Response) => {
 
   try {
     const imageFile = path.join(env.CDN_TEMP_CATEGORIES, image)
-    if (!(await helper.exists(imageFile))) {
+    if (!(await helper.pathExists(imageFile))) {
       throw new Error(`[category.deleteTempImage] temp image ${imageFile} not found`)
     }
 
-    await fs.unlink(imageFile)
+    await asyncFs.unlink(imageFile)
 
     res.sendStatus(200)
   } catch (err) {

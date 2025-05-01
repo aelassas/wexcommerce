@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import nodemailer from 'nodemailer'
 import path from 'node:path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import escapeStringRegexp from 'escape-string-regexp'
 import axios from 'axios'
 import { nanoid } from 'nanoid'
@@ -65,11 +65,11 @@ const _signup = async (req: Request, res: Response, userType: wexcommerceTypes.U
 
     if (body.avatar) {
       const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
-      if (await helper.exists(avatar)) {
+      if (await helper.pathExists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
         const newPath = path.join(env.CDN_USERS, filename)
 
-        await fs.rename(avatar, newPath)
+        await asyncFs.rename(avatar, newPath)
         user.avatar = filename
         await user.save()
       }
@@ -1045,8 +1045,8 @@ export const deleteUsers = async (req: Request, res: Response) => {
 
         if (user.avatar) {
           const avatar = path.join(env.CDN_USERS, user.avatar)
-          if (await helper.exists(avatar)) {
-            await fs.unlink(avatar)
+          if (await helper.pathExists(avatar)) {
+            await asyncFs.unlink(avatar)
           }
         }
 
@@ -1179,7 +1179,7 @@ export const createAvatar = async (req: Request, res: Response) => {
     const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
-    await fs.writeFile(filepath, req.file.buffer)
+    await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
   } catch (err) {
     logger.error(`[user.createAvatar] ${i18n.t('DB_ERROR')}`, err)
@@ -1213,15 +1213,15 @@ export const updateAvatar = async (req: Request, res: Response) => {
       if (user.avatar && !user.avatar.startsWith('http')) {
         const avatar = path.join(env.CDN_USERS, user.avatar)
 
-        if (await helper.exists(avatar)) {
-          await fs.unlink(avatar)
+        if (await helper.pathExists(avatar)) {
+          await asyncFs.unlink(avatar)
         }
       }
 
       const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
       const filepath = path.join(env.CDN_USERS, filename)
 
-      await fs.writeFile(filepath, req.file.buffer)
+      await asyncFs.writeFile(filepath, req.file.buffer)
       user.avatar = filename
       await user.save()
       res.json(filename)
@@ -1254,8 +1254,8 @@ export const deleteAvatar = async (req: Request, res: Response) => {
     if (user) {
       if (user.avatar && !user.avatar.startsWith('http')) {
         const avatar = path.join(env.CDN_USERS, user.avatar)
-        if (await helper.exists(avatar)) {
-          await fs.unlink(avatar)
+        if (await helper.pathExists(avatar)) {
+          await asyncFs.unlink(avatar)
         }
       }
       user.avatar = undefined
@@ -1287,11 +1287,11 @@ export const deleteTempAvatar = async (req: Request, res: Response) => {
 
   try {
     const avatarFile = path.join(env.CDN_TEMP_USERS, avatar)
-    if (!(await helper.exists(avatarFile))) {
+    if (!(await helper.pathExists(avatarFile))) {
       throw new Error(`[user.deleteTempAvatar] temp avatar ${avatarFile} not found`)
     }
 
-    await fs.unlink(avatarFile)
+    await asyncFs.unlink(avatarFile)
 
     res.sendStatus(200)
   } catch (err) {
