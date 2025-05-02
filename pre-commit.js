@@ -166,7 +166,7 @@ const cmd = {
     try {
       const { stdout, stderr } = await execAsync(command, {
         ...options,
-        maxBuffer: 10 * 1024 * 1024 // 10MB buffer
+        maxBuffer: 10 * 1024 * 1024, // 10MB buffer
       })
 
       if (stdout) {
@@ -192,8 +192,10 @@ const cmd = {
     const safeCmd = cmd.escapeShellArg(command)
 
     if (runInDocker && container) {
-      const dockerCmd = `docker compose -f ${config.dockerComposeFile} exec -T ${container} sh -c "cd /bookcars/${safeFolder} && ${safeCmd}"`
-      return cmd.run(dockerCmd, { cwd: process.cwd() })
+      return cmd.run(
+        `docker compose -f ${config.dockerComposeFile} exec -T ${container} sh -c "cd /bookcars/${safeFolder} && ${safeCmd}"`,
+        { cwd: process.cwd() },
+      )
     }
 
     return cmd.run(safeCmd, { cwd: safeFolder })
@@ -205,9 +207,9 @@ const processFiles = {
   groupFilesByFolder: (files) => {
     // Create lookup map for faster folder checks
     const folderMap = new Map()
-    Object.values(config.projects).forEach((project) => {
+    for (const project of Object.values(config.projects)) {
       folderMap.set(project.folder, [])
-    })
+    }
 
     for (const file of files) {
       const [folder, ...rest] = file.split('/')
@@ -255,7 +257,7 @@ const checks = {
         await cmd.runInContext(
           project,
           `npx eslint ${batch.join(' ')} --cache --cache-location .eslintcache --quiet`,
-          runInDocker
+          runInDocker,
         )
       })
     )
