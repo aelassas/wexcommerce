@@ -1,4 +1,5 @@
-[![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) [![test](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml) [![coveralls](https://coveralls.io/repos/github/aelassas/wexcommerce/badge.svg?branch=main)](https://coveralls.io/github/aelassas/wexcommerce?branch=main) [![loc](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml) [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexcommerce/wiki) [![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/)
+[![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) [![test](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml) [![coveralls](https://coveralls.io/repos/github/aelassas/wexcommerce/badge.svg?branch=main)](https://coveralls.io/github/aelassas/wexcommerce?branch=main) [![loc](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml) [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexcommerce/wiki) 
+
 <!--
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-brightgreen?logo=jest)](https://github.com/jestjs/jest)
 [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexcommerce/wiki)
@@ -8,6 +9,7 @@
 [![codecov](https://codecov.io/gh/aelassas/wexcommerce/graph/badge.svg?token=ZNW4QHSFPH)](https://codecov.io/gh/aelassas/wexcommerce)
 [![codecov](https://img.shields.io/codecov/c/github/aelassas/wexcommerce?logo=codecov)](https://codecov.io/gh/aelassas/wexcommerce)
 [![coveralls](https://coveralls.io/repos/github/aelassas/wexcommerce/badge.svg?branch=main)](https://coveralls.io/github/aelassas/wexcommerce?branch=main)
+[![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/)
 
 https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
 -->
@@ -64,9 +66,11 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * [Multiple Payment Gateways supported (Stripe, PayPal)](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
 * Responsive frontend and admin dashboard
 
+<!--
 ## Live Demo
 
 * https://wexcommerce.dynv6.net:8002/
+-->
 
 ## Documentation
 
