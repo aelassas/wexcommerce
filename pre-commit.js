@@ -9,23 +9,30 @@ import chalk from 'chalk'
 
 const execAsync = promisify(exec)
 
+// pre-commit check types
+const checkTypes = Object.freeze({
+  lint: Symbol('lint'),
+  typeCheck: Symbol('typeCheck'),
+  sizeCheck: Symbol('sizeCheck'),
+})
+
 // Configuration for the pre-commit checks
 const config = {
   projects: {
     api: {
       folder: 'api',
       container: 'wc-dev-api',
-      checks: ['lint', 'typeCheck', 'sizeCheck'],
+      checks: [checkTypes.lint, checkTypes.typeCheck, checkTypes.sizeCheck],
     },
     backend: {
       folder: 'backend',
       container: 'wc-dev-backend',
-      checks: ['lint', 'typeCheck', 'sizeCheck'],
+      checks: [checkTypes.lint, checkTypes.typeCheck, checkTypes.sizeCheck],
     },
     frontend: {
       folder: 'frontend',
       container: 'wc-dev-frontend',
-      checks: ['lint', 'typeCheck', 'sizeCheck'],
+      checks: [checkTypes.lint, checkTypes.typeCheck, checkTypes.sizeCheck],
     },
   },
   timeout: 2000, // Timeout for Docker commands in milliseconds
@@ -416,15 +423,15 @@ const main = async () => {
 
       const projectTasks = []
 
-      if (projectChecks.includes('lint')) {
+      if (projectChecks.includes(checkTypes.lint)) {
         projectTasks.push(checks.lint(project, files, runInDocker))
       }
 
-      if (projectChecks.includes('typeCheck')) {
+      if (projectChecks.includes(checkTypes.typeCheck)) {
         projectTasks.push(checks.typeCheck(project, files, runInDocker))
       }
 
-      if (projectChecks.includes('sizeCheck')) {
+      if (projectChecks.includes(checkTypes.sizeCheck)) {
         projectTasks.push(checks.sizeCheck(project, files))
       }
 
