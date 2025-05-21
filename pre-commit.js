@@ -122,7 +122,7 @@ const git = {
       const { stdout } = await execAsync(`git diff --cached --name-only --diff-filter=ACM ${folder}/`)
       return stdout.trim().split('\n').filter(Boolean).map((file) => file.replace(`${folder}/`, ''))
     } catch (err) {
-      logProjectError(project, '❌ Failed to get changed files:', err)
+      logger.logProjectError(project, '❌ Failed to get changed files:', err)
       return []
     }
   }
@@ -301,11 +301,11 @@ const checks = {
     const targets = processFiles.filterFiles(files, config.typeCheckFilter)
 
     if (targets.length === 0) {
-      logger.logProject(project, `ℹ️ No TypeScript files to check.`)
+      logger.logProject(project, 'ℹ️ No TypeScript files to check.')
       return
     }
 
-    logger.logProject(project, `🔍 Running TypeScript check...`)
+    logger.logProject(project, '🔍 Running TypeScript check...')
 
     try {
       await cmd.runInContext(
@@ -315,7 +315,7 @@ const checks = {
       )
       logger.logProject(project, `${chalk.green('✅ TypeScript check passed.')}`)
     } catch (err) {
-      logger.logProjectError(project, `❌ TypeScript check failed.`)
+      logger.logProjectError(project, '❌ TypeScript check failed.')
       throw err
     }
   },
@@ -326,7 +326,7 @@ const checks = {
     }
 
     const { folder } = project
-    logger.logProject(project, `📏 Checking file sizes...`)
+    logger.logProject(project, '📏 Checking file sizes...')
 
     const oversizedFiles = []
 
