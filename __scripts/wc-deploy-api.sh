@@ -11,7 +11,7 @@ chmod +x -R /opt/wexcommerce/__scripts
 
 cd /opt/wexcommerce/api
 
-npm install --omit=dev
+npm install
 
 sudo systemctl restart wexcommerce
 sudo systemctl status wexcommerce --no-pager
