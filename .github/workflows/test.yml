@@ -29,6 +29,7 @@ jobs:
            cd ./api
            touch .env
            echo NODE_ENV=$NODE_ENV >> .env
+           echo WC_CI=$WC_CI >> .env
            echo WC_HTTPS=$WC_HTTPS >> .env
            echo WC_DB_URI=$WC_DB_URI >> .env
            echo WC_DB_SSL=$WC_DB_SSL >> .env
@@ -65,6 +66,7 @@ jobs:
            npm test
       env:
         NODE_ENV: ${{ vars.NODE_ENV }}
+        WC_CI: ${{ vars.WC_CI }}
         WC_HTTPS: ${{ vars.WC_HTTPS }}
         WC_DB_URI: ${{ secrets.WC_DB_URI }}
         WC_DB_SSL: ${{ vars.WC_DB_SSL }}

@@ -42,6 +42,13 @@ export const LANGUAGES = [
 export const WEBSITE_NAME = __env__('WC_WEBSITE_NAME', false, 'wexCommerce')
 
 /**
+ * Indicate whether we are in CI environment or not.
+ *
+ * @type {string}
+ */
+export const CI = helper.StringToBoolean(__env__('WC_CI', false, 'false'))
+
+/**
  * Server Port. Default is 4005.
  *
  * @type {number}
