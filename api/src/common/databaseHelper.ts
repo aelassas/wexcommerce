@@ -117,8 +117,9 @@ export const createTextIndexWithFallback = async <T>(model: Model<T>, field: str
     // Create new text index with fallback options
     await collection.createIndex({ [field]: 'text' }, fallbackOptions)
     logger.info(`✅ Created text index "${indexName}" on "${field}" with fallback options`)
-  } catch (err: any) {
-    logger.info(`⚠️ Failed to use language override; falling back to basic text index: "${err.message}"`)
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : JSON.stringify(err)
+    logger.info(`⚠️ Failed to use language override; falling back to basic text index: "${message}"`)
     try {
       // Retry creating a basic text index without override if needed
       await collection.createIndex({ [field]: 'text' }, {
@@ -137,12 +138,12 @@ export const createTextIndexWithFallback = async <T>(model: Model<T>, field: str
  * Creates TTL index.
  *
  * @async
- * @param {Model<any>} model 
+ * @param {Model<T>} model 
  * @param {string} name 
  * @param {number} expireAfterSeconds 
  * @returns {*} 
  */
-const createTTLIndex = async (model: Model<any>, name: string, expireAfterSeconds: number) => {
+const createTTLIndex = async<T>(model: Model<T>, name: string, expireAfterSeconds: number) => {
   await model.collection.createIndex(
     { expireAt: 1 },
     { name, expireAfterSeconds, background: true },
@@ -153,12 +154,12 @@ const createTTLIndex = async (model: Model<any>, name: string, expireAfterSecond
  * Updates TTL index.
  *
  * @async
- * @param {Model<any>} model 
+ * @param {Model<T>} model 
  * @param {string} name 
  * @param {number} seconds 
  * @returns {*} 
  */
-const checkAndUpdateTTL = async (model: Model<any>, name: string, seconds: number) => {
+const checkAndUpdateTTL = async<T>(model: Model<T>, name: string, seconds: number) => {
   const indexName = `${model.modelName}.${name}`
   logger.info(`ℹ️ Checking TTL index: ${indexName}`)
   const indexes = await model.collection.indexes()
@@ -221,11 +222,22 @@ const createCollection = async <T>(model: Model<T>, retries = 3, delay = 500): P
 }
 
 /**
- * Models.
+ * Helper utility to infer the union type of array elements.
  *
- * @type {Model<any>[]}
+ * @template {readonly unknown[]} T 
+ * @param {T} models 
+ * @returns {T} 
  */
-export const models: Model<any>[] = [
+const defineModels = <T extends readonly unknown[]>(models: T) => models
+
+/**
+ * Array of Mongoose model constructors used throughout the application.
+ * Each element corresponds to a Mongoose model imported from the respective model files.
+ *
+ * The array is a readonly tuple preserving the exact model constructor types.
+ * 
+ */
+export const models = defineModels([
   Cart,
   CartItem,
   Category,
@@ -240,7 +252,7 @@ export const models: Model<any>[] = [
   Token,
   User,
   Value,
-]
+] as const)
 
 /**
  * Initializes database.
@@ -260,7 +272,7 @@ export const initialize = async (): Promise<boolean> => {
     //
     // Create collections
     //
-    await Promise.all(models.map((model) => createCollection(model)))
+    await Promise.all(models.map((model) => createCollection(model as Model<unknown>)))
 
     //
     // Feature Detection and Conditional Index Creation
