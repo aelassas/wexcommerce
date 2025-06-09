@@ -29,7 +29,6 @@ const valueSchema = new Schema<env.Value>(
 
 // Add custom indexes
 valueSchema.index({ language: 1, value: 1 })
-valueSchema.index({ value: 'text' })
 
 const Value = model<env.Value>('Value', valueSchema)
 

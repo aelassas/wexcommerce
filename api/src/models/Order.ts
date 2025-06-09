@@ -73,7 +73,6 @@ orderSchema.index({ 'user._id': 1 })
 orderSchema.index({ 'paymentType.name': 1, 'deliveryType.name': 1 })
 orderSchema.index({ status: 1 })
 orderSchema.index({ createdAt: -1 })
-orderSchema.index({ 'orderItems.product.name': 'text' })
 orderSchema.index({ orderItems: 1 })
 
 const Order = model<env.Order>('Order', orderSchema)
