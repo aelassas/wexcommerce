@@ -60,6 +60,14 @@ productSchema.index({ price: 1, createdAt: -1 }) // For price sorting with creat
 productSchema.index({ price: -1, createdAt: -1 }) // For price descending sorting with createdAt as tie-breaker
 productSchema.index({ featured: -1, createdAt: -1 }) // For featured sorting with createdAt as tie-breaker
 productSchema.index({ createdAt: -1 }) // Default sorting by createdAt
+productSchema.index(
+  { name: 'text' },
+  {
+    default_language: 'none', // This disables stemming
+    language_override: '_none', // Prevent MongoDB from expecting a language field
+    background: true,
+  },
+)
 
 const Product = model<env.Product>('Product', productSchema)
 

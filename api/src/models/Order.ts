@@ -74,6 +74,14 @@ orderSchema.index({ 'paymentType.name': 1, 'deliveryType.name': 1 })
 orderSchema.index({ status: 1 })
 orderSchema.index({ createdAt: -1 })
 orderSchema.index({ orderItems: 1 })
+orderSchema.index(
+  { 'orderItems.product.name': 'text' },
+  {
+    default_language: 'none', // This disables stemming
+    language_override: '_none', // Prevent MongoDB from expecting a language field
+    background: true,
+  },
+)
 
 const Order = model<env.Order>('Order', orderSchema)
 
