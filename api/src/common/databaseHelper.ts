@@ -253,7 +253,7 @@ export const initialize = async (): Promise<boolean> => {
     //
     // Check if connection is ready
     //
-    if (mongoose.connection.readyState !== 1) {
+    if (mongoose.connection.readyState !== mongoose.ConnectionStates.connected) {
       throw new Error('Mongoose connection is not ready')
     }
 
