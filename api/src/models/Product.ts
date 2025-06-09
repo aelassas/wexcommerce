@@ -64,7 +64,7 @@ productSchema.index({ createdAt: -1 }) // Default sorting by createdAt
 const Product = model<env.Product>('Product', productSchema)
 
 // Create indexes manually and handle potential errors
-Product.syncIndexes().catch((err) => {
+Product.createIndexes().catch((err) => {
   logger.error('Error creating Product indexes:', err)
 })
 

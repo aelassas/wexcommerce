@@ -23,7 +23,7 @@ cartSchema.index({ user: 1 })
 const Cart = model<env.Cart>('Cart', cartSchema)
 
 // Create indexes manually and handle potential errors
-Cart.syncIndexes().catch((err) => {
+Cart.createIndexes().catch((err) => {
   logger.error('Error creating Cart indexes:', err)
 })
 

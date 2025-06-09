@@ -27,7 +27,7 @@ categorySchema.index({ values: 1 })
 const Category = model<env.Category>('Category', categorySchema)
 
 // Create indexes manually and handle potential errors
-Category.syncIndexes().catch((err) => {
+Category.createIndexes().catch((err) => {
   logger.error('Error creating Category indexes:', err)
 })
 

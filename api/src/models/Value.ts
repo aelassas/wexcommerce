@@ -33,7 +33,7 @@ valueSchema.index({ language: 1, value: 1 })
 const Value = model<env.Value>('Value', valueSchema)
 
 // Create indexes manually and handle potential errors
-Value.syncIndexes().catch((err) => {
+Value.createIndexes().catch((err) => {
   logger.error('Error creating Value indexes:', err)
 })
 

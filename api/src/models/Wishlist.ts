@@ -23,7 +23,7 @@ wishlistSchema.index({ user: 1 })
 const Wishlist = model<env.Wishlist>('Wishlist', wishlistSchema)
 
 // Create indexes manually and handle potential errors
-Wishlist.syncIndexes().catch((err) => {
+Wishlist.createIndexes().catch((err) => {
   logger.error('Error creating Wishlist indexes:', err)
 })
 

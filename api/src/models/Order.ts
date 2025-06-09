@@ -78,7 +78,7 @@ orderSchema.index({ orderItems: 1 })
 const Order = model<env.Order>('Order', orderSchema)
 
 // Create indexes manually and handle potential errors
-Order.syncIndexes().catch((err) => {
+Order.createIndexes().catch((err) => {
   logger.error('Error creating Order indexes:', err)
 })
 
