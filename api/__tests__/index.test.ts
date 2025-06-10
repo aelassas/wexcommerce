@@ -5,6 +5,7 @@ import * as testHelper from './testHelper'
 import * as env from '../src/config/env.config'
 import Order, { ORDER_EXPIRE_AT_INDEX_NAME } from '../src/models/Order'
 import Token, { TOKEN_EXPIRE_AT_INDEX_NAME } from '../src/models/Token'
+import Value from '../src/models/Value'
 
 //
 // Connecting and initializing the database before running the test suite
@@ -74,6 +75,23 @@ describe('Test database initialization', () => {
       res = await databaseHelper.initialize()
       expect(res).toBeTruthy()
     }
+
+    // test success (text index)
+    const indexName = 'value_text'
+    const opts = {
+      name: indexName,
+      default_language: 'en',
+      language_override: '_none',
+      background: true,
+      weights: { ['value']: 1 },
+    }
+    await Value.collection.dropIndex(indexName)
+    res = await databaseHelper.initialize()
+    expect(res).toBeTruthy()
+    await Value.collection.dropIndex(indexName)
+    await Value.collection.createIndex({ ['value']: 'text' }, opts)
+    res = await databaseHelper.initialize()
+    expect(res).toBeTruthy()
 
     //
     // Test failure

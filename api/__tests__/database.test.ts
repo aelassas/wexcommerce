@@ -9,7 +9,10 @@ beforeAll(() => {
 
 describe('Test database connection', () => {
   it('should connect to database', async () => {
-    const res = await databaseHelper.connect(env.DB_URI, false, false)
+    let res = await databaseHelper.connect(env.DB_URI, false, false)
+    expect(res).toBeTruthy()
+    // test success (already connected)
+    res = await databaseHelper.connect(env.DB_URI, false, false)
     expect(res).toBeTruthy()
     await databaseHelper.close()
   })
