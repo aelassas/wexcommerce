@@ -56,13 +56,12 @@ export const connect = async (uri: string, ssl: boolean, debug: boolean): Promis
 
   try {
     await mongoose.connect(uri, options)
-    // Explicitly wait for connection to be open
-    await mongoose.connection.asPromise()
-    logger.info('✅ Database connected')
+    await mongoose.connection.asPromise() // Explicitly wait for connection to be open
+    logger.success('Database connected')
     isConnected = true
     return true
   } catch (err) {
-    logger.error('❌ Database connection failed:', err)
+    logger.error(' Database connection failed:', err instanceof Error ? err.message : err)
     return false
   }
 }
@@ -77,11 +76,16 @@ export const connect = async (uri: string, ssl: boolean, debug: boolean): Promis
 export const close = async (force = false): Promise<void> => {
   await mongoose.connection.close(force)
   isConnected = false
-  logger.info('✅ Database connection closed')
+  logger.success('Database connection closed')
 }
 
 /**
  * Creates a text index on a model's field, falling back gracefully if language override is unsupported.
+ *
+ * Some MongoDB versions or configurations do not support `language_override: '_none'`.
+ * This disables stemming and language processing for the text index.
+ * If the index creation with this option fails, the function falls back to creating
+ * a basic text index without language override.
  *
  * @param {Model<T>} model - The Mongoose model.
  * @param {string} field - The field to index.
@@ -92,7 +96,7 @@ export const createTextIndexWithFallback = async <T>(model: Model<T>, field: str
   const fallbackOptions = {
     name: indexName,
     default_language: 'none', // This disables stemming
-    language_override: '_none', // Prevent MongoDB from expecting a language field
+    language_override: '_none', // Prevent MongoDB from expecting a language field (may not be supported on some versions)
     background: true,
     weights: { [field]: 1 },
   }
@@ -107,19 +111,19 @@ export const createTextIndexWithFallback = async <T>(model: Model<T>, field: str
         existingIndex.language_override === fallbackOptions.language_override
       if (!sameOptions) {
         await collection.dropIndex(indexName)
-        logger.info(`✅ Dropped old text index "${indexName}" due to option mismatch`)
+        logger.success(`Dropped old text index "${indexName}" due to option mismatch`)
       } else {
-        logger.info(`ℹ️ Text index "${indexName}" already exists and is up to date`)
+        logger.info(`Text index "${indexName}" already exists and is up to date`)
         return
       }
     }
 
     // Create new text index with fallback options
     await collection.createIndex({ [field]: 'text' }, fallbackOptions)
-    logger.info(`✅ Created text index "${indexName}" on "${field}" with fallback options`)
+    logger.success(`Created text index "${indexName}" on "${field}" with fallback options`)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : JSON.stringify(err)
-    logger.info(`⚠️ Failed to use language override; falling back to basic text index: "${message}"`)
+    logger.warn(`Failed to use language override; falling back to basic text index: "${message}"`)
     try {
       // Retry creating a basic text index without override if needed
       await collection.createIndex({ [field]: 'text' }, {
@@ -127,9 +131,9 @@ export const createTextIndexWithFallback = async <T>(model: Model<T>, field: str
         background: true,
         weights: { [field]: 1 },
       })
-      logger.info(`✅ Created basic text index "${indexName}" on "${field}" without language override`)
+      logger.success(`Created basic text index "${indexName}" on "${field}" without language override`)
     } catch (fallbackErr) {
-      logger.error(`❌ Failed to create text index "${indexName}":`, fallbackErr)
+      logger.error(`Failed to create text index "${indexName}":`, fallbackErr)
     }
   }
 }
@@ -141,13 +145,23 @@ export const createTextIndexWithFallback = async <T>(model: Model<T>, field: str
  * @param {Model<T>} model 
  * @param {string} name 
  * @param {number} expireAfterSeconds 
- * @returns {*} 
+ * @returns {Promise<void>} 
  */
-const createTTLIndex = async<T>(model: Model<T>, name: string, expireAfterSeconds: number) => {
-  await model.collection.createIndex(
-    { expireAt: 1 },
-    { name, expireAfterSeconds, background: true },
-  )
+const createTTLIndex = async <T>(model: Model<T>, name: string, expireAfterSeconds: number) => {
+  try {
+    await model.collection.createIndex(
+      { [env.expireAt]: 1 },
+      { name, expireAfterSeconds, background: true },
+    )
+  } catch (err) {
+    logger.warn(`Failed to create TTL index "${name}" directly on collection:`, err)
+    try {
+      await model.createIndexes() // fallback to model-defined indexes
+      logger.success(`Fallback to model.createIndexes() succeeded for TTL index "${name}"`)
+    } catch (fallbackErr) {
+      logger.error(`Fallback to model.createIndexes() failed for "${name}":`, fallbackErr)
+    }
+  }
 }
 
 /**
@@ -157,11 +171,10 @@ const createTTLIndex = async<T>(model: Model<T>, name: string, expireAfterSecond
  * @param {Model<T>} model 
  * @param {string} name 
  * @param {number} seconds 
- * @returns {*} 
+ * @returns {Promise<void>} 
  */
-const checkAndUpdateTTL = async<T>(model: Model<T>, name: string, seconds: number) => {
-  const indexName = `${model.modelName}.${name}`
-  logger.info(`ℹ️ Checking TTL index: ${indexName}`)
+const checkAndUpdateTTL = async <T>(model: Model<T>, name: string, seconds: number) => {
+  const indexTag = `${model.modelName}.${name}`
   const indexes = await model.collection.indexes()
   const existing = indexes.find((index) => index.name === name && index.expireAfterSeconds !== seconds)
 
@@ -169,13 +182,11 @@ const checkAndUpdateTTL = async<T>(model: Model<T>, name: string, seconds: numbe
     try {
       await model.collection.dropIndex(name)
     } catch (err) {
-      logger.error(`❌ Failed to drop index "${name}"`, err)
-    } finally {
-      await createTTLIndex(model, name, seconds)
-      await model.createIndexes()
+      logger.error(`Failed to drop TTL index "${name}":`, err)
     }
+    await createTTLIndex(model, name, seconds)
   } else {
-    logger.info(`ℹ️ TTL index "${indexName}" is already up to date`)
+    logger.info(`TTL index "${indexTag}" is already up to date`)
   }
 }
 
@@ -199,24 +210,19 @@ const createCollection = async <T>(model: Model<T>, retries = 3, delay = 500): P
       if (!exists) {
         await model.createCollection()
         await model.createIndexes()
-        // Optionally log success
-        logger.info(`✅ Created collection: ${modelName}`)
-      } else {
-        // Optionally log existing collection
-        logger.info(`ℹ️ Collection already exists: ${modelName}`)
+        logger.success(`Created collection: ${modelName}`) // Optionally log success
       }
       return
     } catch (err) {
       const isLastAttempt = attempt === retries
-      // Optionally log warning
-      logger.info(`⚠️ Attempt ${attempt} failed to create ${modelName}:`, err)
+      logger.warn(`Attempt ${attempt} failed to create ${modelName}:`, err) // Optionally log warning
       if (isLastAttempt) {
-        // Optionally log error
-        logger.error(`❌ Failed to create collection ${modelName} after ${retries} attempts.`)
+        logger.error(`Failed to create collection ${modelName} after ${retries} attempts.`) // Optionally log error
         throw err
       }
       // Wait before next retry (exponential backoff: 500ms, 1000ms, 2000ms)
-      await helper.delay(delay * 2 ** (attempt - 1))
+      const wait = delay * Math.pow(2, attempt - 1)
+      await helper.delay(wait)
     }
   }
 }
@@ -275,7 +281,7 @@ export const initialize = async (): Promise<boolean> => {
     await Promise.all(models.map((model) => createCollection(model as Model<unknown>)))
 
     //
-    // Feature Detection and Conditional Index Creation
+    // Feature detection and conditional text index creation (backward compatible with older versions)
     //
     await createTextIndexWithFallback(Order, 'orderItems.product.name', 'orderItems.product.name_text')
     await createTextIndexWithFallback(Product, 'name', 'name_text')
@@ -303,18 +309,18 @@ export const initialize = async (): Promise<boolean> => {
     const res = results.every(Boolean)
 
     if (res) {
-      logger.info('✅ Database initialized successfully')
+      logger.info('Database initialized successfully')
     } else {
-      logger.error('❌ Some parts of the database failed to initialize')
+      logger.error('Some parts of the database failed to initialize')
     }
 
     return res
   } catch (err) {
-    logger.error('❌ Database initialization error:', err)
+    logger.error('Database initialization error:', err)
     try {
       await close()
     } catch (closeErr) {
-      logger.error('❌ Failed to close database connection after initialization failure:', closeErr)
+      logger.error('Failed to close database connection after initialization failure:', closeErr)
     }
     return false
   }
