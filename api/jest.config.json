@@ -10,7 +10,8 @@
     "./__tests__/"
   ],
   "testMatch": [
-    "**/*.test.ts"
+    "**/database.test.ts",
+    "**/index.test.ts"
   ],
   "collectCoverage": true,
   "coverageReporters": [
