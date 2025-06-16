@@ -38,7 +38,7 @@ With wexCommerce, you can deploy your own customizable ecommerce marketplace at 
 <!--
 wexCommerce is free and open source. You can customize it as you want and deploy it yourself by following the [documentation](https://github.com/aelassas/wexcommerce/wiki). If you want me to customize it and deploy it for you, contact me by email. You can find my email in my [GitHub profile page](https://github.com/aelassas). You need to be logged in to GitHub to view my email. I can deploy the platform to the cloud for you, configure your DNS, emailing, webmail and all related tasks.
 -->
-wexCommerce is composed of a frontend and an admin dashboard. From the frontend, customers can search for the products they want, add them to their cart and checkout. Customers can sign up with Google, Facebook, Apple or Email, and pay with Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link or other Stripe payment methods. Once logged in, they can have access to the history of their purshases and follow their orders. From the admin dashboard, admins can manage orders, payments, products, categories, customers and general settings such as the default language, the currency, delivery, shipping and payment methods accepted.
+wexCommerce is composed of a frontend and an admin panel. From the frontend, customers can search for the products they want, add them to their cart and checkout. Customers can sign up with Google, Facebook, Apple or Email, and pay with Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link or other Stripe payment methods. Once logged in, they can have access to the history of their purshases and follow their orders. From the admin panel, admins can manage orders, payments, products, categories, customers and general settings such as the default language, the currency, delivery, shipping and payment methods accepted.
 
 ## Why Next.js?
 
@@ -63,7 +63,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * Multiple language support (English, French)
 * Multiple login options (Google, Facebook, Apple, Email)
 * [Multiple Payment Gateways supported (Stripe, PayPal)](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
-* Responsive frontend and admin dashboard
+* Responsive frontend and admin panel
 
 ## Support
 
