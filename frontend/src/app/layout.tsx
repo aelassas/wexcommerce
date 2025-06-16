@@ -11,7 +11,7 @@ export const fetchCache = 'force-no-store'
 
 export const metadata: Metadata = {
   title: env.WEBSITE_NAME,
-  description: 'Minimalistic but powerful eCommerce platform',
+  description: 'Sleek and Powerful ecommerce Platform',
 }
 
 type RootLayoutProps = Readonly<{
