@@ -1,5 +1,6 @@
 {
-  "name": "backend",
+  "name": "wexcommerce-admin-panel",
+  "description": "Admin panel for managing wexCommerce",
   "version": "3.1.0",
   "private": true,
   "type": "module",

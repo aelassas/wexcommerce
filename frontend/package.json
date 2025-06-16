@@ -1,7 +1,8 @@
 {
-  "name": "frontend",
-  "version": "3.1.0",
+  "name": "wexcommerce-frontend",
+  "description": "Public web frontend for wexCommerce (customer-facing website)",
   "private": true,
+  "version": "3.1.0",
   "type": "module",
   "scripts": {
     "install:reactjs-social-login": "cd ../packages/reactjs-social-login && npm i",

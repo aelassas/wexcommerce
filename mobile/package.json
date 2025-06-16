@@ -1,5 +1,6 @@
 {
-  "name": "mobile",
+  "name": "wexcommerce-mobile",
+  "description": "Mobile app for wexCommerce (customer app)",
   "main": "expo-router/entry",
   "version": "3.1.0",
   "scripts": {
