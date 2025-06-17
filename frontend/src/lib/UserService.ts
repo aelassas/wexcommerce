@@ -292,7 +292,8 @@ export const getCurrentUser = async (): Promise<wexcommerceTypes.User | null> =>
   let user
 
   const userCookie = (await cookies()).get('wc-fe-user')
-  if (userCookie) {
+
+  if (userCookie && userCookie.value) {
     user = JSON.parse(userCookie.value)
   }
 

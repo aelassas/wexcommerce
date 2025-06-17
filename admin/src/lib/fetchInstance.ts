@@ -1,5 +1,8 @@
+'use server'
+
 import env from '@/config/env.config'
 import * as wexcommerceHelper from ':wexcommerce-helper'
+import * as UserService from '@/lib/UserService'
 
 const skipStatuses = [204, 400, 500]
 
@@ -56,11 +59,15 @@ const fetchWithRetry = async (
       clearTimeout(timeout) // Clear timeout if successful
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`)
+        throw new Error(`HTTP error! Status: ${response.status}`, { cause: response.status })
       }
       return response
     } catch (error) {
       console.error(`Fetch failed (attempt ${i + 1}):`, error)
+
+      if (error instanceof Error && error.cause === 401) {
+        await UserService.signout(true)
+      }
 
       if (error instanceof DOMException && error.name === 'AbortError') {
         console.error(`Fetch request timed out after ${timeoutMs}ms`)

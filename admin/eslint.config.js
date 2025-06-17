@@ -136,6 +136,7 @@ export default [
       'padded-blocks': ['error', 'never'],
       'no-irregular-whitespace': 'error',
       'react-compiler/react-compiler': 'error',
+      'no-unused-vars': 'warn',
     }
   }
 ]
