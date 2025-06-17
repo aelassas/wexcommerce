@@ -21,7 +21,7 @@ const env = {
   isLandscape: () => window && window.innerHeight <= 566,
   isServer: () => typeof window === 'undefined',
 
-  APP_TYPE: 'backend',
+  APP_TYPE: 'admin',
   SERVER_API_HOST: String(process.env.NEXT_PUBLIC_WC_SERVER_API_HOST),
   CLIENT_API_HOST: String(process.env.NEXT_PUBLIC_WC_CLIENT_API_HOST),
   LANGUAGES,

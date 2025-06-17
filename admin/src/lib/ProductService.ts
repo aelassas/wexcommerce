@@ -129,11 +129,11 @@ export const getProducts = async (
   categoryId: string,
   sortBy?: wexcommerceTypes.SortProductBy,
 ): Promise<wexcommerceTypes.Result<wexcommerceTypes.Product>> => {
-  const data: wexcommerceTypes.GetBackendProductsPayload = { sortBy }
+  const data: wexcommerceTypes.GetAdminProductsPayload = { sortBy }
 
   return fetchInstance
     .POST(
-      `/api/backend-products/${userId}/${page}/${size}/${(categoryId && `${categoryId}/`) || ''}?s=${encodeURIComponent(keyword || '')}`
+      `/api/admin-products/${userId}/${page}/${size}/${(categoryId && `${categoryId}/`) || ''}?s=${encodeURIComponent(keyword || '')}`
       , data
       , [await UserService.authHeader()]
     )

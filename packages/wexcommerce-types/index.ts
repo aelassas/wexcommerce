@@ -4,7 +4,7 @@ export enum UserType {
 }
 
 export enum AppType {
-  Backend = 'backend',
+  Admin = 'admin',
   Frontend = 'frontend',
 }
 
@@ -403,7 +403,7 @@ export interface GetProductsPayload {
   sortBy?: SortProductBy
 }
 
-export interface GetBackendProductsPayload {
+export interface GetAdminProductsPayload {
   sortBy?: SortProductBy
 }
 

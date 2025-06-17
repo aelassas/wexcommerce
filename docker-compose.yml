@@ -39,22 +39,22 @@ services:
       - cdn:/var/www/cdn/wexcommerce
       - api_logs:/wexcommerce/api/logs
 
-  wc-backend:
+  wc-admin:
     build:
       context: .
-      dockerfile: ./backend/Dockerfile
+      dockerfile: ./admin/Dockerfile
     depends_on:
       - wc-api
     ports:
       - 8005:8005
     restart: always
 
-  wc-nginx-backend:
+  wc-nginx-admin:
     build:
       context: .
-      dockerfile: ./backend/nginx/Dockerfile
+      dockerfile: ./admin/nginx/Dockerfile
     depends_on:
-      - wc-backend
+      - wc-admin
     ports:
       - 8001:8001
     restart: always

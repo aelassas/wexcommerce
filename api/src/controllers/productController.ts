@@ -481,16 +481,16 @@ export const getProduct = async (req: Request, res: Response) => {
 }
 
 /**
- * Get backend products.
+ * Get admin products.
  *
  * @async
  * @param {Request} req
  * @param {Response} res
  * @returns {unknown}
  */
-export const getBackendProducts = async (req: Request, res: Response) => {
+export const getAdminProducts = async (req: Request, res: Response) => {
   try {
-    const { body }: { body: wexcommerceTypes.GetBackendProductsPayload } = req
+    const { body }: { body: wexcommerceTypes.GetAdminProductsPayload } = req
     const { user: userId } = req.params
 
     if (!helper.isValidObjectId(userId)) {

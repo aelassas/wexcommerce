@@ -2,6 +2,6 @@
 
 FROM nginx:stable-alpine
 WORKDIR /usr/share/nginx/html
-COPY ./backend/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./admin/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 8001

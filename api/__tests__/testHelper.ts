@@ -105,7 +105,7 @@ const signin = async (appType: wexcommerceTypes.AppType, email: string) => {
   return res.body.accessToken
 }
 
-export const signinAsAdmin = () => signin(wexcommerceTypes.AppType.Backend, ADMIN_EMAIL)
+export const signinAsAdmin = () => signin(wexcommerceTypes.AppType.Admin, ADMIN_EMAIL)
 
 export const signinAsUser = () => signin(wexcommerceTypes.AppType.Frontend, USER_EMAIL)
 

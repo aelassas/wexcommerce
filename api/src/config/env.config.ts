@@ -165,11 +165,11 @@ export const COOKIE_OPTIONS: CookieOptions = { httpOnly: true, secure: HTTPS, si
 export const FRONTEND_AUTH_COOKIE_NAME = 'wc-x-access-token-frontend'
 
 /**
- * Backend authentication cookie name.
+ * Admin authentication cookie name.
  *
  * @type {"wc-x-access-token-frontend"}
  */
-export const BACKEND_AUTH_COOKIE_NAME = 'wc-x-access-token-backend'
+export const ADMIN_AUTH_COOKIE_NAME = 'wc-x-access-token-admin'
 
 /**
  * Mobile App and unit tests authentication header name.
@@ -284,11 +284,11 @@ export const CDN_PRODUCTS = __env__('WC_CDN_PRODUCTS', true)
 export const CDN_TEMP_PRODUCTS = __env__('WC_CDN_TEMP_PRODUCTS', true)
 
 /**
- * Backend host.
+ * Admin host.
  *
  * @type {string}
  */
-export const BACKEND_HOST = __env__('WC_BACKEND_HOST', true)
+export const ADMIN_HOST = __env__('WC_ADMIN_HOST', true)
 
 /**
  * Frontend host.

@@ -1,15 +1,15 @@
 [Unit]
-Description=wexCommerce Backend
+Description=wexCommerce Admin
 Wants=wexcommerce.service
 After=wexcommerce.service
 
 [Service]
 ExecStart=/usr/bin/npm run start
-WorkingDirectory=/opt/wexcommerce/backend
+WorkingDirectory=/opt/wexcommerce/admin
 Type=simple
 Restart=always
-StandardOutput=append:/var/log/wexcommerce-backend.log
-StandardError=append:/var/log/wexcommerce-backend.log
+StandardOutput=append:/var/log/wexcommerce-admin.log
+StandardError=append:/var/log/wexcommerce-admin.log
 
 [Install]
 WantedBy=multi-user.target

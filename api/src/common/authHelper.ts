@@ -45,13 +45,13 @@ export const decryptJWT = async (input: string) => {
 }
 
 /**
- * Check whether the request is from the backend or not.
+ * Check whether the request is from the admin or not.
  *
  * @export
  * @param {Request} req
  * @returns {boolean}
  */
-export const isBackend = (req: Request): boolean => !!req.headers.origin && helper.trimEnd(req.headers.origin, '/') === helper.trimEnd(env.BACKEND_HOST, '/')
+export const isAdmin = (req: Request): boolean => !!req.headers.origin && helper.trimEnd(req.headers.origin, '/') === helper.trimEnd(env.ADMIN_HOST, '/')
 
 /**
  * Check whether the request is from the frontend or not.

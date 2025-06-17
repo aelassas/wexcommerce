@@ -51,7 +51,7 @@ jobs:
            echo WC_CDN_TEMP_CATEGORIES=$WC_CDN_TEMP_CATEGORIES >> .env
            echo WC_CDN_PRODUCTS=$WC_CDN_PRODUCTS >> .env
            echo WC_CDN_TEMP_PRODUCTS=$WC_CDN_TEMP_PRODUCTS >> .env
-           echo WC_BACKEND_HOST=$WC_BACKEND_HOST >> .env
+           echo WC_ADMIN_HOST=$WC_ADMIN_HOST >> .env
            echo WC_FRONTEND_HOST=$WC_FRONTEND_HOST >> .env
            echo WC_DEFAULT_CURRENCY=$WC_DEFAULT_CURRENCY >> .env
            echo WC_DEFAULT_STRIPE_CURRENCY=$WC_DEFAULT_STRIPE_CURRENCY >> .env
@@ -88,7 +88,7 @@ jobs:
         WC_CDN_TEMP_CATEGORIES: ${{ vars.WC_CDN_TEMP_CATEGORIES }}
         WC_CDN_PRODUCTS: ${{ vars.WC_CDN_PRODUCTS }}
         WC_CDN_TEMP_PRODUCTS: ${{ vars.WC_CDN_TEMP_PRODUCTS }}
-        WC_BACKEND_HOST: ${{ vars.WC_BACKEND_HOST }}
+        WC_ADMIN_HOST: ${{ vars.WC_ADMIN_HOST }}
         WC_FRONTEND_HOST: ${{ vars.WC_FRONTEND_HOST }}
         WC_DEFAULT_CURRENCY: ${{ vars.WC_DEFAULT_CURRENCY }}
         WC_DEFAULT_STRIPE_CURRENCY: ${{ vars.WC_DEFAULT_STRIPE_CURRENCY }}

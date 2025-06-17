@@ -24,9 +24,9 @@ const config = {
       container: 'wc-dev-api',
       checks: [checkTypes.lint, checkTypes.typeCheck, checkTypes.sizeCheck],
     },
-    backend: {
-      folder: 'backend',
-      container: 'wc-dev-backend',
+    admin: {
+      folder: 'admin',
+      container: 'wc-dev-admin',
       checks: [checkTypes.lint, checkTypes.typeCheck, checkTypes.sizeCheck],
     },
     frontend: {

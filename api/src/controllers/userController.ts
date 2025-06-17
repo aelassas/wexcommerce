@@ -134,7 +134,7 @@ export const signup = async (req: Request, res: Response) => {
 }
 
 /**
- * Backend Sign Up.
+ * Admin Sign Up.
  *
  * @export
  * @async
@@ -373,8 +373,8 @@ export const resend = async (req: Request, res: Response) => {
       const type = req.params.type.toLowerCase() as wexcommerceTypes.AppType
 
       if (
-        ![wexcommerceTypes.AppType.Frontend, wexcommerceTypes.AppType.Backend].includes(type)
-        || (type === wexcommerceTypes.AppType.Backend && user.type === wexcommerceTypes.UserType.User)
+        ![wexcommerceTypes.AppType.Frontend, wexcommerceTypes.AppType.Admin].includes(type)
+        || (type === wexcommerceTypes.AppType.Admin && user.type === wexcommerceTypes.UserType.User)
         || (type === wexcommerceTypes.AppType.Frontend && user.type !== wexcommerceTypes.UserType.User)
       ) {
         res.sendStatus(403)
@@ -401,7 +401,7 @@ export const resend = async (req: Request, res: Response) => {
           ${i18n.t('HELLO')}${user.fullName},<br><br>  
           ${reset ? i18n.t('PASSWORD_RESET_LINK') : i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>  
           ${helper.joinURL(
-            user.type === wexcommerceTypes.UserType.User ? env.FRONTEND_HOST : env.BACKEND_HOST,
+            user.type === wexcommerceTypes.UserType.User ? env.FRONTEND_HOST : env.ADMIN_HOST,
             reset ? 'reset-password' : 'activate',
           )}/?u=${encodeURIComponent(user.id)}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
           ${i18n.t('REGARDS')}<br>
@@ -488,8 +488,8 @@ export const checkToken = async (req: Request, res: Response) => {
       const type = req.params.type.toLowerCase() as wexcommerceTypes.AppType
 
       if (
-        ![wexcommerceTypes.AppType.Frontend, wexcommerceTypes.AppType.Backend].includes(type)
-        || (type === wexcommerceTypes.AppType.Backend && user.type === wexcommerceTypes.UserType.User)
+        ![wexcommerceTypes.AppType.Frontend, wexcommerceTypes.AppType.Admin].includes(type)
+        || (type === wexcommerceTypes.AppType.Admin && user.type === wexcommerceTypes.UserType.User)
         || (type === wexcommerceTypes.AppType.Frontend && user.type !== wexcommerceTypes.UserType.User)
         || user.active
       ) {
@@ -578,8 +578,8 @@ export const signin = async (req: Request, res: Response) => {
       !password
       || !user
       || !user.password
-      || ![wexcommerceTypes.AppType.Frontend, wexcommerceTypes.AppType.Backend].includes(type)
-      || (type === wexcommerceTypes.AppType.Backend && user.type === wexcommerceTypes.UserType.User)
+      || ![wexcommerceTypes.AppType.Frontend, wexcommerceTypes.AppType.Admin].includes(type)
+      || (type === wexcommerceTypes.AppType.Admin && user.type === wexcommerceTypes.UserType.User)
       || (type === wexcommerceTypes.AppType.Frontend && user.type !== wexcommerceTypes.UserType.User)
     ) {
       res.sendStatus(204)

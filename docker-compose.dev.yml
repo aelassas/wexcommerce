@@ -40,19 +40,19 @@ services:
       - /wexcommerce/api/node_modules
       - api_logs:/wexcommerce/api/logs
 
-  wc-dev-backend:
+  wc-dev-admin:
     build:
       context: .
-      dockerfile: ./backend/Dockerfile.dev
-    env_file: ./backend/.env.docker.development
+      dockerfile: ./admin/Dockerfile.dev
+    env_file: ./admin/.env.docker.development
     restart: always
     depends_on:
       - wc-dev-api
     ports:
       - 8005:8005
     volumes:
-      - ./backend:/wexcommerce/backend
-      - /wexcommerce/backend/node_modules
+      - ./admin:/wexcommerce/admin
+      - /wexcommerce/admin/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true

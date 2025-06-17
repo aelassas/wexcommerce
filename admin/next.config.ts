@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     //
-    // Add your backend domain here
+    // Add your admin domain here
     //
     remotePatterns: [
       {
@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
   //
   compress: false,
   //
-  // Add your backend domain here
+  // Add your admin domain here
   //
   experimental: {
     serverActions: {

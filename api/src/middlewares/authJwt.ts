@@ -15,7 +15,7 @@ import User from '../models/User'
  * @param {NextFunction} next
  */
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
-  const isBackend = authHelper.isBackend(req)
+  const isAdmin = authHelper.isAdmin(req)
   const isFrontend = authHelper.isFrontend(req)
   const token = req.headers[env.X_ACCESS_TOKEN] as string
 
@@ -30,7 +30,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
         ],
       }
 
-      if (isBackend) {
+      if (isAdmin) {
         $match.$and?.push({ type: wexcommerceTypes.UserType.Admin })
       } else if (isFrontend) {
         $match.$and?.push({ type: wexcommerceTypes.UserType.User })

@@ -89,7 +89,7 @@ export const notify = async (adminEmail: string, __order: env.Order, _user: env.
     to: adminEmail,
     subject: `${i18n.t('NEW_ORDER_SUBJECT')} ${__order._id}`,
     html: `<p>${i18n.t('HELLO')}${adminEmail},<br><br>${i18n.t('NEW_ORDER_PART_1')}${__order._id}${i18n.t('NEW_ORDER_PART_2')}<br><br>${i18n.t('NEW_ORDER_PART_3')}<br><br>
-    ${helper.joinURL(env.BACKEND_HOST, 'orders')}?o=${encodeURIComponent(__order.id)
+    ${helper.joinURL(env.ADMIN_HOST, 'orders')}?o=${encodeURIComponent(__order.id)
       }<br><br>${i18n.t('REGARDS')}<br>`
       + '</p>',
   }

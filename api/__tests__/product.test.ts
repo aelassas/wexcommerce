@@ -491,14 +491,14 @@ describe('POST /api/product/:id/:language', () => {
   })
 })
 
-describe('POST /api/backend-products/:user/:page/:size/:category?', () => {
-  it('should get backend products', async () => {
+describe('POST /api/admin-products/:user/:page/:size/:category?', () => {
+  it('should get admin products', async () => {
     const token = await testHelper.signinAsAdmin()
 
     // test success
-    const payload: wexcommerceTypes.GetBackendProductsPayload = { sortBy: wexcommerceTypes.SortProductBy.priceAsc }
+    const payload: wexcommerceTypes.GetAdminProductsPayload = { sortBy: wexcommerceTypes.SortProductBy.priceAsc }
     let res = await request(app)
-      .post(`/api/backend-products/${ADMIN_ID}/1/10/${CATEGORY_ID}`)
+      .post(`/api/admin-products/${ADMIN_ID}/1/10/${CATEGORY_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
@@ -507,7 +507,7 @@ describe('POST /api/backend-products/:user/:page/:size/:category?', () => {
     // test success (sort by feaured)
     payload.sortBy = wexcommerceTypes.SortProductBy.featured
     res = await request(app)
-    .post(`/api/backend-products/${ADMIN_ID}/1/10/${CATEGORY_ID}`)
+    .post(`/api/admin-products/${ADMIN_ID}/1/10/${CATEGORY_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
@@ -516,7 +516,7 @@ describe('POST /api/backend-products/:user/:page/:size/:category?', () => {
     // test success (sort by date)
     payload.sortBy = wexcommerceTypes.SortProductBy.dateDesc
     res = await request(app)
-    .post(`/api/backend-products/${ADMIN_ID}/1/10/${CATEGORY_ID}`)
+    .post(`/api/admin-products/${ADMIN_ID}/1/10/${CATEGORY_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
@@ -525,7 +525,7 @@ describe('POST /api/backend-products/:user/:page/:size/:category?', () => {
     // test success (no category and sort by priceDesc)
     payload.sortBy = wexcommerceTypes.SortProductBy.priceDesc
     res = await request(app)
-      .post(`/api/backend-products/${ADMIN_ID}/1/10`)
+      .post(`/api/admin-products/${ADMIN_ID}/1/10`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
@@ -534,7 +534,7 @@ describe('POST /api/backend-products/:user/:page/:size/:category?', () => {
     // test success (no sortBy)
     payload.sortBy = undefined
     res = await request(app)
-      .post(`/api/backend-products/${ADMIN_ID}/1/10/${CATEGORY_ID}`)
+      .post(`/api/admin-products/${ADMIN_ID}/1/10/${CATEGORY_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
@@ -542,14 +542,14 @@ describe('POST /api/backend-products/:user/:page/:size/:category?', () => {
 
     // test failure (user id not valid)
     res = await request(app)
-      .post(`/api/backend-products/0/1/10/${CATEGORY_ID}`)
+      .post(`/api/admin-products/0/1/10/${CATEGORY_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(400)
 
     // test failure (admin user not found)
     res = await request(app)
-      .post(`/api/backend-products/${testHelper.GetRandromObjectIdAsString()}/1/10/${CATEGORY_ID}`)
+      .post(`/api/admin-products/${testHelper.GetRandromObjectIdAsString()}/1/10/${CATEGORY_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(400)

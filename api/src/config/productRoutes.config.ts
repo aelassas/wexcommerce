@@ -7,7 +7,7 @@ export default {
     checkProduct: '/api/check-product/:id',
     delete: '/api/delete-product/:id',
     getProduct: '/api/product/:id/:language',
-    getBackendProducts: '/api/backend-products/:user/:page/:size{/:category}',
+    getAdminProducts: '/api/admin-products/:user/:page/:size{/:category}',
     getFrontendProducts: '/api/frontend-products/:page/:size{/:category}',
     getFeaturedProducts: '/api/featured-products',
 }
