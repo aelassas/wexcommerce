@@ -24,11 +24,11 @@ services:
     depends_on:
       - mongo
 
-  wc-dev-api:
+  wc-dev-backend:
     build:
       context: .
-      dockerfile: ./api/Dockerfile.dev
-    env_file: ./api/.env.docker.development
+      dockerfile: ./backend/Dockerfile.dev
+    env_file: ./backend/.env.docker.development
     restart: always
     ports:
       - 4005:4005
@@ -36,9 +36,9 @@ services:
       - mongo
     volumes:
       - cdn:/var/www/cdn/wexcommerce
-      - ./api:/wexcommerce/api
-      - /wexcommerce/api/node_modules
-      - api_logs:/wexcommerce/api/logs
+      - ./backend:/wexcommerce/backend
+      - /wexcommerce/backend/node_modules
+      - backend_logs:/wexcommerce/backend/logs
 
   wc-dev-admin:
     build:
@@ -47,7 +47,7 @@ services:
     env_file: ./admin/.env.docker.development
     restart: always
     depends_on:
-      - wc-dev-api
+      - wc-dev-backend
     ports:
       - 8005:8005
     volumes:
@@ -64,7 +64,7 @@ services:
     env_file: ./frontend/.env.docker.development
     restart: always
     depends_on:
-      - wc-dev-api
+      - wc-dev-backend
     ports:
       - 8006:8006
     volumes:
@@ -78,4 +78,4 @@ volumes:
   cdn:
   mongodb_data:
   mongodb_config:
-  api_logs:
+  backend_logs:
