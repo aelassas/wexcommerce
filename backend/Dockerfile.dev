@@ -16,22 +16,22 @@ RUN set -e && \
 
 FROM node:lts-alpine AS build
 
-WORKDIR /wexcommerce/api
+WORKDIR /wexcommerce/backend
 
-COPY ./api/package*.json ./
+COPY ./backend/package*.json ./
 
 RUN npm install --force && \
     npm cache clean --force
 
 FROM node:lts-alpine
-WORKDIR /wexcommerce/api
+WORKDIR /wexcommerce/backend
 
-COPY --from=build /wexcommerce/api/node_modules ./node_modules
+COPY --from=build /wexcommerce/backend/node_modules ./node_modules
 
 COPY --from=packages /wexcommerce/packages /wexcommerce/packages
 
-COPY ./api ./
-COPY ./api/.env.docker.development .env
+COPY ./backend ./
+COPY ./backend/.env.docker.development .env
 
 EXPOSE 4005
 
