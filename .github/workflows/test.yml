@@ -26,7 +26,7 @@ jobs:
         
     - name: Run tests
       run: |
-           cd ./api
+           cd ./backend
            touch .env
            echo NODE_ENV=$NODE_ENV >> .env
            echo WC_CI=$WC_CI >> .env
@@ -106,7 +106,7 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./cobertura-coverage.xml
-        directory: ./api/coverage
+        directory: ./backend/coverage
         # fail_ci_if_error: true
         # verbose: true
 
@@ -136,8 +136,8 @@ jobs:
       continue-on-error: true
       uses: coverallsapp/github-action@v2
       with:
-        file: ./api/coverage/cobertura-coverage.xml
-        base-path: api
+        file: ./backend/coverage/cobertura-coverage.xml
+        base-path: backend
         # fail-on-error: true
         measure: true
 
