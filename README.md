@@ -81,6 +81,7 @@ If this project has been valuable in your work or research, consider supporting 
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
 2. [Why Use wexCommerce](https://github.com/aelassas/wexcommerce/wiki/Why-Use-wexCommerce)
+3. [Software Architecture](https://github.com/aelassas/wexcommerce/wiki/Architecture)
 2. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
 2. [Installing (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))
    1. [Docker Image](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#docker-image)
