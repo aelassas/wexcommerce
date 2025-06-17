@@ -1,5 +1,5 @@
 [Unit]
-Description=wexCommerce Admin
+Description=wexCommerce admin panel
 Wants=wexcommerce.service
 After=wexcommerce.service
 

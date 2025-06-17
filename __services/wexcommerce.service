@@ -1,11 +1,11 @@
 [Unit]
-Description=wexCommerce API
+Description=wexCommerce backend server
 Wants=mongod.service
 After=mongod.service
 
 [Service]
 ExecStart=/usr/bin/npm start
-WorkingDirectory=/opt/wexcommerce/api
+WorkingDirectory=/opt/wexcommerce/backend
 Type=simple
 Restart=always
 StandardOutput=append:/var/log/wexcommerce.log

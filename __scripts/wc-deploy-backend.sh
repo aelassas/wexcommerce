@@ -1,7 +1,7 @@
 #!/bin/bash
 
 start_time=$(date +%s)
-echo "Deploying wexCommerce API..."
+echo "Deploying wexCommerce backend server..."
 
 cd /opt/wexcommerce/
 git pull
@@ -9,7 +9,7 @@ chmod +x -R /opt/wexcommerce/__scripts
 
 /bin/bash /opt/wexcommerce/__scripts/free-mem.sh
 
-cd /opt/wexcommerce/api
+cd /opt/wexcommerce/backend
 
 npm install
 

@@ -1,5 +1,5 @@
 [Unit]
-Description=wexCommerce Frontend
+Description=wexCommerce frontend
 Wants=wexcommerce.service
 After=wexcommerce.service
 
