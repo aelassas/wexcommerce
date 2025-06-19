@@ -40,6 +40,7 @@ wexCommerce is free and open source. You can customize it as you want and deploy
 -->
 wexCommerce is composed of a frontend and an admin panel. From the frontend, customers can search for the products they want, add them to their cart and checkout. Customers can sign up with Google, Facebook, Apple or Email, and pay with Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link or other Stripe payment methods. Once logged in, they can have access to the history of their purshases and follow their orders. From the admin panel, admins can manage orders, payments, products, categories, customers and general settings such as the default language, the currency, delivery, shipping and payment methods accepted.
 
+<!--
 ## Why Next.js?
 
 Building a marketplace with Next.js provides a solid foundation for scaling your business. Focus on performance, security, and user experience while maintaining code quality and documentation. Regular updates and monitoring will ensure your platform remains competitive and reliable.
@@ -51,19 +52,37 @@ Next.js stands out as an excellent choice for marketplace development due to its
 - **Scalability**: Enterprise-ready architecture that grows with your business
 - **Rich Ecosystem**: Vast collection of libraries and tools for rapid development
 - **Developer Experience**: Intuitive development workflow with hot reloading and automatic routing
+-->
 
 ## Features
 
+### 🛒 Commerce Management
 * Stock management
 * Order management
 * Payment management
 * Customer management
-* Multiple payment options (Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link)
-* Multiple delivery options (Home delivery, Store withdrawal)
-* Multiple language support (English, French)
-* Multiple login options (Google, Facebook, Apple, Email)
-* [Multiple Payment Gateways supported (Stripe, PayPal)](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
-* Responsive frontend and admin panel
+
+### 💳 Flexible Payments
+* [Multiple payment gateways supported (Stripe, PayPal)](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
+* Multiple payment methods: Credit Card, Cash on Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link
+
+### 🚚 Delivery Options
+* Home delivery
+* Store withdrawal
+
+### 🌍 Internationalization & Access
+* Multiple language support: English, French
+* Multiple login options: Google, Facebook, Apple, Email
+
+### 🛡️ Security & Performance
+* Secure against XSS, XST, CSRF, MITM, and DDoS attacks
+* Responsive admin panel and frontend
+* SEO-compliant: product pages are indexable by search engines for better visibility
+* [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
+
+### 🖥️ Supported Platforms
+* Web
+* Docker
 
 ## Support
 
