@@ -17,28 +17,19 @@ https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
 
 [![](https://wexcommerce.github.io/content/frontend-0-tiny.png)](https://wexcommerce.dynv6.net:8002/home)
 
-wexCommerce is a sleek and powerful ecommerce platform built on Next.js for its powerful rendering capabilities, MongoDB for flexible data modeling, Stripe and PayPal for secure payment processing.
+## wexCommerce
 
-<!--
-For developers who value creative freedom and technical control, traditional ecommerce platforms like Shopify can feel restrictive. While Shopify's templates offer quick setup, and their Storefront API provides some flexibility, neither solution delivers the complete architectural freedom that modern developers crave.
+wexCommerce is a sleek and powerful open-source single-vendor eCommerce platform built with Next.js for high-performance rendering, MongoDB for flexible data modeling, and Stripe and PayPal for secure and global payment processing.
 
-This project emerged from a desire to build without boundaries – a fully customizable ecommerce solution where every aspect is within your control. This open-source platform empowers developers to:
+It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) [payment gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways), allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
 
-- **Own the UI/UX**: Design unique customer experiences without fighting against template limitations
-- **Control the Backend**: Implement custom business logic and data structures that perfectly match your requirements
-- **Master DevOps**: Deploy, scale, and monitor your application with your preferred tools and workflows
-- **Extend Freely**: Add new features and integrations without platform constraints or additional fees
+You can deploy your own customizable eCommerce marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). Optimized for SEO and efficient performance, wexCommerce can run on a lightweight 1GB RAM droplet—ideal for cost-conscious businesses. Hosting starts at just $5/month with providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
-By choosing this stack, you're not just building a store – you're investing in a foundation that can evolve with your needs, backed by robust open-source technologies and a growing developer community.
--->
+wexCommerce consists of two parts:
+- **Frontend**: Customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
+- **Admin Panel**: Administrators can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
 
-wexCommerce integrates Stripe and PayPal [payment gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways). If [Stripe](https://stripe.com/global) isn't available in your country, simply check if [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) is supported and use it as an alternative for smooth and secure payments.
-
-With wexCommerce, you can deploy your own customizable ecommerce marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). The platform integrates Stripe and PayPal for secure payments, is optimized for SEO and can be efficiently hosted on a 1GB RAM droplet, making it an ideal choice for ecommerce operations looking for a scalable and cost-effective solution. You can deploy it for under $5/month using cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
-<!--
-wexCommerce is free and open source. You can customize it as you want and deploy it yourself by following the [documentation](https://github.com/aelassas/wexcommerce/wiki). If you want me to customize it and deploy it for you, contact me by email. You can find my email in my [GitHub profile page](https://github.com/aelassas). You need to be logged in to GitHub to view my email. I can deploy the platform to the cloud for you, configure your DNS, emailing, webmail and all related tasks.
--->
-wexCommerce is composed of a frontend and an admin panel. From the frontend, customers can search for the products they want, add them to their cart and checkout. Customers can sign up with Google, Facebook, Apple or Email, and pay with Credit Card, Cash On Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link or other Stripe payment methods. Once logged in, they can have access to the history of their purshases and follow their orders. From the admin panel, admins can manage orders, payments, products, categories, customers and general settings such as the default language, the currency, delivery, shipping and payment methods accepted.
+> wexCommerce is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/wexcommerce/wiki). If you’d like assistance with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is listed on my GitHub profile (GitHub login required).
 
 <!--
 ## Why Next.js?
