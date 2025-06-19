@@ -45,7 +45,7 @@ const getHeaders = (initialValue: Record<string, string> = {}, headers?: Record<
 const fetchWithRetry = async (
   url: string,
   options: RequestInit = {},
-  retries: number = 3,
+  retries: number = 1, // Number of retries (0 means no retries)
   baseDelay: number = 1000,
   timeoutMs: number = 15000, // Timeout support to prevent hanging requests (15000ms default)
 ): Promise<globalThis.Response> => {
