@@ -25,11 +25,11 @@ It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypa
 
 You can deploy your own customizable eCommerce marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). Optimized for SEO and efficient performance, wexCommerce can run on a lightweight 1GB RAM droplet—ideal for cost-conscious businesses. Hosting starts at just $5/month with providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
-wexCommerce consists of two parts:
-- **Frontend**: Customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
-- **Admin Panel**: Administrators can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
+From the frontend, customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
 
-> wexCommerce is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/wexcommerce/wiki). If you’d like assistance with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is listed on my GitHub profile (GitHub login required).
+From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
+
+wexCommerce is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/wexcommerce/wiki). If you’d like assistance with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is listed on my GitHub profile (GitHub login required).
 
 <!--
 ## Why Next.js?
