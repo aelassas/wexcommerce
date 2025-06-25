@@ -104,6 +104,7 @@ If this project helped you, saved you time, or inspired you in any way, please c
    7. [Architecture Principles](https://github.com/aelassas/wexcommerce/wiki/Architecture#architecture-principles)
    9. [Docker & Development Environment](https://github.com/aelassas/wexcommerce/wiki/Architecture#docker--development-environment)
    10. [Codebase Overview](https://github.com/aelassas/wexcommerce/wiki/Architecture#codebase-overview)
+   11. [Production Readiness](https://github.com/aelassas/wexcommerce/wiki/Architecture#-production-readiness)
    10. [Git Pre-commit Checks with Husky](https://github.com/aelassas/wexcommerce/wiki/Architecture#git-pre-commit-checks-with-husky)
    11. [Continuous Integration (CI)](https://github.com/aelassas/wexcommerce/wiki/Architecture#continuous-integration-ci)
 2. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
