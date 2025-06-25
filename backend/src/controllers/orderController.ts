@@ -16,7 +16,7 @@ import PaymentType from '../models/PaymentType'
 import DeliveryType from '../models/DeliveryType'
 import * as helper from '../common/helper'
 import * as mailHelper from '../common/mailHelper'
-import stripeAPI from '../stripe'
+import stripeAPI from '../payment/stripe'
 
 /**
  * Confirm checkout.
