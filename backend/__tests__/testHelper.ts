@@ -1,6 +1,5 @@
 import request from 'supertest'
 import cookieParser from 'cookie-parser'
-import bcrypt from 'bcrypt'
 import { nanoid } from 'nanoid'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -13,6 +12,7 @@ import * as logger from '../src/common/logger'
 import * as paymentTypeController from '../src/controllers/paymentTypeController'
 import * as deliveryTypeController from '../src/controllers/deliveryTypeController'
 import * as settingController from '../src/controllers/settingController'
+import * as helper from '../src/common/helper'
 
 export const getName = (prefix: string) => {
   expect(prefix.length).toBeGreaterThan(1)
@@ -41,8 +41,7 @@ export const initializeLogger = (disable = true) => {
 }
 
 export const initialize = async () => {
-  const salt = await bcrypt.genSalt(10)
-  const passwordHash = await bcrypt.hash(PASSWORD, salt)
+  const passwordHash = await helper.hashPassword(PASSWORD)
 
   // admin
   const admin = new User({
