@@ -12,7 +12,7 @@ import * as logger from '../src/common/logger'
 import * as paymentTypeController from '../src/controllers/paymentTypeController'
 import * as deliveryTypeController from '../src/controllers/deliveryTypeController'
 import * as settingController from '../src/controllers/settingController'
-import * as helper from '../src/common/helper'
+import * as authHelper from '../src/common/authHelper'
 
 export const getName = (prefix: string) => {
   expect(prefix.length).toBeGreaterThan(1)
@@ -41,7 +41,7 @@ export const initializeLogger = (disable = true) => {
 }
 
 export const initialize = async () => {
-  const passwordHash = await helper.hashPassword(PASSWORD)
+  const passwordHash = await authHelper.hashPassword(PASSWORD)
 
   // admin
   const admin = new User({

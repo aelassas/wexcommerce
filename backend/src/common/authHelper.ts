@@ -1,5 +1,6 @@
 import { Request } from 'express'
 import { jwtVerify, SignJWT } from 'jose'
+import bcrypt from 'bcrypt'
 import * as helper from './helper'
 import * as env from '../config/env.config'
 
@@ -61,3 +62,15 @@ export const isAdmin = (req: Request): boolean => !!req.headers.origin && helper
  * @returns {boolean}
  */
 export const isFrontend = (req: Request): boolean => !!req.headers.origin && helper.trimEnd(req.headers.origin, '/') === helper.trimEnd(env.FRONTEND_HOST, '/')
+
+/**
+ * Hash password using bcrypt.
+ *
+ * @async
+ * @param {string} password 
+ * @returns {Promise<string>} 
+ */
+export const hashPassword = async (password: string): Promise<string> => {
+  const salt = await bcrypt.genSalt(10)
+  return bcrypt.hash(password, salt)
+}
