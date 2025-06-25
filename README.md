@@ -90,6 +90,8 @@ If this project helped you, saved you time, or inspired you in any way, please c
 ## Documentation
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
+   1. [Frontend](https://github.com/aelassas/wexcommerce/wiki/Overview#frontend)
+   2. [Admin Panel](https://github.com/aelassas/wexcommerce/wiki/Overview#admin-panel)
 2. [Why Use wexCommerce](https://github.com/aelassas/wexcommerce/wiki/Why-Use-wexCommerce)
 3. [Software Architecture](https://github.com/aelassas/wexcommerce/wiki/Architecture)
    1. [Technologies Overview](https://github.com/aelassas/wexcommerce/wiki/Architecture#technologies-overview)
