@@ -134,6 +134,8 @@ We appreciate your help in making wexCommerce better!
 15. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 16. [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ)
 17. [Release Notes](https://github.com/aelassas/wexcommerce/blob/main/.github/RELEASES.md)
+18. [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md)
+19. [Code of Conduct](https://github.com/aelassas/wexcommerce/blob/main/.github/CODE_OF_CONDUCT.md)
 
 ## License
 
