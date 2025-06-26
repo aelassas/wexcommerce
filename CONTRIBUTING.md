@@ -1,4 +1,4 @@
-## Contribution Guide
+# Contribution Guide
 
 Welcome to the **wexCommerce** Contribution Guide!  
 
