@@ -133,6 +133,7 @@ We appreciate your help in making wexCommerce better!
     1. [Unit Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Unit-Tests-and-Coverage)
 15. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 16. [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ)
+17. [Release Notes](https://github.com/aelassas/wexcommerce/blob/main/.github/RELEASES.md)
 
 ## License
 
