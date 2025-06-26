@@ -1,7 +1,7 @@
 {
   "name": "wexcommerce",
   "version": "2.8.0",
-  "description": "Sleek and Powerful ecommerce Platform",
+  "description": "Single Vendor Marketplace",
   "keywords": [
     "nextjs",
     "react",
@@ -14,7 +14,8 @@
     "marketplace",
     "storefront",
     "headless-cms",
-    "wexcommerce"
+    "wexcommerce",
+    "single-vendor"
   ],
   "homepage": "https://github.com/aelassas/wexcommerce#readme",
   "bugs": {
