@@ -8,7 +8,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v3.2...v3.3
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.3/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.3/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.3)
@@ -24,7 +24,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v3.1...v3.2
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.2/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.2/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.2)
@@ -42,7 +42,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v3.0...v3.1
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.1/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.1/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.1)
@@ -72,7 +72,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v2.9...v3.0
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.0/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.0/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.0)
@@ -92,7 +92,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v2.8...v2.9
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.9/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.9/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.9)
@@ -110,7 +110,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v2.7...v2.8
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.8/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.8/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.8)
@@ -130,7 +130,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v2.6...v2.7
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.7/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.7/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.7)
@@ -143,7 +143,7 @@
 * Updated dependencies
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.6/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.6/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.6)
@@ -159,7 +159,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v2.4...v2.5
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.5/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.5/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.5)
@@ -178,7 +178,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v2.3...v2.4
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.4/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.4/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.4)
@@ -194,7 +194,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v2.2...v2.3
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.3/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.3/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.3)
@@ -211,7 +211,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v2.1...v2.2
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.2/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.2/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.2)
@@ -229,7 +229,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v2.0...v2.1
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.1/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.1/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.1)
@@ -243,7 +243,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.9...v2.0
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.0/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v2.0/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v2.0)
@@ -260,7 +260,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.8...v1.9
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.9/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.9/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.9)
@@ -276,7 +276,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.7...v1.8
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.8/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.8/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.8)
@@ -296,7 +296,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.6...v1.7
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.7/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.7/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.7)
@@ -311,7 +311,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.5...v1.6
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.6/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.6/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.6)
@@ -327,7 +327,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.4...v1.5
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.5/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.5/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.5)
@@ -347,7 +347,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.3...v1.4
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.4/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.4/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.4)
@@ -364,7 +364,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.2...v1.3
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.3/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.3/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.3)
@@ -385,7 +385,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.1...v1.2
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.2/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.2/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.2)
@@ -408,7 +408,7 @@
 **Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v1.0...v1.1
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.1/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.1/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.1)
@@ -419,7 +419,7 @@
 Initial release
 
 ### Assets
-- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.0/wexcommerce-db.zip) (5977.80 KB)
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v1.0/wexcommerce-db.zip) (5.84 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v1.0)
