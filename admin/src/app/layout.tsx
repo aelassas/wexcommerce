@@ -10,7 +10,7 @@ export const fetchCache = 'force-no-store'
 
 export const metadata: Metadata = {
   title: 'wexCommerce Admin Panel',
-  description: 'Sleek and Powerful ecommerce Platform',
+  description: 'Single Vendor Marketplace',
 }
 
 type RootLayoutProps = Readonly<{

@@ -1,4 +1,4 @@
-[![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) [![test](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml) [![coveralls](https://coveralls.io/repos/github/aelassas/wexcommerce/badge.svg?branch=main)](https://coveralls.io/github/aelassas/wexcommerce?branch=main) [![loc](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml) [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexcommerce/wiki) [![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/) [![open-vscode](https://img.shields.io/badge/open-vscode-1f425f.svg)](https://vscode.dev/github/aelassas/wexcommerce/)
+[![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) [![test](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml) [![coveralls](https://coveralls.io/repos/github/aelassas/wexcommerce/badge.svg?branch=main)](https://coveralls.io/github/aelassas/wexcommerce?branch=main) [![loc](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml) [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexcommerce/wiki) [![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md)
 
 <!--
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-brightgreen?logo=jest)](https://github.com/jestjs/jest)
@@ -11,6 +11,7 @@
 [![coveralls](https://coveralls.io/repos/github/aelassas/wexcommerce/badge.svg?branch=main)](https://coveralls.io/github/aelassas/wexcommerce?branch=main)
 [![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/)
 [![open-vscode](https://img.shields.io/badge/open-vscode-1f425f.svg)](https://vscode.dev/github/aelassas/wexcommerce/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md)
 
 https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
 -->
@@ -19,17 +20,15 @@ https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
 
 ## wexCommerce
 
-wexCommerce is a sleek and powerful open-source single-vendor eCommerce platform built with Next.js for high-performance rendering, MongoDB for flexible data modeling, and Stripe and PayPal for secure and global payment processing.
+wexCommerce is a single-vendor marketplace built with Next.js for high-performance rendering, MongoDB for flexible data modeling, and Stripe and PayPal for secure and global payment processing.
 
-It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) [payment gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways), allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
+It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) payment gateways, allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
 
-You can deploy your own customizable eCommerce marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). Optimized for SEO and efficient performance, wexCommerce can run on a lightweight 1GB RAM droplet—ideal for cost-conscious businesses. Hosting starts at just $5/month with providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
+You can deploy your own marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). Optimized for SEO and efficient performance, wexCommerce can run on a lightweight 1GB RAM droplet—ideal for cost-conscious businesses. Hosting can cost around $5/month with cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
 From the frontend, customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
 
 From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
-
-wexCommerce is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/wexcommerce/wiki). If you’d like assistance with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is listed on my GitHub profile (GitHub login required).
 
 <!--
 ## Why Next.js?
@@ -47,31 +46,31 @@ Next.js stands out as an excellent choice for marketplace development due to its
 
 ## Features
 
-### 🛒 Commerce Management
+### Commerce Management
 * Stock management
 * Order management
 * Payment management
 * Customer management
 
-### 💳 Flexible Payments
+### Flexible Payments
 * [Multiple payment gateways supported (Stripe, PayPal)](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
 * Multiple payment methods: Credit Card, Cash on Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link
 
-### 🚚 Delivery Options
+### Delivery Options
 * Home delivery
 * Store withdrawal
 
-### 🌍 Internationalization & Access
+### Internationalization & Access
 * Multiple language support: English, French
 * Multiple login options: Google, Facebook, Apple, Email
 
-### 🛡️ Security & Performance
+### Security & Performance
 * Secure against XSS, XST, CSRF, MITM, and DDoS attacks
 * Responsive admin panel and frontend
 * SEO-compliant: product pages are indexable by search engines for better visibility
 * [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
 
-### 🖥️ Supported Platforms
+### Supported Platforms
 * Web
 * Docker
 
@@ -83,9 +82,7 @@ If this project helped you, saved you time, or inspired you in any way, please c
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
 <a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" height="38"></a>
 
-To contribute code or report issues, please read our [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
-
-We appreciate your help in making wexCommerce better!
+To contribute code or report issues, please read the [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
 
 ## Live Demo
 
@@ -98,24 +95,7 @@ We appreciate your help in making wexCommerce better!
    1. [Admin Panel](https://github.com/aelassas/wexcommerce/wiki/Overview#admin-panel)
 2. [Why Use wexCommerce](https://github.com/aelassas/wexcommerce/wiki/Why-Use-wexCommerce)
 3. [Software Architecture](https://github.com/aelassas/wexcommerce/wiki/Architecture)
-   1. [Technologies Overview](https://github.com/aelassas/wexcommerce/wiki/Architecture#technologies-overview)
-   1. [Platform Highlights](https://github.com/aelassas/wexcommerce/wiki/Architecture#platform-highlights)
-   1. [TypeScript Across the Stack](https://github.com/aelassas/wexcommerce/wiki/Architecture#typescript-across-the-stack)
-   1. [Backend](https://github.com/aelassas/wexcommerce/wiki/Architecture#backend)
-   1. [Frontend](https://github.com/aelassas/wexcommerce/wiki/Architecture#frontend)
-   1. [Admin Panel](https://github.com/aelassas/wexcommerce/wiki/Architecture#admin-panel)
-   1. [Shared Packages](https://github.com/aelassas/wexcommerce/wiki/Architecture#shared-packages)
-   1. [Architecture Principles](https://github.com/aelassas/wexcommerce/wiki/Architecture#architecture-principles)
-   1. [Docker & Development Environment](https://github.com/aelassas/wexcommerce/wiki/Architecture#docker--development-environment)
-   1. [Codebase Overview](https://github.com/aelassas/wexcommerce/wiki/Architecture#codebase-overview)
-   1. [Production Readiness](https://github.com/aelassas/wexcommerce/wiki/Architecture#-production-readiness)
-   1. [Git Pre-commit Checks with Husky](https://github.com/aelassas/wexcommerce/wiki/Architecture#git-pre-commit-checks-with-husky)
-   1. [Continuous Integration (CI)](https://github.com/aelassas/wexcommerce/wiki/Architecture#continuous-integration-ci)
 4. [Advanced Features](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features)
-   1. [Security Practices](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features#security-practices)
-   1. [Monitoring & Logging](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features#monitoring--logging)
-   1. [Deployment & Hosting](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features#deployment--hosting)
-   1. [Analytics & Tracking](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features#analytics--tracking)
 5. [Installing (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
 6. [Installing (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))
    1. [Docker Image](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#docker-image)
