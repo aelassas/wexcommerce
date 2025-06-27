@@ -22,15 +22,13 @@ https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
 
 wexCommerce is a single-vendor marketplace built with Next.js for high-performance rendering, MongoDB for flexible data modeling, and Stripe and PayPal for secure and global payment processing.
 
-It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) [payment gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways), allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
+It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) payment gateways, allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
 
-You can deploy your own marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). Optimized for SEO and efficient performance, wexCommerce can run on a lightweight 1GB RAM droplet—ideal for cost-conscious businesses. Hosting starts at just $5/month with providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
+You can deploy your own marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). Optimized for SEO and efficient performance, wexCommerce can run on a lightweight 1GB RAM droplet—ideal for cost-conscious businesses. Hosting can cost around $5/month with cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
 From the frontend, customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
 
 From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
-
-wexCommerce is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/wexcommerce/wiki). If you’d like assistance with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is listed on my GitHub profile (GitHub login required).
 
 <!--
 ## Why Next.js?
@@ -84,9 +82,7 @@ If this project helped you, saved you time, or inspired you in any way, please c
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
 <a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" height="38"></a>
 
-To contribute code or report issues, please read our [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
-
-We appreciate your help in making wexCommerce better!
+To contribute code or report issues, please read the [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
 
 ## Live Demo
 
