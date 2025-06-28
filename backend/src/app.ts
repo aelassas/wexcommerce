@@ -21,6 +21,9 @@ import wishlistRoutes from './routes/wishlistRoutes'
 import paypalRoutes from './routes/paypalRoutes'
 import ipinfoRoutes from './routes/ipinfoRoutes'
 import * as helper from './common/helper'
+import { initSentry, Sentry } from './config/sentry'
+
+initSentry()
 
 const app = express()
 
@@ -65,6 +68,10 @@ app.use('/', stripeRoutes)
 app.use('/', wishlistRoutes)
 app.use('/', paypalRoutes)
 app.use('/', ipinfoRoutes)
+
+if (env.ENABLE_SENTRY) {
+  Sentry.setupExpressErrorHandler(app)
+}
 
 i18n.locale = env.DEFAULT_LANGUAGE
 
