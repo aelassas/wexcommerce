@@ -69,6 +69,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * Responsive admin panel and frontend
 * SEO-compliant: product pages are indexable by search engines for better visibility
 * [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
+* Error monitoring and performance tracing with Sentry
 
 ### Supported Platforms
 * Web
