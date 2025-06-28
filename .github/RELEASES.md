@@ -1,5 +1,26 @@
 # Releases
 
+## [wexCommerce 3.4](https://github.com/aelassas/wexcommerce/releases/tag/v3.4) – 2025-06-28
+
+* feat(backend): add setup script to create admin user
+* feat(backend): add reset script to delete admin user
+* feat: add [Code of Conduct](https://github.com/aelassas/wexcommerce/blob/main/.github/CODE_OF_CONDUCT.md) to promote a respectful and inclusive community
+* feat: add comprehensive [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md) to assist new contributors
+* feat: add GitHub Actions workflow to automatically update [RELEASES.md](https://github.com/aelassas/wexcommerce/blob/main/.github/RELEASES.md) on new releases
+* refactor(backend): move Stripe and PayPal integrations to a dedicated payment directory
+* refactor(backend): replace bcrypt password hashing with helper function
+* docs: add new sections to [software architecture](https://github.com/aelassas/wexcommerce/wiki/Architecture)
+* chore: update dependencies
+
+**Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v3.3...v3.4
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.4/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.4)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v3.4)
+
 ## [wexCommerce 3.3](https://github.com/aelassas/wexcommerce/releases/tag/v3.3) – 2025-06-22
 
 * fix(fetch): reduce default retries to 1 and improve error handling
