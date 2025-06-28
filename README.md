@@ -69,6 +69,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * Responsive admin panel and frontend
 * SEO-compliant: product pages are indexable by search engines for better visibility
 * [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
+* Error monitoring and performance tracing with Sentry
 
 ### Supported Platforms
 * Web
@@ -100,6 +101,7 @@ To contribute code or report issues, please read the [Contribution Guide](https:
 6. [Installing (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))
    1. [Docker Image](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#docker-image)
    1. [SSL](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#ssl)
+7. [Setup Sentry](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry)
 7. [Payment Gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
 8. [Setup Stripe](https://github.com/aelassas/wexcommerce/wiki/Setup-Stripe)
 9. [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)
