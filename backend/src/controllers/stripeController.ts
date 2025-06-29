@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import Stripe from 'stripe'
-import stripeAPI from '../payment/stripe'
 import i18n from '../lang/i18n'
 import * as logger from '../common/logger'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -24,17 +23,18 @@ import * as orderController from './orderController'
  * @returns {unknown}
  */
 export const createCheckoutSession = async (req: Request, res: Response) => {
-  const {
-    amount,
-    currency,
-    locale,
-    receiptEmail,
-    name,
-    description,
-    customerName,
-  }: wexcommerceTypes.CreatePaymentPayload = req.body
-
   try {
+    const stripeAPI = (await import('../payment/stripe.js')).default
+    const {
+      amount,
+      currency,
+      locale,
+      receiptEmail,
+      name,
+      description,
+      customerName,
+    }: wexcommerceTypes.CreatePaymentPayload = req.body
+
     //
     // 1. Create the customer if he does not already exist
     //
@@ -101,6 +101,7 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
  */
 export const checkCheckoutSession = async (req: Request, res: Response) => {
   try {
+    const stripeAPI = (await import('../payment/stripe.js')).default
     const { sessionId } = req.params
 
     //
@@ -215,15 +216,16 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const createPaymentIntent = async (req: Request, res: Response) => {
-  const {
-    amount,
-    currency,
-    receiptEmail,
-    description,
-    customerName,
-  }: wexcommerceTypes.CreatePaymentPayload = req.body
-
   try {
+    const stripeAPI = (await import('../payment/stripe.js')).default
+    const {
+      amount,
+      currency,
+      receiptEmail,
+      description,
+      customerName,
+    }: wexcommerceTypes.CreatePaymentPayload = req.body
+
     //
     // 1. Create the customer if he does not already exist
     //

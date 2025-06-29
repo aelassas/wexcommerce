@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import * as paypal from '../payment/paypal'
 import i18n from '../lang/i18n'
 import * as logger from '../common/logger'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -24,6 +23,7 @@ import * as ipinfoHelper from '../common/ipinfoHelper'
  */
 export const createPayPalOrder = async (req: Request, res: Response) => {
   try {
+    const paypal = await import('../payment/paypal.js')
     const { orderId, amount, currency, name, description }: wexcommerceTypes.CreatePayPalOrderPayload = req.body
 
     const clientIp = ipinfoHelper.getClientIp(req)
@@ -48,6 +48,7 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
  */
 export const checkPayPalOrder = async (req: Request, res: Response) => {
   try {
+    const paypal = await import('../payment/paypal.js')
     const { orderId, paypalOrderId } = req.params
 
     //
