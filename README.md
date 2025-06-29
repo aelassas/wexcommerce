@@ -22,6 +22,8 @@ https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
 
 wexCommerce is a single-vendor marketplace built with Next.js for high-performance rendering, MongoDB for flexible data modeling, and Stripe and PayPal for secure and global payment processing.
 
+wexCommerce is designed for startups looking to launch a single-vendor marketplace, developers who want to study a full-stack codebase for learning, and anyone looking for a solid foundation to build a custom single-vendor marketplace.
+
 It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) payment gateways, allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
 
 You can deploy your own marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). Optimized for SEO and efficient performance, wexCommerce can run on a lightweight 1GB RAM droplet—ideal for cost-conscious businesses. Hosting can cost around $5/month with cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
