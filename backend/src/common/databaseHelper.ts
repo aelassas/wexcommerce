@@ -254,15 +254,24 @@ const createTTLIndex = async <T>(model: Model<T>, name: string, expireAfterSecon
 const checkAndUpdateTTL = async <T>(model: Model<T>, name: string, seconds: number) => {
   const indexTag = `${model.modelName}.${name}`
   const indexes = await model.collection.indexes()
-  const existing = indexes.find((index) => index.name === name && index.expireAfterSeconds !== seconds)
+  const existing = indexes.find((index) => index.name === name)
 
-  if (existing) {
+  if (!existing) {
+    try {
+      await createTTLIndex(model, name, seconds)
+      logger.success(`Created TTL index "${indexTag}" with expireAfterSeconds ${seconds}`)
+    } catch (err) {
+      logger.error(`Failed to create TTL index "${indexTag}":`, err)
+    }
+  } else if (existing.expireAfterSeconds !== seconds) {
     try {
       await model.collection.dropIndex(name)
+      logger.info(`Dropped TTL index "${indexTag}" to update expireAfterSeconds`)
+      await createTTLIndex(model, name, seconds)
+      logger.success(`Recreated TTL index "${indexTag}" with updated expireAfterSeconds ${seconds}`)
     } catch (err) {
-      logger.error(`Failed to drop TTL index "${name}":`, err)
+      logger.error(`Failed to update TTL index "${indexTag}":`, err)
     }
-    await createTTLIndex(model, name, seconds)
   } else {
     logger.info(`TTL index "${indexTag}" is already up to date`)
   }

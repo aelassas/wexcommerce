@@ -43,3 +43,17 @@ describe('Test formatPrice', () => {
     expect(helper.formatPrice(1000, '€', 'fr')).toBe('1 000 €')
   })
 })
+
+describe('Test safeStringify', () => {
+  it('should safe stringify an object', () => {
+    // test success (object)
+    expect(helper.safeStringify({ foo: 'bar' })).toStrictEqual('{"foo":"bar"}')
+    // test failure
+    const obj = {
+      get foo() {
+        throw new Error('Cannot access foo')
+      }
+    }
+    expect(helper.safeStringify(obj)).toStrictEqual('[Unserializable object]')
+  })
+})
