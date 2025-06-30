@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
-import * as logger from '../common/logger'
 
 const productSchema = new Schema<env.Product>({
   name: {
@@ -70,10 +69,5 @@ productSchema.index(
 )
 
 const Product = model<env.Product>('Product', productSchema)
-
-// Create indexes manually and handle potential errors
-Product.createIndexes().catch((err) => {
-  logger.error('Error creating Product indexes:', err)
-})
 
 export default Product

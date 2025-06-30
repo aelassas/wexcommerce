@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
-import * as logger from '../common/logger'
 
 const valueSchema = new Schema<env.Value>(
   {
@@ -39,11 +38,5 @@ valueSchema.index(
 )
 
 const Value = model<env.Value>('Value', valueSchema)
-
-// Create indexes manually and handle potential errors
-Value.createIndexes().catch((err) => {
-  logger.error('Error creating Value indexes:', err)
-})
-
 
 export default Value

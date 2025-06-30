@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as env from '../config/env.config'
-import * as logger from '../common/logger'
 
 export const ORDER_EXPIRE_AT_INDEX_NAME = 'expireAt'
 
@@ -84,10 +83,5 @@ orderSchema.index(
 )
 
 const Order = model<env.Order>('Order', orderSchema)
-
-// Create indexes manually and handle potential errors
-Order.createIndexes().catch((err) => {
-  logger.error('Error creating Order indexes:', err)
-})
 
 export default Order

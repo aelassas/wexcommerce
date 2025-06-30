@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
-import * as logger from '../common/logger'
 
 const wishlistSchema = new Schema<env.Wishlist>({
   user: {
@@ -21,10 +20,5 @@ const wishlistSchema = new Schema<env.Wishlist>({
 wishlistSchema.index({ user: 1 })
 
 const Wishlist = model<env.Wishlist>('Wishlist', wishlistSchema)
-
-// Create indexes manually and handle potential errors
-Wishlist.createIndexes().catch((err) => {
-  logger.error('Error creating Wishlist indexes:', err)
-})
 
 export default Wishlist

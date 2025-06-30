@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
-import * as logger from '../common/logger'
 
 const categorySchema = new Schema<env.Category>({
   values: {
@@ -25,10 +24,5 @@ const categorySchema = new Schema<env.Category>({
 categorySchema.index({ values: 1 })
 
 const Category = model<env.Category>('Category', categorySchema)
-
-// Create indexes manually and handle potential errors
-Category.createIndexes().catch((err) => {
-  logger.error('Error creating Category indexes:', err)
-})
 
 export default Category
