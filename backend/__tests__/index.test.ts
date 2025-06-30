@@ -58,7 +58,7 @@ describe('Test database initialization', () => {
       await Token.collection.dropIndex(tokenIndex.name!)
       await createTokenIndex(expireAfterSeconds! + 1)
       await delay()
-      res = await databaseHelper.initialize()
+      res = await databaseHelper.initialize(false)
       expect(res).toBeTruthy()
       await delay()
     }
@@ -72,7 +72,7 @@ describe('Test database initialization', () => {
       await Order.collection.dropIndex(bookingIndex.name!)
       await createOrderIndex(expireAfterSeconds! + 1)
       await delay()
-      res = await databaseHelper.initialize()
+      res = await databaseHelper.initialize(false)
       expect(res).toBeTruthy()
     }
 
@@ -90,7 +90,7 @@ describe('Test database initialization', () => {
     expect(res).toBeTruthy()
     await Value.collection.dropIndex(indexName)
     await Value.collection.createIndex({ ['value']: 'text' }, opts)
-    res = await databaseHelper.initialize()
+    res = await databaseHelper.initialize(false)
     expect(res).toBeTruthy()
 
     //

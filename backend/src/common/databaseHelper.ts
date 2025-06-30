@@ -251,27 +251,18 @@ const createTTLIndex = async <T>(model: Model<T>, name: string, expireAfterSecon
  * @param {number} seconds 
  * @returns {Promise<void>} 
  */
-const checkAndUpdateTTL = async <T>(model: Model<T>, name: string, seconds: number) => {
+export const checkAndUpdateTTL = async <T>(model: Model<T>, name: string, seconds: number) => {
   const indexTag = `${model.modelName}.${name}`
   const indexes = await model.collection.indexes()
-  const existing = indexes.find((index) => index.name === name)
+  const existing = indexes.find((index) => index.name === name && index.expireAfterSeconds !== seconds)
 
-  if (!existing) {
-    try {
-      await createTTLIndex(model, name, seconds)
-      logger.success(`Created TTL index "${indexTag}" with expireAfterSeconds ${seconds}`)
-    } catch (err) {
-      logger.error(`Failed to create TTL index "${indexTag}":`, err)
-    }
-  } else if (existing.expireAfterSeconds !== seconds) {
+  if (existing) {
     try {
       await model.collection.dropIndex(name)
-      logger.info(`Dropped TTL index "${indexTag}" to update expireAfterSeconds`)
-      await createTTLIndex(model, name, seconds)
-      logger.success(`Recreated TTL index "${indexTag}" with updated expireAfterSeconds ${seconds}`)
     } catch (err) {
-      logger.error(`Failed to update TTL index "${indexTag}":`, err)
+      logger.error(`Failed to drop TTL index "${name}":`, err)
     }
+    await createTTLIndex(model, name, seconds)
   } else {
     logger.info(`TTL index "${indexTag}" is already up to date`)
   }
@@ -283,9 +274,10 @@ const checkAndUpdateTTL = async <T>(model: Model<T>, name: string, seconds: numb
  * @async
  * @template T 
  * @param {Model<T>} model 
+ * @param {boolean} createIndexes
  * @returns {Promise<void>} 
  */
-const createCollection = async <T>(model: Model<T>): Promise<void> => {
+const createCollection = async <T>(model: Model<T>, createIndexes: boolean = true): Promise<void> => {
   const modelName = model.modelName
   const collections = await model.db.listCollections()
   const exists = collections.some((col) => col.name === modelName)
@@ -294,8 +286,10 @@ const createCollection = async <T>(model: Model<T>): Promise<void> => {
     logger.success(`Created collection: ${modelName}`) // Optionally log success
   }
 
-  await model.createIndexes()
-  logger.success(`Indexes created for collection: ${modelName}`)
+  if (createIndexes) {
+    await model.createIndexes()
+    logger.success(`Indexes created for collection: ${modelName}`)
+  }
 }
 
 /**
@@ -335,9 +329,10 @@ export const models = defineModels([
  * Initializes database.
  *
  * @async
+ * @param {boolean} createIndexes
  * @returns {Promise<boolean>} 
  */
-export const initialize = async (): Promise<boolean> => {
+export const initialize = async (createIndexes: boolean = true): Promise<boolean> => {
   try {
     //
     // Check if connection is ready
@@ -349,7 +344,7 @@ export const initialize = async (): Promise<boolean> => {
     //
     // Create collections
     //
-    await Promise.all(models.map((model) => createCollection(model as Model<unknown>)))
+    await Promise.all(models.map((model) => createCollection(model as Model<unknown>, createIndexes)))
 
     //
     // Feature detection and conditional text index creation (backward compatible with older versions)
