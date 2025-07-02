@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { jest } from '@jest/globals'
 import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -188,11 +189,30 @@ describe('GET /api/settings', () => {
     const token = await testHelper.signinAsAdmin()
 
     // test success
-    const res = await request(app)
+    let res = await request(app)
       .get('/api/settings')
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
     expect(res.body.language).toBeTruthy()
+
+    // test failure (simulate error)
+    await jest.unstable_mockModule('../src/models/Setting.js', () => ({
+      default: {
+        finOne: jest.fn(() => Promise.reject(new Error('DB error'))),
+      }
+    }))
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const env = await import('../src/config/env.config.js')
+      const newApp = (await import('../src/app.js')).default
+      const dbh = await import('../src/common/databaseHelper.js')
+      await dbh.connect(env.DB_URI, false, false)
+      res = await request(newApp)
+        .get('/api/settings')
+        .set(env.X_ACCESS_TOKEN, token)
+      expect(res.statusCode).toBe(400)
+      await dbh.close()
+    })
   })
 })
 
@@ -248,6 +268,26 @@ describe('PUT /api/update-settings', () => {
       rib,
       iban,
     }).save()
+
+    // test failure (simulate error)
+    await jest.unstable_mockModule('../src/models/Setting.js', () => ({
+      default: {
+        finOne: jest.fn(() => Promise.reject(new Error('DB error')))
+      }
+    }))
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const env = await import('../src/config/env.config.js')
+      const newApp = (await import('../src/app.js')).default
+      const dbh = await import('../src/common/databaseHelper.js')
+      await dbh.connect(env.DB_URI, false, false)
+      res = await request(newApp)
+        .put('/api/update-settings')
+        .set(env.X_ACCESS_TOKEN, token)
+        .send(payload)
+      expect(res.statusCode).toBe(400)
+      await dbh.close()
+    })
   })
 })
 
@@ -305,5 +345,25 @@ describe('PUT /api/update-bank-settings', () => {
       rib,
       iban,
     }).save()
+
+    // test failure (simulate error)
+    await jest.unstable_mockModule('../src/models/Setting.js', () => ({
+      default: {
+        finOne: jest.fn(() => Promise.reject(new Error('DB error')))
+      }
+    }))
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const env = await import('../src/config/env.config.js')
+      const newApp = (await import('../src/app.js')).default
+      const dbh = await import('../src/common/databaseHelper.js')
+      await dbh.connect(env.DB_URI, false, false)
+      res = await request(newApp)
+        .put('/api/update-bank-settings')
+        .set(env.X_ACCESS_TOKEN, token)
+        .send(payload)
+      expect(res.statusCode).toBe(400)
+      await dbh.close()
+    })
   })
 })

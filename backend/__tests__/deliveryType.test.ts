@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { jest } from '@jest/globals'
 import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -50,6 +51,23 @@ describe('Initialize deliveryTypes', () => {
     expect(res).toBeFalsy()
     const connRes = await databaseHelper.connect(env.DB_URI, false, false)
     expect(connRes).toBeTruthy()
+
+    // test success (delivery type not found)
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const DeliveryType = (await import('../src/models/DeliveryType.js')).default
+      jest.spyOn(DeliveryType, 'findOne').mockResolvedValue(null)
+      jest.spyOn(DeliveryType.prototype, 'save').mockResolvedValue({ _id: 'mock-id', name: 'Mock DeliveryType', enabled: true })
+      const env = await import('../src/config/env.config.js')
+      const dbh = await import('../src/common/databaseHelper.js')
+      const pc = await import('../src/controllers/deliveryTypeController.js')
+      await dbh.connect(env.DB_URI, false, false)
+      res = await pc.init()
+      expect(res).toBeTruthy()
+      await dbh.close()
+    })
+    jest.clearAllMocks()
+    jest.resetModules()
   })
 })
 
@@ -57,11 +75,33 @@ describe('GET /api/delivery-types', () => {
   it('should get all delivery types', async () => {
     const token = await testHelper.signinAsAdmin()
 
-    const res = await request(app)
+    // test success
+    let res = await request(app)
       .get('/api/delivery-types')
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
     expect(res.body.length).toBe(2)
+
+    // test failure (delivery type not found)
+    jest.resetModules()
+    await jest.unstable_mockModule('../src/models/DeliveryType.js', () => ({
+      default: {
+        find: jest.fn(() => ({
+          sort: jest.fn(() => Promise.reject(new Error('DB error'))),
+        })),
+      }
+    }))
+    await jest.isolateModulesAsync(async () => {
+      const env = await import('../src/config/env.config.js')
+      const dbh = await import('../src/common/databaseHelper.js')
+      const newApp = (await import('../src/app.js')).default
+      await dbh.connect(env.DB_URI, false, false)
+      res = await request(newApp)
+        .get('/api/delivery-types')
+        .set(env.X_ACCESS_TOKEN, token)
+      expect(res.statusCode).toBe(400)
+      await dbh.close()
+    })
   })
 })
 
@@ -145,6 +185,16 @@ describe('PUT /api/update-delivery-types', () => {
     expect(withdrawal).not.toBeNull()
     expect(withdrawal!.enabled).toBe(!withdrawalEnabled)
     expect(withdrawal!.price).toBe(withdrawalPrice + 5)
+
+    // success (delivery type not found)
+    const dtName = payload[0]!.name
+    payload[0].name = 'xxxxxxxxxxx' as wexcommerceTypes.DeliveryType
+    res = await request(app)
+      .put('/api/update-delivery-types')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    payload[0].name = dtName
 
     // restore
     shipping!.enabled = shippingEnabled

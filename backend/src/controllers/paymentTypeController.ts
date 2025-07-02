@@ -28,7 +28,7 @@ export const init = async () => {
 
 export const getPaymentTypes = async (req: Request, res: Response) => {
   try {
-    const paymentTypes = await PaymentType.find().sort({ createdAt: 1 })
+    const paymentTypes = await PaymentType.find({}).sort({ createdAt: 1 })
 
     res.json(paymentTypes)
   } catch (err) {

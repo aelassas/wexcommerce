@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { jest } from '@jest/globals'
 import url from 'node:url'
 import path from 'node:path'
 import asyncFs from 'node:fs/promises'
@@ -140,7 +141,7 @@ describe('POST /api/create-category', () => {
     if (!(await helper.pathExists(image))) {
       await asyncFs.copyFile(IMAGE1_PATH, image)
     }
-    const payload: wexcommerceTypes.UpsertCategoryPayload = {
+    let payload: wexcommerceTypes.UpsertCategoryPayload = {
       values: [
         { language: 'en', value: 'test.category1' },
         { language: 'fr', value: 'test.categorie1' },
@@ -173,6 +174,37 @@ describe('POST /api/create-category', () => {
       .post('/api/create-category')
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(500)
+
+    // test failure (simulate db error)
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const Category = (await import('../src/models/Category.js')).default
+      jest.spyOn(Category.prototype, 'save').mockRejectedValue(new Error('DB error'))
+      const env = await import('../src/config/env.config.js')
+      const dbh = await import('../src/common/databaseHelper.js')
+      const newApp = (await import('../src/app.js')).default
+      await dbh.connect(env.DB_URI, false, false)
+      if (!(await helper.pathExists(image))) {
+        await asyncFs.copyFile(IMAGE1_PATH, image)
+      }
+      payload = {
+        values: [
+          { language: 'en', value: 'test.category2' },
+          { language: 'fr', value: 'test.categorie2' },
+        ],
+        featured: true,
+        image: IMAGE1,
+      }
+      res = await request(newApp)
+        .post('/api/create-category')
+        .set(env.X_ACCESS_TOKEN, token)
+        .send(payload)
+      expect(res.statusCode).toBe(400)
+      await dbh.close()
+      await asyncFs.unlink(image)
+    })
+    jest.restoreAllMocks()
+    jest.resetModules()
   })
 })
 

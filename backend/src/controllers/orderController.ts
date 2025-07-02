@@ -287,10 +287,10 @@ export const update = async (req: Request, res: Response) => {
     }
 
     if (!helper.isValidObjectId(id)) {
-      throw new Error('User id not valid')
+      throw new Error('Order id not valid')
     }
 
-    const admin = await User.find({ _id: userId, type: wexcommerceTypes.UserType.Admin })
+    const admin = await User.findOne({ _id: userId, type: wexcommerceTypes.UserType.Admin })
     if (!admin) {
       throw new Error(`Admin user ${userId} not found.`)
     }
@@ -369,7 +369,7 @@ export const deleteOrder = async (req: Request, res: Response) => {
       throw new Error('User id not valid')
     }
 
-    const admin = await User.find({ _id: userId, type: wexcommerceTypes.UserType.Admin })
+    const admin = await User.findOne({ _id: userId, type: wexcommerceTypes.UserType.Admin })
     if (!admin) {
       throw new Error(`admin user ${userId} not found`)
     }

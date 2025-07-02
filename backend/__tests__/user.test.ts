@@ -487,35 +487,64 @@ describe('POST /api/sign-in/:type', () => {
 
 describe('POST /api/social-sign-in/:type', () => {
   it('should sign in', async () => {
+    // test failure (google)
     const payload: wexcommerceTypes.SignInPayload = {
       email: USER1_EMAIL,
       socialSignInType: wexcommerceTypes.SocialSignInType.Google,
       accessToken: testHelper.GetRandromObjectIdAsString(),
     }
-
     let res = await request(app)
       .post('/api/social-sign-in')
       .send(payload)
     expect(res.statusCode).toBe(400)
 
+    // test failure (facebook)
     payload.socialSignInType = wexcommerceTypes.SocialSignInType.Facebook
     res = await request(app)
       .post('/api/social-sign-in')
       .send(payload)
     expect(res.statusCode).toBe(400)
 
+    // test failure (apple)
     payload.socialSignInType = wexcommerceTypes.SocialSignInType.Apple
     res = await request(app)
       .post('/api/social-sign-in')
       .send(payload)
     expect(res.statusCode).toBe(400)
 
+    // test success (mobile)
+    payload.mobile = true
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+
+    // test success (mobile stay connected)
+    payload.mobile = true
+    payload.stayConnected = true
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+
+    // test success (mobile new user)
+    payload.email = testHelper.GetRandomEmail()
+    payload.fullName = 'Random user'
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    await User.deleteOne({ email: payload.email })
+    payload.mobile = false
+
+    // test failure (no email)
     payload.email = undefined
     res = await request(app)
       .post('/api/social-sign-in')
       .send(payload)
     expect(res.statusCode).toBe(400)
 
+    // test failure (email not valid)
     payload.email = 'not-valid-email'
     res = await request(app)
       .post('/api/social-sign-in')
@@ -523,6 +552,7 @@ describe('POST /api/social-sign-in/:type', () => {
     expect(res.statusCode).toBe(400)
     payload.email = USER1_EMAIL
 
+    // test failure (no socialSignInType)
     payload.socialSignInType = undefined
     res = await request(app)
       .post('/api/social-sign-in')
@@ -530,6 +560,7 @@ describe('POST /api/social-sign-in/:type', () => {
     expect(res.statusCode).toBe(400)
     payload.socialSignInType = wexcommerceTypes.SocialSignInType.Google
 
+    // test failure (no accessToken)
     payload.accessToken = undefined
     res = await request(app)
       .post('/api/social-sign-in')
@@ -537,6 +568,7 @@ describe('POST /api/social-sign-in/:type', () => {
     expect(res.statusCode).toBe(400)
     payload.accessToken = testHelper.GetRandromObjectIdAsString()
 
+    // test failure (no payload)
     res = await request(app)
       .post('/api/social-sign-in')
     expect(res.statusCode).toBe(500)
@@ -1208,19 +1240,40 @@ describe('POST /api/verify-recaptcha/:token/:ip', () => {
 
 describe('POST /api/send-email', () => {
   it('should send an email', async () => {
-    const ip = '134.236.60.166'
-    const recaptchaToken = 'XXXXXX'
-    const payload = {
-      from: 'no-reply@wexcommerce.com',
+    // test success (contact form)
+    const payload: wexcommerceTypes.SendEmailPayload = {
+      from: 'no-reply@wexcommerce.ma',
       to: 'test@test.com',
       subject: 'test',
       message: 'test message',
-      recaptchaToken,
-      ip,
+      isContactForm: true,
     }
-    const res = await request(app)
+    let res = await request(app)
+      .post('/api/send-email')
+      .set('Origin', env.FRONTEND_HOST)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+
+    // test success (newsletter form)
+    payload.isContactForm = false
+    payload.message = ''
+    res = await request(app)
+      .post('/api/send-email')
+      .set('Origin', env.FRONTEND_HOST)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+
+    // test failure (no Origin)
+    res = await request(app)
       .post('/api/send-email')
       .send(payload)
     expect(res.statusCode).toBe(400)
+
+    // test failure (Not allowed by CORS)
+    res = await request(app)
+      .post('/api/send-email')
+      .set('Origin', 'https://unknown.com')
+      .send(payload)
+    expect(res.statusCode).toBe(500)
   })
 })

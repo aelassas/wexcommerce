@@ -27,7 +27,7 @@ export const init = async () => {
 
 export const getDeliveryTypes = async (req: Request, res: Response) => {
   try {
-    const deliveryTypes = await DeliveryType.find().sort({ createdAt: 1 })
+    const deliveryTypes = await DeliveryType.find({}).sort({ createdAt: 1 })
 
     res.json(deliveryTypes)
   } catch (err) {

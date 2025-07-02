@@ -1,11 +1,16 @@
 import 'dotenv/config'
+import { jest } from '@jest/globals'
 import request from 'supertest'
+import { nanoid } from 'nanoid'
 import * as wexcommerceTypes from ':wexcommerce-types'
-import app from '../src/app'
 import * as databaseHelper from '../src/common/databaseHelper'
 import * as testHelper from './testHelper'
 import * as env from '../src/config/env.config'
+import app from '../src/app'
 import Order from '../src/models/Order'
+import OrderItem from '../src/models/OrderItem'
+import Product from '../src/models/Product'
+import User from '../src/models/User'
 import DeliveryType from '../src/models/DeliveryType'
 import PaymentType from '../src/models/PaymentType'
 
@@ -27,12 +32,32 @@ afterAll(async () => {
 
 describe('POST /api/create-paypal-order', () => {
   it('should create paypal order', async () => {
+    jest.resetModules()
+
+    await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
+      getOrder: jest.fn(),
+      getToken: jest.fn(() => Promise.resolve('mock-token')),
+      createOrder: jest.fn(() => Promise.resolve('ORDER-MOCK-123')),
+    }))
+    let paypal = await import('../src/payment/paypal.js')
+    const orderId = await paypal.createOrder('order123', 100, 'USD', 'Test Name', 'Test Description', 'US')
+
+    expect(orderId).toBe('ORDER-MOCK-123')
+    expect(paypal.createOrder).toHaveBeenCalledWith(
+      'order123',
+      100,
+      'USD',
+      'Test Name',
+      'Test Description',
+      'US'
+    )
+
     // test success (create paypal order whith non existant user)
     const payload: wexcommerceTypes.CreatePayPalOrderPayload = {
       amount: 234,
       currency: 'USD',
-      name: 'Samsung A25',
-      description: 'Samsung A25',
+      name: 'BMW X1',
+      description: 'BMW X1',
       orderId: testHelper.GetRandromObjectIdAsString(),
     }
     let res = await request(app)
@@ -42,6 +67,16 @@ describe('POST /api/create-paypal-order', () => {
     expect(res.body.length).toBeGreaterThan(0)
 
     // test failure (create paypal order failure)
+    jest.resetModules()
+
+    await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
+      getOrder: jest.fn(),
+      getToken: jest.fn(() => Promise.resolve('mock-token')),
+      createOrder: jest.fn(() => Promise.reject(new Error('Simulated error'))),
+    }))
+    paypal = await import('../src/payment/paypal.js')
+    await expect(paypal.createOrder('order123', 100, 'USD', 'Test Name', 'Test Description', 'US')).rejects.toThrow('Simulated error')
+
     payload.currency = 'xxxxxxxxxxxxxxx'
     res = await request(app)
       .post('/api/create-paypal-order')
@@ -52,52 +87,223 @@ describe('POST /api/create-paypal-order', () => {
 
 describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
   it('should check paypal order', async () => {
-    // test failure (order exists, paypal order exists and payment failed)
+    // test failure (order exists, order exists and payment failed)
     const expireAt = new Date()
     expireAt.setSeconds(expireAt.getSeconds() + env.ORDER_EXPIRE_AT)
-    const from = new Date()
-    from.setDate(from.getDate() + 1)
-    const to = new Date(from)
-    to.setDate(to.getDate() + 3)
 
-    const order = new Order({
-      user: testHelper.GetRandromObjectId(),
-      deliveryType: (await DeliveryType.findOne({ name: wexcommerceTypes.DeliveryType.Shipping }))?._id,
-      paymentType: (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))?._id,
+    const user = new User({
+      fullName: 'user',
+      email: testHelper.GetRandomEmail(),
+      language: testHelper.LANGUAGE,
+      type: wexcommerceTypes.UserType.User,
+    })
+    await user.save()
+
+    const product = new Product({
+      name: 'Product 1',
+      description: 'Description',
+      categories: [testHelper.GetRandromObjectIdAsString()],
+      price: 10,
+      quantity: 2,
+    })
+    await product.save()
+
+    const orderItem = new OrderItem({ product: product.id, quantity: 1 })
+    await orderItem.save()
+
+    const orderItemProductMissing = new OrderItem({ product: testHelper.GetRandromObjectId(), quantity: 1 })
+    await orderItemProductMissing.save()
+
+    const deliveryType = (await DeliveryType.findOne({ name: wexcommerceTypes.DeliveryType.Shipping }))?._id
+    const paymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))?._id
+
+    let order = new Order({
+      user: user.id,
+      deliveryType,
+      paymentType,
       total: 312,
       status: wexcommerceTypes.OrderStatus.Pending,
-      orderItems: [testHelper.GetRandromObjectId()],
+      orderItems: [orderItem.id],
       expireAt,
     })
+    let order2: typeof order | undefined
+    let order3: typeof order | undefined
     try {
       await order.save()
 
-      const payload: wexcommerceTypes.CreatePayPalOrderPayload = {
-        amount: order.total,
-        currency: 'USD',
-        name: 'Samsung A25',
-        description: 'Samsung A25',
-        orderId: order.id,
-      }
+      const orderId = nanoid()
+
+      // test success
+      jest.resetModules()
+      await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
+        getOrder: jest.fn(() => Promise.resolve({ status: 'COMPLETED' })),
+        getToken: jest.fn(() => Promise.resolve('fake-token')),
+        createOrder: jest.fn(),
+      }))
+
+      let paypal = await import('../src/payment/paypal.js')
+
+      await expect(paypal.getOrder('123')).resolves.toStrictEqual({ status: 'COMPLETED' })
+      expect(paypal.getOrder).toHaveBeenCalledWith('123')
+
       let res = await request(app)
-        .post('/api/create-paypal-order')
-        .send(payload)
+        .post(`/api/check-paypal-order/${order.id}/${orderId}`)
       expect(res.statusCode).toBe(200)
-      expect(res.body.length).toBeGreaterThan(0)
-      const orderId = res.body
+
+      // test failure (settings not found)
+      await order.deleteOne()
+      order = new Order({
+        user: user.id,
+        deliveryType,
+        paymentType,
+        total: 312,
+        status: wexcommerceTypes.OrderStatus.Pending,
+        orderItems: [orderItem.id],
+        expireAt,
+      })
+      await order.save()
+
+      await jest.isolateModulesAsync(async () => {
+        const Setting = (await import('../src/models/Setting.js')).default
+        jest.spyOn(Setting, 'findOne').mockResolvedValue(null)
+        const env = await import('../src/config/env.config.js')
+        const newApp = (await import('../src/app.js')).default
+        const dbh = await import('../src/common/databaseHelper.js')
+        await dbh.connect(env.DB_URI, false, false)
+        const res = await request(newApp)
+          .post(`/api/check-paypal-order/${order.id}/${orderId}`)
+        expect(res.statusCode).toBe(400)
+        dbh.close()
+      })
+
+      jest.restoreAllMocks()
+      jest.resetModules()
+
+      // test failure (paypal order error)
+      await order.deleteOne()
+      order = new Order({
+        user: user.id,
+        deliveryType,
+        paymentType,
+        total: 312,
+        status: wexcommerceTypes.OrderStatus.Pending,
+        orderItems: [orderItem.id],
+        expireAt,
+      })
+      await order.save()
+      jest.resetModules()
+      await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
+        getOrder: jest.fn(() => Promise.reject(new Error('Simulated error'))),
+        getToken: jest.fn(() => Promise.resolve('fake-token')),
+        createOrder: jest.fn(),
+      }))
+
+      paypal = await import('../src/payment/paypal.js')
+
+      await expect(paypal.getOrder('123')).rejects.toThrow('Simulated error')
+      expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       res = await request(app)
         .post(`/api/check-paypal-order/${order.id}/${orderId}`)
-      expect(res.statusCode).toBe(400)
+      expect(res.statusCode).toBe(204)
+      jest.resetModules()
 
-      // test failure (order exists, paypal order does not exist)
+      // test failure (order exists, order does not exist)
       res = await request(app)
         .post(`/api/check-paypal-order/${order.id}/${testHelper.GetRandromObjectIdAsString()}`)
       expect(res.statusCode).toBe(204)
+
+      // test failure (payment expired)
+      order2 = new Order({
+        user: user.id,
+        deliveryType,
+        paymentType,
+        total: 312,
+        status: wexcommerceTypes.OrderStatus.Pending,
+        orderItems: [orderItem.id],
+        expireAt,
+      })
+      await order2.save()
+      jest.resetModules()
+      await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
+        getOrder: jest.fn(() => Promise.resolve({ status: 'EXPIRED' })),
+        getToken: jest.fn(() => Promise.resolve('fake-token')),
+        createOrder: jest.fn(),
+      }))
+
+      paypal = await import('../src/payment/paypal.js')
+
+      await expect(paypal.getOrder('123')).resolves.toStrictEqual({ status: 'EXPIRED' })
+      expect(paypal.getOrder).toHaveBeenCalledWith('123')
+
+      res = await request(app)
+        .post(`/api/check-paypal-order/${order2.id}/${orderId}`)
+      expect(res.statusCode).toBe(400)
+      const b = await Order.findById(order2.id)
+      expect(b).toBeFalsy()
+      order2 = undefined
+      jest.resetModules()
+
+      // test failure (missing members)
+      order3 = new Order({
+        user: user.id,
+        deliveryType,
+        paymentType,
+        total: 312,
+        status: wexcommerceTypes.OrderStatus.Pending,
+        orderItems: [orderItemProductMissing.id],
+        expireAt,
+
+      })
+      await order3.save()
+      jest.resetModules()
+      await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
+        getOrder: jest.fn(() => Promise.resolve({ status: 'COMPLETED' })),
+        getToken: jest.fn(() => Promise.resolve('fake-token')),
+        createOrder: jest.fn(),
+      }))
+
+      paypal = await import('../src/payment/paypal.js')
+
+      await expect(paypal.getOrder('123')).resolves.toStrictEqual({ status: 'COMPLETED' })
+      expect(paypal.getOrder).toHaveBeenCalledWith('123')
+
+      // product missing
+      res = await request(app)
+        .post(`/api/check-paypal-order/${order3.id}/${orderId}`)
+      expect(res.statusCode).toBe(400)
+
+      // user missing
+      await order3.deleteOne()
+      order3 = new Order({
+        user: testHelper.GetRandromObjectId(),
+        deliveryType,
+        paymentType,
+        total: 312,
+        status: wexcommerceTypes.OrderStatus.Pending,
+        orderItems: [orderItem.id],
+        expireAt,
+      })
+      await order3.save()
+      res = await request(app)
+        .post(`/api/check-paypal-order/${order3.id}/${orderId}`)
+      expect(res.statusCode).toBe(400)
+      jest.resetModules()
     } catch (err) {
       console.error(err)
+      throw new Error(`Error during /api/check-paypal-order/: ${err}`)
     } finally {
+      await orderItem.deleteOne()
+      await orderItemProductMissing.deleteOne()
       await order.deleteOne()
+      if (order2) {
+        await order2.deleteOne()
+      }
+      if (order3) {
+        await order3.deleteOne()
+      }
+      await product.deleteOne()
+      await user.deleteOne()
     }
 
     // test failure (order does not exist)

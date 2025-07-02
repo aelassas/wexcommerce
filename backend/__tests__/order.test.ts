@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { jest } from '@jest/globals'
 import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -14,6 +15,8 @@ import DeliveryType from '../src/models/DeliveryType'
 import PaymentType from '../src/models/PaymentType'
 import User from '../src/models/User'
 import Token from '../src/models/Token'
+import Setting from '../src/models/Setting'
+import * as orderController from '../src/controllers/orderController'
 
 const CATEGORY_ID = testHelper.GetRandromObjectIdAsString()
 let USER_ID: string
@@ -84,6 +87,39 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     ORDER_ID = res.body.orderId
+
+    // test failure (response error)
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const express = (await import('express')).default
+      jest.spyOn(express.response, 'send').mockImplementation(() => {
+        throw new Error('Simulate Mock Error')
+      })
+      const env = await import('../src/config/env.config.js')
+      const newApp = (await import('../src/app.js')).default
+      const dbh = await import('../src/common/databaseHelper.js')
+      await dbh.connect(env.DB_URI, false, false)
+      res = await request(newApp)
+        .post('/api/checkout')
+        .send(payload)
+      expect(res.statusCode).toBe(400)
+      await dbh.close()
+    })
+    jest.restoreAllMocks()
+    jest.resetModules()
+
+    // test failure (settings not found)
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      jest.spyOn(Setting, 'findOne').mockResolvedValue(null)
+      const newApp = (await import('../src/app.js')).default
+      res = await request(newApp)
+        .post('/api/checkout')
+        .send(payload)
+      expect(res.statusCode).toBe(400)
+    })
+    jest.restoreAllMocks()
+    jest.resetModules()
 
     // test success (new user)
     payload.order.user = undefined
@@ -206,6 +242,20 @@ describe('POST /api/checkout', () => {
       .post('/api/checkout')
       .send(payload)
     expect(res.statusCode).toBe(400)
+
+    // test failure (settings not found)
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const Setting = (await import('../src/models/Setting.js')).default
+      jest.spyOn(Setting, 'findOne').mockResolvedValue(null)
+      const newApp = (await import('../src/app.js')).default
+      res = await request(newApp)
+        .post('/api/checkout')
+        .send(payload)
+      expect(res.statusCode).toBe(400)
+    })
+    jest.restoreAllMocks()
+    jest.resetModules()
   })
 })
 
@@ -215,14 +265,58 @@ describe('PUT /api/update-order/:user/:id', () => {
 
     // test success
     const payload: wexcommerceTypes.UpdateOrderPayload = {
-      status: wexcommerceTypes.OrderStatus.Cancelled,
+      status: wexcommerceTypes.OrderStatus.Shipped,
     }
     let res = await request(app)
       .put(`/api/update-order/${ADMIN_ID}/${ORDER_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
+    expect((await Order.findById(ORDER_ID))!.status).toBe(wexcommerceTypes.OrderStatus.Shipped)
+
+    // test success (no admin notification counter)
+    const admin = new User({
+      fullName: 'admin',
+      email: testHelper.GetRandomEmail(),
+      language: testHelper.LANGUAGE,
+      password: 'xxxxxxxxxxxxxxxx',
+      type: wexcommerceTypes.UserType.Admin,
+    })
+    await admin.save()
+    payload.status = wexcommerceTypes.OrderStatus.Cancelled
+    res = await request(app)
+      .put(`/api/update-order/${admin.id}/${ORDER_ID}`)
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
     expect((await Order.findById(ORDER_ID))!.status).toBe(wexcommerceTypes.OrderStatus.Cancelled)
+    await admin.deleteOne()
+
+    // test failure (user not found)
+    res = await request(app)
+      .put(`/api/update-order/${testHelper.GetRandromObjectIdAsString()}/${ORDER_ID}`)
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
+    // test failure (settings not found)
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const Setting = (await import('../src/models/Setting.js')).default
+      jest.spyOn(Setting, 'findOne').mockResolvedValue(null)
+      const env = await import('../src/config/env.config.js')
+      const newApp = (await import('../src/app.js')).default
+      const dbh = await import('../src/common/databaseHelper.js')
+      await dbh.connect(env.DB_URI, false, false)
+      res = await request(newApp)
+        .put(`/api/update-order/${ADMIN_ID}/${ORDER_ID}`)
+        .set(env.X_ACCESS_TOKEN, token)
+        .send(payload)
+      expect(res.statusCode).toBe(400)
+      await dbh.close()
+    })
+    jest.restoreAllMocks()
+    jest.resetModules()
 
     // test order not found
     res = await request(app)
@@ -375,6 +469,12 @@ describe('DELETE /api/delete-order/:user/:id', () => {
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
+    // test failure user not found
+    res = await request(app)
+      .delete(`/api/delete-order/${testHelper.GetRandromObjectIdAsString()}/${testHelper.GetRandromObjectIdAsString()}`)
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(400)
+
     // test failure (user id not valid)
     res = await request(app)
       .delete(`/api/delete-order/0/${ORDER_ID}`)
@@ -406,5 +506,50 @@ describe('DELETE /api/delete-temp-order/:orderId/:sessionId', () => {
     res = await request(app)
       .delete(`/api/delete-temp-order/0/${SESSION_ID}`)
     expect(res.statusCode).toBe(400)
+  })
+})
+
+describe('notify', () => {
+  it('should test notify', async () => {
+    const deliveryType = (await DeliveryType.findOne({ name: wexcommerceTypes.DeliveryType.Shipping }))?._id
+    const paymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))?._id
+    const user = await User.findById(testHelper.getUserId())
+    expect(user).not.toBeNull()
+    const order = new Order({
+      user: user!.id,
+      deliveryType,
+      paymentType,
+      total: 312,
+      status: wexcommerceTypes.OrderStatus.Pending,
+      orderItems: [testHelper.GetRandromObjectId()],
+    })
+    const settings = await Setting.findOne({})
+    expect(settings).not.toBeNull()
+
+    // test success (no email)
+    let res = true
+    try {
+      await orderController.notify('', order, user!, settings!)
+    } catch {
+      res = false
+    }
+    expect(res).toBeTruthy()
+
+    // test success (no admin notification counter)
+    const admin = new User({
+      fullName: 'admin',
+      email: testHelper.GetRandomEmail(),
+      language: testHelper.LANGUAGE,
+      password: 'xxxxxxxxxxxxxxxx',
+      type: wexcommerceTypes.UserType.Admin,
+    })
+    await admin.save()
+    try {
+      await orderController.notify(admin.email, order, user!, settings!)
+    } catch {
+      res = false
+    }
+    await admin.deleteOne()
+    expect(res).toBeTruthy()
   })
 })

@@ -1103,33 +1103,35 @@ export const verifyRecaptcha = async (req: Request, res: Response) => {
  */
 export const sendEmail = async (req: Request, res: Response) => {
   try {
-    const { body }: { body: wexcommerceTypes.SendEmailPayload } = req
-    const { from, to, subject, message, recaptchaToken: token, ip } = body
-    const result = await axios.get(`https://www.google.com/recaptcha/api/siteverify?secret=${encodeURIComponent(env.RECAPTCHA_SECRET)}&response=${encodeURIComponent(token)}&remoteip=${ip}`)
-    const { success } = result.data
-
-    if (!success) {
-      res.sendStatus(400)
-      return
+    const whitelist = [
+      helper.trimEnd(env.ADMIN_HOST, '/'),
+      helper.trimEnd(env.FRONTEND_HOST, '/'),
+    ]
+    const { origin } = req.headers
+    if (!origin || whitelist.indexOf(helper.trimEnd(origin, '/')) === -1) {
+      throw new Error('Unauthorized!')
     }
+
+    const { body }: { body: wexcommerceTypes.SendEmailPayload } = req
+    const { from, to, subject, message, isContactForm } = body
 
     const mailOptions: nodemailer.SendMailOptions = {
       from: env.SMTP_FROM,
       to,
-      subject: i18n.t('CONTACT_SUBJECT'),
+      subject: isContactForm ? i18n.t('CONTACT_SUBJECT') : subject,
       html:
         `<p>
               ${i18n.t('FROM')}: ${from}<br>
-              ${i18n.t('SUBJECT')}: ${subject}<br>
-              ${i18n.t('MESSAGE')}:<br>${message.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br>
+              ${(isContactForm && `${i18n.t('SUBJECT')}: ${subject}<br>`) || ''}
+              ${(message && `${i18n.t('MESSAGE')}:<br>${message.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br>`) || ''}
          </p>`,
     }
     await mailHelper.sendMail(mailOptions)
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.sendEmail] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.sendEmail] ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(err)
   }
 }
 
@@ -1142,157 +1144,157 @@ export const sendEmail = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const hasPassword = async (req: Request, res: Response) => {
-  const { id } = req.params
-  try {
-    const passwordExists = await User.exists({ _id: id, password: { $ne: null } })
+    const { id } = req.params
+    try {
+      const passwordExists = await User.exists({ _id: id, password: { $ne: null } })
 
-    if (passwordExists) {
-      res.sendStatus(200)
-      return
-    }
-
-    res.sendStatus(204)
-  } catch (err) {
-    logger.error(`[user.hasPassword] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
-  }
-}
-
-/**
- * Upload avatar to temp folder.
- *
- * @export
- * @async
- * @param {Request} req
- * @param {Response} res
- * @returns {unknown}
- */
-export const createAvatar = async (req: Request, res: Response) => {
-  try {
-    if (!req.file) {
-      throw new Error('[user.createAvatar] req.file not found')
-    }
-
-    const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
-    const filepath = path.join(env.CDN_TEMP_USERS, filename)
-
-    await asyncFs.writeFile(filepath, req.file.buffer)
-    res.json(filename)
-  } catch (err) {
-    logger.error(`[user.createAvatar] ${i18n.t('DB_ERROR')}`, err)
-    res.status(400).send(i18n.t('ERROR') + err)
-  }
-}
-
-/**
- * Update avatar.
- *
- * @export
- * @async
- * @param {Request} req
- * @param {Response} res
- * @returns {unknown}
- */
-export const updateAvatar = async (req: Request, res: Response) => {
-  const { userId } = req.params
-
-  try {
-    if (!req.file) {
-      const msg = 'req.file not found'
-      logger.error(`[user.createAvatar] ${msg}`)
-      res.status(400).send(msg)
-      return
-    }
-
-    const user = await User.findById(userId)
-
-    if (user) {
-      if (user.avatar && !user.avatar.startsWith('http')) {
-        const avatar = path.join(env.CDN_USERS, user.avatar)
-
-        if (await helper.pathExists(avatar)) {
-          await asyncFs.unlink(avatar)
-        }
+      if (passwordExists) {
+        res.sendStatus(200)
+        return
       }
 
-      const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
-      const filepath = path.join(env.CDN_USERS, filename)
+      res.sendStatus(204)
+    } catch (err) {
+      logger.error(`[user.hasPassword] ${i18n.t('DB_ERROR')} ${id}`, err)
+      res.status(400).send(i18n.t('DB_ERROR') + err)
+    }
+  }
+
+  /**
+   * Upload avatar to temp folder.
+   *
+   * @export
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   * @returns {unknown}
+   */
+  export const createAvatar = async (req: Request, res: Response) => {
+    try {
+      if (!req.file) {
+        throw new Error('[user.createAvatar] req.file not found')
+      }
+
+      const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
+      const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
       await asyncFs.writeFile(filepath, req.file.buffer)
-      user.avatar = filename
-      await user.save()
       res.json(filename)
-      return
+    } catch (err) {
+      logger.error(`[user.createAvatar] ${i18n.t('DB_ERROR')}`, err)
+      res.status(400).send(i18n.t('ERROR') + err)
     }
-
-    logger.error('[user.updateAvatar] User not found:', userId)
-    res.sendStatus(204)
-  } catch (err) {
-    logger.error(`[user.updateAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
-    res.status(400).send(i18n.t('ERROR') + err)
   }
-}
 
-/**
- * Delete avatar.
- *
- * @export
- * @async
- * @param {Request} req
- * @param {Response} res
- * @returns {unknown}
- */
-export const deleteAvatar = async (req: Request, res: Response) => {
-  const { userId } = req.params
+  /**
+   * Update avatar.
+   *
+   * @export
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   * @returns {unknown}
+   */
+  export const updateAvatar = async (req: Request, res: Response) => {
+    const { userId } = req.params
 
-  try {
-    const user = await User.findById(userId)
-
-    if (user) {
-      if (user.avatar && !user.avatar.startsWith('http')) {
-        const avatar = path.join(env.CDN_USERS, user.avatar)
-        if (await helper.pathExists(avatar)) {
-          await asyncFs.unlink(avatar)
-        }
+    try {
+      if (!req.file) {
+        const msg = 'req.file not found'
+        logger.error(`[user.createAvatar] ${msg}`)
+        res.status(400).send(msg)
+        return
       }
-      user.avatar = undefined
 
-      await user.save()
+      const user = await User.findById(userId)
+
+      if (user) {
+        if (user.avatar && !user.avatar.startsWith('http')) {
+          const avatar = path.join(env.CDN_USERS, user.avatar)
+
+          if (await helper.pathExists(avatar)) {
+            await asyncFs.unlink(avatar)
+          }
+        }
+
+        const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
+        const filepath = path.join(env.CDN_USERS, filename)
+
+        await asyncFs.writeFile(filepath, req.file.buffer)
+        user.avatar = filename
+        await user.save()
+        res.json(filename)
+        return
+      }
+
+      logger.error('[user.updateAvatar] User not found:', userId)
+      res.sendStatus(204)
+    } catch (err) {
+      logger.error(`[user.updateAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
+      res.status(400).send(i18n.t('ERROR') + err)
+    }
+  }
+
+  /**
+   * Delete avatar.
+   *
+   * @export
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   * @returns {unknown}
+   */
+  export const deleteAvatar = async (req: Request, res: Response) => {
+    const { userId } = req.params
+
+    try {
+      const user = await User.findById(userId)
+
+      if (user) {
+        if (user.avatar && !user.avatar.startsWith('http')) {
+          const avatar = path.join(env.CDN_USERS, user.avatar)
+          if (await helper.pathExists(avatar)) {
+            await asyncFs.unlink(avatar)
+          }
+        }
+        user.avatar = undefined
+
+        await user.save()
+        res.sendStatus(200)
+        return
+      }
+
+      logger.error('[user.deleteAvatar] User not found:', userId)
+      res.sendStatus(204)
+    } catch (err) {
+      logger.error(`[user.deleteAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
+      res.status(400).send(i18n.t('ERROR') + err)
+    }
+  }
+
+  /**
+   * Delete temp avatar.
+   *
+   * @export
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   * @returns {unknown}
+   */
+  export const deleteTempAvatar = async (req: Request, res: Response) => {
+    const { avatar } = req.params
+
+    try {
+      const avatarFile = path.join(env.CDN_TEMP_USERS, avatar)
+      if (!(await helper.pathExists(avatarFile))) {
+        throw new Error(`[user.deleteTempAvatar] temp avatar ${avatarFile} not found`)
+      }
+
+      await asyncFs.unlink(avatarFile)
+
       res.sendStatus(200)
-      return
+    } catch (err) {
+      logger.error(`[user.deleteTempAvatar] ${i18n.t('DB_ERROR')} ${avatar}`, err)
+      res.status(400).send(i18n.t('ERROR') + err)
     }
-
-    logger.error('[user.deleteAvatar] User not found:', userId)
-    res.sendStatus(204)
-  } catch (err) {
-    logger.error(`[user.deleteAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
-    res.status(400).send(i18n.t('ERROR') + err)
   }
-}
-
-/**
- * Delete temp avatar.
- *
- * @export
- * @async
- * @param {Request} req
- * @param {Response} res
- * @returns {unknown}
- */
-export const deleteTempAvatar = async (req: Request, res: Response) => {
-  const { avatar } = req.params
-
-  try {
-    const avatarFile = path.join(env.CDN_TEMP_USERS, avatar)
-    if (!(await helper.pathExists(avatarFile))) {
-      throw new Error(`[user.deleteTempAvatar] temp avatar ${avatarFile} not found`)
-    }
-
-    await asyncFs.unlink(avatarFile)
-
-    res.sendStatus(200)
-  } catch (err) {
-    logger.error(`[user.deleteTempAvatar] ${i18n.t('DB_ERROR')} ${avatar}`, err)
-    res.status(400).send(i18n.t('ERROR') + err)
-  }
-}

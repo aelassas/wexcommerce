@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { jest } from '@jest/globals'
 import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
@@ -52,6 +53,23 @@ describe('Initialize paymentTypes', () => {
     expect(res).toBeFalsy()
     const connRes = await databaseHelper.connect(env.DB_URI, false, false)
     expect(connRes).toBeTruthy()
+
+    // test success (payment type not found)
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const PaymentType = (await import('../src/models/PaymentType.js')).default
+      jest.spyOn(PaymentType, 'findOne').mockResolvedValue(null)
+      jest.spyOn(PaymentType.prototype, 'save').mockResolvedValue({ _id: 'mock-id', name: 'Mock PaymentType', enabled: true })
+      const env = await import('../src/config/env.config.js')
+      const dbh = await import('../src/common/databaseHelper.js')
+      const pc = await import('../src/controllers/paymentTypeController.js')
+      await dbh.connect(env.DB_URI, false, false)
+      res = await pc.init()
+      expect(res).toBeTruthy()
+      await dbh.close()
+    })
+    jest.clearAllMocks()
+    jest.resetModules()
   })
 })
 
@@ -59,11 +77,33 @@ describe('GET /api/payment-types', () => {
   it('should get all payment types', async () => {
     const token = await testHelper.signinAsAdmin()
 
-    const res = await request(app)
+    // test success
+    let res = await request(app)
       .get('/api/payment-types')
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
     expect(res.body.length).toBe(3)
+
+    // test failure (payment type not found)
+    jest.resetModules()
+    await jest.unstable_mockModule('../src/models/PaymentType.js', () => ({
+      default: {
+        find: jest.fn(() => ({
+          sort: jest.fn(() => Promise.reject(new Error('DB error'))),
+        })),
+      }
+    }))
+    await jest.isolateModulesAsync(async () => {
+      const env = await import('../src/config/env.config.js')
+      const dbh = await import('../src/common/databaseHelper.js')
+      const newApp = (await import('../src/app.js')).default
+      await dbh.connect(env.DB_URI, false, false)
+      res = await request(newApp)
+        .get('/api/payment-types')
+        .set(env.X_ACCESS_TOKEN, token)
+      expect(res.statusCode).toBe(400)
+      await dbh.close()
+    })
   })
 })
 

@@ -60,3 +60,42 @@ describe('Test safeStringify', () => {
     expect(helper.safeStringify(obj)).toStrictEqual('[Unserializable object]')
   })
 })
+
+describe('Test formatPrice', () => {
+  it('should test formatPrice', () => {
+    // test success ($10)
+    expect(helper.formatPrice(10, '$', 'en')).toBe('$10')
+    // test success ($10.50)
+    expect(helper.formatPrice(10.5, '$', 'en')).toBe('$10.50')
+    // test success (10 €)
+    expect(helper.formatPrice(10, '€', 'en')).toBe('10 €')
+    // test success (10.50 €)
+    expect(helper.formatPrice(10.5, '€', 'en')).toBe('10.50 €')
+  })
+})
+
+describe('Test formatPayPalPrice', () => {
+  it('should test formatPayPalPrice', () => {
+    // test success (10)
+    expect(helper.formatPayPalPrice(10)).toBe('10.00')
+    // test success (10.5)
+    expect(helper.formatPayPalPrice(10.5)).toBe('10.50')
+    // test success (10.50)
+    expect(helper.formatPayPalPrice(10.50)).toBe('10.50')
+    // test success (10.5123)
+    expect(helper.formatPayPalPrice(10.5123)).toBe('10.51')
+  })
+})
+
+describe('Test delay', () => {
+  it('should test delay', async () => {
+    // test success
+    let res = true
+    try {
+      await helper.delay(100)
+    } catch {
+      res = false
+    }
+    expect(res).toBeTruthy()
+  })
+})

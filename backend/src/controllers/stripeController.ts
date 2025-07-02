@@ -125,10 +125,10 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
       .findOne({ sessionId, expireAt: { $ne: null } })
       .populate<{ orderItems: env.OrderItem[] }>({
         path: 'orderItems',
-        populate: {
-          path: 'product',
-          model: 'Product',
-        },
+        // populate: {
+        //   path: 'product',
+        //   model: 'Product',
+        // },
       })
 
     if (!order) {
@@ -143,6 +143,13 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
     // (Set OrderStatus to Paid and remove expireAt TTL index)
     //
     if (session.payment_status === 'paid') {
+      // Check settings
+      const settings = await Setting.findOne({})
+      if (!settings) {
+        throw new Error('Settings not found')
+      }
+
+      // Update order items
       for (const oi of order.orderItems) {
         const orderItem = await OrderItem.findById(oi.id)
         orderItem!.expireAt = undefined
@@ -154,9 +161,9 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
 
       // Update product quantity
       for (const orderItem of order.orderItems) {
-        const product = await Product.findById(orderItem.product._id)
+        const product = await Product.findById(orderItem.product)
         if (!product) {
-          throw new Error(`Product ${orderItem.product._id} not found`)
+          throw new Error(`Product ${orderItem.product} not found`)
         }
         product.quantity -= orderItem.quantity
         if (product.quantity <= 0) {
@@ -164,23 +171,18 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
           product.quantity = 0
         }
         await product.save()
+        orderItem.product = product
       }
 
       // Send confirmation email
       const user = await User.findById(order.user)
       if (!user) {
-        logger.info(`User ${order.user} not found`)
-        res.sendStatus(204)
-        return
+        throw new Error(`User ${order.user} not found`)
       }
 
       user.expireAt = undefined
       await user.save()
 
-      const settings = await Setting.findOne({})
-      if (!settings) {
-        throw new Error('Settings not found')
-      }
       const paymentType = (await PaymentType.findById(order.paymentType))!.name
       const deliveryType = (await DeliveryType.findById(order.deliveryType))!.name
       await orderController.confirm(user, order, order.orderItems, settings, paymentType, deliveryType)
