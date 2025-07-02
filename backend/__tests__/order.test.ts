@@ -111,6 +111,7 @@ describe('POST /api/checkout', () => {
     // test failure (settings not found)
     jest.resetModules()
     await jest.isolateModulesAsync(async () => {
+      const Setting = (await import('../src/models/Setting.js')).default
       jest.spyOn(Setting, 'findOne').mockResolvedValue(null)
       const newApp = (await import('../src/app.js')).default
       res = await request(newApp)
