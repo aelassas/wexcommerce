@@ -20,7 +20,7 @@ https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
 
 ## wexCommerce
 
-wexCommerce is a single-vendor marketplace built with Next.js for high-performance rendering, MongoDB for flexible data modeling, and Stripe and PayPal for secure and global payment processing.
+wexCommerce is an open-source and cross-platform single-vendor marketplace built with Next.js for high-performance rendering, MongoDB for flexible data modeling, and Stripe and PayPal for secure and global payment processing.
 
 wexCommerce is designed for startups looking to launch a single-vendor marketplace, developers who want to study a full-stack codebase for learning, and anyone looking for a solid foundation to build a custom single-vendor marketplace.
 
