@@ -14,9 +14,9 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md)
 
 https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
-
-[![](https://wexcommerce.github.io/content/frontend-0-tiny.png)](https://wexcommerce.dynv6.net:8002/home)
 -->
+
+[![](https://wexcommerce.github.io/content/cover.png)](https://wexcommerce.dynv6.net:8002/home)
 
 ## wexCommerce
 
