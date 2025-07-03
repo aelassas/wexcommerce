@@ -110,7 +110,7 @@ To contribute code or report issues, please read the [Contribution Guide](https:
 12. [Change Language and Currency](https://github.com/aelassas/wexcommerce/wiki/Change-Language-and-Currency)
 13. [Add New Language](https://github.com/aelassas/wexcommerce/wiki/Add-New-Language)
 14. [Testing](https://github.com/aelassas/wexcommerce/wiki/Testing)
-    1. [Unit Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Unit-Tests-and-Coverage)
+    1. [Integration Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Integration-Tests-and-Coverage)
 15. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 16. [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ)
 17. [Release Notes](https://github.com/aelassas/wexcommerce/blob/main/.github/RELEASES.md)
