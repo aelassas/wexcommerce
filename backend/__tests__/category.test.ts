@@ -17,6 +17,7 @@ import Product from '../src/models/Product'
 import CartItem from '../src/models/CartItem'
 import Cart from '../src/models/Cart'
 import Wishlist from '../src/models/Wishlist'
+import { nanoid } from 'nanoid'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -189,8 +190,8 @@ describe('POST /api/create-category', () => {
       }
       payload = {
         values: [
-          { language: 'en', value: 'test.category2' },
-          { language: 'fr', value: 'test.categorie2' },
+          { language: 'en', value: nanoid() },
+          { language: 'fr', value: nanoid() },
         ],
         featured: true,
         image: IMAGE1,
@@ -200,6 +201,7 @@ describe('POST /api/create-category', () => {
         .set(env.X_ACCESS_TOKEN, token)
         .send(payload)
       expect(res.statusCode).toBe(400)
+      await Value.deleteMany({ value: { $in: payload.values.map((v) => v.value) } })
       await dbh.close()
       await asyncFs.unlink(image)
     })

@@ -262,10 +262,30 @@ export const checkout = async (req: Request, res: Response) => {
       await orderItem.deleteOne()
     }
     if (__order?.id) {
+      await deleteNotifications(__order?.id)
       await __order.deleteOne()
     }
     logger.error(`[order.checkout] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     res.status(400).send(i18n.t('DB_ERROR') + err)
+  }
+}
+
+/**
+ * Delete notifications related to an order.
+ *
+ * @async
+ * @param {string} orderId 
+ * @returns {*} 
+ */
+export const deleteNotifications = async (orderId: string) => {
+  const notifications = await Notification.find({ order: orderId })
+  for (const notification of notifications) {
+    const nc = await NotificationCounter.findOne({ user: notification.user })
+    if (nc?.count) {
+      nc.count -= 1
+      await nc.save()
+    }
+    await notification.deleteOne()
   }
 }
 

@@ -14,9 +14,9 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md)
 
 https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
-
-[![](https://wexcommerce.github.io/content/frontend-0-tiny.png)](https://wexcommerce.dynv6.net:8002/home)
 -->
+
+[![](https://wexcommerce.github.io/content/cover.png)](https://wexcommerce.dynv6.net:8002/home)
 
 ## wexCommerce
 
@@ -67,7 +67,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * Responsive admin panel and frontend
 * SEO-compliant: product pages are indexable by search engines for better visibility
 * [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
-* Error monitoring and performance tracing with Sentry
+* Error monitoring and performance tracing with [Sentry](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry)
 
 ### Supported Platforms
 * Web
@@ -110,7 +110,7 @@ To contribute code or report issues, please read the [Contribution Guide](https:
 12. [Change Language and Currency](https://github.com/aelassas/wexcommerce/wiki/Change-Language-and-Currency)
 13. [Add New Language](https://github.com/aelassas/wexcommerce/wiki/Add-New-Language)
 14. [Testing](https://github.com/aelassas/wexcommerce/wiki/Testing)
-    1. [Unit Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Unit-Tests-and-Coverage)
+    1. [Integration Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Integration-Tests-and-Coverage)
 15. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)
 16. [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ)
 17. [Release Notes](https://github.com/aelassas/wexcommerce/blob/main/.github/RELEASES.md)
