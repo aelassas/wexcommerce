@@ -59,7 +59,7 @@ export const connect = async (uri: string, ssl: boolean, debug: boolean): Promis
   try {
     await mongoose.connect(uri, options)
     await mongoose.connection.asPromise() // Explicitly wait for connection to be open
-    logger.success('Database connected')
+    logger.info('Database connected')
     isConnected = true
     return true
   } catch (err) {
@@ -78,7 +78,7 @@ export const connect = async (uri: string, ssl: boolean, debug: boolean): Promis
 export const close = async (force = false): Promise<void> => {
   await mongoose.connection.close(force)
   isConnected = false
-  logger.success('Database connection closed')
+  logger.info('Database connection closed')
 }
 
 /**
@@ -108,7 +108,7 @@ export const createTextIndex = async <T>(model: Model<T>, field: string, indexNa
         existingIndex.language_override === fallbackOptions.language_override
       if (!sameOptions) {
         await collection.dropIndex(indexName)
-        logger.success(`Dropped old text index "${indexName}" due to option mismatch`)
+        logger.info(`Dropped old text index "${indexName}" due to option mismatch`)
       } else {
         logger.info(`Text index "${indexName}" already exists and is up to date`)
         return
@@ -117,7 +117,7 @@ export const createTextIndex = async <T>(model: Model<T>, field: string, indexNa
 
     // Create new text index with fallback options
     await collection.createIndex({ [field]: 'text' }, fallbackOptions)
-    logger.success(`Created text index "${indexName}" on "${field}" with fallback options`)
+    logger.info(`Created text index "${indexName}" on "${field}" with fallback options`)
   } catch (err) {
     logger.error('Failed to create text index:', err)
   }
@@ -164,12 +164,12 @@ export const createCollection = async <T>(model: Model<T>, createIndexes: boolea
   const exists = collections.some((col) => col.name === modelName)
   if (!exists) {
     await model.createCollection()
-    logger.success(`Created collection: ${modelName}`) // Optionally log success
+    logger.info(`Created collection: ${modelName}`) // Optionally log success
   }
 
   if (createIndexes) {
     await model.createIndexes()
-    logger.success(`Indexes created for collection: ${modelName}`)
+    logger.info(`Indexes created for collection: ${modelName}`)
   }
 }
 

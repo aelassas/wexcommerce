@@ -94,7 +94,7 @@ const syncLanguageValues = async <T extends { values: (mongoose.Types.ObjectId |
       logger.info(`Cleaned up final batch of ${obsoleteIdsBatch.length} obsolete Values in ${label}`)
     }
 
-    logger.success(`${label} initialized successfully`)
+    logger.info(`${label} initialized successfully`)
     return true
   } catch (err) {
     logger.error(`Failed to initialize ${label}:`, err)

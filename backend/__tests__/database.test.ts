@@ -141,7 +141,6 @@ describe('createTextIndex', () => {
 
     const logger = {
       info: jest.fn(),
-      success: jest.fn(),
       error: jest.fn(),
     }
     jest.unstable_mockModule('../src/common/logger.js', () => logger)
@@ -172,7 +171,6 @@ describe('checkAndUpdateTTL', () => {
     // Mock logger module exports as jest.fn()
     const logger = {
       info: jest.fn(),
-      success: jest.fn(),
       warn: jest.fn(),
       error: jest.fn(),
     }
@@ -218,7 +216,6 @@ describe('initialize', () => {
     // Mock logger module exports as jest.fn()
     const logger = {
       info: jest.fn(),
-      success: jest.fn(),
       warn: jest.fn(),
       error: jest.fn(),
     }
