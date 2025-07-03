@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import { jest } from '@jest/globals'
 import request from 'supertest'
-import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as databaseHelper from '../src/common/databaseHelper'
 import * as testHelper from './testHelper'
@@ -17,6 +16,8 @@ import User from '../src/models/User'
 import Token from '../src/models/Token'
 import Setting from '../src/models/Setting'
 import * as orderController from '../src/controllers/orderController'
+import Notification from '../src/models/Notification'
+import NotificationCounter from '../src/models/NotificationCounter'
 
 const CATEGORY_ID = testHelper.GetRandromObjectIdAsString()
 let USER_ID: string
@@ -54,11 +55,10 @@ beforeAll(async () => {
 // Closing and cleaning the database connection after running the test suite
 //
 afterAll(async () => {
-  if (mongoose.connection.readyState) {
-    await Product.deleteOne({ _id: PRODUCT_ID })
-    await testHelper.close()
-    await databaseHelper.close()
-  }
+  await testHelper.deleteNotifications(ORDER_ID)
+  await Product.deleteOne({ _id: PRODUCT_ID })
+  await testHelper.close()
+  await databaseHelper.close()
 })
 
 //
@@ -87,6 +87,7 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     ORDER_ID = res.body.orderId
+    await testHelper.deleteNotifications(ORDER_ID)
 
     // test failure (response error)
     jest.resetModules()
@@ -134,12 +135,13 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     let order = await Order.findById(res.body.orderId)
+    await testHelper.deleteNotifications(order!.id)
     await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
     await order!.deleteOne()
     const user = await User.findOne({ email: payload.user.email })
     expect(user).toBeTruthy()
-    await user!.deleteOne()
     await Token.deleteMany({ user: user!.id })
+    await user!.deleteOne()
 
     // test success (Shipping, WireTransfer)
     payload.order.user = USER_ID
@@ -152,6 +154,7 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     order = await Order.findById(res.body.orderId)
+    await testHelper.deleteNotifications(order!.id)
     await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
     await order!.deleteOne()
 
@@ -167,6 +170,7 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     TEMP_ORDER_ID = res.body.orderId
+    await testHelper.deleteNotifications(TEMP_ORDER_ID)
 
     // test failure (stripe with payment intent)
     const receiptEmail = testHelper.GetRandomEmail()
@@ -203,6 +207,7 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     order = await Order.findById(res.body.orderId)
+    await testHelper.deleteNotifications(order!.id)
     await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
     await order!.deleteOne()
     const customer = await stripeAPI.customers.retrieve(customerId)
@@ -219,6 +224,7 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     order = await Order.findById(res.body.orderId)
+    await testHelper.deleteNotifications(order!.id)
     await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
     await order!.deleteOne()
 
@@ -291,6 +297,8 @@ describe('PUT /api/update-order/:user/:id', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect((await Order.findById(ORDER_ID))!.status).toBe(wexcommerceTypes.OrderStatus.Cancelled)
+    await Notification.deleteMany({ user: admin.id })
+    await NotificationCounter.deleteMany({ user: admin.id })
     await admin.deleteOne()
 
     // test failure (user not found)
@@ -534,6 +542,7 @@ describe('notify', () => {
     } catch {
       res = false
     }
+    await testHelper.deleteNotifications(order.id)
     expect(res).toBeTruthy()
 
     // test success (no admin notification counter)
@@ -550,6 +559,8 @@ describe('notify', () => {
     } catch {
       res = false
     }
+    await Notification.deleteMany({ user: admin.id })
+    await NotificationCounter.deleteMany({ user: admin.id })
     await admin.deleteOne()
     expect(res).toBeTruthy()
   })

@@ -13,6 +13,7 @@ import * as paymentTypeController from '../src/controllers/paymentTypeController
 import * as deliveryTypeController from '../src/controllers/deliveryTypeController'
 import * as settingController from '../src/controllers/settingController'
 import * as authHelper from '../src/common/authHelper'
+import * as orderController from '../src/controllers/orderController'
 
 export const getName = (prefix: string) => {
   expect(prefix.length).toBeGreaterThan(1)
@@ -81,6 +82,10 @@ export const close = async () => {
   expect(res.deletedCount).toBe(2)
   await Notification.deleteMany({ user: { $in: [ADMIN_USER_ID, USER_ID] } })
   await NotificationCounter.deleteMany({ user: { $in: [ADMIN_USER_ID, USER_ID] } })
+}
+
+export const deleteNotifications = async (orderId: string) => {
+  await orderController.deleteNotifications(orderId)
 }
 
 export const getToken = (cookie: string) => {

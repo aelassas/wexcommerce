@@ -13,6 +13,8 @@ import Product from '../src/models/Product'
 import User from '../src/models/User'
 import DeliveryType from '../src/models/DeliveryType'
 import PaymentType from '../src/models/PaymentType'
+import Notification from '../src/models/Notification'
+import NotificationCounter from '../src/models/NotificationCounter'
 
 //
 // Connecting and initializing the database before running the test suite
@@ -272,6 +274,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       res = await request(app)
         .post(`/api/check-checkout-session/${sessionId}`)
       expect(res.statusCode).toBe(200)
+      await testHelper.deleteNotifications(order.id)
 
       // test failure (settings not found)
       await order.deleteOne()
@@ -456,6 +459,8 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       }
       await product.deleteOne()
       await user.deleteOne()
+      await Notification.deleteMany({ user: user.id })
+      await NotificationCounter.deleteMany({ user: user.id })
     }
 
     // test failure (lost db connection)
