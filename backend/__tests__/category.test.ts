@@ -6,11 +6,11 @@ import asyncFs from 'node:fs/promises'
 import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
-import * as databaseHelper from '../src/common/databaseHelper'
+import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
 import app from '../src/app'
 import * as env from '../src/config/env.config'
-import * as helper from '../src/common/helper'
+import * as helper from '../src/utils/helper'
 import Value from '../src/models/Value'
 import Category from '../src/models/Category'
 import Product from '../src/models/Product'
@@ -182,7 +182,7 @@ describe('POST /api/create-category', () => {
       const Category = (await import('../src/models/Category.js')).default
       jest.spyOn(Category.prototype, 'save').mockRejectedValue(new Error('DB error'))
       const env = await import('../src/config/env.config.js')
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       const newApp = (await import('../src/app.js')).default
       await dbh.connect(env.DB_URI, false, false)
       if (!(await helper.pathExists(image))) {

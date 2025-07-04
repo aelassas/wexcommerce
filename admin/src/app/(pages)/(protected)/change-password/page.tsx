@@ -15,7 +15,7 @@ import { UserContextType, useUserContext } from '@/context/UserContext'
 import * as UserService from '@/lib/UserService'
 import { strings } from '@/lang/change-password'
 import { strings as commonStrings } from '@/lang/common'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 import styles from '@/styles/change-password.module.css'
 

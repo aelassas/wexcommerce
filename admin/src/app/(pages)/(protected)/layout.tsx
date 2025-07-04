@@ -7,7 +7,7 @@ import { LanguageContextType, useLanguageContext } from '@/context/LanguageConte
 import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyContext'
 import { UserContextType, useUserContext } from '@/context/UserContext'
 import { NotificationContextType, useNotificationContext } from '@/context/NotificationContext'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { strings } from '@/lang/dashboard'
 import * as SettingService from '@/lib/SettingService'
 import * as UserService from '@/lib/UserService'

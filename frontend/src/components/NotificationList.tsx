@@ -29,7 +29,7 @@ import env from '@/config/env.config'
 import { strings } from '@/lang/notification-list'
 import { strings as commonStrings } from '@/lang/common'
 import * as NotificationService from '@/lib/NotificationService'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import Pager from './Pager'
 import EmptyListComponent from './EmptyList'
 

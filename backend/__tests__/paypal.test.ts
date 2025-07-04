@@ -3,7 +3,7 @@ import { jest } from '@jest/globals'
 import request from 'supertest'
 import { nanoid } from 'nanoid'
 import * as wexcommerceTypes from ':wexcommerce-types'
-import * as databaseHelper from '../src/common/databaseHelper'
+import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
 import * as env from '../src/config/env.config'
 import app from '../src/app'
@@ -171,7 +171,7 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
         jest.spyOn(Setting, 'findOne').mockResolvedValue(null)
         const env = await import('../src/config/env.config.js')
         const newApp = (await import('../src/app.js')).default
-        const dbh = await import('../src/common/databaseHelper.js')
+        const dbh = await import('../src/utils/databaseHelper.js')
         await dbh.connect(env.DB_URI, false, false)
         const res = await request(newApp)
           .post(`/api/check-paypal-order/${order.id}/${orderId}`)

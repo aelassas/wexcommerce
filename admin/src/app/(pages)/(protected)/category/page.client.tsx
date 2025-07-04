@@ -17,7 +17,7 @@ import * as wexcommerceHelper from ':wexcommerce-helper'
 import { strings } from '@/lang/category'
 import { strings as ccStrings } from '@/lang/create-category'
 import { strings as commonStrings } from '@/lang/common'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import env from '@/config/env.config'
 import * as CategoryService from '@/lib/CategoryService'
 

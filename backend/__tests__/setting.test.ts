@@ -4,7 +4,7 @@ import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as settingController from '../src/controllers/settingController'
-import * as databaseHelper from '../src/common/databaseHelper'
+import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
 import Setting from '../src/models/Setting'
 import app from '../src/app'
@@ -205,7 +205,7 @@ describe('GET /api/settings', () => {
     await jest.isolateModulesAsync(async () => {
       const env = await import('../src/config/env.config.js')
       const newApp = (await import('../src/app.js')).default
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       await dbh.connect(env.DB_URI, false, false)
       res = await request(newApp)
         .get('/api/settings')
@@ -279,7 +279,7 @@ describe('PUT /api/update-settings', () => {
     await jest.isolateModulesAsync(async () => {
       const env = await import('../src/config/env.config.js')
       const newApp = (await import('../src/app.js')).default
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       await dbh.connect(env.DB_URI, false, false)
       res = await request(newApp)
         .put('/api/update-settings')
@@ -356,7 +356,7 @@ describe('PUT /api/update-bank-settings', () => {
     await jest.isolateModulesAsync(async () => {
       const env = await import('../src/config/env.config.js')
       const newApp = (await import('../src/app.js')).default
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       await dbh.connect(env.DB_URI, false, false)
       res = await request(newApp)
         .put('/api/update-bank-settings')

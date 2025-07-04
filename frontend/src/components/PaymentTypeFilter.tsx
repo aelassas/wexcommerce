@@ -6,7 +6,7 @@ import * as wexcommerceHelper from ':wexcommerce-helper'
 import { strings as commonStrings } from '@/lang/common'
 import Accordion from './Accordion'
 import PaymentType from './PaymentType'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 import styles from '@/styles/payment-type-filter.module.css'
 

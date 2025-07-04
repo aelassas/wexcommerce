@@ -18,7 +18,7 @@ import {
 } from '@mui/icons-material'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/category-list'
-import * as helper from '../common/helper'
+import * as helper from '../utils/helper'
 import * as CategoryService from '../lib/CategoryService'
 import EmptyListComponent from '@/components/EmptyList'
 

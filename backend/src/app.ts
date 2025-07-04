@@ -22,7 +22,7 @@ import stripeRoutes from './routes/stripeRoutes'
 import wishlistRoutes from './routes/wishlistRoutes'
 import paypalRoutes from './routes/paypalRoutes'
 import ipinfoRoutes from './routes/ipinfoRoutes'
-import * as helper from './common/helper'
+import * as helper from './utils/helper'
 
 const app = express()
 

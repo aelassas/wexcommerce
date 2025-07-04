@@ -31,7 +31,7 @@ import * as SettingService from '@/lib/SettingService'
 import * as DeliveryTypeService from '@/lib/DeliveryTypeService'
 import { strings } from '@/lang/settings'
 import { strings as commonStrings } from '@/lang/common'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 import styles from '@/styles/settings.module.css'
 

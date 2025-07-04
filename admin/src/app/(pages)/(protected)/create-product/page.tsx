@@ -18,7 +18,7 @@ import { CurrencyContextType, useCurrencyContext } from '@/context/CurrencyConte
 import * as ProductService from '@/lib/ProductService'
 import { strings } from '@/lang/create-product'
 import { strings as commonStrings } from '@/lang/common'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import CategorySelectList from '@/components/CategorySelectList'
 import Error from '@/components/Error'
 import ImageEditor from '@/components/ImageEditor'

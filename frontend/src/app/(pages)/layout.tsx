@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
-import { init as initGA } from '@/common/ga4'
+import { init as initGA } from '@/utils/ga4'
 import { createTheme, Theme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
@@ -17,7 +17,7 @@ import { CartProvider } from '@/context/CartContext'
 import { WishlistProvider } from '@/context/WishlistContext'
 import { PayPalProvider } from '@/context/PayPalContext'
 import env from '@/config/env.config'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 import { strings as activateStrings } from '@/lang/activate'
 import { strings as cartStrings } from '@/lang/cart'

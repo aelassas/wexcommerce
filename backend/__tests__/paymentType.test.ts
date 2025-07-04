@@ -4,7 +4,7 @@ import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as paymentTypeController from '../src/controllers/paymentTypeController'
-import * as databaseHelper from '../src/common/databaseHelper'
+import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
 import PaymentType from '../src/models/PaymentType'
 import app from '../src/app'
@@ -61,7 +61,7 @@ describe('Initialize paymentTypes', () => {
       jest.spyOn(PaymentType, 'findOne').mockResolvedValue(null)
       jest.spyOn(PaymentType.prototype, 'save').mockResolvedValue({ _id: 'mock-id', name: 'Mock PaymentType', enabled: true })
       const env = await import('../src/config/env.config.js')
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       const pc = await import('../src/controllers/paymentTypeController.js')
       await dbh.connect(env.DB_URI, false, false)
       res = await pc.init()
@@ -95,7 +95,7 @@ describe('GET /api/payment-types', () => {
     }))
     await jest.isolateModulesAsync(async () => {
       const env = await import('../src/config/env.config.js')
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       const newApp = (await import('../src/app.js')).default
       await dbh.connect(env.DB_URI, false, false)
       res = await request(newApp)

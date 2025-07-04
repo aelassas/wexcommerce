@@ -21,7 +21,7 @@ import {
   Button,
   Paper
 } from '@mui/material'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 import styles from '@/styles/reset-password.module.css'
 

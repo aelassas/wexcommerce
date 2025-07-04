@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import i18n from '../lang/i18n'
-import * as logger from '../common/logger'
+import * as logger from '../utils/logger'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as env from '../config/env.config'
 import Order from '../models/Order'
@@ -11,7 +11,7 @@ import Setting from '../models/Setting'
 import PaymentType from '../models/PaymentType'
 import DeliveryType from '../models/DeliveryType'
 import * as orderController from './orderController'
-import * as ipinfoHelper from '../common/ipinfoHelper'
+import * as ipinfoHelper from '../utils/ipinfoHelper'
 
 /**
  * Create PayPal order.

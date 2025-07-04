@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { jest } from '@jest/globals'
 import request from 'supertest'
 import * as wexcommerceTypes from ':wexcommerce-types'
-import * as databaseHelper from '../src/common/databaseHelper'
+import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
 import app from '../src/app'
 import * as env from '../src/config/env.config'
@@ -98,7 +98,7 @@ describe('POST /api/checkout', () => {
       })
       const env = await import('../src/config/env.config.js')
       const newApp = (await import('../src/app.js')).default
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       await dbh.connect(env.DB_URI, false, false)
       res = await request(newApp)
         .post('/api/checkout')
@@ -315,7 +315,7 @@ describe('PUT /api/update-order/:user/:id', () => {
       jest.spyOn(Setting, 'findOne').mockResolvedValue(null)
       const env = await import('../src/config/env.config.js')
       const newApp = (await import('../src/app.js')).default
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       await dbh.connect(env.DB_URI, false, false)
       res = await request(newApp)
         .put(`/api/update-order/${ADMIN_ID}/${ORDER_ID}`)

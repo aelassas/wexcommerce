@@ -3,7 +3,7 @@
 import React from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 import styles from '@/styles/delivery-type.module.css'
 

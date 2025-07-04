@@ -17,7 +17,7 @@ import * as WishlistService from '@/lib/WishlistService'
 import { RecaptchaProvider } from '@/context/RecaptchaContext'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { strings } from '@/lang/dashboard'
 
 type LayoutProps = Readonly<{

@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
-import * as serverHelper from '@/common/serverHelper'
+import * as serverHelper from '@/utils/serverHelper'
 import env from '@/config/env.config'
 import * as ProductService from '@/lib/ProductService'
 import * as CartService from '@/lib/CartService'

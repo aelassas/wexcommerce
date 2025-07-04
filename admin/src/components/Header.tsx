@@ -30,7 +30,7 @@ import {
   Clear as ClearIcon
 } from '@mui/icons-material'
 import env from '@/config/env.config'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/header'
 import * as UserService from '@/lib/UserService'

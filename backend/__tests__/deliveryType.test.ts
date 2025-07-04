@@ -4,7 +4,7 @@ import request from 'supertest'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as deliveryTypeController from '../src/controllers/deliveryTypeController'
-import * as databaseHelper from '../src/common/databaseHelper'
+import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
 import DeliveryType from '../src/models/DeliveryType'
 import app from '../src/app'
@@ -59,7 +59,7 @@ describe('Initialize deliveryTypes', () => {
       jest.spyOn(DeliveryType, 'findOne').mockResolvedValue(null)
       jest.spyOn(DeliveryType.prototype, 'save').mockResolvedValue({ _id: 'mock-id', name: 'Mock DeliveryType', enabled: true })
       const env = await import('../src/config/env.config.js')
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       const pc = await import('../src/controllers/deliveryTypeController.js')
       await dbh.connect(env.DB_URI, false, false)
       res = await pc.init()
@@ -93,7 +93,7 @@ describe('GET /api/delivery-types', () => {
     }))
     await jest.isolateModulesAsync(async () => {
       const env = await import('../src/config/env.config.js')
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
       const newApp = (await import('../src/app.js')).default
       await dbh.connect(env.DB_URI, false, false)
       res = await request(newApp)

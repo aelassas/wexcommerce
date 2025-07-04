@@ -21,7 +21,7 @@ import {
   Button,
   Paper
 } from '@mui/material'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import ScrollToTop from '@/components/ScrollToTop'
 
 import styles from '@/styles/reset-password.module.css'

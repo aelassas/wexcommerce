@@ -16,7 +16,7 @@ import * as UserService from '@/lib/UserService'
 import { strings } from '@/lang/settings'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as headerStrings } from '@/lang/header'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { UserContextType, useUserContext } from '@/context/UserContext'
 import ScrollToTop from '@/components/ScrollToTop'
 

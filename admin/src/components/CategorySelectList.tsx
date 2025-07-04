@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as CategoryService from '@/lib/CategoryService'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import MultipleSelect from './MultipleSelect'
 import { TextFieldVariants } from '@mui/material'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'

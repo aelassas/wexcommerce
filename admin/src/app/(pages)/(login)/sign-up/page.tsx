@@ -18,7 +18,7 @@ import {
 } from '@mui/material'
 import validator from 'validator'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { useRouter } from 'next/navigation'
 
 import styles from '@/styles/signup.module.css'

@@ -8,14 +8,14 @@ import { nanoid } from 'nanoid'
 import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import app from '../src/app'
-import * as databaseHelper from '../src/common/databaseHelper'
+import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
-import * as authHelper from '../src/common/authHelper'
+import * as authHelper from '../src/utils/authHelper'
 import * as env from '../src/config/env.config'
 import User from '../src/models/User'
 import Token from '../src/models/Token'
 import Order from '../src/models/Order'
-import * as helper from '../src/common/helper'
+import * as helper from '../src/utils/helper'
 import DeliveryType from '../src/models/DeliveryType'
 import PaymentType from '../src/models/PaymentType'
 
@@ -122,7 +122,7 @@ describe('POST /api/sign-up', () => {
     // test failure (smtp failed)
     payload.email = testHelper.GetRandomEmail()
     // Mock mailHelper to simulate an error
-    jest.unstable_mockModule('../src/common/mailHelper.js', () => ({
+    jest.unstable_mockModule('../src/utils/mailHelper.js', () => ({
       sendMail: jest.fn(() => Promise.reject(new Error('SMTP failed')))
     }))
 
@@ -130,7 +130,7 @@ describe('POST /api/sign-up', () => {
     await jest.isolateModulesAsync(async () => {
       const env = await import('../src/config/env.config.js')
       const newApp = (await import('../src/app.js')).default
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
 
       await dbh.close()
       await dbh.connect(env.DB_URI, false, false)
@@ -144,7 +144,7 @@ describe('POST /api/sign-up', () => {
       await dbh.close()
     })
 
-    jest.unstable_mockModule('../src/common/mailHelper.js', () => ({
+    jest.unstable_mockModule('../src/utils/mailHelper.js', () => ({
       sendMail: jest.fn(() => Promise.reject(new Error('SMTP failed'))),
     }))
 
@@ -154,7 +154,7 @@ describe('POST /api/sign-up', () => {
       const env = await import('../src/config/env.config.js')
       const User = (await import('../src/models/User.js')).default
       const newApp = (await import('../src/app.js')).default
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
 
       await dbh.close()
       await dbh.connect(env.DB_URI, false, false)
@@ -580,8 +580,8 @@ describe('POST /api/social-sign-in/:type', () => {
           get: jest.fn(() => Promise.resolve({ data: { success: true } })),
         },
       }))
-      const realHelper = await import('../src/common/authHelper.js')
-      jest.unstable_mockModule('../src/common/authHelper.js', () => ({
+      const realHelper = await import('../src/utils/authHelper.js')
+      jest.unstable_mockModule('../src/utils/authHelper.js', () => ({
         validateAccessToken: jest.fn(() => Promise.resolve(true)),
         encryptJWT: jest.fn(realHelper.encryptJWT),
         decryptJWT: jest.fn(realHelper.decryptJWT),
@@ -593,7 +593,7 @@ describe('POST /api/social-sign-in/:type', () => {
       jest.resetModules()
       const env = await import('../src/config/env.config.js')
       const newApp = (await import('../src/app.js')).default
-      const dbh = await import('../src/common/databaseHelper.js')
+      const dbh = await import('../src/utils/databaseHelper.js')
 
       await dbh.close()
       await dbh.connect(env.DB_URI, false, false)

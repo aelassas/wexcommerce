@@ -13,7 +13,7 @@ import {
   Paper,
 } from '@mui/material'
 import validator from 'validator'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'

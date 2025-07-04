@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
 import * as wexcommerceTypes from ':wexcommerce-types'
-import * as logger from '../common/logger'
+import * as logger from '../utils/logger'
 import i18n from '../lang/i18n'
-import * as helper from '../common/helper'
+import * as helper from '../utils/helper'
 import Wishlist from '../models/Wishlist'
 import User from '../models/User'
 

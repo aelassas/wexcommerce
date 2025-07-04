@@ -12,7 +12,7 @@ import { LanguageProvider } from '@/context/LanguageContext'
 import { CurrencyProvider } from '@/context/CurrencyContext'
 import { UserProvider } from '@/context/UserContext'
 import { NotificationProvider } from '@/context/NotificationContext'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 import { strings as activateStrings } from '@/lang/activate'
 import { strings as categoriesStrings } from '@/lang/categories'

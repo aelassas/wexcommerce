@@ -4,7 +4,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@mui/material'
 import { strings as commonStrings } from '@/lang/common'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 interface ToastWishlistProps {
   action: 'add' | 'remove'
