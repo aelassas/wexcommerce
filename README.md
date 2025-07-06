@@ -85,7 +85,11 @@ To contribute code or report issues, please read the [Contribution Guide](https:
 
 ## Live Demo
 
-* https://wexcommerce.dynv6.net:8002/
+### Frontend
+
+* URL: https://wexcommerce.dynv6.net:8002/
+* Login: jdoe@wexcommerce.com
+* Password: sh0ppingC4rt
 
 ## Documentation
 
