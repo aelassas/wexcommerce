@@ -91,7 +91,7 @@ To contribute code or report issues, please read the [Contribution Guide](https:
 * Login: jdoe@wexcommerce.com
 * Password: sh0ppingC4rt
 
-### Website Source Code (wexcommerce.github.io)
+## Website Source Code (wexcommerce.github.io)
 
 The source code for the official wexCommerce website is available here:
 
