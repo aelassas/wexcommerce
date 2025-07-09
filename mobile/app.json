@@ -2,7 +2,7 @@
   "expo": {
     "name": "mobile",
     "slug": "mobile",
-    "version": "3.5.0",
+    "version": "3.6.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -13,11 +13,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "buildNumber": "3.5.0",
+      "buildNumber": "3.6.0",
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 350,
+      "versionCode": 360,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
