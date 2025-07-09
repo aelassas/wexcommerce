@@ -1,5 +1,34 @@
 # Releases
 
+## [wexCommerce 3.5](https://github.com/aelassas/wexcommerce/releases/tag/v3.5) – 2025-07-09
+
+* feat(backend): integrate [Sentry](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry) for error tracking and performance monitoring with configurable tracesSampleRate
+* feat(tests): add Sentry integration tests for initialization and tracing behavior
+* feat(tests): add unit tests for mail module with nodemailer mocks
+* feat(tests): enhance logging tests with Sentry integration and TERM_PROGRAM checks
+* feat(tests): enhance access token validation tests with additional failure scenarios
+* feat(tests): improve helper tests with JWT encryption and access token validation
+* feat(tests): add comprehensive tests for JWT and reCAPTCHA validation
+* feat(tests): enhance PayPal and Stripe test coverage with mocks and improved error handling
+* feat(tests): improve code coverage
+* refactor(models): move manual index creation from models to initialization script
+* refactor: rename common folder to utils
+* fix(ci): push RELEASES.md from default branch instead of detached HEAD
+* fix(backend): improve TTL index handling and logging for updates
+* fix(backend): wrong admin checks in order controller
+* fix(tests): cleanup test data
+* chore(backend): organize and document .env.example
+* chore: update dependencies
+
+**Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v3.4...v3.5
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.5/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.5)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v3.5)
+
 ## [wexCommerce 3.4](https://github.com/aelassas/wexcommerce/releases/tag/v3.4) – 2025-06-28
 
 * feat(backend): add setup script to create admin user
