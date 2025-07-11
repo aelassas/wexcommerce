@@ -1,5 +1,20 @@
 # Releases
 
+## [wexCommerce 3.6](https://github.com/aelassas/wexcommerce/releases/tag/v3.6) – 2025-07-11
+
+* fix(docker): .env file not loaded and setup issues
+* fix(frontend): remove event listeners when analytics script starts
+* fix(dev): settings.json and eslint.config.js
+
+**Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v3.5...v3.6
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.6/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.6)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v3.6)
+
 ## [wexCommerce 3.5](https://github.com/aelassas/wexcommerce/releases/tag/v3.5) – 2025-07-09
 
 * feat(backend): integrate [Sentry](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry) for error tracking and performance monitoring with configurable tracesSampleRate
