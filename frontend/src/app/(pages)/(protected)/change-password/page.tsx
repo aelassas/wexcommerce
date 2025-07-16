@@ -46,13 +46,15 @@ const ChangePassword: React.FC = () => {
         return
       }
 
-      let status = await UserService.checkPassword(user._id!, currentPassword)
+      if (hasPassword) {
+        let status = await UserService.checkPassword(user._id!, currentPassword)
 
-      if (status !== 200) {
-        setPasswordLengthError(false)
-        setConfirmPasswordError(false)
-        setCurrentPasswordError(true)
-        return
+        if (status !== 200) {
+          setPasswordLengthError(false)
+          setConfirmPasswordError(false)
+          setCurrentPasswordError(true)
+          return
+        }
       }
 
       if (newPassword.length < 6) {
@@ -78,10 +80,10 @@ const ChangePassword: React.FC = () => {
         _id: user._id!,
         password: currentPassword,
         newPassword,
-        strict: true
+        strict: hasPassword,
       }
 
-      status = await UserService.changePassword(payload)
+      const status = await UserService.changePassword(payload)
 
       if (status === 200) {
         setCurrentPassword('')
