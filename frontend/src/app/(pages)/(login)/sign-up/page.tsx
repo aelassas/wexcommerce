@@ -23,6 +23,7 @@ import SocialLogin from '@/components/SocialLogin'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import { RecaptchaContextType, useRecaptchaContext } from '@/context/RecaptchaContext'
 import ScrollToTop from '@/components/ScrollToTop'
+import PasswordInput from '@/components/PasswordInput'
 
 import styles from '@/styles/signup.module.css'
 
@@ -274,40 +275,36 @@ const SignUp: React.FC = () => {
                   size="small"
                 />
               </FormControl>
-              <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className="required">{commonStrings.PASSWORD}</InputLabel>
-                <OutlinedInput
-                  label={commonStrings.PASSWORD}
-                  value={password}
-                  onChange={handleOnChangePassword}
-                  required
-                  type="password"
-                  inputProps={{
-                    autoComplete: 'new-password',
-                    form: {
-                      autoComplete: 'off',
-                    },
-                  }}
-                  size="small"
-                />
-              </FormControl>
-              <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className="required">{commonStrings.CONFIRM_PASSWORD}</InputLabel>
-                <OutlinedInput
-                  label={commonStrings.CONFIRM_PASSWORD}
-                  value={confirmPassword}
-                  onChange={handleOnChangeConfirmPassword}
-                  required
-                  type="password"
-                  inputProps={{
-                    autoComplete: 'new-password',
-                    form: {
-                      autoComplete: 'off',
-                    },
-                  }}
-                  size="small"
-                />
-              </FormControl>
+
+              <PasswordInput
+                label={commonStrings.PASSWORD}
+                value={password}
+                variant="outlined"
+                onChange={handleOnChangePassword}
+                required
+                inputProps={{
+                  autoComplete: 'new-password',
+                  form: {
+                    autoComplete: 'off',
+                  },
+                }}
+                size="small"
+              />
+
+              <PasswordInput
+                label={commonStrings.CONFIRM_PASSWORD}
+                value={confirmPassword}
+                variant="outlined"
+                onChange={handleOnChangeConfirmPassword}
+                required
+                inputProps={{
+                  autoComplete: 'new-password',
+                  form: {
+                    autoComplete: 'off',
+                  },
+                }}
+                size="small"
+              />
 
               <SocialLogin />
 

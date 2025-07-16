@@ -18,6 +18,7 @@ import * as UserService from '@/lib/UserService'
 import Error from '@/components/Error'
 import SocialLogin from '@/components/SocialLogin'
 import ScrollToTop from '@/components/ScrollToTop'
+import PasswordInput from '@/components/PasswordInput'
 
 import styles from '@/styles/signin.module.css'
 
@@ -132,18 +133,16 @@ const SignIn: React.FC = () => {
                     required
                   />
                 </FormControl>
-                <FormControl fullWidth margin="normal" size="small">
-                  <InputLabel>{commonStrings.PASSWORD}</InputLabel>
-                  <OutlinedInput
-                    label={commonStrings.PASSWORD}
-                    onChange={handleOnChangePassword}
-                    onKeyDown={handleOnPasswordKeyDown}
-                    autoComplete="password"
-                    type="password"
-                    size="small"
-                    required
-                  />
-                </FormControl>
+
+                <PasswordInput
+                  label={commonStrings.PASSWORD}
+                  variant="outlined"
+                  onChange={handleOnChangePassword}
+                  onKeyDown={handleOnPasswordKeyDown}
+                  required
+                  autoComplete="password"
+                  size="small"
+                />
 
                 <div className={styles.stayConnected}>
                   <input type="checkbox" onChange={async (e) => {

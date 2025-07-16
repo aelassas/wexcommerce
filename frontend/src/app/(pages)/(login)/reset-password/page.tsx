@@ -14,15 +14,12 @@ import { strings as activateStrings } from '@/lang/activate'
 import { strings as dashboardStrings } from '@/lang/dashboard'
 import NoMatch from '@/components/NoMatch'
 import {
-  OutlinedInput,
-  InputLabel,
-  FormControl,
-  FormHelperText,
   Button,
   Paper
 } from '@mui/material'
 import * as helper from '@/utils/helper'
 import ScrollToTop from '@/components/ScrollToTop'
+import PasswordInput from '@/components/PasswordInput'
 
 import styles from '@/styles/reset-password.module.css'
 
@@ -206,45 +203,30 @@ const ResetPassword: React.FC = () => {
           <Paper className={styles.resetUserPasswordForm} elevation={10}>
             <h1>{fpStrings.RESET_PASSWORD_HEADING}</h1>
             <form onSubmit={handleSubmit}>
-              <FormControl fullWidth margin="normal" size="small">
-                <InputLabel className="required" error={passwordLengthError}>
-                  {cpStrings.NEW_PASSWORD}
-                </InputLabel>
-                <OutlinedInput
-                  label={cpStrings.NEW_PASSWORD}
-                  onChange={handlePasswordChange}
-                  onBlur={handlePasswordBlur}
-                  type="password"
-                  error={passwordLengthError}
-                  size="small"
-                  required
-                />
-                <FormHelperText
-                  error={passwordLengthError}
-                >
-                  {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
-                </FormHelperText>
-              </FormControl>
-              <FormControl fullWidth margin="normal" size="small" error={confirmPasswordError}>
-                <InputLabel error={confirmPasswordError} className="required">
-                  {commonStrings.CONFIRM_PASSWORD}
-                </InputLabel>
-                <OutlinedInput
-                  label={commonStrings.CONFIRM_PASSWORD}
-                  onChange={handleConfirmPasswordChange}
-                  onKeyDown={handleConfirmPasswordKeyDown}
-                  onBlur={handleConfirmPasswordBlur}
-                  error={confirmPasswordError}
-                  type="password"
-                  size="small"
-                  required
-                />
-                <FormHelperText
-                  error={confirmPasswordError}
-                >
-                  {(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
-                </FormHelperText>
-              </FormControl>
+
+              <PasswordInput
+                label={cpStrings.NEW_PASSWORD}
+                onChange={handlePasswordChange}
+                onBlur={handlePasswordBlur}
+                variant="outlined"
+                required
+                size="small"
+                error={passwordLengthError}
+                helperText={(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
+              />
+
+              <PasswordInput
+                label={commonStrings.CONFIRM_PASSWORD}
+                onChange={handleConfirmPasswordChange}
+                onKeyDown={handleConfirmPasswordKeyDown}
+                onBlur={handleConfirmPasswordBlur}
+                variant="outlined"
+                required
+                size="small"
+                error={confirmPasswordError}
+                helperText={(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
+              />
+
               <div className="buttons">
                 <Button
                   type="submit"

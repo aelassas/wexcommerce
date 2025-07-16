@@ -395,7 +395,7 @@ export const hasPassword = async (id: string): Promise<number> =>
     .GET(
       `/api/has-password/${encodeURIComponent(id)}`,
       [await authHeader()],
-      false,
+      true,
     )
     .then((res) => res.status)
 

@@ -17,6 +17,7 @@ import { strings } from '@/lang/sign-in'
 import * as UserService from '@/lib/UserService'
 import Error from '@/components/Error'
 import Link from 'next/link'
+import PasswordInput from '@/components/PasswordInput'
 
 import styles from '@/styles/signin.module.css'
 
@@ -118,16 +119,16 @@ const SignIn: React.FC = () => {
               required
             />
           </FormControl>
-          <FormControl fullWidth margin="dense">
-            <InputLabel>{commonStrings.PASSWORD}</InputLabel>
-            <Input
-              onChange={handleOnChangePassword}
-              onKeyDown={handleOnPasswordKeyDown}
-              autoComplete="password"
-              type="password"
-              required
-            />
-          </FormControl>
+
+          <PasswordInput
+            label={commonStrings.PASSWORD}
+            variant="standard"
+            onChange={handleOnChangePassword}
+            onKeyDown={handleOnPasswordKeyDown}
+            required
+            autoComplete="password"
+            size="small"
+          />
 
           <div className={styles.stayConnected}>
             <input type="checkbox" onChange={(e) => {

@@ -20,6 +20,7 @@ import validator from 'validator'
 import { LanguageContextType, useLanguageContext } from '@/context/LanguageContext'
 import * as helper from '@/utils/helper'
 import { useRouter } from 'next/navigation'
+import PasswordInput from '@/components/PasswordInput'
 
 import styles from '@/styles/signup.module.css'
 
@@ -210,36 +211,37 @@ const SignUp: React.FC = () => {
                 {(emailError && commonStrings.EMAIL_ALREADY_REGISTERED) || ''}
               </FormHelperText>
             </FormControl>
-            <FormControl fullWidth margin="dense">
-              <InputLabel className="required">{commonStrings.PASSWORD}</InputLabel>
-              <Input
-                value={password}
-                onChange={handleOnChangePassword}
-                required
-                type="password"
-                inputProps={{
-                  autoComplete: 'new-password',
-                  form: {
-                    autoComplete: 'off',
-                  },
-                }}
-              />
-            </FormControl>
-            <FormControl fullWidth margin="dense">
-              <InputLabel className="required">{commonStrings.CONFIRM_PASSWORD}</InputLabel>
-              <Input
-                value={confirmPassword}
-                onChange={handleOnChangeConfirmPassword}
-                required
-                type="password"
-                inputProps={{
-                  autoComplete: 'new-password',
-                  form: {
-                    autoComplete: 'off',
-                  },
-                }}
-              />
-            </FormControl>
+
+            <PasswordInput
+              label={commonStrings.PASSWORD}
+              value={password}
+              variant="outlined"
+              onChange={handleOnChangePassword}
+              required
+              inputProps={{
+                autoComplete: 'new-password',
+                form: {
+                  autoComplete: 'off',
+                },
+              }}
+              size="small"
+            />
+
+            <PasswordInput
+              label={commonStrings.CONFIRM_PASSWORD}
+              value={confirmPassword}
+              variant="outlined"
+              onChange={handleOnChangeConfirmPassword}
+              required
+              inputProps={{
+                autoComplete: 'new-password',
+                form: {
+                  autoComplete: 'off',
+                },
+              }}
+              size="small"
+            />
+
             <div className="buttons">
               <Button
                 type="submit"

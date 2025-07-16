@@ -1,14 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
-  OutlinedInput,
-  InputLabel,
-  FormControl,
   Button,
   Paper,
-  FormHelperText
 } from '@mui/material'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import { UserContextType, useUserContext } from '@/context/UserContext'
@@ -17,6 +13,7 @@ import { strings } from '@/lang/change-password'
 import { strings as commonStrings } from '@/lang/common'
 import * as helper from '@/utils/helper'
 import ScrollToTop from '@/components/ScrollToTop'
+import PasswordInput from '@/components/PasswordInput'
 
 import styles from '@/styles/change-password.module.css'
 
@@ -30,6 +27,16 @@ const ChangePassword: React.FC = () => {
   const [currentPasswordError, setCurrentPasswordError] = useState(false)
   const [passwordLengthError, setPasswordLengthError] = useState(false)
   const [confirmPasswordError, setConfirmPasswordError] = useState(false)
+  const [hasPassword, setHasPassword] = useState(false)
+
+  useEffect(() => {
+    (async function () {
+      if (user) {
+        const status = await UserService.hasPassword(user!._id!)
+        setHasPassword(status === 200)
+      }
+    })()
+  }, [user])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     e.preventDefault()
@@ -99,92 +106,59 @@ const ChangePassword: React.FC = () => {
             <Paper className={styles.form} elevation={10}>
               <form onSubmit={handleSubmit}>
                 <h1 className={styles.formTitle}>{strings.CHANGE_PASSWORD_HEADING}</h1>
-                <FormControl fullWidth margin="normal" size="small">
-                  <InputLabel
-                    error={currentPasswordError}
-                    className="required"
-                  >
-                    {strings.CURRENT_PASSWORD}
-                  </InputLabel>
-                  <OutlinedInput
+
+                {hasPassword && (
+                  <PasswordInput
                     label={strings.CURRENT_PASSWORD}
                     onChange={(e) => {
                       setCurrentPassword(e.target.value)
                       setCurrentPasswordError(false)
                     }}
+                    variant="outlined"
+                    required
+                    size="small"
                     value={currentPassword}
                     error={currentPasswordError}
-                    type="password"
-                    size="small"
-                    required
+                    helperText={(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}
                   />
-                  <FormHelperText
-                    error={currentPasswordError}
-                  >
-                    {(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}
-                  </FormHelperText>
-                </FormControl>
-                <FormControl
-                  fullWidth
-                  margin="normal" size="small"
-                >
-                  <InputLabel className="required">
-                    {strings.NEW_PASSWORD}
-                  </InputLabel>
-                  <OutlinedInput
-                    label={strings.NEW_PASSWORD}
-                    onChange={(e) => {
-                      setNewPassword(e.target.value)
-                      setPasswordLengthError(false)
-                      setConfirmPasswordError(false)
-                    }}
-                    type="password"
-                    value={newPassword}
-                    error={passwordLengthError}
-                    size="small"
-                    required
-                  />
-                  <FormHelperText
-                    error={passwordLengthError}
-                  >
-                    {(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
-                  </FormHelperText>
-                </FormControl>
-                <FormControl
-                  fullWidth
-                  margin="normal" size="small"
+                )}
+
+                <PasswordInput
+                  label={strings.NEW_PASSWORD}
+                  onChange={(e) => {
+                    setNewPassword(e.target.value)
+                    setPasswordLengthError(false)
+                    setConfirmPasswordError(false)
+                  }}
+                  variant="outlined"
+                  required
+                  size="small"
+                  value={newPassword}
+                  error={passwordLengthError}
+                  helperText={(passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
+                />
+
+                <PasswordInput
+                  label={commonStrings.CONFIRM_PASSWORD}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value)
+                    setPasswordLengthError(false)
+                    setConfirmPasswordError(false)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSubmit(e)
+                    }
+                  }}
+
+                  variant="outlined"
+                  required
+                  size="small"
+                  value={confirmPassword}
                   error={confirmPasswordError}
-                >
-                  <InputLabel
-                    error={confirmPasswordError}
-                    className="required"
-                  >
-                    {commonStrings.CONFIRM_PASSWORD}
-                  </InputLabel>
-                  <OutlinedInput
-                    label={commonStrings.CONFIRM_PASSWORD}
-                    onChange={(e) => {
-                      setConfirmPassword(e.target.value)
-                      setPasswordLengthError(false)
-                      setConfirmPasswordError(false)
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        handleSubmit(e)
-                      }
-                    }}
-                    error={confirmPasswordError}
-                    type="password"
-                    value={confirmPassword}
-                    size="small"
-                    required
-                  />
-                  <FormHelperText
-                    error={confirmPasswordError}
-                  >
-                    {confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH}
-                  </FormHelperText>
-                </FormControl>
+                  helperText={(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
+                />
+
                 <div className="buttons">
                   <Button
                     type="submit"
