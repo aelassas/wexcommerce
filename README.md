@@ -83,6 +83,8 @@ If this project helped you, saved you time, or inspired you in any way, please c
 
 To contribute code or report issues, please read the [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
 
+If you want to customize wexCommerce while keeping your fork up to date with the latest changes, check out the [Fork, Customize, and Sync](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync) guide in the Wiki.
+
 ## Live Demo
 
 ### Frontend
@@ -125,6 +127,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Setup Stripe](https://github.com/aelassas/wexcommerce/wiki/Setup-Stripe)  
 1. [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)  
 1. [Run from Source (Docker)](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source-(Docker))  
+1. [Fork, Customize, and Sync](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync)
 1. [Demo Database](https://github.com/aelassas/wexcommerce/wiki/Demo-Database)  
    1. [Windows, Linux and macOS](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#windows-linux-and-macos)  
    1. [Docker](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#docker)  
