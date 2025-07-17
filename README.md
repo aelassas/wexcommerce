@@ -119,6 +119,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Installing (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))  
    1. [Docker Image](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#docker-image)  
    1. [SSL](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#ssl)  
+1. [Free SSL Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide)
 1. [Setup Sentry](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry)  
 1. [Payment Gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)  
 1. [Setup Stripe](https://github.com/aelassas/wexcommerce/wiki/Setup-Stripe)  
