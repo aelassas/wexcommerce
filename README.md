@@ -92,7 +92,7 @@ If you want to customize wexCommerce while keeping your fork up to date with the
 * URL: https://wexcommerce.dynv6.net:8002/
 * Login: jdoe@wexcommerce.com
 * Password: sh0ppingC4rt
-
+<!--
 ## Website Source Code (wexcommerce.github.io)
 
 The source code for the official wexCommerce website is available here:
@@ -108,7 +108,7 @@ The codebase follows the Separation of Concerns (SoC) principle, with a modular 
 The website loads in under 1.5 seconds on slow 4G with **0ms blocking**, **0 layout shift**, and a blazing **Speed Index of 0.8**.
 
 Feel free to explore the code, suggest improvements, or use it as a template for your own landing page.
-
+-->
 ## Documentation
 
 1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)  
