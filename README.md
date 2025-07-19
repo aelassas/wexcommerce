@@ -87,11 +87,10 @@ If you want to customize wexCommerce while keeping your fork up to date with the
 
 ## Live Demo
 
-### Frontend
-
 * URL: https://wexcommerce.dynv6.net:8002/
 * Login: jdoe@wexcommerce.com
 * Password: sh0ppingC4rt
+
 <!--
 ## Website Source Code (wexcommerce.github.io)
 
