@@ -1,5 +1,19 @@
 # Releases
 
+## [wexCommerce 3.7](https://github.com/aelassas/wexcommerce/releases/tag/v3.7) – 2025-07-23
+
+* feat(password-input): add toggle visibility with eye icon
+* chore: update dependencies
+
+**Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v3.6...v3.7
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.7/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.7)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v3.7)
+
 ## [wexCommerce 3.6](https://github.com/aelassas/wexcommerce/releases/tag/v3.6) – 2025-07-11
 
 * fix(docker): .env file not loaded and setup issues
