@@ -43,8 +43,11 @@ Next.js stands out as an excellent choice for marketplace development due to its
 -->
 
 ## Quick Links
+* [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
+* [Software Architecture](https://github.com/aelassas/wexcommerce/wiki/Software-Architecture)  
 * [Install Guide (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
 * [Install Guide (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))
+* [Social Login Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Social-Login-Setup)
 * [Free SSL Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide)
 * [Payment Gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
 * [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)
@@ -126,13 +129,15 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Frontend](https://github.com/aelassas/wexcommerce/wiki/Overview#frontend)  
    1. [Admin Panel](https://github.com/aelassas/wexcommerce/wiki/Overview#admin-panel)  
 1. [Why Use wexCommerce](https://github.com/aelassas/wexcommerce/wiki/Why-Use-wexCommerce)  
-1. [Software Architecture](https://github.com/aelassas/wexcommerce/wiki/Architecture)  
 1. [Advanced Features](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features)  
 -->
+1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
+1. [Software Architecture](https://github.com/aelassas/wexcommerce/wiki/Software-Architecture)  
 1. [Install Guide (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))  
 1. [Install Guide (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))  
    1. [Docker Image](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#docker-image)  
    1. [SSL](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#ssl)  
+1. [Social Login Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Social-Login-Setup)
 1. [Free SSL Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide)
 1. [Setup Sentry](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry)  
 1. [Payment Gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)  
@@ -149,11 +154,9 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Integration Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Integration-Tests-and-Coverage)  
 1. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)  
 1. [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ)  
-<!--
 1. [Release Notes](https://github.com/aelassas/wexcommerce/blob/main/.github/RELEASES.md)  
 1. [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md)  
 1. [Code of Conduct](https://github.com/aelassas/wexcommerce/blob/main/.github/CODE_OF_CONDUCT.md)
--->
 
 
 ## License
