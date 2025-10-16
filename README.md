@@ -1,4 +1,9 @@
-[![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) [![test](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml) [![codecov](https://img.shields.io/codecov/c/github/aelassas/wexcommerce?label=coverage)](https://codecov.io/gh/aelassas/wexcommerce) [![containerize](https://github.com/aelassas/wexcommerce/actions/workflows/containerize.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/containerize.yml) [![loc](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml) [![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/)
+[![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) 
+[![test](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml) 
+[![codecov](https://img.shields.io/codecov/c/github/aelassas/wexcommerce?label=coverage)](https://codecov.io/gh/aelassas/wexcommerce) 
+[![containerize](https://github.com/aelassas/wexcommerce/actions/workflows/containerize.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/containerize.yml) 
+[![loc](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml) 
+[![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/)
 
 <!--
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-brightgreen?logo=jest)](https://github.com/jestjs/jest)
@@ -46,17 +51,12 @@ Next.js stands out as an excellent choice for marketplace development due to its
 
 ## Quick Links
 * [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
-* [Software Architecture](https://github.com/aelassas/wexcommerce/wiki/Software-Architecture)  
 * [Install Guide (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
 * [Install Guide (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))
-* [Social Login Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Social-Login-Setup)
-* [Free SSL Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide)
 * [Payment Gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
-* [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)
-* [Run from Source (Docker)](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source-(Docker))
-* [Fork, Customize, and Sync](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync)
 * [Change Language and Currency](https://github.com/aelassas/wexcommerce/wiki/Change-Language-and-Currency)
-* [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ)  
+* [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ)
+* [Full Documentation](https://github.com/aelassas/wexcommerce/wiki)
 
 ## Features
 
@@ -124,42 +124,6 @@ The website loads in under 1.5 seconds on slow 4G with **0ms blocking**, **0 lay
 
 Feel free to explore the code, suggest improvements, or use it as a template for your own landing page.
 -->
-## Documentation
-
-<!--
-1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)  
-   1. [Frontend](https://github.com/aelassas/wexcommerce/wiki/Overview#frontend)  
-   1. [Admin Panel](https://github.com/aelassas/wexcommerce/wiki/Overview#admin-panel)  
-1. [Why Use wexCommerce](https://github.com/aelassas/wexcommerce/wiki/Why-Use-wexCommerce)  
-1. [Advanced Features](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features)  
--->
-1. [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
-1. [Software Architecture](https://github.com/aelassas/wexcommerce/wiki/Software-Architecture)  
-1. [Install Guide (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))  
-1. [Install Guide (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))  
-   1. [Docker Image](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#docker-image)  
-   1. [SSL](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)#ssl)  
-1. [Social Login Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Social-Login-Setup)
-1. [Free SSL Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide)
-1. [Setup Sentry](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry)  
-1. [Payment Gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)  
-1. [Setup Stripe](https://github.com/aelassas/wexcommerce/wiki/Setup-Stripe)  
-1. [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source)  
-1. [Run from Source (Docker)](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source-(Docker))  
-1. [Fork, Customize, and Sync](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync)
-1. [Demo Database](https://github.com/aelassas/wexcommerce/wiki/Demo-Database)  
-   1. [Windows, Linux and macOS](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#windows-linux-and-macos)  
-   1. [Docker](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#docker)  
-1. [Change Language and Currency](https://github.com/aelassas/wexcommerce/wiki/Change-Language-and-Currency)  
-1. [Add New Language](https://github.com/aelassas/wexcommerce/wiki/Add-New-Language)  
-1. [Testing](https://github.com/aelassas/wexcommerce/wiki/Testing)  
-   1. [Integration Tests and Coverage](https://github.com/aelassas/wexcommerce/wiki/Integration-Tests-and-Coverage)  
-1. [Logs](https://github.com/aelassas/wexcommerce/wiki/Logs)  
-1. [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ)  
-1. [Release Notes](https://github.com/aelassas/wexcommerce/blob/main/.github/RELEASES.md)  
-1. [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md)  
-1. [Code of Conduct](https://github.com/aelassas/wexcommerce/blob/main/.github/CODE_OF_CONDUCT.md)
-
 
 ## License
 
