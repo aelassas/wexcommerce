@@ -20,6 +20,7 @@ export default [
       'dist/',
       '.next/',
       'src/types/',
+      'next-env.d.ts',
     ]
   },
 
