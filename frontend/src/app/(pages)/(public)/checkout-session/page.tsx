@@ -45,7 +45,7 @@ const CheckoutSession = () => {
 
       checkSession()
     }
-  }, [searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [searchParams.get('sessionId')]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

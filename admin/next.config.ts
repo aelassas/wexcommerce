@@ -47,9 +47,9 @@ const nextConfig: NextConfig = {
     serverActions: {
       allowedOrigins: ['localhost:8001', 'wexcommerce.dynv6.net:8001'],
     },
-    reactCompiler: true,
     // workerThreads: false,
   },
+  reactCompiler: true,
   logging: {
     fetches: {
       fullUrl: !isProduction,
