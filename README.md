@@ -1,6 +1,6 @@
 [![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) 
 [![test](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml) 
-[![codecov](https://img.shields.io/codecov/c/github/aelassas/wexcommerce?label=coverage)](https://codecov.io/gh/aelassas/wexcommerce) 
+[![coveralls](https://coveralls.io/repos/github/aelassas/wexcommerce/badge.svg?branch=main)](https://coveralls.io/github/aelassas/wexcommerce?branch=main)
 [![containerize](https://github.com/aelassas/wexcommerce/actions/workflows/containerize.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/containerize.yml) 
 [![loc](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml) 
 [![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/)
