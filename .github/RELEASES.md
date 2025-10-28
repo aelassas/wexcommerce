@@ -1,5 +1,18 @@
 # Releases
 
+## [wexCommerce 3.8](https://github.com/aelassas/wexcommerce/releases/tag/v3.8) – 2025-10-27
+
+* chore: upgrade to Next.js 16
+* chore(deps): update dependencies
+* fix(frontend): resolve checkout session page issue after successful payment
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.8/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.8)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v3.8)
+
 ## [wexCommerce 3.7](https://github.com/aelassas/wexcommerce/releases/tag/v3.7) – 2025-07-23
 
 * feat(password-input): add toggle visibility with eye icon
