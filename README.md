@@ -61,31 +61,37 @@ Next.js stands out as an excellent choice for marketplace development due to its
 ## Features
 
 ### Commerce Management
+
 * Stock management
 * Order management
 * Payment management
 * Customer management
 
 ### Flexible Payments
-* [Multiple payment gateways supported (Stripe, PayPal)](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
+
+* Multiple payment gateways supported: Stripe, PayPal
 * Multiple payment methods: Credit Card, Cash on Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link
 
 ### Delivery Options
+
 * Home delivery
 * Store withdrawal
 
 ### Internationalization & Access
+
 * Multiple language support: English, French
 * Multiple login options: Google, Facebook, Apple, Email
 
 ### Security & Performance
+
 * Secure against XSS, XST, CSRF, MITM, and DDoS attacks
 * Responsive admin panel and frontend
 * SEO-compliant: product pages are indexable by search engines for better visibility
-* [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
-* Error monitoring and performance tracing with [Sentry](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry)
+* Docker support for easy deployment and better developer experience
+* Error monitoring and performance tracing
 
 ### Supported Platforms
+
 * Web
 * Docker
 
