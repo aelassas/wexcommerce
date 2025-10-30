@@ -29,7 +29,7 @@ https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
  
 wexCommerce is an open-source and cross-platform single-vendor marketplace offering an SEO-optimized web storefront and a powerful admin panel for managing your online store.
 
-It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) payment gateways, allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
+It integrates Stripe and PayPal payment gateways, allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
 
 From the frontend, customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
 
