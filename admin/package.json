@@ -1,7 +1,7 @@
 {
   "name": "wexcommerce-admin",
   "description": "Admin panel for managing wexCommerce",
-  "version": "9.0.0",
+  "version": "3.9.0",
   "private": true,
   "type": "module",
   "scripts": {
