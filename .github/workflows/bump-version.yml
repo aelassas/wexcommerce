@@ -123,30 +123,3 @@ jobs:
               git commit -m "chore: bump version from $env:VERSION to $env:NEXT_VERSION"
               git push origin main
           }
-
-      # 4. Bump version on demo branch
-      - name: Bump version on demo branch
-        shell: pwsh
-        run: |
-          git fetch origin demo:demo
-          git checkout demo
-          git reset --hard origin/demo  # reset local demo to match remote
-
-          # Ensure PowerShell scripts have execution permissions
-          git update-index --chmod=+x ./__scripts/bump-version.ps1
-          
-          # Run version bump script
-          ./__scripts/bump-version.ps1 $env:NEXT_VERSION
-
-          # Configure Git
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Commit only if there are changes
-          if (git diff --quiet) {
-              Write-Host "No changes detected on demo branch, skipping commit."
-          } else {
-              git add --all
-              git commit -m "chore: bump version from $env:VERSION to $env:NEXT_VERSION"
-              git push origin demo
-          }
