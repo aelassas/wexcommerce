@@ -2,7 +2,7 @@
   "name": "wexcommerce-mobile",
   "description": "Mobile app for wexCommerce (customer app)",
   "main": "expo-router/entry",
-  "version": "8.9.0",
+  "version": "9.0.0",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
