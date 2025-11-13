@@ -27,7 +27,7 @@ https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
 
 ## wexCommerce
  
-wexCommerce is an open-source and cross-platform single-vendor marketplace offering an SEO-optimized web storefront and a powerful admin panel for managing your online store.
+wexCommerce is a single-vendor marketplace offering an SEO-optimized web storefront and a powerful admin panel for managing your online store.
 
 It integrates Stripe and PayPal payment gateways, allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
 
@@ -102,11 +102,11 @@ If this project helped you, saved you time, or inspired you in any way, please c
 <!--<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
 <a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" width="160"></a>-->
-
+<!--
 To contribute code or report issues, please read the [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
 
 If you want to customize wexCommerce while keeping your fork up to date with the latest changes, check out the [Fork, Customize, and Sync](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync) guide in the Wiki.
-
+-->
 ## Live Demo
 
 * URL: https://wexcommerce.dynv6.net:8002/
