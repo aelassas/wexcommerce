@@ -4,6 +4,7 @@
 [![containerize](https://github.com/aelassas/wexcommerce/actions/workflows/containerize.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/containerize.yml) 
 [![loc](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml) 
 [![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net:8002/)
+[![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexcommerce/wiki)
 
 <!--
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-brightgreen?logo=jest)](https://github.com/jestjs/jest)
