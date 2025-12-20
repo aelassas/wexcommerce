@@ -1,8 +1,13 @@
-import mongoose, { Model } from 'mongoose'
+import mongoose, { Document, Model } from 'mongoose'
+import { Filter } from 'mongodb'
 import * as env from '../config/env.config'
 import * as logger from './logger'
 import Category from '../models/Category'
 import Value from '../models/Value'
+
+interface MyDoc extends Document {
+  values: string[]
+}
 
 /**
  * Synchronizes multilingual Value entries for a given collection (such as Location, Country, or ParkingSpot) 
@@ -60,7 +65,7 @@ const syncLanguageValues = async <T extends { values: (mongoose.Types.ObjectId |
     if (updates.length > 0) {
       const bulkOps = updates.map(({ id, pushIds }) => ({
         updateOne: {
-          filter: { _id: id },
+          filter: { _id: new mongoose.Types.ObjectId(id) } as Filter<MyDoc>,
           update: { $push: { values: { $each: pushIds } } },
         },
       }))
