@@ -1,5 +1,17 @@
 # Releases
 
+## [wexCommerce 3.9](https://github.com/aelassas/wexcommerce/releases/tag/v3.9) – 2025-12-20
+
+* fix(frontend): responsive layout issues
+* chore(deps): update dependencies
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v3.9/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v3.9)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v3.9)
+
 ## [wexCommerce 3.8](https://github.com/aelassas/wexcommerce/releases/tag/v3.8) – 2025-10-27
 
 * chore: upgrade to Next.js 16
