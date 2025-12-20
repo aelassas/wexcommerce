@@ -35,8 +35,18 @@ const CategoryList: React.FC<CategoryListProps> = (
   const infinite = infiniteFromProps && categories.length > env.CARROUSEL_SIZE
 
   const sliderSettings = {
-    nextArrow: <Arrow to="next" visible={!infiniteFromProps || infinite} />,
-    prevArrow: <Arrow to="prev" visible={!infiniteFromProps || infinite} />,
+    nextArrow: (
+      <Arrow
+        to="next"
+        visible={!env.isMobile() && (!infiniteFromProps || infinite)}
+      />
+    ),
+    prevArrow: (
+      <Arrow
+        to="prev"
+        visible={!env.isMobile() && (!infiniteFromProps || infinite)}
+      />
+    ),
     dots: true,
     appendDots: (dots: React.ReactNode) => showNavigation ? (
       <div>
@@ -54,7 +64,8 @@ const CategoryList: React.FC<CategoryListProps> = (
     autoplaySpeed: autoplaySpeed || (3 * 1000),
     swipeToSlide: true,
 
-    slidesToShow: 3,
+    // slidesToShow: 3,
+    slidesToShow: env.isMobile() ? 1 : 3,
     slidesToScroll: 1,
     variableWidth: false,
     responsive: [
@@ -62,6 +73,7 @@ const CategoryList: React.FC<CategoryListProps> = (
         breakpoint: 960,
         settings: {
           arrows: false,
+          dots: false,
           slidesToShow: 1,
           slidesToScroll: 1,
           variableWidth: false,
