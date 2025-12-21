@@ -157,13 +157,13 @@ describe('PUT /api/update-delivery-types', () => {
     // test success
     const payload: wexcommerceTypes.UpdateDeliveryTypesPayload = [
       {
-        _id: shipping!.id,
+        _id: shipping!._id.toString(),
         name: shipping!.name,
         enabled: !shipping!.enabled,
         price: shipping!.price + 5,
       },
       {
-        _id: withdrawal!.id,
+        _id: withdrawal!._id.toString(),
         name: withdrawal!.name,
         enabled: !withdrawal!.enabled,
         price: withdrawal!.price + 5,

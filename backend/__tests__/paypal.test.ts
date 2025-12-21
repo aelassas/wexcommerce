@@ -110,7 +110,7 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
     })
     await product.save()
 
-    const orderItem = new OrderItem({ product: product.id, quantity: 1 })
+    const orderItem = new OrderItem({ product: product._id.toString(), quantity: 1 })
     await orderItem.save()
 
     const orderItemProductMissing = new OrderItem({ product: testHelper.GetRandromObjectId(), quantity: 1 })
@@ -120,12 +120,12 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
     const paymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))?._id
 
     let order = new Order({
-      user: user.id,
+      user: user._id.toString(),
       deliveryType,
       paymentType,
       total: 312,
       status: wexcommerceTypes.OrderStatus.Pending,
-      orderItems: [orderItem.id],
+      orderItems: [orderItem._id.toString()],
       expireAt,
     })
     let order2: typeof order | undefined
@@ -149,19 +149,19 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
       expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       let res = await request(app)
-        .post(`/api/check-paypal-order/${order.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${order._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(200)
-      await testHelper.deleteNotifications(order.id)
+      await testHelper.deleteNotifications(order._id.toString())
 
       // test failure (settings not found)
       await order.deleteOne()
       order = new Order({
-        user: user.id,
+        user: user._id.toString(),
         deliveryType,
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItem.id],
+        orderItems: [orderItem._id.toString()],
         expireAt,
       })
       await order.save()
@@ -174,7 +174,7 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
         const dbh = await import('../src/utils/databaseHelper.js')
         await dbh.connect(env.DB_URI, false, false)
         const res = await request(newApp)
-          .post(`/api/check-paypal-order/${order.id}/${orderId}`)
+          .post(`/api/check-paypal-order/${order._id.toString()}/${orderId}`)
         expect(res.statusCode).toBe(400)
         dbh.close()
       })
@@ -185,12 +185,12 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
       // test failure (paypal order error)
       await order.deleteOne()
       order = new Order({
-        user: user.id,
+        user: user._id.toString(),
         deliveryType,
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItem.id],
+        orderItems: [orderItem._id.toString()],
         expireAt,
       })
       await order.save()
@@ -207,23 +207,23 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
       expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       res = await request(app)
-        .post(`/api/check-paypal-order/${order.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${order._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(204)
       jest.resetModules()
 
       // test failure (order exists, order does not exist)
       res = await request(app)
-        .post(`/api/check-paypal-order/${order.id}/${testHelper.GetRandromObjectIdAsString()}`)
+        .post(`/api/check-paypal-order/${order._id.toString()}/${testHelper.GetRandromObjectIdAsString()}`)
       expect(res.statusCode).toBe(204)
 
       // test failure (payment expired)
       order2 = new Order({
-        user: user.id,
+        user: user._id.toString(),
         deliveryType,
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItem.id],
+        orderItems: [orderItem._id.toString()],
         expireAt,
       })
       await order2.save()
@@ -240,21 +240,21 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
       expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       res = await request(app)
-        .post(`/api/check-paypal-order/${order2.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${order2._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(400)
-      const b = await Order.findById(order2.id)
+      const b = await Order.findById(order2._id.toString())
       expect(b).toBeFalsy()
       order2 = undefined
       jest.resetModules()
 
       // test failure (missing members)
       order3 = new Order({
-        user: user.id,
+        user: user._id.toString(),
         deliveryType,
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItemProductMissing.id],
+        orderItems: [orderItemProductMissing._id.toString()],
         expireAt,
 
       })
@@ -273,7 +273,7 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
 
       // product missing
       res = await request(app)
-        .post(`/api/check-paypal-order/${order3.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${order3._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(400)
 
       // user missing
@@ -284,12 +284,12 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItem.id],
+        orderItems: [orderItem._id.toString()],
         expireAt,
       })
       await order3.save()
       res = await request(app)
-        .post(`/api/check-paypal-order/${order3.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${order3._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(400)
       jest.resetModules()
     } catch (err) {
@@ -307,8 +307,8 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
       }
       await product.deleteOne()
       await user.deleteOne()
-      await Notification.deleteMany({ user: user.id })
-      await NotificationCounter.deleteMany({ user: user.id })
+      await Notification.deleteMany({ user: user._id.toString() })
+      await NotificationCounter.deleteMany({ user: user._id.toString() })
     }
 
     // test failure (order does not exist)

@@ -347,16 +347,16 @@ export const deleteProduct = async (req: Request, res: Response) => {
         }
       }
 
-      await CartItem.deleteMany({ product: product.id })
+      await CartItem.deleteMany({ product: product._id.toString() })
 
-      const orderItems = await OrderItem.find({ product: product.id })
+      const orderItems = await OrderItem.find({ product: product._id.toString() })
       for (const orderItem of orderItems) {
-        const order = await Order.findOne({ orderItems: orderItem.id })
+        const order = await Order.findOne({ orderItems: orderItem._id.toString() })
         if (order) {
           await order.deleteOne()
         }
       }
-      await OrderItem.deleteMany({ product: product.id })
+      await OrderItem.deleteMany({ product: product._id.toString() })
 
       res.sendStatus(200)
       return
@@ -513,7 +513,7 @@ export const getAdminProducts = async (req: Request, res: Response) => {
       category = new mongoose.Types.ObjectId(req.params.category)
     }
 
-    let $match: mongoose.FilterQuery<env.Product>
+    let $match: mongoose.QueryFilter<env.Product>
     if (category) {
       $match = {
         $and: [
@@ -624,7 +624,7 @@ export const getFrontendProducts = async (req: Request, res: Response) => {
       }
     }
 
-    let $match: mongoose.FilterQuery<env.Product>
+    let $match: mongoose.QueryFilter<env.Product>
     if (category) {
       $match = {
         $and: [

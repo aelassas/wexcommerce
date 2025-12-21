@@ -42,8 +42,8 @@ beforeAll(async () => {
   })
   await product2.save()
 
-  PRODUCT1_ID = product1.id
-  PRODUCT2_ID = product2.id
+  PRODUCT1_ID = product1._id.toString()
+  PRODUCT2_ID = product2._id.toString()
   USER_ID = testHelper.getUserId()
 })
 

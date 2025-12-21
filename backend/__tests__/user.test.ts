@@ -89,7 +89,7 @@ describe('POST /api/sign-up', () => {
     expect(res.statusCode).toBe(200)
     let user = await User.findOne({ email: USER1_EMAIL })
     expect(user).not.toBeNull()
-    USER1_ID = user?.id
+    USER1_ID = user?._id.toString() || ''
     expect(user?.type).toBe(wexcommerceTypes.UserType.User)
     expect(user?.email).toBe(payload.email)
     expect(user?.fullName).toBe(payload.fullName)
@@ -110,7 +110,7 @@ describe('POST /api/sign-up', () => {
     user = await User.findOne({ email })
     expect(user).not.toBeNull()
     await user!.deleteOne()
-    token = await Token.findOne({ user: user!.id })
+    token = await Token.findOne({ user: user!._id.toString() })
     expect(token).not.toBeNull()
     expect(token!.token.length).toBeGreaterThan(0)
     await token!.deleteOne()
@@ -207,7 +207,7 @@ describe('POST /api/admin-sign-up', () => {
 
     const user = await User.findOne({ email: ADMIN_EMAIL })
     expect(user).not.toBeNull()
-    ADMIN_ID = user?.id
+    ADMIN_ID = user?._id.toString() || ''
     expect(user?.type).toBe(wexcommerceTypes.UserType.Admin)
     expect(user?.email).toBe(payload.email)
     expect(user?.fullName).toBe(payload.fullName)

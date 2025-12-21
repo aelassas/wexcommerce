@@ -36,7 +36,7 @@ const syncLanguageValues = async <T extends { values: (mongoose.Types.ObjectId |
       // Ensure English value exists to copy from
       const en = doc.values.find((v) => v.language === 'en')
       if (!en) {
-        logger.warn(`English value missing for ${label} document:`, doc.id)
+        logger.warn(`English value missing for ${label} document:`, (doc._id as mongoose.Types.ObjectId).toString())
         continue
       }
 
@@ -49,9 +49,9 @@ const syncLanguageValues = async <T extends { values: (mongoose.Types.ObjectId |
           // Create new Value with English value as fallback
           const val = new Value({ language: lang, value: en.value })
           newValues.push(val)
-          additions.push(val.id)
+          additions.push(val._id.toString())
         }
-        updates.push({ id: doc.id, pushIds: additions })
+        updates.push({ id:  (doc._id as mongoose.Types.ObjectId).toString(), pushIds: additions })
       }
     }
 
@@ -78,7 +78,7 @@ const syncLanguageValues = async <T extends { values: (mongoose.Types.ObjectId |
     let obsoleteIdsBatch: string[] = []
 
     for await (const obsoleteVal of cursor) {
-      obsoleteIdsBatch.push(obsoleteVal.id)
+      obsoleteIdsBatch.push(obsoleteVal._id.toString())
 
       if (obsoleteIdsBatch.length >= env.BATCH_SIZE) {
         await Promise.all([

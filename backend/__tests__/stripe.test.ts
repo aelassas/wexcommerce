@@ -104,7 +104,7 @@ describe('POST /api/create-checkout-session', () => {
       // const customers = await stripeAPI.customers.list({ email: receiptEmail })
       // if (customers.data.length > 0) {
       //   for (const customer of customers.data) {
-      //     await stripeAPI.customers.del(customer.id)
+      //     await stripeAPI.customers.del(customer._id.toString())
       //   }
       // }
     }
@@ -230,7 +230,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
     })
     await product.save()
 
-    const orderItem = new OrderItem({ product: product.id, quantity: 1 })
+    const orderItem = new OrderItem({ product: product._id.toString(), quantity: 1 })
     await orderItem.save()
 
     const orderItemProductMissing = new OrderItem({ product: testHelper.GetRandromObjectId(), quantity: 1 })
@@ -240,12 +240,12 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
     const paymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))?._id
 
     let order = new Order({
-      user: user.id,
+      user: user._id.toString(),
       deliveryType,
       paymentType,
       total: 312,
       status: wexcommerceTypes.OrderStatus.Pending,
-      orderItems: [orderItem.id],
+      orderItems: [orderItem._id.toString()],
       expireAt,
       sessionId,
     })
@@ -274,17 +274,17 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       res = await request(app)
         .post(`/api/check-checkout-session/${sessionId}`)
       expect(res.statusCode).toBe(200)
-      await testHelper.deleteNotifications(order.id)
+      await testHelper.deleteNotifications(order._id.toString())
 
       // test failure (settings not found)
       await order.deleteOne()
       order = new Order({
-        user: user.id,
+        user: user._id.toString(),
         deliveryType,
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItem.id],
+        orderItems: [orderItem._id.toString()],
         expireAt,
         sessionId,
       })
@@ -314,12 +314,12 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       // test failure (stripe order error)
       await order.deleteOne()
       order = new Order({
-        user: user.id,
+        user: user._id.toString(),
         deliveryType,
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItem.id],
+        orderItems: [orderItem._id.toString()],
         expireAt,
         sessionId,
       })
@@ -358,12 +358,12 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       // const { sessionId: sessionId2 } = res.body
       const sessionId2 = nanoid()
       order2 = new Order({
-        user: user.id,
+        user: user._id.toString(),
         deliveryType,
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItem.id],
+        orderItems: [orderItem._id.toString()],
         expireAt,
         sessionId: sessionId2,
       })
@@ -387,7 +387,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       res = await request(app)
         .post(`/api/check-checkout-session/${sessionId2}`)
       expect(res.statusCode).toBe(400)
-      const b = await Order.findById(order2.id)
+      const b = await Order.findById(order2._id.toString())
       expect(b).toBeFalsy()
       order2 = undefined
       jest.resetModules()
@@ -412,12 +412,12 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       // product missing
       const sessionId3 = nanoid()
       order3 = new Order({
-        user: user.id,
+        user: user._id.toString(),
         deliveryType,
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItemProductMissing.id],
+        orderItems: [orderItemProductMissing._id.toString()],
         expireAt,
         sessionId: sessionId3,
       })
@@ -434,7 +434,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         paymentType,
         total: 312,
         status: wexcommerceTypes.OrderStatus.Pending,
-        orderItems: [orderItem.id],
+        orderItems: [orderItem._id.toString()],
         expireAt,
         sessionId: sessionId3,
       })
@@ -459,8 +459,8 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       }
       await product.deleteOne()
       await user.deleteOne()
-      await Notification.deleteMany({ user: user.id })
-      await NotificationCounter.deleteMany({ user: user.id })
+      await Notification.deleteMany({ user: user._id.toString() })
+      await NotificationCounter.deleteMany({ user: user._id.toString() })
     }
 
     // test failure (lost db connection)
@@ -554,7 +554,7 @@ describe('POST /api/create-payment-intent', () => {
       // const customers = await stripeAPI.customers.list({ email: receiptEmail })
       // if (customers.data.length > 0) {
       //   for (const customer of customers.data) {
-      //     await stripeAPI.customers.del(customer.id)
+      //     await stripeAPI.customers.del(customer._id.toString())
       //   }
       // }
     }

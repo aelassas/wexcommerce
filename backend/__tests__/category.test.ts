@@ -70,7 +70,7 @@ describe('POST /api/validate-category', () => {
     // test failure (not valid)
     const value = new Value({ language: 'en', value: name })
     await value.save()
-    const cat = new Category({ values: [value.id] })
+    const cat = new Category({ values: [value._id.toString()] })
     await cat.save()
     res = await request(app)
       .post('/api/validate-category')
@@ -104,7 +104,7 @@ describe('GET /api/check-category/:id', () => {
     const cat = new Category()
     await cat.save()
     let res = await request(app)
-      .get(`/api/check-category/${cat.id}`)
+      .get(`/api/check-category/${cat._id.toString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
@@ -112,13 +112,13 @@ describe('GET /api/check-category/:id', () => {
     const product = new Product({
       name: 'Product',
       description: 'Description',
-      categories: [cat.id],
+      categories: [cat._id.toString()],
       price: 10,
       quantity: 2,
     })
     await product.save()
     res = await request(app)
-      .get(`/api/check-category/${cat.id}`)
+      .get(`/api/check-category/${cat._id.toString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
 
@@ -304,17 +304,17 @@ describe('GET /api/featured-categories/:language/:size', () => {
     })
     await product.save()
 
-    const cartItem = new CartItem({ product: product.id })
+    const cartItem = new CartItem({ product: product._id.toString() })
     await cartItem.save()
-    const cart = new Cart({ user: testHelper.getUserId(), cartItems: [cartItem.id] })
+    const cart = new Cart({ user: testHelper.getUserId(), cartItems: [cartItem._id.toString()] })
     await cart.save()
 
-    const wishlist = new Wishlist({ user: testHelper.getUserId(), products: [product.id] })
+    const wishlist = new Wishlist({ user: testHelper.getUserId(), products: [product._id.toString()] })
     await wishlist.save()
 
     // test success
     let res = await request(app)
-      .get(`/api/featured-categories/en/${size}/?c=${cart.id}&w=${wishlist.id}`)
+      .get(`/api/featured-categories/en/${size}/?c=${cart._id.toString()}&w=${wishlist._id.toString()}`)
     expect(res.statusCode).toBe(200)
     expect(res.body.length).toBeGreaterThanOrEqual(1)
 

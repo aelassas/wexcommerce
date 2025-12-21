@@ -53,8 +53,8 @@ export const initialize = async () => {
     type: wexcommerceTypes.UserType.Admin,
   })
   await admin.save()
-  expect(admin.id).toBeDefined()
-  ADMIN_USER_ID = admin.id
+  expect(admin._id.toString()).toBeDefined()
+  ADMIN_USER_ID = admin._id.toString()
 
   // user
   const user = new User({
@@ -65,8 +65,8 @@ export const initialize = async () => {
     type: wexcommerceTypes.UserType.User,
   })
   await user.save()
-  expect(user.id).toBeDefined()
-  USER_ID = user.id
+  expect(user._id.toString()).toBeDefined()
+  USER_ID = user._id.toString()
 
   await paymentTypeController.init()
   await deliveryTypeController.init()

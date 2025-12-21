@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import { jest } from '@jest/globals'
 import request from 'supertest'
+import mongoose from 'mongoose'
 import * as wexcommerceTypes from ':wexcommerce-types'
 import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
@@ -48,7 +49,7 @@ beforeAll(async () => {
     quantity: 2,
   })
   await product.save()
-  PRODUCT_ID = product.id
+  PRODUCT_ID = product._id.toString()
 })
 
 //
@@ -74,8 +75,8 @@ describe('POST /api/checkout', () => {
     const payload: wexcommerceTypes.CheckoutPayload = {
       order: {
         user: USER_ID,
-        deliveryType: (await DeliveryType.findOne({ name: wexcommerceTypes.DeliveryType.Withdrawal }))!.id,
-        paymentType: (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.Cod }))!.id,
+        deliveryType: (await DeliveryType.findOne({ name: wexcommerceTypes.DeliveryType.Withdrawal }))!._id.toString(),
+        paymentType: (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.Cod }))!._id.toString(),
         total: product!.price,
         status: wexcommerceTypes.OrderStatus.Pending,
         orderItems: [{ product: PRODUCT_ID, quantity: 1 }],
@@ -135,31 +136,31 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     let order = await Order.findById(res.body.orderId)
-    await testHelper.deleteNotifications(order!.id)
-    await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
+    await testHelper.deleteNotifications(order!._id.toString())
+    await OrderItem.deleteMany({ _id: { $in: order!.orderItems as mongoose.Types.ObjectId[] } })
     await order!.deleteOne()
     const user = await User.findOne({ email: payload.user.email })
     expect(user).toBeTruthy()
-    await Token.deleteMany({ user: user!.id })
+    await Token.deleteMany({ user: user!._id.toString() })
     await user!.deleteOne()
 
     // test success (Shipping, WireTransfer)
     payload.order.user = USER_ID
     payload.user = undefined
-    payload.order.deliveryType = (await DeliveryType.findOne({ name: wexcommerceTypes.DeliveryType.Shipping }))!.id
-    payload.order.paymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.WireTransfer }))!.id
+    payload.order.deliveryType = (await DeliveryType.findOne({ name: wexcommerceTypes.DeliveryType.Shipping }))!._id.toString()
+    payload.order.paymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.WireTransfer }))!._id.toString()
     res = await request(app)
       .post('/api/checkout')
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     order = await Order.findById(res.body.orderId)
-    await testHelper.deleteNotifications(order!.id)
-    await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
+    await testHelper.deleteNotifications(order!._id.toString())
+    await OrderItem.deleteMany({ _id: { $in: order!.orderItems as mongoose.Types.ObjectId[] } })
     await order!.deleteOne()
 
     // test success (stripe with no payment intent)
-    const crediCardPaymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))!.id
+    const crediCardPaymentType = (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))!._id.toString()
     payload.order.paymentType = crediCardPaymentType
     payload.paymentIntentId = undefined
     SESSION_ID = testHelper.GetRandromObjectIdAsString()
@@ -207,8 +208,8 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     order = await Order.findById(res.body.orderId)
-    await testHelper.deleteNotifications(order!.id)
-    await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
+    await testHelper.deleteNotifications(order!._id.toString())
+    await OrderItem.deleteMany({ _id: { $in: order!.orderItems as mongoose.Types.ObjectId[] } })
     await order!.deleteOne()
     const customer = await stripeAPI.customers.retrieve(customerId)
     if (customer) {
@@ -224,8 +225,8 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.orderId).toBeTruthy()
     order = await Order.findById(res.body.orderId)
-    await testHelper.deleteNotifications(order!.id)
-    await OrderItem.deleteMany({ _id: { $in: order!.orderItems } })
+    await testHelper.deleteNotifications(order!._id.toString())
+    await OrderItem.deleteMany({ _id: { $in: order!.orderItems as mongoose.Types.ObjectId[] } })
     await order!.deleteOne()
 
     // test failure (user not found)
@@ -292,13 +293,13 @@ describe('PUT /api/update-order/:user/:id', () => {
     await admin.save()
     payload.status = wexcommerceTypes.OrderStatus.Cancelled
     res = await request(app)
-      .put(`/api/update-order/${admin.id}/${ORDER_ID}`)
+      .put(`/api/update-order/${admin._id.toString()}/${ORDER_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect((await Order.findById(ORDER_ID))!.status).toBe(wexcommerceTypes.OrderStatus.Cancelled)
-    await Notification.deleteMany({ user: admin.id })
-    await NotificationCounter.deleteMany({ user: admin.id })
+    await Notification.deleteMany({ user: admin._id.toString() })
+    await NotificationCounter.deleteMany({ user: admin._id.toString() })
     await admin.deleteOne()
 
     // test failure (user not found)
@@ -525,7 +526,7 @@ describe('notify', () => {
     const user = await User.findById(testHelper.getUserId())
     expect(user).not.toBeNull()
     const order = new Order({
-      user: user!.id,
+      user: user!._id.toString(),
       deliveryType,
       paymentType,
       total: 312,
@@ -542,7 +543,7 @@ describe('notify', () => {
     } catch {
       res = false
     }
-    await testHelper.deleteNotifications(order.id)
+    await testHelper.deleteNotifications(order._id.toString())
     expect(res).toBeTruthy()
 
     // test success (no admin notification counter)
@@ -559,8 +560,8 @@ describe('notify', () => {
     } catch {
       res = false
     }
-    await Notification.deleteMany({ user: admin.id })
-    await NotificationCounter.deleteMany({ user: admin.id })
+    await Notification.deleteMany({ user: admin._id.toString() })
+    await NotificationCounter.deleteMany({ user: admin._id.toString() })
     await admin.deleteOne()
     expect(res).toBeTruthy()
   })

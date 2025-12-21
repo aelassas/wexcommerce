@@ -43,8 +43,8 @@ beforeAll(async () => {
   })
   await product2.save()
 
-  PRODUCT1_ID = product1.id
-  PRODUCT2_ID = product2.id
+  PRODUCT1_ID = product1._id.toString()
+  PRODUCT2_ID = product2._id.toString()
   USER_ID = testHelper.getUserId()
 })
 
@@ -68,7 +68,7 @@ describe('POST /api/add-cart-item', () => {
     // init
     const cartItem = new CartItem({ product: PRODUCT1_ID })
     await cartItem.save()
-    const cart = new Cart({ user: USER_ID, cartItems: [cartItem.id] })
+    const cart = new Cart({ user: USER_ID, cartItems: [cartItem._id.toString()] })
     await cart.save()
 
     // test success (no cart, user)
@@ -78,8 +78,8 @@ describe('POST /api/add-cart-item', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeTruthy()
-    expect(await CartItem.findById(cartItem.id)).toBeFalsy()
-    expect(await Cart.findById(cart.id)).toBeFalsy()
+    expect(await CartItem.findById(cartItem._id.toString())).toBeFalsy()
+    expect(await Cart.findById(cart._id.toString())).toBeFalsy()
     CART_ID = res.body
 
     // test success (no cart, no user)
@@ -173,15 +173,15 @@ describe('DELETE /api/delete-cart/:id', () => {
     // init
     const cartItem = new CartItem({ product: PRODUCT1_ID })
     await cartItem.save()
-    const cart = new Cart({ user: USER_ID, cartItems: [cartItem.id] })
+    const cart = new Cart({ user: USER_ID, cartItems: [cartItem._id.toString()] })
     await cart.save()
 
     // test success
     let res = await request(app)
-      .delete(`/api/delete-cart/${cart.id}`)
+      .delete(`/api/delete-cart/${cart._id.toString()}`)
     expect(res.statusCode).toBe(200)
-    expect(await CartItem.findById(cartItem.id)).toBeFalsy()
-    expect(await Cart.findById(cart.id)).toBeFalsy()
+    expect(await CartItem.findById(cartItem._id.toString())).toBeFalsy()
+    expect(await Cart.findById(cart._id.toString())).toBeFalsy()
 
     // cleanup
     await cartItem.deleteOne()
@@ -207,7 +207,7 @@ describe('GET /api/cart/:id', () => {
 
     // test success
     let res = await request(app)
-      .get(`/api/cart/${cart.id}`)
+      .get(`/api/cart/${cart._id.toString()}`)
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeTruthy()
 
@@ -216,7 +216,7 @@ describe('GET /api/cart/:id', () => {
 
     // test cart not found
     res = await request(app)
-      .get(`/api/cart/${cart.id}`)
+      .get(`/api/cart/${cart._id.toString()}`)
     expect(res.statusCode).toBe(204)
 
     // test failure (id not valid)
@@ -233,12 +233,12 @@ describe('GET /api/cart-count/:id', () => {
     await cartItem1.save()
     const cartItem2 = new CartItem({ product: PRODUCT2_ID, quantity: 1 })
     await cartItem2.save()
-    const cart = new Cart({ user: USER_ID, cartItems: [cartItem1.id, cartItem2.id] })
+    const cart = new Cart({ user: USER_ID, cartItems: [cartItem1._id.toString(), cartItem2._id.toString()] })
     await cart.save()
 
     // test success
     let res = await request(app)
-      .get(`/api/cart-count/${cart.id}`)
+      .get(`/api/cart-count/${cart._id.toString()}`)
     expect(res.statusCode).toBe(200)
     expect(res.body).toBe(3)
 
@@ -273,7 +273,7 @@ describe('GET /api/cart-id/:user', () => {
       .get(`/api/cart-id/${USER_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(res.body).toBe(cart.id)
+    expect(res.body).toBe(cart._id.toString())
 
     // cleanup
     await cart.deleteOne()
@@ -304,10 +304,10 @@ describe('PUT /api/update-cart/:id/:user', () => {
 
     // test success
     let res = await request(app)
-      .put(`/api/update-cart/${cart.id}/${randomUserId}`)
+      .put(`/api/update-cart/${cart._id.toString()}/${randomUserId}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    const _cart = await Cart.findById(cart.id)
+    const _cart = await Cart.findById(cart._id.toString())
     expect(_cart!.user.toString()).toBe(randomUserId)
 
     // cleanup
@@ -315,7 +315,7 @@ describe('PUT /api/update-cart/:id/:user', () => {
 
     // test cart not found
     res = await request(app)
-      .put(`/api/update-cart/${cart.id}/${randomUserId}`)
+      .put(`/api/update-cart/${cart._id.toString()}/${randomUserId}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
@@ -327,7 +327,7 @@ describe('PUT /api/update-cart/:id/:user', () => {
 
     // test failure (user id not valid)
     res = await request(app)
-      .put(`/api/update-cart/${cart.id}/0`)
+      .put(`/api/update-cart/${cart._id.toString()}/0`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(400)
   })
@@ -343,7 +343,7 @@ describe('GET /api/check-cart/:id', () => {
 
     // test success
     let res = await request(app)
-      .get(`/api/check-cart/${cart.id}`)
+      .get(`/api/check-cart/${cart._id.toString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
 
@@ -352,7 +352,7 @@ describe('GET /api/check-cart/:id', () => {
 
     // test cart not found
     res = await request(app)
-      .get(`/api/check-cart/${cart.id}`)
+      .get(`/api/check-cart/${cart._id.toString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
@@ -375,13 +375,13 @@ describe('DELETE /api/clear-other-carts/:id/:user', () => {
     await new Cart({ user: USER_ID, cartItems: [] }).save()
 
     // test success
-    let otherCarts = await Cart.find({ user: USER_ID, _id: { $ne: cart.id } }).countDocuments()
+    let otherCarts = await Cart.find({ user: USER_ID, _id: { $ne: cart._id.toString() } }).countDocuments()
     expect(otherCarts).toBe(2)
     let res = await request(app)
-      .delete(`/api/clear-other-carts/${cart.id}/${USER_ID}`)
+      .delete(`/api/clear-other-carts/${cart._id.toString()}/${USER_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    otherCarts = await Cart.find({ user: USER_ID, _id: { $ne: cart.id } }).countDocuments()
+    otherCarts = await Cart.find({ user: USER_ID, _id: { $ne: cart._id.toString() } }).countDocuments()
     expect(otherCarts).toBe(0)
 
     // cleanup
@@ -389,7 +389,7 @@ describe('DELETE /api/clear-other-carts/:id/:user', () => {
 
     // test cart not found
     res = await request(app)
-      .delete(`/api/clear-other-carts/${cart.id}/${USER_ID}`)
+      .delete(`/api/clear-other-carts/${cart._id.toString()}/${USER_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
@@ -401,7 +401,7 @@ describe('DELETE /api/clear-other-carts/:id/:user', () => {
 
     // test failure (user id not valid)
     res = await request(app)
-      .delete(`/api/clear-other-carts/${cart.id}/0`)
+      .delete(`/api/clear-other-carts/${cart._id.toString()}/0`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(400)
   })

@@ -33,9 +33,9 @@ describe('Test database initialization', () => {
     await v1.save()
     const v2 = new Value({ language: 'pt', value: 'categoria' })
     await v2.save()
-    const c1 = new Category({ country: testHelper.GetRandromObjectIdAsString(), values: [v1.id, v2.id] })
+    const c1 = new Category({ country: testHelper.GetRandromObjectIdAsString(), values: [v1._id.toString(), v2._id.toString()] })
     await c1.save()
-    const c2 = new Category({ country: testHelper.GetRandromObjectIdAsString(), values: [v2.id] })
+    const c2 = new Category({ country: testHelper.GetRandromObjectIdAsString(), values: [v2._id.toString()] })
     await c2.save()
 
     // test batch deletion pf unsupported languages
@@ -47,8 +47,8 @@ describe('Test database initialization', () => {
     res = await databaseHelper.initialize()
     expect(res).toBeTruthy()
 
-    const category1 = await Category.findById(c1.id)
-    const category2 = await Category.findById(c2.id)
+    const category1 = await Category.findById(c1._id.toString())
+    const category2 = await Category.findById(c2._id.toString())
     await Value.deleteMany({ _id: { $in: [...category1!.values, ...category2!.values] } })
     await category1?.deleteOne()
     await category2?.deleteOne()

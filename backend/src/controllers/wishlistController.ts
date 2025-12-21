@@ -165,7 +165,7 @@ export const getWishlistId = async (req: Request, res: Response) => {
     const wishlist = await Wishlist.findOne({ user })
 
     if (wishlist) {
-      res.json(wishlist.id)
+      res.json(wishlist._id.toString())
       return
     }
 

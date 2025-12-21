@@ -165,12 +165,12 @@ describe('PUT /api/update-payment-types', () => {
     // test success
     const payload: wexcommerceTypes.UpdatePaymentTypesPayload = [
       {
-        _id: creditCard!.id,
+        _id: creditCard!._id.toString(),
         name: creditCard!.name,
         enabled: !creditCard!.enabled,
       },
       {
-        _id: cod!.id,
+        _id: cod!._id.toString(),
         name: cod!.name,
         enabled: !cod!.enabled,
       },

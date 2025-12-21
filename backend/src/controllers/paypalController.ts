@@ -97,7 +97,7 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
       }
 
       for (const oi of order.orderItems) {
-        const orderItem = await OrderItem.findById(oi.id)
+        const orderItem = await OrderItem.findById(oi._id.toString())
         orderItem!.expireAt = undefined
         await orderItem!.save()
       }

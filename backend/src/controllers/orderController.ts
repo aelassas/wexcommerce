@@ -61,7 +61,7 @@ export const confirm = async (_user: env.User, __order: env.Order, orderItems: e
           ) : ''
 
       }${i18n.t('ORDER_CONFIRMED_PART_3')}<br><br>${helper.joinURL(env.FRONTEND_HOST, 'orders')
-      }?o=${encodeURIComponent(__order.id)
+      }?o=${encodeURIComponent(__order._id.toString())
       }<br><br>${i18n.t('REGARDS')}<br>`
       + '</p>',
   }
@@ -89,7 +89,7 @@ export const notify = async (adminEmail: string, __order: env.Order, _user: env.
     to: adminEmail,
     subject: `${i18n.t('NEW_ORDER_SUBJECT')} ${__order._id}`,
     html: `<p>${i18n.t('HELLO')}${adminEmail},<br><br>${i18n.t('NEW_ORDER_PART_1')}${__order._id}${i18n.t('NEW_ORDER_PART_2')}<br><br>${i18n.t('NEW_ORDER_PART_3')}<br><br>
-    ${helper.joinURL(env.ADMIN_HOST, 'orders')}?o=${encodeURIComponent(__order.id)
+    ${helper.joinURL(env.ADMIN_HOST, 'orders')}?o=${encodeURIComponent(__order._id.toString())
       }<br><br>${i18n.t('REGARDS')}<br>`
       + '</p>',
   }
@@ -147,7 +147,7 @@ export const checkout = async (req: Request, res: Response) => {
       _user = new User(user)
       await _user.save()
 
-      const token = new Token({ user: _user.id, token: helper.generateToken() })
+      const token = new Token({ user: _user._id.toString(), token: helper.generateToken() })
       await token.save()
 
       const mailOptions = {
@@ -155,7 +155,7 @@ export const checkout = async (req: Request, res: Response) => {
         to: _user.email,
         subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
         html: `<p>${i18n.t('HELLO')}${user.fullName},<br><br>${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>${helper.joinURL(env.FRONTEND_HOST, 'reset-password')
-          }?u=${encodeURIComponent(_user.id)
+          }?u=${encodeURIComponent(_user._id.toString())
           }&e=${encodeURIComponent(_user.email)
           }&t=${encodeURIComponent(token.token)
           }<br><br>${i18n.t('REGARDS')}<br>`
@@ -173,7 +173,7 @@ export const checkout = async (req: Request, res: Response) => {
 
     // order
     const _order: wexcommerceTypes.OrderInfo = {
-      user: _user!.id,
+      user: _user!._id.toString(),
       paymentType: order.paymentType,
       deliveryType: order.deliveryType,
       total: order.total,
@@ -187,7 +187,7 @@ export const checkout = async (req: Request, res: Response) => {
       await _orderItem.save()
       await _orderItem.populate<{ product: env.Product }>('product')
       orderItems.push(_orderItem)
-      __orderItems.push(_orderItem.id)
+      __orderItems.push(_orderItem._id.toString())
     }
     _order.orderItems = __orderItems
 
@@ -222,7 +222,7 @@ export const checkout = async (req: Request, res: Response) => {
         expireAt.setSeconds(expireAt.getSeconds() + env.ORDER_EXPIRE_AT)
 
         for (const oi of orderItems) {
-          const orderItem = await OrderItem.findById(oi.id)
+          const orderItem = await OrderItem.findById(oi._id.toString())
           orderItem!.expireAt = expireAt
           await orderItem!.save()
         }
@@ -256,13 +256,13 @@ export const checkout = async (req: Request, res: Response) => {
       await notify(env.ADMIN_EMAIL, __order, _user, settings)
     }
 
-    res.status(200).send({ orderId: __order.id })
+    res.status(200).send({ orderId: __order._id.toString() })
   } catch (err) {
     for (const orderItem of orderItems) {
       await orderItem.deleteOne()
     }
-    if (__order?.id) {
-      await deleteNotifications(__order?.id)
+    if (__order?._id.toString()) {
+      await deleteNotifications(__order?._id.toString())
       await __order.deleteOne()
     }
     logger.error(`[order.checkout] ${i18n.t('DB_ERROR')} ${req.body}`, err)
@@ -339,22 +339,22 @@ export const update = async (req: Request, res: Response) => {
         to: _user.email,
         subject: i18n.t('ORDER_UPDATED_PART_1') + order._id + i18n.t('ORDER_UPDATED_PART_2'),
         html: `<p>${i18n.t('HELLO')}${_user.fullName},<br><br>${message}<br><br>${i18n.t('ORDER_CONFIRMED_PART_3')}<br><br>${helper.joinURL(env.FRONTEND_HOST, 'orders')
-          }?o=${encodeURIComponent(order.id)
+          }?o=${encodeURIComponent(order._id.toString())
           }<br><br>${i18n.t('REGARDS')}<br>`
           + '</p>',
       }
       await mailHelper.sendMail(mailOptions)
 
       // user notification
-      const notification = new Notification({ user: _user.id, message, order: order._id })
+      const notification = new Notification({ user: _user._id.toString(), message, order: order._id })
 
       await notification.save()
-      let counter = await NotificationCounter.findOne({ user: _user.id })
+      let counter = await NotificationCounter.findOne({ user: _user._id.toString() })
       if (counter) {
         counter.count += 1
         await counter.save()
       } else {
-        counter = new NotificationCounter({ user: _user.id, count: 1 })
+        counter = new NotificationCounter({ user: _user._id.toString(), count: 1 })
         await counter.save()
       }
 
@@ -396,7 +396,7 @@ export const deleteOrder = async (req: Request, res: Response) => {
 
     const order = await Order.findByIdAndDelete(id)
     if (order) {
-      await OrderItem.deleteMany({ _id: { $in: order.orderItems } })
+      await OrderItem.deleteMany({ _id: { $in: order.orderItems as mongoose.Types.ObjectId[] } })
       res.sendStatus(200)
       return
     }
@@ -427,7 +427,7 @@ export const deleteTempOrder = async (req: Request, res: Response) => {
     if (order) {
       const user = await User.findOne({ _id: order.user, verified: false, expireAt: { $ne: null } })
       await user?.deleteOne()
-      await OrderItem.deleteMany({ _id: { $in: order.orderItems } })
+      await OrderItem.deleteMany({ _id: { $in: order.orderItems as mongoose.Types.ObjectId[] } })
       await order.deleteOne()
     }
 
@@ -575,7 +575,7 @@ export const getOrders = async (req: Request, res: Response) => {
 
     const { paymentTypes, deliveryTypes, statuses }: wexcommerceTypes.GetOrdersPayload = req.body
 
-    let $match: mongoose.FilterQuery<any> = {}
+    let $match: mongoose.QueryFilter<any> = {}
     if (user.type === wexcommerceTypes.UserType.User) {
       $match = {
         $and: [

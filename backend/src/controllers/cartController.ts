@@ -55,7 +55,7 @@ export const addItem = async (req: Request, res: Response) => {
 
     const cartItem = new CartItem({ product: productId })
     await cartItem.save()
-    cart.cartItems.push(cartItem.id)
+    cart.cartItems.push(cartItem._id)
     await cart.save()
 
     res.status(200).json(cart._id)

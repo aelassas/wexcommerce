@@ -149,7 +149,7 @@ describe('POST /api/delete-image/:product/:image', () => {
 
     // test success
     let res = await request(app)
-      .post(`/api/delete-image/${product.id}/${IMAGE1_2}`)
+      .post(`/api/delete-image/${product._id.toString()}/${IMAGE1_2}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
     expect(await helper.pathExists(image1)).toBeTruthy()
@@ -157,13 +157,13 @@ describe('POST /api/delete-image/:product/:image', () => {
 
     // test success (file not found)
     res = await request(app)
-      .post(`/api/delete-image/${product.id}/not-found.jpg`)
+      .post(`/api/delete-image/${product._id.toString()}/not-found.jpg`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
 
     // test success (file not in images)
     res = await request(app)
-      .post(`/api/delete-image/${product.id}/not-in-images.jpg`)
+      .post(`/api/delete-image/${product._id.toString()}/not-in-images.jpg`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
@@ -434,14 +434,14 @@ describe('POST /api/product/:id/:language', () => {
     // init
     const cartItem = new CartItem({ product: PRODUCT_ID })
     await cartItem.save()
-    const cart = new Cart({ user: USER_ID, cartItems: [cartItem.id] })
+    const cart = new Cart({ user: USER_ID, cartItems: [cartItem._id.toString()] })
     await cart.save()
 
     const wishlist = new Wishlist({ user: testHelper.getUserId(), products: [PRODUCT_ID] })
     await wishlist.save()
 
     // test success
-    const payload: wexcommerceTypes.GetProductPayload = { cart: cart.id, wishlist: wishlist.id }
+    const payload: wexcommerceTypes.GetProductPayload = { cart: cart._id.toString(), wishlist: wishlist._id.toString() }
     let res = await request(app)
       .post(`/api/product/${PRODUCT_ID}/en`)
       .send(payload)
@@ -561,14 +561,14 @@ describe('POST /api/frontend-products/:page/:size/:category?', () => {
     // init
     const cartItem = new CartItem({ product: PRODUCT_ID })
     await cartItem.save()
-    const cart = new Cart({ user: USER_ID, cartItems: [cartItem.id] })
+    const cart = new Cart({ user: USER_ID, cartItems: [cartItem._id.toString()] })
     await cart.save()
 
     const wishlist = new Wishlist({ user: testHelper.getUserId(), products: [PRODUCT_ID] })
     await wishlist.save()
 
     // test success
-    const payload: wexcommerceTypes.GetProductsPayload = { cart: cart.id, wishlist: wishlist.id, sortBy: wexcommerceTypes.SortProductBy.priceAsc }
+    const payload: wexcommerceTypes.GetProductsPayload = { cart: cart._id.toString(), wishlist: wishlist._id.toString(), sortBy: wexcommerceTypes.SortProductBy.priceAsc }
     let res = await request(app)
       .post(`/api/frontend-products/1/10/${CATEGORY_ID}`)
       .send(payload)
@@ -641,14 +641,14 @@ describe('POST /api/featured-products', () => {
     // init
     const cartItem = new CartItem({ product: PRODUCT_ID })
     await cartItem.save()
-    const cart = new Cart({ user: USER_ID, cartItems: [cartItem.id] })
+    const cart = new Cart({ user: USER_ID, cartItems: [cartItem._id.toString()] })
     await cart.save()
 
     const wishlist = new Wishlist({ user: testHelper.getUserId(), products: [PRODUCT_ID] })
     await wishlist.save()
 
     // test success
-    const payload: wexcommerceTypes.GetProductsPayload = { cart: cart.id, wishlist: wishlist.id, sortBy: wexcommerceTypes.SortProductBy.priceAsc }
+    const payload: wexcommerceTypes.GetProductsPayload = { cart: cart._id.toString(), wishlist: wishlist._id.toString(), sortBy: wexcommerceTypes.SortProductBy.priceAsc }
     let res = await request(app)
       .post('/api/featured-products')
       .send(payload)
@@ -706,7 +706,7 @@ describe('DELETE /api/delete-product/:id', () => {
     await orderItem.save()
     const order = new Order({
       user: USER_ID,
-      orderItems: [orderItem.id],
+      orderItems: [orderItem._id.toString()],
       status: wexcommerceTypes.OrderStatus.Paid,
       deliveryType: (await DeliveryType.findOne({ name: wexcommerceTypes.DeliveryType.Withdrawal }))?._id,
       paymentType: (await PaymentType.findOne({ name: wexcommerceTypes.PaymentType.CreditCard }))?._id,
@@ -723,8 +723,8 @@ describe('DELETE /api/delete-product/:id', () => {
     for (const img of product!.images) {
       expect(await helper.pathExists(path.join(env.CDN_PRODUCTS, img))).toBeFalsy()
     }
-    expect(await OrderItem.findById(orderItem.id)).toBeFalsy()
-    expect(await Order.findById(order.id)).toBeFalsy()
+    expect(await OrderItem.findById(orderItem._id.toString())).toBeFalsy()
+    expect(await Order.findById(order._id.toString())).toBeFalsy()
 
     // test success (images not found)
     product = new Product({
@@ -737,14 +737,14 @@ describe('DELETE /api/delete-product/:id', () => {
       images: ['not-found.jpg'],
     })
     await product.save()
-    orderItem = new OrderItem({ product: product.id, quantity: 1 })
+    orderItem = new OrderItem({ product: product._id.toString(), quantity: 1 })
     await orderItem.save()
     res = await request(app)
-      .delete(`/api/delete-product/${product.id}`)
+      .delete(`/api/delete-product/${product._id.toString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(await Product.findById(product.id)).toBeFalsy()
-    expect(await OrderItem.findById(orderItem.id)).toBeFalsy()
+    expect(await Product.findById(product._id.toString())).toBeFalsy()
+    expect(await OrderItem.findById(orderItem._id.toString())).toBeFalsy()
 
     // test success (no images)
     product = new Product({
@@ -756,10 +756,10 @@ describe('DELETE /api/delete-product/:id', () => {
     })
     await product.save()
     res = await request(app)
-      .delete(`/api/delete-product/${product.id}`)
+      .delete(`/api/delete-product/${product._id.toString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    expect(await Product.findById(product.id)).toBeFalsy()
+    expect(await Product.findById(product._id.toString())).toBeFalsy()
 
     // test product not found
     res = await request(app)

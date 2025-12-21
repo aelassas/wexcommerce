@@ -183,7 +183,7 @@ export const update = async (req: Request, res: Response) => {
           value: value.value,
         })
         await _value.save()
-        category.values.push(_value.id)
+        category.values.push(_value)
         await category.save()
       }
     }
@@ -277,7 +277,7 @@ export const getCategories = async (req: Request, res: Response) => {
     }
     const _imageRequired = helper.StringToBoolean(imageRequired)
 
-    let $match: mongoose.FilterQuery<env.Category> = {}
+    let $match: mongoose.QueryFilter<env.Category> = {}
     if (_imageRequired) {
       $match = { image: { $ne: null } }
     }

@@ -111,7 +111,7 @@ const _signup = async (req: Request, res: Response, userType: wexcommerceTypes.U
       //
       // Delete user in case of smtp failure
       //
-      await Token.deleteMany({ user: user.id })
+      await Token.deleteMany({ user: user._id.toString() })
       await user.deleteOne()
     } catch (deleteErr) {
       logger.error(`[user.signup] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, deleteErr)
@@ -403,7 +403,7 @@ export const resend = async (req: Request, res: Response) => {
           ${helper.joinURL(
             user.type === wexcommerceTypes.UserType.User ? env.FRONTEND_HOST : env.ADMIN_HOST,
             reset ? 'reset-password' : 'activate',
-          )}/?u=${encodeURIComponent(user.id)}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+          )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
           ${i18n.t('REGARDS')}<br>
           </p>`,
       }
@@ -587,14 +587,14 @@ export const signin = async (req: Request, res: Response) => {
     const passwordMatch = await bcrypt.compare(password, user.password)
 
     if (passwordMatch) {
-      const payload: authHelper.SessionData = { id: user.id }
+      const payload: authHelper.SessionData = { id: user._id.toString() }
       const token = await authHelper.encryptJWT(payload, stayConnected)
 
       //
       // Return the token in the response body.
       //
       const loggedUser: wexcommerceTypes.User = {
-        _id: user.id,
+        _id: user._id.toString(),
         email: user.email,
         fullName: user.fullName,
         language: user.language,
@@ -671,14 +671,14 @@ export const socialSignin = async (req: Request, res: Response) => {
       await user.save()
     }
 
-    const payload: authHelper.SessionData = { id: user.id }
+    const payload: authHelper.SessionData = { id: user._id.toString() }
     const token = await authHelper.encryptJWT(payload, stayConnected)
 
     //
     // Return the token in the response body.
     //
     const loggedUser: wexcommerceTypes.User = {
-      _id: user.id,
+      _id: user._id.toString(),
       email: user.email,
       fullName: user.fullName,
       language: user.language,
@@ -944,7 +944,7 @@ export const getUsers = async (req: Request, res: Response) => {
     const page = Number.parseInt(req.params.page, 10)
     const size = Number.parseInt(req.params.size, 10)
 
-    let $match: mongoose.FilterQuery<env.User>
+    let $match: mongoose.QueryFilter<env.User>
     if (keyword) {
       const isObjectId = mongoose.isValidObjectId(keyword)
       if (isObjectId) {
@@ -1051,7 +1051,7 @@ export const deleteUsers = async (req: Request, res: Response) => {
         if (user.type === wexcommerceTypes.UserType.User) {
           const orders = await Order.find({ user: id })
           for (const order of orders) {
-            await OrderItem.deleteMany({ _id: { $in: order.orderItems } })
+            await OrderItem.deleteMany({ _id: { $in: order.orderItems as mongoose.Types.ObjectId[] } })
             await order.deleteOne()
           }
         }
