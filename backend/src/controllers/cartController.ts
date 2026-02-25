@@ -77,7 +77,7 @@ export const updateItem = async (req: Request, res: Response) => {
   try {
     const { cartItem: cartItemId, quantity } = req.params
 
-    if (!validator.isNumeric(quantity)) {
+    if (!validator.isNumeric(quantity as string)) {
       throw new Error('Quantity not valid')
     }
 
@@ -108,7 +108,7 @@ export const updateItem = async (req: Request, res: Response) => {
 export const deleteItem = async (req: Request, res: Response) => {
   try {
     const { cart: cartId, product: productId } = req.params
-    if (!helper.isValidObjectId(productId)) {
+    if (!helper.isValidObjectId(productId as string)) {
       throw new Error('Product id not valid')
     }
     const cart = await Cart
@@ -119,7 +119,7 @@ export const deleteItem = async (req: Request, res: Response) => {
     let quantity = 0
 
     if (cart) {
-      const cartItems = cart.cartItems.filter((ci) => ci.product.equals(productId))
+      const cartItems = cart.cartItems.filter((ci) => ci.product.equals(productId as string))
 
       if (cartItems.length > 0) {
         const cartItem = cartItems[0]
@@ -127,7 +127,7 @@ export const deleteItem = async (req: Request, res: Response) => {
         const result = await CartItem.deleteOne({ _id: cartItem._id })
 
         if (result.deletedCount === 1) {
-          const _cartItems = cart.cartItems.filter((ci) => !ci.product.equals(productId))
+          const _cartItems = cart.cartItems.filter((ci) => !ci.product.equals(productId as string))
 
           if (_cartItems.length === 0) {
             const _result = await Cart.deleteOne({ _id: cart._id })
@@ -162,7 +162,7 @@ export const deleteCart = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Id not valid')
     }
     const cart = await Cart.findByIdAndDelete(id)
@@ -190,7 +190,7 @@ export const getCart = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Id not valid')
     }
 
@@ -228,12 +228,12 @@ export const getCartCount = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Id not valid')
     }
 
     const data = await Cart.aggregate([
-      { $match: { _id: { $eq: new mongoose.Types.ObjectId(id) } } },
+      { $match: { _id: { $eq: new mongoose.Types.ObjectId(id as string) } } },
       {
         $lookup: {
           from: 'CartItem',
@@ -279,7 +279,7 @@ export const getCartId = async (req: Request, res: Response) => {
   try {
     const { user } = req.params
 
-    if (!helper.isValidObjectId(user)) {
+    if (!helper.isValidObjectId(user as string)) {
       throw new Error('User id not valid')
     }
 
@@ -309,18 +309,18 @@ export const update = async (req: Request, res: Response) => {
   try {
     const { id, user } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Cart id not valid')
     }
 
-    if (!helper.isValidObjectId(user)) {
+    if (!helper.isValidObjectId(user as string)) {
       throw new Error('User id not valid')
     }
 
     const cart = await Cart.findById(id)
 
     if (cart) {
-      cart.user = new mongoose.Types.ObjectId(user)
+      cart.user = new mongoose.Types.ObjectId(user as string)
       await cart.save()
 
       res.sendStatus(200)
@@ -345,7 +345,7 @@ export const check = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Cart id not valid')
     }
 
@@ -372,7 +372,9 @@ export const check = async (req: Request, res: Response) => {
  */
 export const clearOtherCarts = async (req: Request, res: Response) => {
   try {
-    const { id, user } = req.params
+    let { id, user } = req.params
+    id = String(id)
+    user = String(user)
 
     if (!helper.isValidObjectId(id)) {
       throw new Error('Cart id not valid')

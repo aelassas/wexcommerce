@@ -73,7 +73,7 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
 
     let paypalOrder
     try {
-      paypalOrder = await paypal.getOrder(paypalOrderId)
+      paypalOrder = await paypal.getOrder(paypalOrderId as string)
     } catch (err) {
       logger.error(`[paypal.checkPayPalOrder] retrieve paypal order error: ${orderId}`, err)
     }

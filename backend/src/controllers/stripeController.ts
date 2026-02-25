@@ -109,7 +109,7 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
     //
     let session: Stripe.Checkout.Session | undefined
     try {
-      session = await stripeAPI.checkout.sessions.retrieve(sessionId)
+      session = await stripeAPI.checkout.sessions.retrieve(sessionId as string)
     } catch (err) {
       logger.error(`[stripe.checkCheckoutSession] retrieve session error: ${sessionId}`, err)
     }

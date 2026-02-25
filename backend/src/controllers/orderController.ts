@@ -302,11 +302,11 @@ export const update = async (req: Request, res: Response) => {
     const { user: userId, id } = req.params
     const { status }: wexcommerceTypes.UpdateOrderPayload = req.body
 
-    if (!helper.isValidObjectId(userId)) {
+    if (!helper.isValidObjectId(userId as string)) {
       throw new Error('User id not valid')
     }
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Order id not valid')
     }
 
@@ -381,11 +381,11 @@ export const deleteOrder = async (req: Request, res: Response) => {
   try {
     const { user: userId, id } = req.params
 
-    if (!helper.isValidObjectId(userId)) {
+    if (!helper.isValidObjectId(userId as string)) {
       throw new Error('User id not valid')
     }
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('User id not valid')
     }
 
@@ -419,7 +419,7 @@ export const deleteTempOrder = async (req: Request, res: Response) => {
   const { orderId, sessionId } = req.params
 
   try {
-    if (!helper.isValidObjectId(orderId)) {
+    if (!helper.isValidObjectId(orderId as string)) {
       throw new Error('Order id not valid')
     }
 
@@ -450,12 +450,12 @@ export const getOrder = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Order id not valid')
     }
 
     const data = await Order.aggregate([
-      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      { $match: { _id: new mongoose.Types.ObjectId(id as string) } },
       {
         $lookup: {
           from: 'User',
@@ -558,7 +558,7 @@ export const getOrders = async (req: Request, res: Response) => {
   try {
     const { user: userId } = req.params
 
-    if (!helper.isValidObjectId(userId)) {
+    if (!helper.isValidObjectId(userId as string)) {
       throw new Error('User id not valid')
     }
 
@@ -568,8 +568,8 @@ export const getOrders = async (req: Request, res: Response) => {
       throw new Error(`User ${userId} not found`)
     }
 
-    const page = parseInt(req.params.page, 10)
-    const size = parseInt(req.params.size, 10)
+    const page = parseInt(req.params.page as string, 10)
+    const size = parseInt(req.params.size as string as string, 10)
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
 
@@ -579,7 +579,7 @@ export const getOrders = async (req: Request, res: Response) => {
     if (user.type === wexcommerceTypes.UserType.User) {
       $match = {
         $and: [
-          { 'user._id': { $eq: new mongoose.Types.ObjectId(userId) } },
+          { 'user._id': { $eq: new mongoose.Types.ObjectId(userId as string) } },
           { 'paymentType.name': { $in: paymentTypes } },
           { 'deliveryType.name': { $in: deliveryTypes } },
           { status: { $in: statuses } },

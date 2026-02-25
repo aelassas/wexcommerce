@@ -329,7 +329,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
                 helper.error(err)
               }
               router.push('/products')
-              router.refresh()
+              // router.refresh()
             }}
           >
             {commonStrings.CANCEL}
@@ -367,7 +367,7 @@ const CreateProductForm: React.FC<CreateProductFormProps> = ({ product }) => {
               if (status === 200) {
                 setOpenDeleteDialog(false)
                 router.push('/products')
-                router.refresh()
+                // router.refresh()
               } else {
                 helper.error()
                 setOpenDeleteDialog(false)

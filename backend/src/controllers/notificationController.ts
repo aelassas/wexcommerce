@@ -45,9 +45,9 @@ export const getNotifications = async (req: Request, res: Response) => {
   const { userId: _userId, page: _page, size: _size } = req.params
 
   try {
-    const userId = new mongoose.Types.ObjectId(_userId)
-    const page = Number.parseInt(_page, 10)
-    const size = Number.parseInt(_size, 10)
+    const userId = new mongoose.Types.ObjectId(_userId as string)
+    const page = Number.parseInt(_page as string, 10)
+    const size = Number.parseInt(_size as string, 10)
 
     const notifications = await Notification.aggregate([
       { $match: { user: userId } },
@@ -85,7 +85,7 @@ export const markAsRead = async (req: Request, res: Response) => {
     const { ids: _ids } = body
     const ids = _ids.map((id) => new mongoose.Types.ObjectId(id))
     const { userId: _userId } = req.params
-    const userId = new mongoose.Types.ObjectId(_userId)
+    const userId = new mongoose.Types.ObjectId(_userId as string)
 
     const bulk = Notification.collection.initializeOrderedBulkOp()
     const notifications = await Notification.find({
@@ -133,7 +133,7 @@ export const markAsUnRead = async (req: Request, res: Response) => {
     const { ids: _ids } = body
     const ids = _ids.map((id) => new mongoose.Types.ObjectId(id))
     const { userId: _userId } = req.params
-    const userId = new mongoose.Types.ObjectId(_userId)
+    const userId = new mongoose.Types.ObjectId(_userId as string)
 
     const bulk = Notification.collection.initializeOrderedBulkOp()
     const notifications = await Notification.find({
@@ -181,7 +181,7 @@ export const deleteNotifications = async (req: Request, res: Response) => {
     const { ids: _ids } = body
     const ids = _ids.map((id) => new mongoose.Types.ObjectId(id))
     const { userId: _userId } = req.params
-    const userId = new mongoose.Types.ObjectId(_userId)
+    const userId = new mongoose.Types.ObjectId(_userId as string)
 
     const count = await Notification
       .find({ _id: { $in: ids }, isRead: false })

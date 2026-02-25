@@ -52,7 +52,7 @@ export const uploadImage = async (req: Request, res: Response) => {
  */
 export const deleteTempImage = async (req: Request, res: Response) => {
   try {
-    const _image = path.join(env.CDN_TEMP_PRODUCTS, req.params.fileName)
+    const _image = path.join(env.CDN_TEMP_PRODUCTS, req.params.fileName as string)
 
     if (!(await helper.pathExists(_image))) {
       throw new Error(`[product.deleteTempImage] temp image ${_image} not found`)
@@ -78,7 +78,7 @@ export const deleteTempImage = async (req: Request, res: Response) => {
 export const deleteImage = async (req: Request, res: Response) => {
   try {
     const { product: productId, image: imageFileName } = req.params
-    if (!helper.isValidObjectId(productId)) {
+    if (!helper.isValidObjectId(productId as string)) {
       throw new Error('Product Id not valid')
     }
     const product = await Product.findById(productId)
@@ -87,7 +87,7 @@ export const deleteImage = async (req: Request, res: Response) => {
       const index = product.images!.findIndex((i) => i === imageFileName)
 
       if (index > -1) {
-        const _image = path.join(env.CDN_PRODUCTS, imageFileName)
+        const _image = path.join(env.CDN_PRODUCTS, imageFileName as string)
         if (await helper.pathExists(_image)) {
           await fs.unlink(_image)
         }
@@ -295,7 +295,7 @@ export const update = async (req: Request, res: Response) => {
 export const checkProduct = async (req: Request, res: Response) => {
   const { id } = req.params
   try {
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Product id not valid')
     }
 
@@ -324,7 +324,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Product id not valid')
     }
 
@@ -381,7 +381,7 @@ export const getProduct = async (req: Request, res: Response) => {
   try {
     const { id, language } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Product id not valid')
     }
 
@@ -389,7 +389,7 @@ export const getProduct = async (req: Request, res: Response) => {
       throw new Error('Language not valid')
     }
 
-    const _id = new mongoose.Types.ObjectId(id)
+    const _id = new mongoose.Types.ObjectId(id as string)
 
     const body: wexcommerceTypes.GetProductPayload = req.body || {}
     const { cart: cartId, wishlist: wisthlistId } = body
@@ -493,7 +493,7 @@ export const getAdminProducts = async (req: Request, res: Response) => {
     const { body }: { body: wexcommerceTypes.GetAdminProductsPayload } = req
     const { user: userId } = req.params
 
-    if (!helper.isValidObjectId(userId)) {
+    if (!helper.isValidObjectId(userId as string)) {
       throw new Error('User id not valid')
     }
 
@@ -503,14 +503,14 @@ export const getAdminProducts = async (req: Request, res: Response) => {
       throw new Error('Admin user not found')
     }
 
-    const page = parseInt(req.params.page, 10)
-    const size = parseInt(req.params.size, 10)
+    const page = parseInt(req.params.page as string, 10)
+    const size = parseInt(req.params.size as string, 10)
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
 
     let category
     if (req.params.category) {
-      category = new mongoose.Types.ObjectId(req.params.category)
+      category = new mongoose.Types.ObjectId(req.params.category as string)
     }
 
     let $match: mongoose.QueryFilter<env.Product>
@@ -588,14 +588,14 @@ export const getAdminProducts = async (req: Request, res: Response) => {
  */
 export const getFrontendProducts = async (req: Request, res: Response) => {
   try {
-    const page = parseInt(req.params.page, 10)
-    const size = parseInt(req.params.size, 10)
+    const page = parseInt(req.params.page as string, 10)
+    const size = parseInt(req.params.size as string, 10)
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
 
     let category
     if (req.params.category) {
-      category = new mongoose.Types.ObjectId(req.params.category)
+      category = new mongoose.Types.ObjectId(req.params.category as string)
     }
 
     const { body }: { body: wexcommerceTypes.GetProductsPayload } = req

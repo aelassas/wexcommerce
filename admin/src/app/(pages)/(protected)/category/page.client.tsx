@@ -202,7 +202,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category }) => {
             size="small"
             onClick={() => {
               router.push('/categories')
-              router.refresh()
+              // router.refresh()
             }}
           >
             {commonStrings.CANCEL}

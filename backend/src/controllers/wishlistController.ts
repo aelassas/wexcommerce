@@ -59,18 +59,18 @@ export const deleteItem = async (req: Request, res: Response) => {
   try {
     const { wishlist: wishlistId, product: productId } = req.params
 
-    if (!helper.isValidObjectId(wishlistId)) {
+    if (!helper.isValidObjectId(wishlistId as string)) {
       throw new Error('Wishlist Id not valid')
     }
 
-    if (!helper.isValidObjectId(productId)) {
+    if (!helper.isValidObjectId(productId as string)) {
       throw new Error('Product Id not valid')
     }
 
     const wishlist = await Wishlist.findById(wishlistId)
 
     if (wishlist) {
-      await wishlist.updateOne({ $pull: { products: new mongoose.Types.ObjectId(productId) } })
+      await wishlist.updateOne({ $pull: { products: new mongoose.Types.ObjectId(productId as string) } })
       res.sendStatus(200)
       return
     }
@@ -93,7 +93,7 @@ export const getWishlist = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Wishlist Id not valid')
     }
 
@@ -128,7 +128,7 @@ export const getWishlistCount = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Wishlist Id not valid')
     }
 
@@ -158,7 +158,7 @@ export const getWishlistId = async (req: Request, res: Response) => {
   try {
     const { user } = req.params
 
-    if (!helper.isValidObjectId(user)) {
+    if (!helper.isValidObjectId(user as string)) {
       throw new Error('User Id not valid')
     }
 
@@ -188,7 +188,7 @@ export const clearWishlist = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Wishlist Id not valid')
     }
 
@@ -223,7 +223,7 @@ export const update = async (req: Request, res: Response) => {
     const wishlist = await Wishlist.findById(id)
 
     if (wishlist) {
-      wishlist.user = new mongoose.Types.ObjectId(user)
+      wishlist.user = new mongoose.Types.ObjectId(user as string)
       await wishlist.save()
 
       res.sendStatus(200)
@@ -248,11 +248,11 @@ export const check = async (req: Request, res: Response) => {
   try {
     const { id, user } = req.params
 
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Wishlist Id not valid')
     }
 
-    if (!helper.isValidObjectId(user)) {
+    if (!helper.isValidObjectId(user as string)) {
       throw new Error('User Id not valid')
     }
 

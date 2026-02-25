@@ -79,7 +79,7 @@ export const validate = async (req: Request, res: Response) => {
  */
 export const checkCategory = async (req: Request, res: Response) => {
   try {
-    const id = new mongoose.Types.ObjectId(req.params.id)
+    const id = new mongoose.Types.ObjectId(req.params.id as string)
 
     const count = await Product.find({ categories: id })
       .limit(1)
@@ -205,7 +205,7 @@ export const update = async (req: Request, res: Response) => {
 export const deleteCategory = async (req: Request, res: Response) => {
   const { id } = req.params
   try {
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Id not valid')
     }
     const category = await Category.findByIdAndDelete(id)
@@ -238,7 +238,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
 export const getCategory = async (req: Request, res: Response) => {
   const { id, language } = req.params
   try {
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Id not valid')
     }
     if (language.length !== 2) {
@@ -275,7 +275,7 @@ export const getCategories = async (req: Request, res: Response) => {
     if (language.length !== 2) {
       throw new Error('Language not valid')
     }
-    const _imageRequired = helper.StringToBoolean(imageRequired)
+    const _imageRequired = helper.StringToBoolean(imageRequired as string)
 
     let $match: mongoose.QueryFilter<env.Category> = {}
     if (_imageRequired) {
@@ -332,7 +332,7 @@ export const getFeaturedCategories = async (req: Request, res: Response) => {
     }
     const cartId = String(req.query.c || '')
     const wishlistId = String(req.query.w || '')
-    const size = Number.parseInt(_size, 10)
+    const size = Number.parseInt(_size as string, 10)
 
     let cartProducts: mongoose.Types.ObjectId[] = []
     if (cartId) {
@@ -606,7 +606,7 @@ export const deleteImage = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('Id not valid')
     }
     const category = await Category.findById(id)
@@ -645,7 +645,7 @@ export const deleteTempImage = async (req: Request, res: Response) => {
   const { image } = req.params
 
   try {
-    const imageFile = path.join(env.CDN_TEMP_CATEGORIES, image)
+    const imageFile = path.join(env.CDN_TEMP_CATEGORIES, image as string)
     if (!(await helper.pathExists(imageFile))) {
       throw new Error(`[category.deleteTempImage] temp image ${imageFile} not found`)
     }

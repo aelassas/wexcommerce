@@ -158,7 +158,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
   try {
     const { token: _token, email: _email } = req.params
 
-    if (!helper.isValidEmail(_email)) {
+    if (!helper.isValidEmail(_email as string)) {
       throw new Error('email is not valid')
     }
 
@@ -364,13 +364,13 @@ export const resend = async (req: Request, res: Response) => {
   const { email } = req.params
 
   try {
-    if (!helper.isValidEmail(email)) {
+    if (!helper.isValidEmail(email as string)) {
       throw new Error('email is not valid')
     }
     const user = await User.findOne({ email })
 
     if (user) {
-      const type = req.params.type.toLowerCase() as wexcommerceTypes.AppType
+      const type = (req.params.type as string).toLowerCase() as wexcommerceTypes.AppType
 
       if (
         ![wexcommerceTypes.AppType.Frontend, wexcommerceTypes.AppType.Admin].includes(type)
@@ -479,12 +479,12 @@ export const checkToken = async (req: Request, res: Response) => {
 
   try {
     const user = await User.findOne({
-      _id: new mongoose.Types.ObjectId(userId),
+      _id: new mongoose.Types.ObjectId(userId as string),
       email,
     })
 
     if (user) {
-      const type = req.params.type.toLowerCase() as wexcommerceTypes.AppType
+      const type = (req.params.type as string).toLowerCase() as wexcommerceTypes.AppType
 
       if (
         ![wexcommerceTypes.AppType.Frontend, wexcommerceTypes.AppType.Admin].includes(type)
@@ -497,7 +497,7 @@ export const checkToken = async (req: Request, res: Response) => {
       }
 
       const token = await Token.findOne({
-        user: new mongoose.Types.ObjectId(userId),
+        user: new mongoose.Types.ObjectId(userId as string),
         token: req.params.token,
       })
 
@@ -531,7 +531,7 @@ export const deleteTokens = async (req: Request, res: Response) => {
 
   try {
     const result = await Token.deleteMany({
-      user: new mongoose.Types.ObjectId(userId),
+      user: new mongoose.Types.ObjectId(userId as string),
     })
 
     if (result.deletedCount > 0) {
@@ -571,7 +571,7 @@ export const signin = async (req: Request, res: Response) => {
     }
 
     const user = await User.findOne({ email })
-    const type = req.params.type.toLowerCase() as wexcommerceTypes.AppType
+    const type = (req.params.type as string).toLowerCase() as wexcommerceTypes.AppType
 
     if (
       !password
@@ -719,7 +719,7 @@ export const validateAccessToken = (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
   const { id } = req.params
   try {
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('User id is not valid')
     }
 
@@ -836,7 +836,7 @@ export const checkPassword = async (req: Request, res: Response) => {
   const { id, password } = req.params
 
   try {
-    if (!helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id as string)) {
       throw new Error('User id is not valid')
     }
 
@@ -848,7 +848,7 @@ export const checkPassword = async (req: Request, res: Response) => {
         return
       }
 
-      const passwordMatch = await bcrypt.compare(password, user.password)
+      const passwordMatch = await bcrypt.compare(password as string, user.password)
       if (passwordMatch) {
         res.sendStatus(200)
         return
@@ -941,8 +941,8 @@ export const getUsers = async (req: Request, res: Response) => {
   try {
     let keyword = String(req.query.s || '')
     const options = 'i'
-    const page = Number.parseInt(req.params.page, 10)
-    const size = Number.parseInt(req.params.size, 10)
+    const page = Number.parseInt(req.params.page as string, 10)
+    const size = Number.parseInt(req.params.size as string, 10)
 
     let $match: mongoose.QueryFilter<env.User>
     if (keyword) {
@@ -1080,7 +1080,7 @@ export const deleteUsers = async (req: Request, res: Response) => {
 export const verifyRecaptcha = async (req: Request, res: Response) => {
   try {
     const { token, ip } = req.params
-    const result = await axios.get(`https://www.google.com/recaptcha/api/siteverify?secret=${encodeURIComponent(env.RECAPTCHA_SECRET)}&response=${encodeURIComponent(token)}&remoteip=${ip}`)
+    const result = await axios.get(`https://www.google.com/recaptcha/api/siteverify?secret=${encodeURIComponent(env.RECAPTCHA_SECRET)}&response=${encodeURIComponent(token as string)}&remoteip=${ip}`)
     const { success } = result.data
 
     if (success) {
@@ -1286,7 +1286,7 @@ export const deleteTempAvatar = async (req: Request, res: Response) => {
   const { avatar } = req.params
 
   try {
-    const avatarFile = path.join(env.CDN_TEMP_USERS, avatar)
+    const avatarFile = path.join(env.CDN_TEMP_USERS, avatar as string)
     if (!(await helper.pathExists(avatarFile))) {
       throw new Error(`[user.deleteTempAvatar] temp avatar ${avatarFile} not found`)
     }
