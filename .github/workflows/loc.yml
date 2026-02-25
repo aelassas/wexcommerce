@@ -1,5 +1,10 @@
-on: [push]
 name: loc
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   loc_job:
@@ -18,7 +23,7 @@ jobs:
           badge_label: lines of code
           badge_color: green
           badge: ./output/badge.svg
-          ignore: 'node_modules|coverage|package-lock.json|__tests__|*.md|*.txt|LICENSE|CITATION.cff|.github|.vscode|__scripts|__services|.env|tsconfig.tsbuildinfo|dist|__content|.next'
+          ignore: 'node_modules|coverage|package-lock.json|*.md|*.txt|LICENSE|CITATION.cff|.github|.vscode|__scripts|__services|.env|tsconfig.tsbuildinfo|dist|__content|.next'
 
       - name: Print the output
         run: |
