@@ -90,12 +90,16 @@ const SignIn: React.FC = () => {
       const res = await UserService.signin(data)
 
       if (res.status === 200) {
-        const o = searchParams.get('o')
-        if (o) {
-          router.push(`/orders?o=${o}`)
-        } else {
-          router.push('/')
-        }
+        document.activeElement instanceof HTMLElement && document.activeElement.blur()
+        
+        setTimeout(() => {
+          const o = searchParams.get('o')
+          if (o) {
+            router.push(`/orders?o=${o}`)
+          } else {
+            router.push('/')
+          }
+        }, 0)
       } else {
         setError(true)
       }

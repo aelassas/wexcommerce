@@ -25,7 +25,7 @@ const ToastCart: React.FC<ToastCartProps> = ({ action }) => {
         className="toastButton"
         onClick={() => {
           router.push('/cart')
-          router.refresh()
+          // router.refresh()
         }}
       >
         {commonStrings.VIEW_CART}

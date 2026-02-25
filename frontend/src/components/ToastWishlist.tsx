@@ -25,7 +25,7 @@ const ToastWishlist: React.FC<ToastWishlistProps> = ({ action }) => {
         className="toastButton"
         onClick={() => {
           router.push('/wishlist')
-          router.refresh()
+          // router.refresh()
         }}
       >
         {commonStrings.VIEW_WISHLIST}
