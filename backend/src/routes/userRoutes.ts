@@ -7,7 +7,8 @@ import * as userController from '../controllers/userController'
 const routes = express.Router()
 
 routes.route(routeNames.signup).post(userController.signup)
-routes.route(routeNames.adminSignup).post(userController.adminSignup)
+// adminSignup route is replaced by src/setup/setup.ts and src/setup/reset.ts
+// routes.route(routeNames.adminSignup).post(userController.adminSignup)
 routes.route(routeNames.confirmEmail).get(userController.confirmEmail)
 routes.route(routeNames.resendLink).post(authJwt.verifyToken, userController.resendLink)
 routes.route(routeNames.validateEmail).post(userController.validateEmail)
