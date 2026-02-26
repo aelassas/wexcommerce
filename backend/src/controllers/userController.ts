@@ -62,13 +62,57 @@ const _signup = async (req: Request, res: Response, userType: wexcommerceTypes.U
     user = new User(body)
     await user.save()
 
+    // avatar
     if (body.avatar) {
-      const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
-      if (await helper.pathExists(avatar)) {
-        const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
-        const newPath = path.join(env.CDN_USERS, filename)
+      // -----------------------------
+      // 1️. Sanitize filename
+      // -----------------------------
+      const safeAvatar = path.basename(body.avatar)
 
-        await asyncFs.rename(avatar, newPath)
+      // If basename changed it, it's a traversal attempt
+      if (safeAvatar !== body.avatar) {
+        logger.warn(`[user.signup] Directory traversal attempt (avatar): ${body.avatar}`)
+        res.status(400).send('Invalid avatar filename')
+        return
+      }
+
+      const tempDir = path.resolve(env.CDN_TEMP_USERS)
+      const usersDir = path.resolve(env.CDN_USERS)
+
+      const avatarPath = path.resolve(tempDir, safeAvatar)
+
+      // -----------------------------
+      // 2️. Ensure source is inside temp directory
+      // -----------------------------
+      if (!avatarPath.startsWith(tempDir + path.sep)) {
+        logger.warn(`[user.signup] Avatar source path escape attempt: ${avatarPath}`)
+        res.status(400).send('Invalid avatar path')
+        return
+      }
+
+      if (await helper.pathExists(avatarPath)) {
+        const ext = path.extname(safeAvatar)
+
+        // security check: restrict allowed extensions
+        if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+          res.status(400).send('Invalid avatar file type')
+          return
+        }
+
+        const filename = `${user._id}_${Date.now()}${ext}`
+        const newPath = path.resolve(usersDir, filename)
+
+        // -----------------------------
+        // 3. Ensure destination is inside users directory
+        // -----------------------------
+        if (!newPath.startsWith(usersDir + path.sep)) {
+          logger.warn(`[user.signup] Avatar destination path escape attempt: ${newPath}`)
+          res.status(400).send('Invalid avatar destination')
+          return
+        }
+
+        await asyncFs.rename(avatarPath, newPath)
+
         user.avatar = filename
         await user.save()
       }
@@ -1179,6 +1223,13 @@ export const createAvatar = async (req: Request, res: Response) => {
     const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
+    // security check: restrict allowed extensions
+    const ext = path.extname(filename)
+    if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+      res.status(400).send('Invalid avatar file type')
+      return
+    }
+
     await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
   } catch (err) {
@@ -1220,6 +1271,13 @@ export const updateAvatar = async (req: Request, res: Response) => {
 
       const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
       const filepath = path.join(env.CDN_USERS, filename)
+
+      // security check: restrict allowed extensions
+      const ext = path.extname(filename)
+      if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+        res.status(400).send('Invalid avatar file type')
+        return
+      }
 
       await asyncFs.writeFile(filepath, req.file.buffer)
       user.avatar = filename

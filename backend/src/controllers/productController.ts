@@ -34,6 +34,13 @@ export const uploadImage = async (req: Request, res: Response) => {
     const filename = `${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_PRODUCTS, filename)
 
+    // security check: restrict allowed extensions
+    const ext = path.extname(filename)
+    if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+      res.status(400).send('Invalid product image file type')
+      return
+    }
+
     await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
   } catch (err) {
@@ -51,7 +58,7 @@ export const uploadImage = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const deleteTempImage = async (req: Request, res: Response) => {
-   const { fileName: image } = req.params
+  const { fileName: image } = req.params
   try {
     // prevent null bytes
     if (image.includes('\0')) {
@@ -148,41 +155,85 @@ export const create = async (req: Request, res: Response) => {
     product = new Product(__product)
     await product.save()
 
-    // image
-    if (imageFile) {
-      const _image = path.join(env.CDN_TEMP_PRODUCTS, imageFile)
-      if (await helper.pathExists(_image)) {
-        const filename = `${product._id}_${Date.now()}${path.extname(imageFile)}`
-        const newPath = path.join(env.CDN_PRODUCTS, filename)
+    const tempDir = path.resolve(env.CDN_TEMP_PRODUCTS)
+    const productsDir = path.resolve(env.CDN_PRODUCTS)
 
-        await asyncFs.rename(_image, newPath)
-        product.image = filename
-      } else {
-        await product.deleteOne()
-        throw new Error('Image file not found')
-      }
-    } else {
+    // Ensure `product.images` exists
+    product.images = product.images || []
+
+    // 1. MAIN IMAGE
+    if (!imageFile) {
       await product.deleteOne()
       throw new Error('Image field is required')
     }
 
-    // images
-    for (let i = 0; i < images.length; i += 1) {
-      const image = images[i]
-      const __image = path.join(env.CDN_TEMP_PRODUCTS, image)
+    const safeImage = path.basename(imageFile)
+    if (safeImage !== imageFile) {
+      await product.deleteOne()
+      throw new Error('Invalid image filename')
+    }
 
-      if (await helper.pathExists(__image)) {
-        const filename = `${product._id}_${nanoid()}_${Date.now()}_${i}${path.extname(image)}`
-        const newPath = path.join(env.CDN_PRODUCTS, filename)
+    const tempImagePath = path.resolve(tempDir, safeImage)
+    if (!tempImagePath.startsWith(tempDir + path.sep) || !(await helper.pathExists(tempImagePath))) {
+      await product.deleteOne()
+      throw new Error('Image file not found')
+    }
 
-        await asyncFs.rename(__image, newPath)
-        product.images!.push(filename)
-      } else {
-        await product.deleteOne()
-        throw new Error('Image file not found')
+    const ext = path.extname(safeImage).toLowerCase()
+    if (!env.allowedImageExtensions.includes(ext)) {
+      await product.deleteOne()
+      throw new Error('Invalid image type')
+    }
+
+    const mainFilename = `${product._id}_${Date.now()}${ext}`
+    const mainDestPath = path.resolve(productsDir, mainFilename)
+    if (!mainDestPath.startsWith(productsDir + path.sep)) {
+      await product.deleteOne()
+      throw new Error('Invalid destination path')
+    }
+
+    await asyncFs.rename(tempImagePath, mainDestPath)
+    product.image = mainFilename
+
+    // 2. ADDITIONAL IMAGES
+    if (images && Array.isArray(images)) {
+      for (let i = 0; i < images.length; i += 1) {
+        const img = images[i]
+        if (!img) {
+          continue
+        }
+
+        const safeImg = path.basename(img)
+        if (safeImg !== img) {
+          await product.deleteOne()
+          throw new Error('Invalid image filename')
+        }
+
+        const tempImgPath = path.resolve(tempDir, safeImg)
+        if (!tempImgPath.startsWith(tempDir + path.sep) || !(await helper.pathExists(tempImgPath))) {
+          await product.deleteOne()
+          throw new Error('Image file not found')
+        }
+
+        const imgExt = path.extname(safeImg).toLowerCase()
+        if (!env.allowedImageExtensions.includes(imgExt)) {
+          await product.deleteOne()
+          throw new Error('Invalid image type')
+        }
+
+        const filename = `${product._id}_${nanoid()}_${Date.now()}_${i}${imgExt}`
+        const destPath = path.resolve(productsDir, filename)
+        if (!destPath.startsWith(productsDir + path.sep)) {
+          await product.deleteOne()
+          throw new Error('Invalid destination path')
+        }
+
+        await asyncFs.rename(tempImgPath, destPath)
+        product.images.push(filename)
       }
     }
 
+    // 3. SAVE PRODUCT
     await product.save()
     res.status(200).json(product)
   } catch (err) {
@@ -231,62 +282,111 @@ export const update = async (req: Request, res: Response) => {
       //   product.soldOut = false
       // }
 
+      const tempDir = path.resolve(env.CDN_TEMP_PRODUCTS)
+      const productsDir = path.resolve(env.CDN_PRODUCTS)
+
+      // Ensure product.images exists
+      product.images = product.images || []
+
+      // 1. UPDATE MAIN IMAGE
       if (image) {
-        const tempImagePath = path.join(env.CDN_TEMP_PRODUCTS, image)
-
-        if (!(await helper.pathExists(tempImagePath))) {
-          throw new Error(`${image} not found`)
+        const safeImage = path.basename(image)
+        if (safeImage !== image) {
+          throw new Error('Invalid image filename')
         }
 
-        const oldImage = path.join(env.CDN_PRODUCTS, product.image!)
-        if (await helper.pathExists(oldImage)) {
-          await asyncFs.unlink(oldImage)
+        const tempImagePath = path.resolve(tempDir, safeImage)
+        if (!tempImagePath.startsWith(tempDir + path.sep) || !(await helper.pathExists(tempImagePath))) {
+          throw new Error(`${safeImage} not found`)
         }
 
-        const filename = `${product._id}_${Date.now()}${path.extname(image)}`
-        const filepath = path.join(env.CDN_PRODUCTS, filename)
+        // Delete old image
+        if (product.image) {
+          const oldImagePath = path.resolve(productsDir, path.basename(product.image))
+          if (oldImagePath.startsWith(productsDir + path.sep) && await helper.pathExists(oldImagePath)) {
+            await asyncFs.unlink(oldImagePath)
+          }
+        }
 
-        await asyncFs.rename(tempImagePath, filepath)
+        const ext = path.extname(safeImage).toLowerCase()
+        if (!env.allowedImageExtensions.includes(ext)) {
+          throw new Error('Invalid image type')
+        }
+
+        const filename = `${product._id}_${Date.now()}${ext}`
+        const destPath = path.resolve(productsDir, filename)
+        if (!destPath.startsWith(productsDir + path.sep)) {
+          throw new Error('Invalid destination path')
+        }
+
+        await asyncFs.rename(tempImagePath, destPath)
         product.image = filename
       }
 
-      // delete deleted images
-      const _images: string[] = []
-      if (images.length === 0) {
-        for (const img of product.images) {
-          const _image = path.join(env.CDN_PRODUCTS, img)
-          if (await helper.pathExists(_image)) {
-            await asyncFs.unlink(_image)
-          }
-        }
-      } else {
-        for (const img of product.images) {
-          if (!images.includes(img)) {
-            const _image = path.join(env.CDN_PRODUCTS, img)
-            if (await helper.pathExists(_image)) {
-              await asyncFs.unlink(_image)
+      // 2. DELETE REMOVED IMAGES
+      const updatedImages: string[] = []
+
+      if (images && Array.isArray(images)) {
+        if (images.length === 0) {
+          // Delete all existing images
+          for (const img of product.images) {
+            const oldPath = path.resolve(productsDir, path.basename(img))
+            if (oldPath.startsWith(productsDir + path.sep) && await helper.pathExists(oldPath)) {
+              await asyncFs.unlink(oldPath)
             }
-          } else {
-            _images.push(img)
+          }
+        } else {
+          for (const img of product.images) {
+            if (!images.includes(img)) {
+              const oldPath = path.resolve(productsDir, path.basename(img))
+              if (oldPath.startsWith(productsDir + path.sep) && await helper.pathExists(oldPath)) {
+                await asyncFs.unlink(oldPath)
+              }
+            } else {
+              updatedImages.push(img)
+            }
           }
         }
       }
-      product.images = _images
+      product.images = updatedImages
 
-      // add temp images
-      for (let i = 0; i < tempImages.length; i += 1) {
-        const imageFile = tempImages[i]
-        const _image = path.join(env.CDN_TEMP_PRODUCTS, imageFile)
+      // 3. ADD NEW TEMP IMAGES
+      if (tempImages && Array.isArray(tempImages)) {
+        for (let i = 0; i < tempImages.length; i += 1) {
+          const imageFile = tempImages[i]
+          if (!imageFile) {
+            continue
+          }
 
-        if (await helper.pathExists(_image)) {
-          const filename = `${product._id}_${nanoid()}_${Date.now()}_${i}${path.extname(imageFile)}`
-          const newPath = path.join(env.CDN_PRODUCTS, filename)
+          const safeImg = path.basename(imageFile)
+          if (safeImg !== imageFile) {
+            throw new Error('Invalid image filename')
+          }
 
-          await asyncFs.rename(_image, newPath)
-          product.images.push(filename)
+          const tempImgPath = path.resolve(tempDir, safeImg)
+          if (!tempImgPath.startsWith(tempDir + path.sep)) {
+            throw new Error(`Directory traversal attempt: ${safeImg}`)
+          }
+
+          const ext = path.extname(safeImg).toLowerCase()
+          if (!env.allowedImageExtensions.includes(ext)) {
+            throw new Error('Invalid image type')
+          }
+
+          const filename = `${product._id}_${nanoid()}_${Date.now()}_${i}${ext}`
+          const destPath = path.resolve(productsDir, filename)
+          if (!destPath.startsWith(productsDir + path.sep)) {
+            throw new Error('Invalid destination path')
+          }
+
+          if ((await helper.pathExists(tempImgPath))) {
+            await asyncFs.rename(tempImgPath, destPath)
+            product.images.push(filename)
+          }
         }
       }
 
+      // 4. SAVE PRODUCT
       await product.save()
       res.status(200).json(product)
       return

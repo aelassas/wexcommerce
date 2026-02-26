@@ -690,3 +690,18 @@ export interface Setting extends Document {
   rib?: string
   iban?: string
 }
+
+/**
+ * Allowed driver's license file extensions.
+ *
+ * @type {string[]}
+ */
+export const allowedImageExtensions = [
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.webp',
+  '.gif',
+  '.bmp',
+  '.tiff',
+]

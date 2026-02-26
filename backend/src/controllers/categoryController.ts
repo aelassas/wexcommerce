@@ -133,13 +133,57 @@ export const create = async (req: Request, res: Response) => {
     await category.save()
 
     if (image) {
-      const _image = path.join(env.CDN_TEMP_CATEGORIES, image)
+      // -----------------------------
+      // 1. Sanitize filename
+      // -----------------------------
+      const safeImage = path.basename(image)
 
-      if (await helper.pathExists(_image)) {
-        const filename = `${category._id}_${Date.now()}${path.extname(image)}`
-        const newPath = path.join(env.CDN_CATEGORIES, filename)
+      // If basename changed it, it's a traversal attempt
+      if (safeImage !== image) {
+        logger.warn(`[category.create] Directory traversal attempt (image): ${image}`)
+        res.status(400).send('Invalid image filename')
+        return
+      }
 
-        await asyncFs.rename(_image, newPath)
+      const tempDir = path.resolve(env.CDN_TEMP_CATEGORIES)
+      const categoriesDir = path.resolve(env.CDN_CATEGORIES)
+
+      const sourcePath = path.resolve(tempDir, safeImage)
+
+      // -----------------------------
+      // 2. Ensure source stays inside temp directory
+      // -----------------------------
+      if (!sourcePath.startsWith(tempDir + path.sep)) {
+        logger.warn(`[category.create] Image source path escape attempt: ${sourcePath}`)
+        res.status(400).send('Invalid image path')
+        return
+      }
+
+      if (await helper.pathExists(sourcePath)) {
+        const ext = path.extname(safeImage).toLowerCase()
+
+        // -----------------------------
+        // 3. Restrict allowed image extensions
+        // -----------------------------
+        if (!env.allowedImageExtensions.includes(ext)) {
+          res.status(400).send('Invalid image type')
+          return
+        }
+
+        const filename = `${category._id}_${Date.now()}${ext}`
+        const newPath = path.resolve(categoriesDir, filename)
+
+        // -----------------------------
+        // 4. Ensure destination stays inside categories directory
+        // -----------------------------
+        if (!newPath.startsWith(categoriesDir + path.sep)) {
+          logger.warn(`[category.create] Image destination path escape attempt: ${newPath}`)
+          res.status(400).send('Invalid image destination')
+          return
+        }
+
+        await asyncFs.rename(sourcePath, newPath)
+
         category.image = filename
         await category.save()
       }
@@ -538,6 +582,13 @@ export const createImage = async (req: Request, res: Response) => {
     const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_CATEGORIES, filename)
 
+    // security check: restrict allowed extensions
+    const ext = path.extname(filename)
+    if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+      res.status(400).send('Invalid category image file type')
+      return
+    }
+
     await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
   } catch (err) {
@@ -577,6 +628,13 @@ export const updateImage = async (req: Request, res: Response) => {
 
       const filename = `${category._id}_${Date.now()}${path.extname(file.originalname)}`
       const filepath = path.join(env.CDN_CATEGORIES, filename)
+
+      // security check: restrict allowed extensions
+      const ext = path.extname(filename)
+      if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+        res.status(400).send('Invalid category image file type')
+        return
+      }
 
       await asyncFs.writeFile(filepath, file.buffer)
       category.image = filename
