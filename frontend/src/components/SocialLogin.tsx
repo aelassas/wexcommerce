@@ -36,7 +36,7 @@ interface SocialLoginProps {
 }
 
 const SocialLogin: React.FC<SocialLoginProps> = ({
-  facebook,
+  facebook = true,
   apple,
   google = true,
   reloadPage,
@@ -102,7 +102,7 @@ const SocialLogin: React.FC<SocialLoginProps> = ({
             appId={env.FB_APP_ID}
             redirect_uri={REDIRECT_URI}
             onResolve={({ data }: IResolveParams) => {
-              loginSuccess(wexcommerceTypes.SocialSignInType.Facebook, data?.signedRequest, data?.email, data?.name, data?.picture?.data?.url)
+              loginSuccess(wexcommerceTypes.SocialSignInType.Facebook, data?.accessToken, data?.email, data?.name, data?.picture?.data?.url)
             }}
             onReject={(err: any) => {
               loginError(err)
