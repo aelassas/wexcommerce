@@ -128,7 +128,7 @@ const APPLE_JWKS = jose.createRemoteJWKSet(new URL('https://appleid.apple.com/au
 /**
  * APPLE: Always a JWT
  */
-async function verifyAppleToken(token: string, email: string): Promise<boolean> {
+export async function verifyAppleToken(token: string, email: string): Promise<boolean> {
   try {
     const { payload } = await jose.jwtVerify(token, APPLE_JWKS, {
       issuer: 'https://appleid.apple.com',
@@ -148,7 +148,7 @@ async function verifyAppleToken(token: string, email: string): Promise<boolean> 
 /**
  * GOOGLE: Handles ID Tokens (JWT) or Access Tokens (Opaque)
  */
-async function verifyGoogleToken(token: string, email: string): Promise<boolean> {
+export async function verifyGoogleToken(token: string, email: string): Promise<boolean> {
   const res = await axios.get('https://www.googleapis.com/oauth2/v3/tokeninfo', {
     headers: { Authorization: `Bearer ${token}` },
   })
@@ -162,7 +162,7 @@ async function verifyGoogleToken(token: string, email: string): Promise<boolean>
 /**
  * FACEBOOK - Handles Opaque Access Tokens
  */
-async function verifyFacebookToken(token: string, email: string): Promise<boolean> {
+export async function verifyFacebookToken(token: string, email: string): Promise<boolean> {
   // Use the Graph API (Standard Opaque Token)
   const appToken = `${env.FACEBOOK_APP_ID}|${env.FACEBOOK_APP_SECRET}`
 
