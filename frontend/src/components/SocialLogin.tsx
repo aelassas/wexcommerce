@@ -36,7 +36,7 @@ interface SocialLoginProps {
 }
 
 const SocialLogin: React.FC<SocialLoginProps> = ({
-  facebook = true,
+  facebook,
   apple,
   google = true,
   reloadPage,
