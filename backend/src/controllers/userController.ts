@@ -885,9 +885,10 @@ export const checkPassword = async (req: Request, res: Response) => {
     }
 
     const user = await User.findById(id)
+
     if (user) {
       if (!user.password) {
-        logger.error('[user.changePassword] User.password not found')
+        logger.error('[user.checkPassword] User.password not found')
         res.sendStatus(204)
         return
       }
@@ -939,6 +940,18 @@ export const changePassword = async (req: Request, res: Response) => {
       res.sendStatus(204)
       return
     }
+
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = await User.findById(sessionUserId)
+    if (!sessionUser
+      || (sessionUser.type === wexcommerceTypes.UserType.User && sessionUserId !== user._id.toString())
+    ) {
+      logger.error(`[user.changePassword] Unauthorized attempt to change user password ${_id} by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot change user password')
+      return
+    }
+    // end of security check
 
     if (strict && !user.password) {
       logger.error('[user.changePassword] User.password not found:', _id)
