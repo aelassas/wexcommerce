@@ -556,17 +556,27 @@ export const getOrder = async (req: Request, res: Response) => {
  */
 export const getOrders = async (req: Request, res: Response) => {
   try {
-    const { user: userId } = req.params
+    // const { user: userId } = req.params
 
-    if (!helper.isValidObjectId(userId as string)) {
-      throw new Error('User id not valid')
+    // if (!helper.isValidObjectId(userId as string)) {
+    //   throw new Error('User id not valid')
+    // }
+
+    // const user = await User.findOne({ _id: userId })
+
+    // if (!user) {
+    //   throw new Error(`User ${userId} not found`)
+    // }
+
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = await User.findById(sessionUserId)
+    if (!sessionUser) {
+      logger.error(`[booking.getBookings] Unauthorized attempt to get bookings by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot get booking information')
+      return
     }
-
-    const user = await User.findOne({ _id: userId })
-
-    if (!user) {
-      throw new Error(`User ${userId} not found`)
-    }
+    // end of security check
 
     const page = parseInt(req.params.page as string, 10)
     const size = parseInt(req.params.size as string as string, 10)
@@ -576,17 +586,17 @@ export const getOrders = async (req: Request, res: Response) => {
     const { paymentTypes, deliveryTypes, statuses }: wexcommerceTypes.GetOrdersPayload = req.body
 
     let $match: mongoose.QueryFilter<any> = {}
-    if (user.type === wexcommerceTypes.UserType.User) {
+    if (sessionUser.type === wexcommerceTypes.UserType.User) {
       $match = {
         $and: [
-          { 'user._id': { $eq: new mongoose.Types.ObjectId(userId as string) } },
+          { 'user._id': { $eq: new mongoose.Types.ObjectId(sessionUserId) } },
           { 'paymentType.name': { $in: paymentTypes } },
           { 'deliveryType.name': { $in: deliveryTypes } },
           { status: { $in: statuses } },
           { expireAt: null },
         ],
       }
-    } else if (user.type === wexcommerceTypes.UserType.Admin) {
+    } else if (sessionUser.type === wexcommerceTypes.UserType.Admin) {
       $match = {
         $and: [
           { 'paymentType.name': { $in: paymentTypes } },

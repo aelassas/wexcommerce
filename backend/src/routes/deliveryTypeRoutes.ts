@@ -5,8 +5,8 @@ import * as deliveryTypeController from '../controllers/deliveryTypeController'
 
 const routes = express.Router()
 
-routes.route(routeNames.getDeliveryTypes).get(authJwt.verifyToken, deliveryTypeController.getDeliveryTypes)
+routes.route(routeNames.getDeliveryTypes).get(authJwt.verifyToken, authJwt.authAdmin, deliveryTypeController.getDeliveryTypes)
 routes.route(routeNames.getEnabledDeliveryTypes).get(deliveryTypeController.getEnabledDeliveryTypes)
-routes.route(routeNames.updateDeliveryTypes).put(authJwt.verifyToken, deliveryTypeController.updateDeliveryTypes)
+routes.route(routeNames.updateDeliveryTypes).put(authJwt.verifyToken, authJwt.authAdmin, deliveryTypeController.updateDeliveryTypes)
 
 export default routes
