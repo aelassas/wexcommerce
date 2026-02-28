@@ -671,7 +671,7 @@ export const signin = async (req: Request, res: Response) => {
  */
 export const socialSignin = async (req: Request, res: Response) => {
   const { body }: { body: wexcommerceTypes.SignInPayload } = req
-  const { socialSignInType, accessToken, email: emailFromBody, fullName, avatar, stayConnected, mobile } = body
+  const { socialSignInType, accessToken, email: emailFromBody, fullName, avatar, stayConnected } = body
 
   try {
     if (!socialSignInType) {
@@ -688,14 +688,12 @@ export const socialSignin = async (req: Request, res: Response) => {
       throw new Error('body.email is not valid')
     }
 
-    if (!mobile) {
-      if (!accessToken) {
-        throw new Error('body.accessToken not found')
-      }
+    if (!accessToken) {
+      throw new Error('body.accessToken not found')
+    }
 
-      if (!(await authHelper.validateAccessToken(socialSignInType, accessToken, email))) {
-        throw new Error('body.accessToken is not valid')
-      }
+    if (!(await authHelper.validateAccessToken(socialSignInType, accessToken, email))) {
+      throw new Error('body.accessToken is not valid')
     }
 
     let user = await User.findOne({ email })
