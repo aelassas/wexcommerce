@@ -1,5 +1,24 @@
 # Releases
 
+## [wexCommerce 4.1](https://github.com/aelassas/wexcommerce/releases/tag/v4.1) – 2026-02-27
+
+* fix(security): unauthenticated admin registration
+* fix(security): move route authentication to dedicated middlewares
+* fix(security): verify Google, Facebook, and Apple tokens cryptographically in backend
+* fix(security): unrestricted file uploads and renames
+* fix(security): prevent directory traversal in file delete routes
+* fix(security): prevent directory traversal in file rename routes
+* fix(admin): redirect not working after delete product
+* fix(admin,frontend): redirect after sign in not working when autofill is used on mobile
+* chore(deps): update dependencies
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v4.1/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v4.1)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v4.1)
+
 ## [wexCommerce 4.0](https://github.com/aelassas/wexcommerce/releases/tag/4.0) – 2025-12-21
 
 chore(backend): update dependencies
