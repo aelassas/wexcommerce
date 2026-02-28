@@ -80,14 +80,6 @@ export const hashPassword = async (password: string): Promise<string> => {
 }
 
 /**
- * Parse JWT token.
- *
- * @param {string} token
- * @returns {any}
- */
-export const parseJwt = (token: string) => JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString())
-
-/**
  * Validate Access token structure.
  *
  * @param {string} token
