@@ -434,11 +434,18 @@ export const SENTRY_DSN_BACKEND = __env__('WC_SENTRY_DSN_BACKEND', ENABLE_SENTRY
 export const SENTRY_TRACES_SAMPLE_RATE = Number.parseFloat(__env__('WC_SENTRY_TRACES_SAMPLE_RATE', false, '1.0'))
 
 /**
- * Apple client ID.
+ * Apple Web client ID.
  *
  * @type {string}
  */
-export const APPLE_CLIENT_ID = __env__('WC_APPLE_CLIENT_ID', false, 'APPLE_CLIENT_ID')
+export const APPLE_CLIENT_ID_WEB = __env__('WC_APPLE_CLIENT_ID_WEB', false, 'APPLE_CLIENT_ID_WEB')
+
+/**
+ * Apple Mobile client ID.
+ *
+ * @type {string}
+ */
+export const APPLE_CLIENT_ID_MOBILE = __env__('WC_APPLE_CLIENT_ID_MOBILE', false, 'APPLE_CLIENT_ID_MOBILE')
 
 /**
  * Google client ID.
