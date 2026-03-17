@@ -4,8 +4,10 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import * as logger from '../utils/logger'
 import i18n from '../lang/i18n'
 import * as helper from '../utils/helper'
+import * as env from '../config/env.config'
 import Wishlist from '../models/Wishlist'
 import User from '../models/User'
+import Cart from '../models/Cart'
 
 /**
  * Add item to wishlist.
@@ -92,6 +94,7 @@ export const deleteItem = async (req: Request, res: Response) => {
 export const getWishlist = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
+    const { cartId } = req.query
 
     if (!helper.isValidObjectId(id as string)) {
       throw new Error('Wishlist Id not valid')
@@ -103,9 +106,26 @@ export const getWishlist = async (req: Request, res: Response) => {
       .lean()
 
     if (wishlist) {
+      let cartProducts: string[] = []
+      if (cartId) {
+        const cart = await Cart
+          .findById(cartId)
+          .populate<{ cartItems: env.CartItem[] }>('cartItems')
+          .lean()
+
+        if (cart) {
+          cartProducts = cart.cartItems.map((cartItem) => cartItem.product.toString())
+        }
+      }
+
       for (const product of wishlist.products) {
         product.inWishlist = true
+
+        if (cartProducts.includes(product._id.toString())) {
+          product.inCart = true
+        }
       }
+
       res.json(wishlist)
       return
     }

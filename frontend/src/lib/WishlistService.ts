@@ -61,12 +61,13 @@ export const clearWishlist = async (wishlistId: string): Promise<number> => (
  * Get wishlist.
  *
  * @param {string} wishlistId
+ * * @param {string} cartId
  * @returns {Promise<wexcommerceTypes.Wishlist>}
  */
-export const getWishlist = async (wishlistId: string): Promise<wexcommerceTypes.Wishlist> => (
+export const getWishlist = async (wishlistId: string, cartId: string): Promise<wexcommerceTypes.Wishlist> => (
   fetchInstance
     .GET(
-      `/api/wishlist/${wishlistId}`,
+      `/api/wishlist/${wishlistId}?cartId=${cartId}`,
       [await UserService.authHeader()],
     )
     .then((res) => res.data)

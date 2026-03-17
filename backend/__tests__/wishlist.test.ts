@@ -167,20 +167,20 @@ describe('GET /api/wishlist/:id', () => {
 
     // test success
     let res = await request(app)
-      .get(`/api/wishlist/${WISHLIST_ID}`)
+      .get(`/api/wishlist/${WISHLIST_ID}?cartId=${testHelper.GetRandromObjectIdAsString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeTruthy()
 
     // test wishlist not found
     res = await request(app)
-      .get(`/api/wishlist/${testHelper.GetRandromObjectIdAsString()}`)
+      .get(`/api/wishlist/${testHelper.GetRandromObjectIdAsString()}?cartId=${testHelper.GetRandromObjectIdAsString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
     // test failure (id not valid)
     res = await request(app)
-      .get('/api/wishlist/0')
+      .get('/api/wishlist/0?cartId=0')
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(400)
   })
