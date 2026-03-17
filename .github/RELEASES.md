@@ -1,5 +1,20 @@
 # Releases
 
+## [wexCommerce ](https://github.com/aelassas/wexcommerce/releases/tag/v4.3) – 2026-03-17
+
+* fix(frontend): ensure cart items stay in sync with wishlist
+* fix(backend): optimize mailer with transporter pooling
+* fix(backend): enable secure connection for implicit TLS SMTP server
+* fix(auth): handle apple login email persistence for web and mobile
+* chore(deps): update dependencies
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v4.3/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v4.3)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v4.3)
+
 ## [wexCommerce 4.2](https://github.com/aelassas/wexcommerce/releases/tag/v4.2) – 2026-03-01
 
 * fix(security): enforce backend verification of mobile social auth tokens
