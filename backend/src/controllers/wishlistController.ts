@@ -108,6 +108,10 @@ export const getWishlist = async (req: Request, res: Response) => {
     if (wishlist) {
       let cartProducts: string[] = []
       if (cartId) {
+        if (!helper.isValidObjectId(cartId as string)) {
+          throw new Error('Cart Id not valid')
+        }
+
         const cart = await Cart
           .findById(cartId)
           .populate<{ cartItems: env.CartItem[] }>('cartItems')
