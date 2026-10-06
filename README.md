@@ -95,10 +95,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 
 ## Stats for Nerds
 
-[![LoC Prod](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/loc-prod.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml)
-[![LoC Tests](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/loc-tests.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml)
 [![LoC Total](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/loc-total.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml)
-
 
 ## Support & Contributing
 
