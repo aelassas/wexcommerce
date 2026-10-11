@@ -10,6 +10,8 @@ wexCommerce provides an end-to-end e-commerce solution for single-vendor stores.
 - **License**: MIT License
 - **Tech Stack**: Node.js, Express, Next.js / React, TypeScript, MongoDB, Docker
 
+> **Full Text Documentation:** For full-text concatenated markdown documentation, see [llms-full.txt](https://wexcommerce.github.io/llms-full.txt).
+
 ## Key Capabilities
 
 - **Catalog & Inventory Management**: Product catalog organization, stock tracking, categories, image management, and localized product details.
