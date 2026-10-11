@@ -1,6 +1,22 @@
 # Releases
 
-## [wexCommerce ](https://github.com/aelassas/wexcommerce/releases/tag/v4.3) – 2026-03-17
+## [wexCommerce 4.4](https://github.com/aelassas/wexcommerce/releases/tag/v4.4) – 2026-10-11
+
+* fix(backend): prevent IDOR on order details
+* fix(frontend): store PayPal sessionId during checkout
+* fix(frontend): scroll to top after successful PayPal payment
+* chore(admin,frontend): upgrade to Next.js 16.2
+* chore(deps): update dependencies
+* ci(loc.yml): switch to `cloc` for accurate code-only line counts
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v4.4/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v4.4)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v4.4)
+
+## [wexCommerce 4.3](https://github.com/aelassas/wexcommerce/releases/tag/v4.3) – 2026-03-17
 
 * fix(frontend): ensure cart items stay in sync with wishlist
 * fix(backend): optimize mailer with transporter pooling
