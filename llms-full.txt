@@ -1,0 +1,2721 @@
+# wexCommerce - Full Documentation Context
+
+> Auto-generated full documentation context compiled from the wexCommerce Wiki.
+> Generated on: 2026-10-11T07:23:42Z
+
+---
+
+# Document: Add New Language
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Add-New-Language
+
+To add a new language proceed as follow:
+
+### API
+1. Add the new language [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) to `LANGUAGES` setting in `api/src/config/env.config.ts`.
+2. Create a new file *<ISO 639-1 code>.ts* in *src/lang* folder and add the translations in it.
+3. Add your translations to *src/lang/i18n.ts*
+
+### Backend
+1. Add the new language [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) and its label in *src/config/env.config.ts* in `LANGUAGES` constant.
+2. Add the translations in *src/lang/\*.ts*.
+
+### Frontend
+Add the translations in *src/lang/\*.ts*.
+
+
+---
+
+# Document: Advanced Features
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Advanced-Features
+
+## Table Of Contents
+   1. [Security Practices](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features#security-practices)
+   1. [Monitoring & Logging](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features#monitoring--logging)
+   1. [Deployment & Hosting](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features#deployment--hosting)
+   1. [Analytics & Tracking](https://github.com/aelassas/wexcommerce/wiki/Advanced-Features#analytics--tracking)
+
+## Security Practices
+
+wexCommerce prioritizes security across all layers of the platform:
+
+- **Authentication**: The backend uses JWT (JSON Web Tokens) for secure and stateless authentication. Tokens are signed with a secret and validated on each request to protect user sessions.
+- **Refresh Tokens**: Long-lived refresh tokens are securely issued and rotated to maintain user sessions without exposing credentials.
+- **Secure Headers**: Security-related HTTP headers are enforced using the `helmet` middleware to protect against common vulnerabilities such as clickjacking and MIME sniffing.
+- **CORS Policies**: Configured to allow only trusted domains to interact with the backend.
+- **Rate Limiting**: Protects against brute-force attacks and abusive traffic patterns.
+- **HTTPS in Production**: All production traffic is served over HTTPS to ensure encrypted communication.
+- **Secure Payments**: Integrated with Stripe and PayPal using tokenized and encrypted transactions.
+
+## Monitoring & Logging
+
+Logging and debugging are vital for observability and diagnostics:
+
+- **Backend Logging**: Uses Winston, a flexible and extensible logging library that supports multiple transports (console, file, remote).
+- **MongoDB Debug Mode**: Can be enabled in `backend/.env` to trace database operations:
+  
+```env
+WC_DB_DEBUG=true
+```
+
+You can find more details about logging [here](https://github.com/aelassas/wexcommerce/wiki/Logs).
+
+wexCommerce supports error monitoring through Sentry (https://sentry.io), which captures runtime exceptions and performance metrics. This is useful for diagnosing backend issues in production or staging environments. You can find more details [here](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry).
+
+
+## Deployment & Hosting
+
+wexCommerce supports multiple deployment strategies:
+
+- **Docker Support**: Includes Docker and Docker Compose for development and production setups.
+- **VPS Hosting**: The app can also be deployed manually on virtual private servers (self-hosted).
+- **Static File Delivery**: Uses Express to serve frontend static assets.
+- **Environment Configuration**:
+  - All environments (development, staging, production) are configured via `.env` files.
+  - Self-hosted Deployment instructions and required variables are documented [here](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted)).
+  - Docker Deployment instructions and required variables are documented [here](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)).
+
+## Analytics & Tracking
+
+- **Google Analytics**: The frontend includes optional integration with Google Analytics. Configured via:
+
+```env
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED=false
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+```
+
+- Analytics support:
+  - Page view tracking in SPA mode
+  - Environment-aware logic (disabled in development)
+  - GDPR-friendly implementation
+
+Configuration is located in `frontend/.env`.
+
+
+
+---
+
+# Document: Change Language and Currency
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Change-Language-and-Currency
+
+To change the language and the currency, go to the settings page from the admin dashboard and change the language (English or French), the currency and Stripe currency in Locale settings section.
+
+For Stripe currency, it should be one of the following [supported currencies](https://docs.stripe.com/currencies).
+
+---
+
+# Document: Demo Database
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Demo-Database
+
+## Windows, Linux and macOS
+
+* Download and install [MongoDB Command Line Database Tools](https://www.mongodb.com/try/download/database-tools).
+* On Windows, add MongoDB Command Line Database Tools folder to `Path` environment variable.
+* Download [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/latest) down to your machine.
+* Restore wexCommerce demo db by using the following command:
+```
+mongorestore --verbose --drop --gzip --host=127.0.0.1 --port=27017 --username=admin --password=$PASSWORD --authenticationDatabase=admin --nsInclude="wexcommerce.*" --archive=wexcommerce.gz
+```
+
+Don't forget to set `$PASSWORD`.
+
+If you are using MongoDB Atlas, put your MongoDB Atlas URI in `--uri=` command line argument:
+```
+mongorestore --verbose --drop --gzip --uri="mongodb://admin:$PASSWORD@127.0.0.1:27017/bookcars?authSource=admin&appName=wexcommerce" --nsInclude="wexcommerce.*" --nsFrom="wexcommerce.*" --nsTo="wexcommerce.*" --archive=wexcommerce.gz
+```
+
+Copy the content of `cdn` in /var/www/cdn/wexcommerce on Linux or C:\inetpub\wwwroot\cdn\wexcommerce on Windows.
+
+cdn/wexcommerce/ contains the following folders:
+
+* cdn/wexcommerce/users: This folder contains users images.
+* cdn/wexcommerce/categories: This folder contains categories images.
+* cdn/wexcommerce/products: This folder contains products images.
+* cdn/wexcommerce/temp: This folder contains temporay files.
+
+Finally, add full access permissions to the user who is running wexCommerce API on /var/www/cdn/wexcommerce on Linux or C:\inetpub\wwwroot\cdn\wexcommerce on Windows.
+
+**Admin user**: admin@wexcommerce.com<br>
+**Password**: sh0ppingC4rt<br>
+
+**Frontend user**: jdoe@wexcommerce.com<br>
+**Password**: sh0ppingC4rt<br>
+
+## Docker
+
+To restore wexCommerce demo database in Docker containers, proceed as follow:
+
+1. Make sure that the ports 80, 8001, 4005 and 27017 are not used by any application.
+
+2. Download and install <a href="https://www.mongodb.com/try/download/database-tools">MongoDB Command Line Database Tools</a> on the host machine.
+
+3. Add MongoDB Command Line Database Tools folder to <code>Path</code> environment variable in your host machine.
+
+4. Download <a href="https://github.com/aelassas/wexcommerce/releases/latest">wexcommerce-db.zip</a> down to your host machine and unzip it.
+
+5. Run the compose:<pre lang="Shell">docker compose up</pre>
+
+6. Go to <i>wexcommerce-db</i> folder and restore the demo database with the following command:
+    ```
+    mongorestore --verbose --drop --gzip --host=127.0.0.1 --port=27017 --username=admin --password=$PASSWORD --authenticationDatabase=admin --nsInclude="wexcommerce.*" --archive=wexcommerce.gz
+    ```
+    Replace <code>$PASSWORD</code> with your MongoDB password set in your `docker-compose.yml`.
+
+7. Get API Docker container name with the following command:<pre lang="Shell">docker container ls</pre>
+The name should be something like this: <code>src-mi-api-1</code>
+
+8. Go to <i>wexcommerce-db/cdn</i> folder and copy the content of the folder in API container with the following commands: 
+```
+docker cp ./cdn/categories src-mi-api-1:/var/www/cdn/wexcommerce
+docker cp ./cdn/products src-mi-api-1:/var/www/cdn/wexcommerce
+```
+Replace <code>src-mi-api-1</code> with your API container name.
+
+9. Go to the backend http://localhost:8001 and login with the following credentials:<br>
+**Admin user**: admin@wexcommerce.com<br>
+**Password**: sh0ppingC4rt<br>
+
+10. Go to the frontend http://localhost and login with the following credentials:<br>
+**Frontend user**: jdoe@wexcommerce.com<br>
+**Password**: sh0ppingC4rt<br>
+
+
+
+
+---
+
+# Document: FAQ
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/FAQ
+
+Here you can find a list of questions and answers relating to wexCommerce.
+
+## Is wexCommerce free to use, or are certain features restricted?
+
+wexCommerce is free and open source. wexCommerce is licensed under the [MIT License](https://github.com/aelassas/wexcommerce/blob/main/LICENSE). The license is permissive. This means that you have lots of permission and few restrictions. You have permission to use the code, to modify it, to publish it, make something with it and sell it, etc.
+
+There are no locked or restricted features. If you deploy wexCommerce on your server, you can access all features available.
+
+## Can people use wexCommerce for commercial needs? Any licensing caveats?
+
+wexCommerce is licensed under the MIT License, which means you can absolutely use it for commercial purposes.
+
+You can:
+
+* Use it in commercial and proprietary products
+* Modify and adapt the code as you need
+* Distribute your modified or original version
+* Use it privately or publicly
+
+Caveats:
+
+* You must include the original license and copyright notice in your distribution
+* There is no warranty—you use it at your own risk (this clause protects open-source maintainers from liability while allowing users full freedom to use the software)
+
+There are no other restrictions. It's a very permissive and business-friendly license.
+
+## Is there a link to make donations?
+
+Yes, of course. You can donate through [GitHub Sponsorship](https://github.com/sponsors/aelassas) (one-time or monthly), [PayPal](https://www.paypal.me/aelassaspp), or [Buy Me a Coffee](https://buymeacoffee.com/aelassas). Even a simple star on the [GitHub repository](https://github.com/aelassas/wexcommerce) helps spread the word and is greatly appreciated.
+
+## How do I set up brevo as email provider?
+
+First sign up on brevo: https://www.brevo.com/products/transactional-email/
+
+Second, enter your information, check "I don't have a website" if you don't have one.
+
+Third, enter your address.
+
+Fourth, enter info about your organization and check "I don’t want to receive product updates, marketing tips, or promotional content from Brevo. "
+
+Fifth, enter and validate your phone number.
+
+Finally, you will enter the brevo dashboard.
+
+Click on your organization name on the top right corner, then SMTP & API.
+
+Copy your STMP login email (ex: 8627f6003@smtp-brevo.com), and your master password.
+
+Paste your smtp login and master password in api/.env:
+
+```
+BC_SMTP_HOST=smtp-relay.brevo.com
+BC_SMTP_PORT=587
+BC_SMTP_USER=your-smtp-login@smtp-brevo.com
+BC_SMTP_PASS=YOUR_MASTER_PASSWORD
+BC_SMTP_FROM=your-email-used-in-sign-up@gmail.com
+
+```
+
+Once you finished with .env, restart wexcommerce.service:
+
+```
+sudo systemctl restart wexcommerce.service
+```
+
+## How to create admin account?
+
+If you don't want to use the demo database, create an admin user by running the following command from `backend` to create admin user:
+```
+npm run setup
+```
+
+It will create an admin user with the email provided in `WC_ADMIN_EMAIL` in `backend/.env` and `sh0ppingC4rt` as password. Change the password once you log in to admin panel.
+
+To delete the admin user with the email provided in `WC_ADMIN_EMAIL`, run the following command from `backend`:
+```
+npm run reset
+```
+
+## I want to make changes to wexCommerce but still get updates from the main repository. How can I do that?
+
+You can [fork the repository](https://github.com/aelassas/wexcommerce), make your changes, and keep your version in sync with the main repository by following the [Fork, Customize, and Sync](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync) guide.
+
+---
+
+# Document: Fork, Customize, and Sync
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync
+
+This guide shows you how to fork the wexCommerce repository, make your own changes, and keep your version up to date with the official repository.
+
+
+
+## Table of Contents
+
+1. [Fork the Repository](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync#1-fork-the-repository)  
+2. [Clone Your Fork](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync#2-clone-your-fork)  
+3. [Add Upstream Remote](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync#3-add-upstream-remote)  
+4. [Sync Your Main Branch](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync#4-sync-your-main-branch)  
+5. [Create a Feature Branch](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync#5-create-a-feature-branch)  
+6. [Keep Your Feature Branch in Sync](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync#6-keep-your-feature-branch-in-sync)  
+7. [Creating a Pull Request](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync#7-creating-a-pull-request)
+
+
+
+## 1. Fork the Repository
+
+**Fork** the repository on GitHub:  
+[https://github.com/aelassas/wexcommerce](https://github.com/aelassas/wexcommerce)
+
+## 2. Clone Your Fork
+
+**Clone** your fork:
+```bash
+git clone https://github.com/your-username/wexcommerce.git
+cd wexcommerce
+```
+
+## 3. Add Upstream Remote
+
+**Add the original repository as an upstream remote**:
+```bash
+git remote add upstream https://github.com/aelassas/wexcommerce.git
+```
+
+## 4. Sync Your Main Branch
+
+**Fetch the latest changes** from the original repo and **merge** them into your `main` branch:
+```bash
+git fetch upstream
+git checkout main
+git merge upstream/main
+```
+
+## 5. Create a Feature Branch
+
+Create a new branch for your custom changes:
+```bash
+git checkout -b my-custom-feature
+```
+
+If you're just making small quick changes, working directly on `main` might be simpler initially. But for ongoing customization or multiple features, branching is the safer, cleaner approach.
+
+## 6. Keep Your Feature Branch in Sync
+
+To keep your custom branch in sync with the latest upstream `main`, do this regularly:
+```bash
+# Fetch upstream changes
+git fetch upstream
+
+# Switch to your main branch and update it
+git checkout main
+git merge upstream/main
+
+# Switch back to your custom branch
+git checkout my-custom-feature
+
+# Merge the updated main into your branch
+git merge main
+```
+
+This way, your feature branch stays up to date with the official repository without losing your changes.
+
+## 7. Creating a Pull Request
+
+If you've made changes to your fork and want to contribute them back to the official repository:
+
+1. **Push your branch to your GitHub fork:**
+   ```bash
+   git push origin my-custom-feature
+   ```
+
+2. Go to your fork on GitHub (e.g. `https://github.com/your-username/wexcommerce`) and you'll see a **"Compare & pull request"** button.
+
+3. Click the button and create a pull request (PR) targeting the `main` branch of the original repository (`aelassas/wexcommerce`).
+
+4. Include a clear title and description explaining what your PR changes or fixes.
+
+Once submitted, your PR will be reviewed, and if everything looks good, it can be merged into the official repository.
+
+
+---
+
+# Document: Free SSL Setup Guide
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide
+
+This guide shows you how to generate and renew free SSL certificates using Let's Encrypt and Certbot on Ubuntu for your wexCommerce deployment.
+
+## Table of Contents
+
+1. [Prerequisites](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide#1-prerequisites)  
+2. [Generate Your Certificate](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide#2-generate-your-certificate)  
+3. [Certificate Renewal](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide#3-certificate-renewal)  
+   3.1. [Test Renewal](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide#31-test-renewal)  
+   3.2. [Schedule Automatic Renewal](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide#32-schedule-automatic-renewal)  
+4. [You're All Set!](https://github.com/aelassas/wexcommerce/wiki/Free-SSL-Setup-Guide#4-youre-all-set)
+
+## Prerequisites
+1. Install NGINX:
+```bash
+sudo apt update
+sudo apt install nginx-full
+```
+2. Install Certbot via Snap:
+```bash
+sudo apt update
+sudo apt install snapd
+sudo snap install core; sudo snap refresh core
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+
+## Generate Your Certificate
+Run the following command to generate and install an SSL certificate using Certbot with NGINX:
+
+```bash
+sudo certbot --nginx -d domain.com -d www.domain.com -d admin.domain.com --redirect --non-interactive --agree-tos --email your-email@example.com --keep-until-expiring
+```
+
+* Replace `domain.com` with your domain.
+* Replace `your-email@example.com` with your email.
+
+Your frontend will be accessible at https://domain.com
+
+Your admin panel will be accessible at https://admin.domain.com
+
+To ensure HTTP requests are redirected to HTTPS and to allow Let's Encrypt challenges, add the following NGINX configuration:
+```nginx
+server {
+    listen 80;
+    server_name _;
+
+    # Serve Let's Encrypt challenges without redirect
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/lib/letsencrypt;
+        default_type "text/plain";
+        allow all;
+    }
+
+    # Redirect everything else to HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+```
+
+Then check the configuration and restart NGINX:
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+To make sure certbot certificate renewal will work, create a test challenge file to ensure Certbot will work properly:
+```bash
+sudo mkdir -p /var/lib/letsencrypt/.well-known/acme-challenge
+echo "ok" | sudo tee /var/lib/letsencrypt/.well-known/acme-challenge/test
+curl http://domain.com/.well-known/acme-challenge/test
+```
+
+You should see `ok` in the output.
+
+## Certificate Renewal
+
+### Test Renewal
+To test certificate renewal, run the following command:
+```bash
+sudo certbot renew --dry-run
+```
+
+### Schedule Automatic Renewal
+To automatically renew certificates before expiration, edit the crontab::
+```bash
+sudo crontab -e
+```
+
+Add the following cron job:
+```
+00 00,12 * * * certbot renew --post-hook "systemctl restart nginx wexcommerce"
+```
+This cron job is scheduled to run Certbot twice daily and restart the `nginx` and `wexcommerce` services if certificates are renewed. It runs at 00:00 and 12:00 every day.
+
+## You're All Set!
+
+Your wexCommerce platform is now secured with HTTPS and automatically renews certificates before they expire. Be sure to monitor email notifications from Let's Encrypt in case of issues.
+
+
+---
+
+# Document: Home
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Home
+
+wexCommerce is an open-source and cross-platform single-vendor marketplace offering an SEO-optimized web storefront and a powerful admin panel for managing your online store.
+
+<!--
+wexCommerce is designed for startups looking to launch a single-vendor marketplace, developers who want to study a full-stack codebase for learning, and anyone looking for a solid foundation to build a custom single-vendor marketplace.
+
+It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) [payment gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways), allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
+
+You can deploy your own marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). Optimized for SEO and efficient performance, wexCommerce can run on a lightweight 1GB RAM droplet—ideal for cost-conscious businesses. Hosting can cost around $5/month with cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
+-->
+
+From the frontend, customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
+
+From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
+
+Use the sidebar to browse installation guides, configuration options, and more.
+
+## Features
+
+### Commerce Management
+* Stock management
+* Order management
+* Payment management
+* Customer management
+
+### Flexible Payments
+* [Multiple payment gateways supported (Stripe, PayPal)](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
+* Multiple payment methods: Credit Card, Cash on Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link
+
+### Delivery Options
+* Home delivery
+* Store withdrawal
+
+### Internationalization & Access
+* Multiple language support: English, French
+* Multiple login options: Google, Facebook, Apple, Email
+
+### Security & Performance
+* Secure against XSS, XST, CSRF, MITM, and DDoS attacks
+* Responsive admin panel and frontend
+* SEO-compliant: product pages are indexable by search engines for better visibility
+* [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
+* Error monitoring and performance tracing with [Sentry](https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry)
+
+### Supported Platforms
+* Web
+* Docker
+
+---
+
+# Document: Installing (Docker)
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)
+
+wexCommerce can run in a Docker container on Linux and Docker Desktop for Windows or Mac.
+
+## Docker Image
+
+This section describes how to build wexCommerce Docker image and run it in a Docker container.
+
+1. Make sure that the ports 80, 443, 8001, 4005 and 27017 are not used by any other application on the host machine.
+2. Clone wexCommerce repo:
+```bash
+git clone https://github.com/aelassas/wexcommerce.git
+```
+3. Set your MongoDB password in ./docker-compose.yml:
+```yaml
+version: "3.8"
+services:
+  mongo:
+    image: mongo:latest
+    command: mongod --quiet --logpath /dev/null
+    restart: always
+    environment:
+      # Provide your credentials here
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - 27018:27017
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - 8084:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+    depends_on:
+      - mongo
+
+  wc-backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    restart: always
+    ports:
+      - 4005:4005
+    depends_on:
+      - mongo
+    volumes:
+      - cdn:/var/www/cdn/wexcommerce
+      - backend_logs:/wexcommerce/backend/logs
+
+  wc-admin:
+    build:
+      context: .
+      dockerfile: ./admin/Dockerfile
+    depends_on:
+      - wc-backend
+    ports:
+      - 8005:8005
+    restart: always
+
+  wc-nginx-admin:
+    build:
+      context: .
+      dockerfile: ./admin/nginx/Dockerfile
+    depends_on:
+      - wc-admin
+    ports:
+      - 8001:8001
+    restart: always
+
+  wc-frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    depends_on:
+      - wc-backend
+    ports:
+      - 8006:8006
+    volumes:
+      - cdn:/var/www/cdn/wexcommerce
+    restart: always
+
+  wc-nginx-frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/nginx/Dockerfile
+    depends_on:
+      - wc-frontend
+    ports:
+      - 8080:80
+      - 4443:443
+    volumes:
+      - cdn:/var/www/cdn/wexcommerce
+    restart: always
+
+volumes:
+  cdn:
+  mongodb_data:
+  mongodb_config:
+  backend_logs:
+```
+4. Create `./backend/.env.docker`:
+```env
+# General
+NODE_ENV=production
+
+# Backend server
+WC_PORT=4005
+WC_HTTPS=false
+WC_PRIVATE_KEY=/etc/ssl/wexcommerce.key
+WC_CERTIFICATE=/etc/ssl/wexcommerce.crt
+
+# MongoDB
+WC_DB_URI="mongodb://admin:admin@mongo:27017/wexcommerce?authSource=admin&appName=wexcommerce"
+WC_DB_SSL=false
+WC_DB_SSL_KEY=/etc/ssl/wexcommerce.key
+WC_DB_SSL_CERT=/etc/ssl/wexcommerce.crt
+WC_DB_SSL_CA=/etc/ssl/wexcommerce.ca.pem
+WC_DB_DEBUG=false
+
+# Auth
+WC_COOKIE_SECRET=COOKIE_SECRET
+WC_AUTH_COOKIE_DOMAIN=localhost
+WC_ADMIN_HOST=http://localhost:8001/
+WC_FRONTEND_HOST=http://localhost:8080/
+WC_JWT_SECRET=JWT_SECRET
+WC_JWT_EXPIRE_AT=86400 # in seconds
+WC_TOKEN_EXPIRE_AT=86400 # in seconds
+WC_APPLE_CLIENT_ID_WEB=APPLE_CLIENT_ID_WEB
+WC_GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID
+WC_FACEBOOK_APP_ID=FACEBOOK_APP_ID
+WC_FACEBOOK_APP_SECRET=FACEBOOK_APP_SECRET
+
+# Email (SMTP)
+WC_SMTP_HOST=in-v3iljet.com
+WC_SMTP_PORT=587
+WC_SMTP_USER=USER
+WC_SMTP_PASS="PASSWORD"
+WC_SMTP_FROM=admin@wexcommerce.com
+
+# CDN (File storage)
+WC_CDN_ROOT=/var/www/cdn
+WC_CDN_USERS=/var/www/cdn/wexcommerce/users
+WC_CDN_TEMP_USERS=/var/www/cdn/wexcommerce/temp/users
+WC_CDN_CATEGORIES=/var/www/cdn/wexcommerce/categories
+WC_CDN_TEMP_CATEGORIES=/var/www/cdn/wexcommerce/temp/categories
+WC_CDN_PRODUCTS=/var/www/cdn/wexcommerce/products
+WC_CDN_TEMP_PRODUCTS=/var/www/cdn/wexcommerce/temp/products
+
+# Localization
+WC_DEFAULT_LANGUAGE=en
+WC_DEFAULT_CURRENCY=\$
+WC_DEFAULT_STRIPE_CURRENCY=USD
+
+# Stripe
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+WC_STRIPE_SESSION_EXPIRE_AT=82800
+
+# PayPal
+WC_PAYPAL_SANDBOX=true
+WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+WC_PAYPAL_CLIENT_SECRET=PAYPAL_CLIENT_SECRET
+
+# Admin
+WC_ADMIN_EMAIL=admin@wexcommerce.com
+
+# Google reCAPTCHA
+WC_RECAPTCHA_SECRET=RECAPTCHA_SECRET
+
+# Misc
+WC_WEBSITE_NAME=wexCommerce
+
+# IPInfo (Geo lookup)
+WC_IPINFO_API_KEY=IPINFO_API_KEY # Required for more than 1000 requests/day
+WC_IPINFO_DEFAULT_COUNTRY=US
+
+# Language cleanup job
+WC_BATCH_SIZE=1000 # Number of documents to process per batch when deleting obsolete language values
+
+# Sentry (Error monitoring & performance tracing)
+WC_ENABLE_SENTRY=false # Set to true to enable Sentry
+WC_SENTRY_DSN_BACKEND=https://your_dsn@o0.ingest.sentry.io/your_project_id # Your backend DSN (keep this secret)
+WC_SENTRY_TRACES_SAMPLE_RATE=1.0 # Tracing sample rate: 1.0 = 100%, 0.1 = 10%, 0 = disabled
+```
+Set the following settings:
+```env
+WC_DB_URI=mongodb://admin:PASSWORD@mongo:27017/wexcommerce?authSource=admin&appName=wexcommerce
+WC_SMTP_HOST=in-v3iljet.com
+WC_SMTP_PORT=587
+WC_SMTP_USER=USER
+WC_SMTP_PASS=PASSWORD
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+WC_WEBSITE_NAME=wexCommerce
+```
+
+If you want to use PayPal payment gateway instead of Stripe, you need to set:
+```env
+WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+WC_PAYPAL_CLIENT_SECRET=PAYPAL_CLIENT_SECRET
+```
+
+If you want to test PayPal in sandbox mode, leave:
+```env
+WC_PAYPAL_SANDBOX=true
+```
+
+If you want to test PayPal in [production mode](https://developer.paypal.com/api/rest/production/), set:
+```env
+WC_PAYPAL_SANDBOX=false
+```
+
+5. Create `./admin/.env.docker`:
+```env
+NEXT_PUBLIC_WC_SERVER_API_HOST=http://wc-backend:4005
+NEXT_PUBLIC_WC_CLIENT_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_PAGE_SIZE=30
+NEXT_PUBLIC_WC_CDN_USERS=http://localhost/cdn/wexcommerce/users
+NEXT_PUBLIC_WC_CDN_CATEGORIES=http://localhost/cdn/wexcommerce/categories
+NEXT_PUBLIC_WC_CDN_TEMP_CATEGORIES=http://localhost/cdn/wexcommerce/temp/categories
+NEXT_PUBLIC_WC_CDN_PRODUCTS=http://localhost/cdn/wexcommerce/products
+NEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS=http://localhost/cdn/wexcommerce/temp/products
+```
+6. Create `./frontend/.env.docker`:
+```env
+NEXT_PUBLIC_WC_SERVER_API_HOST=http://wc-backend:4005
+NEXT_PUBLIC_WC_CLIENT_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_PAGE_SIZE=30
+NEXT_PUBLIC_WC_CDN_USERS=http://localhost/cdn/wexcommerce/users
+NEXT_PUBLIC_WC_CDN_CATEGORIES=http://localhost/cdn/wexcommerce/categories
+NEXT_PUBLIC_WC_CDN_PRODUCTS=http://localhost/cdn/wexcommerce/products
+NEXT_PUBLIC_WC_FB_APP_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_APPLE_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_GG_APP_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_PAYMENT_GATEWAY=Stripe # Stripe or PayPal
+NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY
+NEXT_PUBLIC_WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED=false
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_WC_RECAPTCHA_ENABLED=false
+NEXT_PUBLIC_WC_RECAPTCHA_SITE_KEY=XXXXXXXXXX
+NEXT_PUBLIC_WC_WEBSITE_NAME=wexCommerce
+NEXT_PUBLIC_WC_CONTACT_EMAIL=info@wexcommerce.io
+```
+
+For Google Auth, you need to create OAuth 2.0 client ID and add your domains [here](https://console.cloud.google.com/apis/credentials) and set `NEXT_PUBLIC_WC_GG_APP_ID`. Do the samething for `NEXT_PUBLIC_WC_APPLE_ID` [here](https://developer.apple.com/account/resources/) and `NEXT_PUBLIC_WC_FB_APP_ID` [here](https://developers.facebook.com/apps/).
+
+If you want to use PayPal payment gateway instead of Stripe, you need to set this:
+```env
+NEXT_PUBLIC_WC_PAYMENT_GATEWAY=PayPal # Stripe or PayPal
+NEXT_PUBLIC_WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+```
+You can find PayPal client id in [PayPal Developer Dashboard](https://developer.paypal.com/dashboard).
+
+7. Run the compose:
+```bash
+docker compose up
+```
+
+If you run wexCommerce for the first time, you'll start from an empty database. An admin user is automatically created with the email provided in `WC_ADMIN_EMAIL` in `backend/.env.docker` and `sh0ppingC4rt` as password. Change the password once you login to the admin panel.
+
+If you want to rebuild and run the images, run the following command:
+```bash
+docker compose up --build --force-recreate --no-deps wc-backend wc-admin wc-frontend
+```
+
+If you want to rebuild and run the images without cache, run the following command:
+```bash
+docker compose build --no-cache wc-backend wc-admin wc-frontend
+docker compose up
+```
+
+## Demo database
+To restore the demo database, follow these [instructions](https://github.com/aelassas/wexcommerce/wiki/Demo-Database#docker).
+
+## SSL
+This section will walk you through how to enable SSL in the backend server, the admin panel and the frontend.
+
+Copy your private key `wexcommerce.key` and your certificate `wexcommerce.crt` in `./`.
+
+`wexcommerce.key` will be loaded as `/etc/ssl/wexcommerce.key` and `wexcommerce.crt` will be loaded as `/etc/ssl/wexcommerce.crt` in `./docker-compose.yml`.
+
+### Backend
+For the backend server, update `./backend/.env.docker` as follows to enable SSL:
+```env
+WC_HTTPS=true
+WC_PRIVATE_KEY=/etc/ssl/wexcommerce.key
+WC_CERTIFICATE=/etc/ssl/wexcommerce.crt
+WC_BACKEND_HOST=https://domain.com:8001/
+WC_FRONTEND_HOST=https://domain.com/
+```
+
+### Admin Panel
+For the admin panel, update the following options in `./admin/.env.docker`:
+```env
+NEXT_PUBLIC_WC_CLIENT_API_HOST=https://domain.com:4005
+NEXT_PUBLIC_WC_PAGE_SIZE=30
+NEXT_PUBLIC_WC_CDN_USERS=https://domain.com/cdn/wexcommerce/users
+NEXT_PUBLIC_WC_CDN_CATEGORIES=https://domain.com/cdn/wexcommerce/categories
+NEXT_PUBLIC_WC_CDN_TEMP_CATEGORIES=https://domain.com/cdn/wexcommerce/temp/categories
+NEXT_PUBLIC_WC_CDN_PRODUCTS=https://domain.com/cdn/wexcommerce/products
+NEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS=https://domain.com/cdn/wexcommerce/temp/products
+```
+
+Then, update `./admin/nginx/nginx.conf` as follows to enable SSL:
+```nginx
+server
+{
+    listen 8001 ssl;
+
+    ssl_certificate_key /etc/ssl/wexcommerce.key;
+    ssl_certificate /etc/ssl/wexcommerce.crt;
+
+    error_page 497 301 =307 https://$host:$server_port$request_uri;
+
+	location /
+	{
+		proxy_pass http://wc-admin:8005;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host:$server_port;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_set_header X-Forwarded-Host $http_host:$server_port;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_cache_bypass $http_upgrade;
+
+		# Disable buffering for streaming support
+		proxy_buffering off;
+		proxy_set_header X-Accel-Buffering no;
+	}
+}
+
+```
+
+### Frontend
+For the frontend, update the following options in `./frontend/.env.docker`:
+```env
+NEXT_PUBLIC_WC_CLIENT_API_HOST=https://domain.com:4005
+NEXT_PUBLIC_WC_PAGE_SIZE=30
+NEXT_PUBLIC_WC_CDN_USERS=https://domain.com/cdn/wexcommerce/users
+NEXT_PUBLIC_WC_CDN_CATEGORIES=https://domain.com/cdn/wexcommerce/categories
+NEXT_PUBLIC_WC_CDN_PRODUCTS=https://domain.com/cdn/wexcommerce/products
+NEXT_PUBLIC_WC_FB_APP_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_APPLE_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_GG_APP_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED=false
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+
+```
+
+Then, update `./frontend/nginx.conf` as follows to enable SSL:
+```nginx
+server {
+    listen 80;
+    return 301 https://$host$request_uri;
+}
+server
+{
+    listen 443 ssl;
+
+    ssl_certificate_key /etc/ssl/wexcommerce.key;
+    ssl_certificate /etc/ssl/wexcommerce.crt;
+
+	location /
+	{
+		proxy_pass http://wc-frontend:8006;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host:$server_port;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_set_header X-Forwarded-Host $http_host:$server_port;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_cache_bypass $http_upgrade;
+
+		# Disable buffering for streaming support
+		proxy_buffering off;
+		proxy_set_header X-Accel-Buffering no;
+	}
+
+	location /cdn
+	{
+		alias /var/www/cdn;
+	}
+}
+```
+
+### docker-compose.yml
+Update `./docker-compose.yml` to load your private key `wexcommerce.key` and your certificate `wexcommerce.crt`, and add the port 443 to the frontend as follows:
+```yaml
+version: "3.8"
+services:
+  mongo:
+    image: mongo:latest
+    command: mongod --quiet --logpath /dev/null
+    restart: always
+    environment:
+      # Provide your credentials here
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - 27018:27017
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - 8084:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+    depends_on:
+      - mongo
+
+  wc-backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    restart: always
+    ports:
+      - 4005:4005
+    depends_on:
+      - mongo
+    volumes:
+      - cdn:/var/www/cdn/wexcommerce
+      - backend_logs:/wexcommerce/backend/logs
+      - ./wexcommerce.key:/etc/ssl/wexcommerce.key
+      - ./wexcommerce.crt:/etc/ssl/wexcommerce.crt
+
+  wc-admin:
+    build:
+      context: .
+      dockerfile: ./admin/Dockerfile
+    depends_on:
+      - wc-backend
+    ports:
+      - 8005:8005
+    restart: always
+
+  wc-nginx-admin:
+    build:
+      context: .
+      dockerfile: ./admin/nginx/Dockerfile
+    depends_on:
+      - wc-admin
+    ports:
+      - 8001:8001
+    restart: always
+    volumes:
+      - ./wexcommerce.key:/etc/ssl/wexcommerce.key
+      - ./wexcommerce.crt:/etc/ssl/wexcommerce.crt
+
+  wc-frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    depends_on:
+      - wc-backend
+    ports:
+      - 8006:8006
+    volumes:
+      - cdn:/var/www/cdn/wexcommerce
+    restart: always
+
+  wc-nginx-frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/nginx/Dockerfile
+    depends_on:
+      - wc-frontend
+    ports:
+      - 8080:80
+      - 4443:443
+    volumes:
+      - cdn:/var/www/cdn/wexcommerce
+      - ./wexcommerce.key:/etc/ssl/wexcommerce.key
+      - ./wexcommerce.crt:/etc/ssl/wexcommerce.crt
+    restart: always
+
+volumes:
+  cdn:
+  mongodb_data:
+  mongodb_config:
+  backend_logs:
+```
+
+Rebuild and run Docker images:
+```bash
+docker compose up --build --force-recreate --no-deps api nginx-admin nginx-frontend
+```
+
+---
+
+# Document: Installing (Self‐hosted)
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Installing-(Self‐hosted)
+
+wexCommerce is cross-platform and can run and be installed on Windows, Linux and macOS.
+
+Before we begin, make sure you have at least 1GB of SWAP memory on your server. You can add it with this [script](https://github.com/aelassas/bookcars/blob/main/__scripts/swap.sh). If you add SWAP memory, you can use your own MongoDB server by installing [MongoDB Community Edition](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/).
+
+Below are the installation instructions on Linux.
+
+## Prerequisites
+
+1. Install [git](https://github.com/git-guides/install-git), [Node.js](https://github.com/nodesource/distributions/blob/master/README.md#debinstall), [NGINX](https://ubuntu.com/tutorials/install-and-configure-nginx#1-overview), [MongoDB](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/) and [mongosh](https://www.mongodb.com/docs/mongodb-shell/install/). If you want to use [MongoDB Atlas](https://www.mongodb.com/atlas/database), you can skip installing and configuring MongoDB.
+
+2. Configure MongoDB:
+
+```
+mongosh
+```
+
+Create admin user:
+
+```
+db = db.getSiblingDB('admin')
+db.createUser({ user: "admin", pwd: "PASSWORD", roles:["root"]})
+```
+
+Replace PASSWORD with a strong password.
+
+Secure MongoDB:
+
+```
+sudo nano /etc/mongod.conf
+```
+
+Change configuration as follows:
+
+```
+net:
+  port: 27017
+  bindIp: 0.0.0.0
+
+security:
+  authorization: enabled
+```
+
+Restart MongoDB service:
+
+```
+sudo systemctl restart mongod.service
+sudo systemctl status mongod.service
+```
+
+## Instructions
+
+1. Clone wexCommerce repo:
+```
+cd /opt
+sudo git clone https://github.com/aelassas/wexcommerce.git
+```
+
+2. Add permissions:
+```
+sudo chown -R $USER:$USER /opt/wexcommerce
+sudo chmod -R +x /opt/wexcommerce/__scripts
+```
+
+3. Create deployment shortcut:
+```
+sudo ln -s /opt/wexcommerce/__scripts/wc-deploy.sh /usr/local/bin/wc-deploy
+```
+
+4. Create wexCommerce services:
+```
+sudo cp /opt/wexcommerce/__services/wexcommerce.service /etc/systemd/system
+sudo systemctl enable wexcommerce.service
+
+sudo cp /opt/wexcommerce/__services/wexcommerce-admin.service /etc/systemd/system
+sudo systemctl enable wexcommerce-admin.service
+
+sudo cp /opt/wexcommerce/__services/wexcommerce-frontend.service /etc/systemd/system
+sudo systemctl enable wexcommerce-frontend.service
+```
+
+5. Add /opt/wexcommerce/backend/.env file:
+
+```env
+# General
+NODE_ENV=production
+
+# Backend server
+WC_PORT=4005
+WC_HTTPS=false
+WC_PRIVATE_KEY=/etc/ssl/wexcommerce.key
+WC_CERTIFICATE=/etc/ssl/wexcommerce.crt
+
+# MongoDB
+WC_DB_URI="mongodb://127.0.0.1:27017/wexcommerce?authSource=admin&appName=wexcommerce"
+WC_DB_SSL=false
+WC_DB_SSL_KEY=/etc/ssl/wexcommerce.key
+WC_DB_SSL_CERT=/etc/ssl/wexcommerce.crt
+WC_DB_SSL_CA=/etc/ssl/wexcommerce.ca.pem
+WC_DB_DEBUG=false
+
+# Auth
+WC_COOKIE_SECRET=COOKIE_SECRET
+WC_AUTH_COOKIE_DOMAIN=localhost
+WC_ADMIN_HOST=http://localhost:8005/
+WC_FRONTEND_HOST=http://localhost/
+WC_JWT_SECRET=JWT_SECRET
+WC_JWT_EXPIRE_AT=86400 # in seconds
+WC_TOKEN_EXPIRE_AT=86400 # in seconds
+WC_APPLE_CLIENT_ID_WEB=APPLE_CLIENT_ID_WEB
+WC_GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID
+WC_FACEBOOK_APP_ID=FACEBOOK_APP_ID
+WC_FACEBOOK_APP_SECRET=FACEBOOK_APP_SECRET
+
+# Email (SMTP)
+WC_SMTP_HOST=in-v3iljet.com
+WC_SMTP_PORT=587
+WC_SMTP_USER=USER
+WC_SMTP_PASS="PASSWORD"
+WC_SMTP_FROM=admin@wexcommerce.com
+
+# CDN (File storage)
+WC_CDN_ROOT=/var/www/cdn
+WC_CDN_USERS=/var/www/cdn/wexcommerce/users
+WC_CDN_TEMP_USERS=/var/www/cdn/wexcommerce/temp/users
+WC_CDN_CATEGORIES=/var/www/cdn/wexcommerce/categories
+WC_CDN_TEMP_CATEGORIES=/var/www/cdn/wexcommerce/temp/categories
+WC_CDN_PRODUCTS=/var/www/cdn/wexcommerce/products
+WC_CDN_TEMP_PRODUCTS=/var/www/cdn/wexcommerce/temp/products
+
+# Localization
+WC_DEFAULT_LANGUAGE=en
+WC_DEFAULT_CURRENCY=\$
+WC_DEFAULT_STRIPE_CURRENCY=USD
+
+# Stripe
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+WC_STRIPE_SESSION_EXPIRE_AT=82800
+
+# PayPal
+WC_PAYPAL_SANDBOX=true
+WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+WC_PAYPAL_CLIENT_SECRET=PAYPAL_CLIENT_SECRET
+
+# Admin
+WC_ADMIN_EMAIL=admin@wexcommerce.com
+
+# Google reCAPTCHA
+WC_RECAPTCHA_SECRET=RECAPTCHA_SECRET
+
+# Misc
+WC_WEBSITE_NAME=wexCommerce
+
+# IPInfo (Geo lookup)
+WC_IPINFO_API_KEY=IPINFO_API_KEY # Required for more than 1000 requests/day
+WC_IPINFO_DEFAULT_COUNTRY=US
+
+# Language cleanup job
+WC_BATCH_SIZE=1000 # Number of documents to process per batch when deleting obsolete language values
+
+# Sentry (Error monitoring & performance tracing)
+WC_ENABLE_SENTRY=false # Set to true to enable Sentry
+WC_SENTRY_DSN_BACKEND=https://your_dsn@o0.ingest.sentry.io/your_project_id # Your backend DSN (keep it secret)
+WC_SENTRY_TRACES_SAMPLE_RATE=1.0 # Tracing sample rate: 1.0 = 100%, 0.1 = 10%, 0 = disabled
+```
+
+You must configure the following options:
+```env
+WC_DB_URI=mongodb://127.0.0.1:27017/wexcommerce?authSource=admin&appName=wexcommerce
+WC_COOKIE_SECRET=COOKIE_SECRET
+WC_AUTH_COOKIE_DOMAIN=localhost
+WC_ADMIN_HOST=http://localhost:8005/
+WC_FRONTEND_HOST=http://localhost/
+WC_JWT_SECRET=JWT_SECRET
+WC_SMTP_HOST=in-v3iljet.com
+WC_SMTP_PORT=587
+WC_SMTP_USER=USER
+WC_SMTP_PASS=PASSWORD
+WC_SMTP_FROM=admin@wexcommerce.com
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+WC_WEBSITE_NAME=wexCommerce
+```
+
+For SMTP, You can use [brevo](https://www.brevo.com/products/transactional-email/) or any other transactional email provider.
+
+If you want to enable HTTPS, You must configure the following options:
+```env
+WC_HTTPS=true
+WC_PRIVATE_KEY=/etc/ssl/wexcommerce.key
+WC_CERTIFICATE=/etc/ssl/wexcommerce.crt
+```
+
+If you want to use MongoDB Atlas, put you MongoDB Atlas URI in `WC_DB_URI` otherwise replace `PASSWORD` in `WC_DB_URI` with your MongoDB password. Replace `JWT_SECRET` with a secret token. Finally, set the SMTP options. SMTP options are necessary for sign up. You can use [sendgrid](https://sendgrid.com/) or any other transactional email provider. 
+
+If you choose sendgrid, create an account on [sendgrid.com](https://sendgrid.com/), login and go to the dashboard. On the left panel, click on **Email API**, then on **Integration Guide**. Then, choose **SMTP Relay** and follow the steps. You will be prompted to create an API Key. Once you create the API Key and verify the smtp relay, copy the API key in `WC_SMTP_PASS` in *./api/.env*. Sendgrid's free plan allows to send up to 100 emails/day. If you need to send more than 100 emails/day, switch to a paid plan or choose another transactional email provider.
+
+`COOKIE_SECRET` and `JWT_SECRET` should at least be 32 characters long, but the longer the better. You can use an online password generator and set the password length to 32 or longer.
+
+The following settings are very important and if they are not set properly, authentication won't work:
+```env
+WC_AUTH_COOKIE_DOMAIN=localhost
+WC_ADMIN_HOST=http://localhost:8001/
+WC_FRONTEND_HOST=http://localhost/
+```
+
+To enable stripe payment gateway, sign up for a [stripe](https://stripe.com/) account, fill the forms and save the publishable key and the secret key from stripe dashboard. Then, set the secret key in the following option in *api/.env*:
+```
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+```
+
+Don't expose stripe secret key on a website or embed it in a mobile application. It must be secret and stored securely in the server-side.
+
+In stripe, all accounts have a total of four API keys by default-two for test mode and two for live mode:
+
+* **Test mode secret key**: Use this key to authenticate requests on your server when in test mode. By default, you can use this key to perform any API request without restriction.
+* **Test mode publishable key**: Use this key for testing purposes in your web or mobile app’s client-side code.
+* **Live mode secret key**: Use this key to authenticate requests on your server when in live mode. By default, you can use this key to perform any API request without restriction.
+* **Live mode publishable key**: Use this key, when you’re ready to launch your app, in your web or mobile app’s client-side code.
+
+Use only your test API keys for testing. This ensures that you don't accidentally modify your live customers or charges.
+
+If you want to use PayPal payment gateway instead of Stripe, you need to set:
+```env
+WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+WC_PAYPAL_CLIENT_SECRET=PAYPAL_CLIENT_SECRET
+```
+
+If you want to test PayPal in sandbox mode, leave:
+```env
+WC_PAYPAL_SANDBOX=true
+```
+
+If you want to test PayPal in [production mode](https://developer.paypal.com/api/rest/production/), set:
+```env
+WC_PAYPAL_SANDBOX=false
+```
+
+Replace `localhost` with an IP or FQDN. That is if you access the admin panel from https://\<FQDN\>:8001/. `WC_ADMIN_HOST` should be https://\<FQDN\>:3001/. The same goes for `WC_FRONTEND_HOST`. And `WC_AUTH_COOKIE_DOMAIN` should be FQDN.
+
+If you don't want to use the demo database, create an admin user by running the following command from `backend` to create admin user:
+```
+npm run setup
+```
+
+It will create an admin user with the email provided in `WC_ADMIN_EMAIL` in `backend/.env` and `sh0ppingC4rt` as password. Change the password once you log in to admin panel.
+
+To delete the admin user with the email provided in `WC_ADMIN_EMAIL`, run the following command from `backend`:
+```bash
+npm run reset
+```
+
+6. Add /opt/wexcommerce/admin/.env file and set the following options:
+```env
+NEXT_PUBLIC_WC_SERVER_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_CLIENT_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_CDN_USERS=http://localhost:4005/cdn/wexcommerce/users
+NEXT_PUBLIC_WC_CDN_TEMP_USERS=http://localhost:4005/cdn/wexcommerce/temp/users
+NEXT_PUBLIC_WC_CDN_CATEGORIES=http://localhost:4005/cdn/wexcommerce/categories
+NEXT_PUBLIC_WC_CDN_TEMP_CATEGORIES=http://localhost:4005/cdn/wexcommerce/temp/categories
+NEXT_PUBLIC_WC_CDN_PRODUCTS=http://localhost:4005/cdn/wexcommerce/products
+NEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS=http://localhost:4005/cdn/wexcommerce/temp/products
+```
+
+Replace `localhost` with your FQDN.
+
+7. Add /opt/wexcommerce/frontend/.env file and set the sollowing options:
+```env
+NEXT_PUBLIC_WC_SERVER_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_CLIENT_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_PAGE_SIZE=30
+NEXT_PUBLIC_WC_CDN_USERS=http://localhost:4005/cdn/wexcommerce/users
+NEXT_PUBLIC_WC_CDN_CATEGORIES=http://localhost:4005/cdn/wexcommerce/categories
+NEXT_PUBLIC_WC_CDN_PRODUCTS=http://localhost:4005/cdn/wexcommerce/products
+NEXT_PUBLIC_WC_FB_APP_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_APPLE_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_GG_APP_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_PAYMENT_GATEWAY=Stripe # Stripe or PayPal
+NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY
+NEXT_PUBLIC_WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED=false
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_WC_RECAPTCHA_ENABLED=false
+NEXT_PUBLIC_WC_RECAPTCHA_SITE_KEY=XXXXXXXXXX
+NEXT_PUBLIC_WC_WEBSITE_NAME=wexCommerce
+NEXT_PUBLIC_WC_CONTACT_EMAIL=info@wexcommerce.io
+```
+
+For Google Auth, you need to create OAuth 2.0 client ID and add your domains [here](https://console.cloud.google.com/apis/credentials) and set `NEXT_PUBLIC_WC_GG_APP_ID`. Do the samething for `NEXT_PUBLIC_WC_APPLE_ID` [here](https://developer.apple.com/account/resources/) and `NEXT_PUBLIC_WC_FB_APP_ID` [here](https://developers.facebook.com/apps/).
+
+If you want to use PayPal payment gateway instead of Stripe, you need to set this:
+```env
+NEXT_PUBLIC_WC_PAYMENT_GATEWAY=PayPal # Stripe or PayPal
+NEXT_PUBLIC_WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+```
+You can find PayPal client id in [PayPal Developer Dashboard](https://developer.paypal.com/dashboard).
+
+8. Add your domain name to `admin/next.config.mjs`:
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: false,
+  poweredByHeader: false,
+  images: {
+    //
+    // Add your admin panel domain here
+    //
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'wexcommerce.com',
+        pathname: '**',
+      },
+    ],
+    unoptimized: true,
+  },
+  //
+  // Nginx will do gzip compression. We disable
+  // compression here so we can prevent buffering
+  // streaming responses
+  //
+  compress: false,
+  //
+  // Add your admin panel domain here
+  //
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['localhost:8001', 'wexcommerce.com:8001'],
+    },
+  },
+}
+
+export default nextConfig
+```
+
+Replace `wexcommerce.com` with your domain.
+
+9. Add your domain name to `frontend/next.config.mjs`:
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: false,
+  poweredByHeader: false,
+  images: {
+    //
+    // Add your frontend domain here
+    //
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'wexcommerce.com',
+        pathname: '**',
+      },
+    ],
+    unoptimized: true,
+  },
+  //
+  // Nginx will do gzip compression. We disable
+  // compression here so we can prevent buffering
+  // streaming responses
+  //
+  compress: false,
+  //
+  // Add your frontend domain here
+  //
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['localhost', 'wexcommerce.com'],
+    },
+  },
+}
+
+export default nextConfig
+```
+
+Replace `wexcommerce.com` with your domain.
+
+10. Configure NGINX:
+```
+sudo nano /etc/nginx/sites-available/default
+```
+
+Change the configuration as follows (NGINX reverse proxy):
+```nginx
+#
+# redirect http to https
+#
+server
+{
+	listen 80 default_server;
+	server_name _;
+	return 301 https://$host$request_uri;
+}
+
+#
+# frontend
+#
+server
+{
+	listen 443 ssl;
+	server_name _;
+
+	ssl_certificate_key /etc/letsencrypt/live/wexdev.dynv6.net/privkey.pem;
+	ssl_certificate /etc/letsencrypt/live/wexdev.dynv6.net/fullchain.pem;
+
+	include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+	ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+	access_log /var/log/nginx/wexcommerce.frontend.access.log;
+	error_log /var/log/nginx/wexcommerce.frontend.error.log;
+
+	location /
+	{
+		proxy_pass http://127.0.0.1:8006;
+
+		proxy_http_version 1.1;
+		proxy_read_timeout 900;
+		proxy_redirect off;
+
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host;
+
+		proxy_set_header X-Forwarded-Host $host;
+
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Real-IP $remote_addr;
+
+		proxy_set_header X-Forwarded-Proto $scheme;
+
+		proxy_cache_bypass $http_upgrade;
+	}
+}
+
+#
+# admin panel
+#
+server
+{
+	listen 8001 ssl;
+	server_name _;
+
+	error_page 497 301 =307 https://$host:$server_port$request_uri;
+
+	ssl_certificate_key /etc/letsencrypt/live/wexdev.dynv6.net/privkey.pem;
+	ssl_certificate /etc/letsencrypt/live/wexdev.dynv6.net/fullchain.pem;
+
+	include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+	ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+	access_log /var/log/nginx/wexcommerce.admin.access.log;
+	error_log /var/log/nginx/wexcommerce.admin.error.log;
+
+	location /
+	{
+		proxy_pass http://127.0.0.1:8005;
+
+		proxy_http_version 1.1;
+		proxy_read_timeout 900;
+
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host:$server_port;
+		proxy_set_header X-Forwarded-Host $host:$server_port;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Real-IP $remote_addr;
+
+		proxy_cache_bypass $http_upgrade;
+	}
+}
+
+```
+
+Then, check nginx configuration and start nginx service:
+```
+sudo nginx -t
+sudo systemctl restart nginx.service
+sudo systemctl status nginx.service
+```
+
+11. enable firewall and open wexCommerce ports:
+```
+sudo ufw enable
+sudo ufw allow 4005/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 8001/tcp
+```
+
+12. Deploy wexCommerce:
+```
+wc-deploy all
+```
+
+wexCommerce admin panel is accessible on port 8001 and the frontend is accessible on port 80.
+
+You can change language and currency from settings page from the admin panel.
+
+---
+
+# Document: Integration Tests and Coverage
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Integration-Tests-and-Coverage
+
+Below are the instructions to run integration tests and build coverage report.
+
+## Integration Tests
+
+* Follow the steps regarding the API in [Run from Source](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source) documentation
+* To run the integration tests, run the following commands:
+```
+cd ./api
+npm install
+npm test
+```
+
+Integration tests are written in `./backend/__tests__/` folder.
+
+## Coverage
+Once you run integration tests, a coverage report is automatically built in:
+```
+./api/coverage
+```
+
+You can also view the coverage report on [coveralls](https://coveralls.io/github/aelassas/wexcommerce?branch=main) or [codecov](https://codecov.io/gh/aelassas/wexcommerce).
+
+---
+
+# Document: Logs
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Logs
+
+All API logs are written in `./api/logs/all.log`.
+
+API Error logs are also written in `./api/logs/error.log`.
+
+---
+
+# Document: Overview
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Overview
+
+## Frontend
+
+From the frontend, customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
+
+![Frontend](https://wexcommerce.github.io/content/cover.png)
+![Frontend](https://wexcommerce.github.io/content/frontend-1.png)
+![Frontend](https://wexcommerce.github.io/content/frontend-7-bis.png)
+![Frontend](https://wexcommerce.github.io/content/frontend-8-bis.png)
+![Frontend](https://wexcommerce.github.io/content/frontend-2.png)
+![Frontend](https://wexcommerce.github.io/content/frontend-3.png)
+![Frontend](https://wexcommerce.github.io/content/frontend-4.png)
+![Frontend](https://wexcommerce.github.io/content/frontend-5.png)
+![Frontend](https://wexcommerce.github.io/content/frontend-6.png)
+
+## Admin Panel
+
+From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
+
+![Backend](https://wexcommerce.github.io/content/backend-1.png)
+![Backend](https://wexcommerce.github.io/content/backend-2.png)
+![Backend](https://wexcommerce.github.io/content/backend-3.png)
+![Backend](https://wexcommerce.github.io/content/backend-4.png)
+![Backend](https://wexcommerce.github.io/content/backend-5.png)
+![Backend](https://wexcommerce.github.io/content/backend-6.png)
+![Backend](https://wexcommerce.github.io/content/backend-7.png)
+
+---
+
+# Document: Payment Gateways
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways
+
+wexCommerce supports Stripe and PayPal payment gateways. You can choose either to use Stripe or PayPal for payments.
+
+## Supported countries
+* [List of countries supported by Stripe](https://stripe.com/global)
+* [List of countries supported by PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide)
+
+If your country is not supported by Stripe, you can check if it is supported by PayPal. And if so, you can use PayPal payment gateway instead of Stripe.
+
+## Stripe Configuration
+### Backend
+To use Stripe, you need to set the following settings in `backend/.env`:
+```
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+```
+You can find Stripe secret key in [Stripe Developer Dashboard](https://dashboard.stripe.com/login).
+
+### Frontend
+To use Stripe, you need to set the following settings in frontend/.env:
+```
+NEXT_PUBLIC_WC_PAYMENT_GATEWAY=Stripe # Stripe or PayPal
+NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY
+```
+
+You can find Stripe publishable key in [Stripe Developer Dashboard](https://dashboard.stripe.com/login).
+
+You can test Stripe payments with the following card number: **4242 4242 4242 4242**
+
+For expiration date, set any date in the future. For CCV, set any three digits number.
+
+## Paypal Configuration
+### Backend
+To use PayPal, you need to set the following settings in `backend/.env`:
+```
+WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+WC_PAYPAL_CLIENT_SECRET=PAYPAL_CLIENT_SECRET
+WC_PAYPAL_SANDBOX=true
+```
+You can find PayPal keys in [PayPal Developer Dashboard](https://developer.paypal.com/dashboard).
+
+For production, once your PayPal app is [verified](https://developer.paypal.com/api/rest/production/) you need to set:
+```
+WC_PAYPAL_SANDBOX=false
+```
+
+At the beginning, toggle sandbox mode in [PayPal Developer Dashboard](https://developer.paypal.com/dashboard) and test that everything is working in sandbox mode.
+
+When you want to go live, you need to register your application with PayPal.
+
+**Important:** Before you register your PayPal application, make sure the status of the PayPal account used to submit the application is verified.
+
+To submit your website, log into the [PayPal Developer website](https://developer.paypal.com/) by using the credentials of the PayPal account registered to the application owner.
+
+**Note:** The PayPal account associated with the application must be a verified Premier or verified Business account.
+
+Click My Apps & Credentials and toggle to the Live tab.
+
+That's it. Your app will be reviewed and registered by PayPal. You can find more details about the review process [here](https://developer.paypal.com/api/rest/production/#link-aboutthereviewprocess).
+
+### Frontend
+To use PayPal, you need to set the following settings in frontend/.env:
+```
+NEXT_PUBLIC_WC_PAYMENT_GATEWAY=PayPal # Stripe or PayPal
+NEXT_PUBLIC_WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+```
+
+You can test PayPal payments with the following card number: **4005 5192 0000 0004**
+
+For expiration date, set any date in the future. For CCV, set any three digits number.
+
+If you want to debug PayPal integration in case of issues, you can set:
+```
+NEXT_PUBLIC_WC_PAYPAL_DEBUG=true
+```
+
+And check the browser console logs.
+
+---
+
+# Document: Run from Source (Docker)
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Run-from-Source-(Docker)
+
+1. Create `backend/.env.docker.development` (Check `backend/.env.docker.development.example`)
+
+2. Create `admin/.env.docker.development` (Check `admin/.env.docker.development.example`)
+
+3. Create `frontend/.env.docker.development` (Check `frontend/.env.docker.development.example`)
+
+4. Start the development environment:
+
+   ```bash
+   docker-compose -f docker-compose.dev.yml up -d
+   ```
+
+5. Access the services:
+
+   - Frontend: http://localhost:8006
+   - Admin Panel: http://localhost:8005
+   - Backend Server: http://localhost:4005
+   - MongoDB Express: http://localhost:8084
+
+An admin user is automatically created with the email provided in `BC_ADMIN_EMAIL` in backend/.env.docker and `sh0ppingC4rt` as password. You can change the password once you login to the admin panel.
+
+---
+
+# Document: Run from Source
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Run-from-Source
+
+Below are the instructions to run wexCommerce from code.
+
+# Prerequisites
+
+1. Install [git](https://github.com/git-guides/install-git), [Node.js](https://github.com/nodesource/distributions/blob/master/README.md#debinstall), [MongoDB](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/) and [mongosh](https://www.mongodb.com/docs/mongodb-shell/install/). If you want to use [MongoDB Atlas](https://www.mongodb.com/atlas/database), you can skip installing and configuring MongoDB.
+
+2. Configure MongoDB:
+```
+mongosh
+```
+Create admin user:
+```
+db = db.getSiblingDB('admin')
+db.createUser({ user: "admin", pwd: "PASSWORD", roles:["root"]})
+```
+
+Replace `PASSWORD` with a strong password.
+
+Secure MongoDB by changing mongod.conf as follows:
+```
+net:
+  port: 27017
+  bindIp: 0.0.0.0
+
+security:
+  authorization: enabled
+```
+
+Restart MongoDB service.
+
+# Instructions
+
+1. Clone wexCommerce repo:
+```
+sudo git clone https://github.com/aelassas/wexcommerce.git
+```
+
+2. Add backend/.env file:
+
+```env
+# General
+NODE_ENV=development
+
+# Backend server
+WC_PORT=4005
+WC_HTTPS=false
+WC_PRIVATE_KEY=/etc/ssl/wexcommerce.key
+WC_CERTIFICATE=/etc/ssl/wexcommerce.crt
+
+# MongoDB
+WC_DB_URI="mongodb://127.0.0.1:27017/wexcommerce?authSource=admin&appName=wexcommerce"
+WC_DB_SSL=false
+WC_DB_SSL_KEY=/etc/ssl/wexcommerce.key
+WC_DB_SSL_CERT=/etc/ssl/wexcommerce.crt
+WC_DB_SSL_CA=/etc/ssl/wexcommerce.ca.pem
+WC_DB_DEBUG=false
+
+# Auth
+WC_COOKIE_SECRET=COOKIE_SECRET
+WC_AUTH_COOKIE_DOMAIN=localhost
+WC_ADMIN_HOST=http://localhost:8005/
+WC_FRONTEND_HOST=http://localhost:8006/
+WC_JWT_SECRET=JWT_SECRET
+WC_JWT_EXPIRE_AT=86400
+WC_TOKEN_EXPIRE_AT=86400
+
+# Email (SMTP)
+WC_SMTP_HOST=in-v3iljet.com
+WC_SMTP_PORT=587
+WC_SMTP_USER=USER
+WC_SMTP_PASS="PASSWORD"
+WC_SMTP_FROM=admin@wexcommerce.com
+
+# CDN (File storage)
+WC_CDN_ROOT=/var/www/cdn
+WC_CDN_USERS=/var/www/cdn/wexcommerce/users
+WC_CDN_TEMP_USERS=/var/www/cdn/wexcommerce/temp/users
+WC_CDN_CATEGORIES=/var/www/cdn/wexcommerce/categories
+WC_CDN_TEMP_CATEGORIES=/var/www/cdn/wexcommerce/temp/categories
+WC_CDN_PRODUCTS=/var/www/cdn/wexcommerce/products
+WC_CDN_TEMP_PRODUCTS=/var/www/cdn/wexcommerce/temp/products
+
+# Localization
+WC_DEFAULT_LANGUAGE=en
+WC_DEFAULT_CURRENCY=\$
+WC_DEFAULT_STRIPE_CURRENCY=USD
+
+# Stripe
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+WC_STRIPE_SESSION_EXPIRE_AT=82800
+
+# PayPal
+WC_PAYPAL_SANDBOX=true
+WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+WC_PAYPAL_CLIENT_SECRET=PAYPAL_CLIENT_SECRET
+
+# Admin
+WC_ADMIN_EMAIL=admin@wexcommerce.com
+
+# Google reCAPTCHA
+WC_RECAPTCHA_SECRET=RECAPTCHA_SECRET
+
+# Misc
+WC_WEBSITE_NAME=wexCommerce
+
+# IPInfo (Geo lookup)
+WC_IPINFO_API_KEY=IPINFO_API_KEY # Required for more than 1000 requests/day
+WC_IPINFO_DEFAULT_COUNTRY=US
+
+# Language cleanup job
+WC_BATCH_SIZE=1000 # Number of documents to process per batch when deleting obsolete language values
+
+# Sentry (Error monitoring & performance tracing)
+WC_ENABLE_SENTRY=false # Set to true to enable Sentry
+WC_SENTRY_DSN_BACKEND=https://your_dsn@o0.ingest.sentry.io/your_project_id # Your backend DSN (keep it secret)
+WC_SENTRY_TRACES_SAMPLE_RATE=1.0 # Tracing sample rate: 1.0 = 100%, 0.1 = 10%, 0 = disabled
+```
+
+You must configure the following options:
+```env
+WC_DB_URI=mongodb://127.0.0.1:27017/wexcommerce?authSource=admin&appName=wexcommerce
+WC_SMTP_HOST=in-v3iljet.com
+WC_SMTP_PORT=587
+WC_SMTP_USER=USER
+WC_SMTP_PASS=PASSWORD
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+
+WC_CDN_USERS=/var/www/cdn/wexcommerce/users
+WC_CDN_TEMP_USERS=/var/www/cdn/wexcommerce/temp/users
+WC_CDN_CATEGORIES=/var/www/cdn/wexcommerce/categories
+WC_CDN_TEMP_CATEGORIES=/var/www/cdn/wexcommerce/temp/categories
+WC_CDN_PRODUCTS=/var/www/cdn/wexcommerce/products
+WC_CDN_TEMP_PRODUCTS=/var/www/cdn/wexcommerce/temp/products
+WC_WEBSITE_NAME=wexCommerce
+```
+
+On Windows, create `C:\inetpub\wwwroot\cdn` folder and add full access right to current user then update the following settings with these values:
+```env
+WC_CDN_ROOT=C:\inetpub\wwwroot\cdn
+WC_CDN_USERS=C:\inetpub\wwwroot\cdn\wexcommerce\users
+WC_CDN_TEMP_USERS=C:\inetpub\wwwroot\cdn\wexcommerce\temp\users
+WC_CDN_CATEGORIES=C:\inetpub\wwwroot\cdn\wexcommerce\categories
+WC_CDN_TEMP_CATEGORIES=C:\inetpub\wwwroot\cdn\wexcommerce\temp\categories
+WC_CDN_PRODUCTS=C:\inetpub\wwwroot\cdn\wexcommerce\products
+WC_CDN_TEMP_PRODUCTS=C:\inetpub\wwwroot\cdn\wexcommerce\temp\products
+```
+
+If you want to use MongoDB Atlas, put you MongoDB Atlas URI in `WC_DB_URI` otherwise replace `PASSWORD` in `WC_DB_URI` with your MongoDB password. Replace `JWT_SECRET` with a secret token. Finally, set the SMTP options. SMTP options are necessary for sign up. You can use [sendgrid](https://sendgrid.com/) or any other transactional email provider. 
+
+If you choose sendgrid, create an account on [sendgrid.com](https://sendgrid.com/), login and go to the dashboard. On the left panel, click on **Email API**, then on **Integration Guide**. Then, choose **SMTP Relay** and follow the steps. You will be prompted to create an API Key. Once you create the API Key and verify the smtp relay, copy the API key in `WC_SMTP_PASS` in *./api/.env*. Sendgrid's free plan allows to send up to 100 emails/day. If you need to send more than 100 emails/day, switch to a paid plan or choose another transactional email provider.
+
+`COOKIE_SECRET` and `JWT_SECRET` should at least be 32 characters long, but the longer the better. You can use an online password generator and set the password length to 32 or longer.
+
+To enable stripe payment gateway, sign up for a [stripe](https://stripe.com/) account, fill the forms and save the publishable key and the secret key from stripe dashboard. Then, set the secret key in the following option in *api/.env*:
+```env
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+```
+
+Don't expose stripe secret key on a website or embed it in a mobile application. It must be secret and stored securely in the server-side. Use stripe in test mode.
+
+Use only your test API keys for testing. This ensures that you don't accidentally modify your live customers or charges.
+
+If you want to use PayPal payment gateway instead of Stripe, you need to set:
+```env
+WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+WC_PAYPAL_CLIENT_SECRET=PAYPAL_CLIENT_SECRET
+```
+
+If you want to test PayPal in sandbox mode, leave:
+```env
+WC_PAYPAL_SANDBOX=true
+```
+
+If you want to test PayPal in [production mode](https://developer.paypal.com/api/rest/production/), set:
+```env
+WC_PAYPAL_SANDBOX=false
+```
+
+Run the backend server:
+```bash
+cd ./backend
+npm install
+npm run setup
+npm run dev
+```
+
+3. Add admin/.env file and set the following options:
+```env
+NEXT_PUBLIC_WC_SERVER_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_CLIENT_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_PAGE_SIZE=30
+NEXT_PUBLIC_WC_CDN_USERS=http://localhost:4005/cdn/wexcommerce/users
+NEXT_PUBLIC_WC_CDN_TEMP_USERS=http://localhost:4005/cdn/wexcommerce/temp/users
+NEXT_PUBLIC_WC_CDN_CATEGORIES=http://localhost:4005/cdn/wexcommerce/categories
+NEXT_PUBLIC_WC_CDN_TEMP_CATEGORIES=http://localhost:4005/cdn/wexcommerce/temp/categories
+NEXT_PUBLIC_WC_CDN_PRODUCTS=http://localhost:4005/cdn/wexcommerce/products
+NEXT_PUBLIC_WC_CDN_TEMP_PRODUCTS=http://localhost:4005/cdn/wexcommerce/temp/products
+```
+
+Run the admin panel:
+```bash
+cd ./admin
+npm install --force
+npm run dev
+```
+
+4. Add frontend/.env file:
+```env
+NEXT_PUBLIC_WC_SERVER_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_CLIENT_API_HOST=http://localhost:4005
+NEXT_PUBLIC_WC_PAGE_SIZE=30
+NEXT_PUBLIC_WC_CDN_USERS=http://localhost:4005/cdn/wexcommerce/users
+NEXT_PUBLIC_WC_CDN_CATEGORIES=http://localhost:4005/cdn/wexcommerce/categories
+NEXT_PUBLIC_WC_CDN_PRODUCTS=http://localhost:4005/cdn/wexcommerce/products
+NEXT_PUBLIC_WC_FB_APP_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_APPLE_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_GG_APP_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_PAYMENT_GATEWAY=Stripe # Stripe or PayPal
+NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY
+NEXT_PUBLIC_WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ENABLED=false
+NEXT_PUBLIC_WC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_WC_RECAPTCHA_ENABLED=false
+NEXT_PUBLIC_WC_RECAPTCHA_SITE_KEY=XXXXXXXXXX
+NEXT_PUBLIC_WC_WEBSITE_NAME=wexCommerce
+NEXT_PUBLIC_WC_CONTACT_EMAIL=info@wexcommerce.io
+```
+
+You must configure the following options:
+```env
+NEXT_PUBLIC_WC_CDN_USERS=http://localhost:4005/cdn/wexcommerce/users
+NEXT_PUBLIC_WC_CDN_CATEGORIES=http://localhost:4005/cdn/wexcommerce/categories
+NEXT_PUBLIC_WC_CDN_PRODUCTS=http://localhost:4005/cdn/wexcommerce/products
+NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY
+```
+
+To use social login, set these options:
+```env
+NEXT_PUBLIC_WC_FB_APP_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_APPLE_ID=XXXXXXXXXX
+NEXT_PUBLIC_WC_GG_APP_ID=XXXXXXXXXX
+```
+
+To enable stripe payment gateway, set stripe publishable key in `NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY`. You can retrieve it from stripe dashboard.
+
+If you want to use PayPal payment gateway instead of Stripe, you need to set this:
+```env
+NEXT_PUBLIC_WC_PAYMENT_GATEWAY=PayPal # Stripe or PayPal
+NEXT_PUBLIC_WC_PAYPAL_CLIENT_ID=PAYPAL_CLIENT_ID
+```
+You can find PayPal client id in [PayPal Developer Dashboard](https://developer.paypal.com/dashboard).
+
+Run the frontend:
+```bash
+cd ./frontend
+npm install --force
+npm run dev
+```
+
+5. Configure http://localhost:4005/cdn
+
+* On Windows, create`C:\inetpub\wwwroot\cdn\wexcommerce` folder and add full access permissions to the user who is running wexCommerce backend on `C:\inetpub\wwwroot\cdn`.
+* On Linux, create `/var/www/cdn` folder and add full access permissions to the user who is running wexCommerce backend on `/var/www/cdn`.
+<!--
+6. Create an admin user from http://localhost:8005/sign-up
+-->
+You can change language and currency from settings page in the backend.
+
+---
+
+# Document: Setup Sentry
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Setup-Sentry
+
+# Enabling Sentry Error Monitoring
+
+wexCommerce supports error monitoring through Sentry (https://sentry.io), which captures runtime exceptions and performance metrics. This is useful for diagnosing backend issues in production or staging environments.
+
+
+
+## Prerequisites
+
+1. Create a free account at https://sentry.io.
+2. Create a new **Node.js** project in Sentry for the wexCommerce backend.
+3. Copy the provided DSN URL.
+
+
+
+## Configuration
+
+Sentry integration is optional and controlled by environment variables in the backend.
+
+### Update your `backend/.env`:
+```env
+WC_ENABLE_SENTRY=true
+WC_SENTRY_DSN_BACKEND=https://your_dsn@o0.ingest.sentry.io/your_project_id
+WC_SENTRY_TRACES_SAMPLE_RATE=0.1
+```
+
+Do not commit the real DSN to version control.
+
+
+## How It Works
+
+- When `WC_ENABLE_SENTRY=true` and `WC_SENTRY_DSN_BACKEND` is defined, the backend initializes Sentry at startup.
+- Runtime errors (especially in `try/catch` blocks or unhandled routes) are automatically reported to Sentry.
+- When `WC_SENTRY_TRACES_SAMPLE_RATE` is is greater than 0, transactions will be sent to Sentry. Sentry will capture performance transactions, showing request duration, slow routes, and trace spans. Set to `0` to disable tracing. 0.1 means 10% of transactions will be sent to Sentry. 1 means 100% of transactions will be sent to Sentry. We recommend adjusting this value in production.
+- The integration complements the existing Winston-based logging system.
+
+
+
+## Testing Sentry Integration
+
+To verify Sentry is working:
+
+1. Temporarily set `WC_ENABLE_SENTRY=true` and use a real DSN.
+2. Trigger an error in a controller:
+```js
+throw new Error('Test Sentry integration')
+```
+3. Check your Sentry dashboard under **Issues**.
+
+
+
+## Notes
+
+- Sentry is only enabled if both:
+  - `WC_ENABLE_SENTRY=true`
+  - `WC_SENTRY_DSN_BACKEND` is set
+- You can safely use wexCommerce without Sentry if you prefer other monitoring solutions.
+
+
+
+## Related Files
+
+- `backend/src/monitoring/instrument.ts` - Sentry integration and initialization
+- `backend/src/app.ts` - Sentry Express middleware is attached if enabled
+- `backend/src/config/logger.ts` - Automatically reports errors to Sentry if enabled
+
+
+---
+
+# Document: Setup Stripe
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Setup-Stripe
+
+If you want to enable Stripe payment gateway, sign up for a [Stripe](https://Stripe.com/) account, fill the forms and save the publishable key and the secret key from Stripe Developers Dashboard.
+
+Don't expose the secret key on a website or embed it in a mobile application. It must be secret and stored securely in the server-side.
+
+In Stripe, all accounts have a total of four API keys by default-two for test mode and two for live mode:
+
+* **Test mode secret key**: Use this key to authenticate requests on your server when in test mode. By default, you can use this key to perform any API request without restriction.
+* **Test mode publishable key**: Use this key for testing purposes in your web or mobile app’s client-side code.
+* **Live mode secret key**: Use this key to authenticate requests on your server when in live mode. By default, you can use this key to perform any API request without restriction.
+* **Live mode publishable key**: Use this key, when you’re ready to launch your app, in your web or mobile app’s client-side code.
+
+You can find your secret and publishable keys on the API keys page in Stripe Developers Dashboard.
+
+Use only your test API keys for testing and development. This ensures that you don't accidentally modify your live customers or charges.
+
+On production, use HTTPS in the API, the backend, the frontend and the mobile app to be able to use Stripe payment gateway.
+
+## API
+
+Set Stripe secret key in the following option in *api/.env*:
+```
+WC_STRIPE_SECRET_KEY=STRIPE_SECRET_KEY
+```
+
+## Frontend
+
+Set Stripe publishable key and currency in the following options in *frontend/.env*:
+```
+NEXT_PUBLIC_WC_STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY
+```
+
+
+---
+
+# Document: Social Login Setup
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Social-Login-Setup
+
+### Social Login Setup (Google, Apple, Facebook)
+
+wexCommerce supports social login integration through **Google**, **Apple**, and **Facebook**. To enable these authentication providers, you need to create developer credentials for each provider and configure your `frontend/.env` file accordingly.
+
+#### Prerequisites
+
+Before getting started, make sure the following environment variables are correctly configured in your `backend/.env` file. These settings are essential for authentication to work properly. If any of them are misconfigured, login and session handling may fail.
+
+```env
+WC_AUTH_COOKIE_DOMAIN=localhost  
+WC_ADMIN_HOST=http://localhost:8001/  
+WC_FRONTEND_HOST=http://localhost/
+```
+
+Replace `localhost` with your actual domain name.
+
+For example, if your admin panel is accessible at `https://admin.domain.com/`, set the variables as follows:
+```env
+WC_AUTH_COOKIE_DOMAIN=domain.com
+WC_ADMIN_HOST=https://admin.domain.com/  
+WC_FRONTEND_HOST=https://domain.com/  
+```
+
+**Notes:**
+
+- `WC_AUTH_COOKIE_DOMAIN` should be a top-level domain (e.g., `domain.com`) — not a subdomain — to allow cookie sharing between the admin panel and frontend.
+- Use HTTPS in production environments (e.g., `https://admin.domain.com/`, `https://domain.com/`).
+
+
+#### 1. Google Authentication
+
+To enable Google Sign-In:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
+2. Create a new **OAuth 2.0 Client ID** under **APIs & Services > Credentials**.
+3. Choose **Web Application** as the application type.
+4. Add your **authorized JavaScript origins** and **redirect URIs** (e.g., `https://yourdomain.com`).
+5. Copy the **Client ID** and set it in your `backend/.env` file:
+   ```env
+   WC_GOOGLE_CLIENT_ID=your-google-client-id
+   ```
+6. Copy the **Client ID** and set it in your `frontend/.env` file:
+   ```env
+   NEXT_PUBLIC_WC_GG_APP_ID=your-google-client-id
+   ```
+7. Make sure the OAuth consent screen is properly configured and published for external use.
+
+#### 2. Apple Authentication
+
+To enable Apple Sign-In:
+
+1. Go to the [Apple Developer Account Portal](https://developer.apple.com/account/resources/).
+2. Register a new **Service ID** and enable **Sign in with Apple**.
+3. Configure your **Web Authentication** settings:
+   - Add your domain.
+   - Add a return URL (e.g., `https://yourdomain.com/apple/callback`).
+4. Generate a **key** for the service:
+   - Save your **Client ID**, **Team ID**, **Key ID**, and **Private Key (.p8 file)**.
+5. Set the Apple Service ID in your `backend/.env` file:
+   ```env
+   WC_APPLE_CLIENT_ID_WEB=your-apple-service-id
+   ```
+6. Set the Apple Service ID in your `frontend/.env` file:
+   ```env
+   NEXT_PUBLIC_WC_APPLE_ID=your-apple-service-id
+   ```
+7. You may need to configure backend Apple token verification using the private key.
+8. Open `frontend/src/components/SocialLogin.tsx` and set `apple` to `true`:
+```tsx
+const SocialLogin = ({
+  facebook,
+  apple = true,
+  google = true,
+  redirectToHomepage,
+  reloadPage,
+  className,
+  onError,
+  onSignInError,
+  onBlackListed }: SocialLoginProps) => {
+```
+
+#### 3. Facebook Authentication
+
+To enable Facebook Login:
+
+1. Go to the [Facebook Developers Console](https://developers.facebook.com/apps/).
+2. Create a new app and choose **Consumer** as the app type.
+3. In the app dashboard, add **Facebook Login** as a product.
+4. Under **Facebook Login > Settings**, configure:
+   - Your **redirect URI** (e.g., `https://yourdomain.com/facebook/callback`)
+   - Your **valid OAuth redirect URIs**
+   - Your **app domain**
+5. Copy the **App ID** and **App Secret** then set them in your `backend/.env` file:
+   ```env
+   WC_FACEBOOK_APP_ID=your-facebook-app-id
+   WC_FACEBOOK_APP_SECRET=your-facebook-app-secret
+   ```
+6. Copy the **App ID** and set it in your `frontend/.env` file:
+   ```env
+   NEXT_PUBLIC_WC_FB_APP_ID=your-facebook-app-id
+   ```
+7. Set the app to **Live Mode** to allow login from external users (non-admin/test users).
+8. Open `frontend/src/components/SocialLogin.tsx` and set `facebook` to `true`:
+```tsx
+const SocialLogin = ({
+  facebook = true,
+  apple,
+  google = true,
+  redirectToHomepage,
+  reloadPage,
+  className,
+  onError,
+  onSignInError,
+  onBlackListed }: SocialLoginProps) => {
+```
+
+#### Notes
+
+- Restart the development server after updating any `.env` values.
+- On production, restart backend server (wexcommerce service) and re-deploy the frontend after updating any `.env` values.
+- Make sure your OAuth domains are secured with **HTTPS** and match the configured URIs for each provider.
+
+
+---
+
+# Document: Software Architecture
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Software-Architecture
+
+## Table Of Contents
+   1. [Overall Architecture](https://github.com/aelassas/wexcommerce/wiki/Architecture#overall-architecture)
+   1. [Technologies Overview](https://github.com/aelassas/wexcommerce/wiki/Architecture#technologies-overview)
+   1. [Platform Highlights](https://github.com/aelassas/wexcommerce/wiki/Architecture#platform-highlights)
+   1. [TypeScript Across the Stack](https://github.com/aelassas/wexcommerce/wiki/Architecture#typescript-across-the-stack)
+   1. [Backend](https://github.com/aelassas/wexcommerce/wiki/Architecture#backend)
+   1. [Frontend](https://github.com/aelassas/wexcommerce/wiki/Architecture#frontend)
+   1. [Admin Panel](https://github.com/aelassas/wexcommerce/wiki/Architecture#admin-panel)
+   1. [Shared Packages](https://github.com/aelassas/wexcommerce/wiki/Architecture#shared-packages)
+   1. [Architecture Principles](https://github.com/aelassas/wexcommerce/wiki/Architecture#architecture-principles)
+   1. [Docker & Development Environment](https://github.com/aelassas/wexcommerce/wiki/Architecture#docker--development-environment)
+   1. [Codebase Overview](https://github.com/aelassas/wexcommerce/wiki/Architecture#codebase-overview)
+   1. [Production Readiness](https://github.com/aelassas/wexcommerce/wiki/Architecture#-production-readiness)
+   1. [Git Pre-commit Checks with Husky](https://github.com/aelassas/wexcommerce/wiki/Architecture#git-pre-commit-checks-with-husky)
+   1. [Continuous Integration (CI)](https://github.com/aelassas/wexcommerce/wiki/Architecture#continuous-integration-ci)
+
+
+## Overall Architecture
+This section provides a comprehensive overview of the **wexCommerce platform architecture**, covering:
+
+- Backend (Backend server)
+- Frontend (Customer Web App)
+- Admin Panel (Admin Dashboard)
+
+## Technologies Overview
+
+| Component      | Technologies Used                                              |
+|----------------|----------------------------------------------------------------|
+| **Backend**    | Node.js, Express.js, MongoDB, JWT, Stripe SDK, PayPal SDK      |
+| **Frontend**   | Next.js, MUI, Stripe, PayPal                                   |
+| **Admin Panel**| Next.js, MUI                                                   |
+| **Shared**     | TypeScript, ESLint, Husky, Docker                                  |
+
+## Platform Highlights
+
+- **Secure Authentication**: JWT-based auth ensures secure and stateless login flows for all users (customers, admins).
+- **Payment Integration**: Seamless payments with support for both Stripe and PayPal, including web flow.
+- **Internationalization (i18n)**: Multi-language support is built-in using a shared translation structure for consistency across all platforms.
+- **Live Availability and Scheduling**: Real-time product availability, pricing, and conflict-free checkout logic.
+- **Reusable Components**: A large collection of shared UI components across frontend and admin apps to ensure consistent UX and reduce duplication.
+- **Docker-based workflow**: All apps are containerized using Docker, allowing consistent development and production environments across teams and deployments.
+
+This architecture empowers developers to scale the product efficiently, onboard new features with confidence, and deliver a seamless experience to both end users and administrators.
+
+## TypeScript Across the Stack
+
+All core components of wexCommerce are written in TypeScript, including backend APIs and web apps. Shared types and interfaces live in a centralized package to maintain consistency between the different apps.
+
+### Shared Types
+
+- Shared types are defined in: `./packages/wexcommerce-types`
+- Ensures consistent request/response models across all clients
+
+## Backend
+<!--
+<p align="center">
+  <img src="https://wexcommerce.github.io/content/wexcommerce-architecture.drawio.png?raw=true" alt="wexCommerce API Architecture" width="500" />
+</p>
+-->
+
+The wexCommerce Backend is a modular, scalable REST API built using Node.js, Express, and MongoDB, following the Model-View-Controller (MVC) architectural pattern. It serves as the central data and business logic layer for all platform clients, including the customer-facing frontend web app, and the admin panel.
+
+This unified API architecture ensures consistent data handling, centralized security, and maintainable code across the ecosystem. The backend is designed to be:
+
+- **Modular:** Clean folder structure and reusable components (controllers, models, middlewares)
+- **Extensible:** Easy to add new features, such as additional payment providers or modules
+- **Secure:** JWT-based authentication, middleware-based authorization, and robust request validation
+- **Scalable:** Supports high concurrency and real-time updates with efficient MongoDB queries and indexing
+
+In addition to core CRUD operations, the backend also handles:
+
+- User authentication and authorization
+- Payment processing via Stripe and PayPal
+- Booking availability and scheduling
+- Location-based search and filtering
+- Push notification triggers
+- Multi-language support through dynamic i18n content
+
+The backend also includes setup scripts for data seeding, environment configuration, and test coverage to streamline development, testing, and deployment.
+<!--
+The backend uses a fat controller mvc architecture. It keeps things simple at the beginning by putting most of the logic (including MongoDB queries) directly in the controllers. This approach is common and often used for small projects built with mern stack. As project will grow, it's not ideal. The backend is planned to be refactored into a modular layered architecture with a repository layer for db, a service layer for business logic, controller for http, and a validation layer with zod and express middleware.
+
+For now, there are only integration tests. Once the refactor starts, the tests will be updated and unit tests added for the repository and service layers.
+-->
+### Security
+
+- Uses JWT for user authentication (access & refresh tokens)
+- Public and private routes protected via middleware
+- Input validation, sanitization, and error handling via middlewares
+
+### Core Entry Points
+
+- `src/app.ts`: Express app creation, middleware registration
+- `src/index.ts`: Entry point and server bootstrap
+- `src/monitoring/instrument.ts`: Sentry integration and initialization
+- `src/payment/stripe.ts`: Stripe integration (checkout, webhooks)
+- `src/payment/paypal.ts`: PayPal integration
+
+### Structure
+
+```
+/backend
+├── src/
+│   ├── config/           # Environment configs
+│   ├── controllers/      # Business logic
+│   ├── lang/             # i18n translations
+│   ├── middlewares/      # Auth, error handling, etc.
+│   ├── models/           # Mongoose models
+│   ├── monitoring/       # Sentry setup
+│   ├── payment/          # Stripe, PayPal, and payment integration handlers
+│   ├── routes/           # Express route handlers
+│   ├── setup/            # Setup and reset scripts
+│   ├── utils/            # Common utilities
+│   ├── app.ts            # App instance
+│   └── index.ts          # API bootstrap
+├── __tests__/            # Jest integration tests
+```
+
+## Frontend
+
+The Frontend Web App is built with Next.js and MUI, offering a smooth shopping experience for customers.
+
+### Features
+
+- Live search (products)
+- Real-time availability and pricing
+- Secure Stripe & PayPal checkout
+- User account management
+
+## Structure
+
+```
+/frontend
+├── src/
+│   ├── app/              # Route-level pages
+│   ├── components/       # Reusable UI components
+│   ├── config/           # Environment configs
+│   ├── context/          # React Contexts
+│   ├── lib/              # server actions
+│   ├── lang/             # localization
+│   ├── styles/           # CSS
+│   ├── types/            # TypeScript Types
+│   ├── utils/            # Common utilities
+│   ├── middleware.ts     # Middlewares
+```
+
+## Admin Panel
+
+The Admin Panel provides management tools for platform admins, also built with Next.js and MUI for fast loading and rich interactions.
+
+### Admin Capabilities
+
+- Manage products, users, orders, settings
+- View platform-wide orders and stats
+
+### Structure
+
+```
+/admin
+├── src/
+│   ├── app/              # Route-level pages
+│   ├── components/       # Reusable UI components
+│   ├── config/           # Environment configs
+│   ├── context/          # React Contexts
+│   ├── lib/              # server actions
+│   ├── lang/             # localization
+│   ├── styles/           # CSS
+│   ├── types/            # TypeScript Types
+│   ├── utils/            # Common utilities
+│   ├── middleware.ts     # Middlewares
+```
+
+## Shared Packages
+
+wexCommerce uses a monorepo layout with shared packages:
+```
+/packages
+├── wexcommerce-types/      # Shared TypeScript interfaces and models
+├── wexcommerce-helper/     # Common utilities (dates, formatting, etc.)
+├── reactjs-social-login/   # Social login utility (Google, Apple, Facebook, etc.)
+```
+
+These packages are used across backend, frontend, and admin panel for consistency.
+
+## Architecture Principles
+
+- Modularity: Each component is cleanly separated and easy to maintain.
+- Type-Safety: Powered by TypeScript, with shared types and validation.
+- Reusability: Core logic is abstracted into shared packages.
+- Internationalization: Supports multiple languages with i18n.
+- Security: Enforced via JWT, role-based access, and validation layers.
+
+## Docker & Development Environment
+
+wexCommerce provides a Docker-first setup to support a smooth and consistent development and deployment experience:
+
+### Development (Dev Mode)
+
+- **Backend**
+  - Uses `nodemon` inside Docker for automatic server restarts on file changes.
+  - Fast feedback loop while writing API logic or working with MongoDB.
+- **Frontend & Admin Panel**
+  - Built using Next.js with Hot Module Replacement (HMR) enabled.
+  - Mounted as bind volumes in Docker to reflect code changes instantly.
+- **MongoDB**
+  - Runs as a container alongside the backend for easy local setup.
+  - Runs as a containerized NoSQL database.
+  - Exposed for local connection (e.g., on localhost:27018).
+- **Mongo Express**
+   - A lightweight web-based MongoDB admin UI.
+   - Accessible at http://localhost:8084.
+   - Lets developers browse collections, documents, and manage data easily.
+
+Docker Compose manages all services in development mode using a `docker-compose.dev.yml` file.
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+For more information, checkout [Docker documentation](https://github.com/aelassas/wexcommerce/wiki/Run-from-Source-(Docker)) for development.
+
+### Production (Build & Deploy)
+
+- Optimized Dockerfiles for each component (backend, frontend, admin panel).
+- Production builds are minified and served using lightweight Node or static servers (e.g., nginx for frontend).
+- Environment variables are injected securely via `.env.docker`.
+
+Docker Compose handles orchestration in production using `docker-compose.yml`.
+```bash
+docker compose -f docker-compose.yml up -d
+```
+
+For more information, checkout [Docker documentation](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)) for production.
+
+## Codebase Overview
+
+wexCommerce is a mature, full-featured platform with a large and well-structured codebase. As of now, the repository contains over **54,000 lines of code** across the backend, frontend, admin panel, shared packages, and test suites.
+
+This scale reflects:
+- Deep feature coverage across all platforms
+- Extensive use of modular components
+- Comprehensive TypeScript type safety
+- High test coverage for critical backend functionality
+- Production-ready integrations for Stripe, PayPal, and internationalization
+
+Despite the size, the monorepo structure and strong architectural guidelines ensure the codebase remains organized, maintainable, and contributor-friendly.
+
+## Production Readiness
+
+wexCommerce is designed for real-world use in production environments. It includes:
+
+- Secure JWT-based authentication with role-based access
+- Verified Stripe and PayPal payment workflows
+- Comprehensive Docker setup for both development and production
+- Admin dashboard
+- Fully internationalized UI with support for multiple languages
+- Backend test coverage exceeding 80%, with CI pipelines and code quality checks
+- Modular monorepo architecture for scalable maintenance and feature growth
+
+## Git Pre-commit Checks with Husky
+
+To maintain high code quality and consistency across the project, **wexCommerce** uses **Husky** to run automated checks before each commit. This ensures all code that enters the repository meets predefined standards and avoids common issues early in the development cycle.
+
+### Checks Performed
+
+| Check        | Description                                                                 |
+|--------------|-----------------------------------------------------------------------------|
+| `lint`       | Runs ESLint to catch style violations and code quality issues              |
+| `typeCheck`  | Ensures type safety using the TypeScript compiler                          |
+| `sizeCheck`  | Prevents committing unusually large files that may affect performance       |
+
+These checks are enforced for all codebases — backend, frontend, and admin panel.
+
+### Benefits for Developers
+
+- Detects problems before code is committed
+- Keeps code style consistent across contributors
+- Avoids broken builds or runtime type errors
+- Prevents performance regressions from large files
+
+### Pre-commit Script
+
+The logic for these checks is implemented in a custom script located at:
+```
+/pre-commit.js
+```
+
+This script:
+
+- Runs tasks concurrently per workspace (e.g., `frontend`, `backend`)
+- Adapts to Docker environments if needed
+- Supports selective linting and type-checking
+- Logs summaries and failures clearly
+
+### Manual Execution
+
+You can manually run the checks using:
+```
+npm run pre-commit
+```
+
+This is useful if you want to validate your code before pushing without triggering a full commit. Note that you need to stage the files first.
+
+### Docker Awareness
+
+The script intelligently detects whether it’s running inside Docker and adjusts paths and behavior accordingly to ensure correct execution.
+
+### Husky Setup
+
+The Husky hook is defined in:
+```
+/.husky/pre-commit
+```
+
+It simply executes:
+
+```
+node pre-commit.js
+```
+
+If any of the checks fail, the commit will be aborted. This helps ensure that only safe, clean, and performant code is added to the repository.
+
+## Continuous Integration (CI)
+
+wexCommerce uses **GitHub Actions** for automated Continuous Integration (CI), ensuring code is always tested and built correctly before merging. The CI workflows help catch issues early and enforce project standards across contributions.
+
+### Build Workflow
+
+- **File:** [.github/workflows/build.yml](https://github.com/aelassas/wexcommerce/blob/main/.github/workflows/build.yml)
+- **Purpose:** Builds all packages and apps in the monorepo to ensure there are no runtime or dependency errors.
+
+**What it does:**
+- Installs dependencies
+- Builds shared packages and each app (backend, frontend, admin panel)
+- Verifies successful compilation
+
+This workflow helps maintain consistency and guarantees that the entire project is in a shippable state.
+
+### Test Workflow
+
+- **File:** [.github/workflows/test.yml](https://github.com/aelassas/wexcommerce/blob/main/.github/workflows/test.yml)
+- **Purpose:** Runs all integration tests using Jest.
+
+**What it does:**
+- Installs dependencies
+- Runs Jest test suites
+- Generates and reports test coverage
+
+This workflow ensures that new commits do not break existing functionality and that the codebase remains reliable and maintainable.
+
+wexCommerce ensures that the **backend test coverage remains consistently above 80%**, providing strong guarantees for API correctness and stability. Coverage reports are automatically uploaded to:
+
+- [📊 Coveralls](https://coveralls.io/github/aelassas/wexcommerce?branch=main)
+- [📈 Codecov](https://app.codecov.io/gh/aelassas/wexcommerce)
+
+These platforms provide detailed insights into tested and untested code paths and highlight coverage trends. This encourages contributors to write meaningful tests and maintain a high standard across the codebase.
+
+If the coverage upload to Coveralls or Codecov fails (e.g., due to service downtime or a network issue), the CI workflow is designed to continue and **not fail the build**, so development is not blocked. However, the repository owner is **automatically notified by email** when this happens. These services generate a hidden post internally to alert maintainers of the failure, allowing follow-up without interrupting team productivity.
+
+### CI + Husky: A Unified Quality Gate
+
+Combined with the [Husky pre-commit checks](https://github.com/aelassas/wexcommerce/wiki/Software-Architecture#git-pre-commit-checks-with-husky), CI workflows serve as a second layer of protection, verifying that even if something is missed locally, it will be caught during pull request checks.
+
+These CI pipelines are triggered automatically on `push` and `pull_request` events targeting the `main` branch.
+
+---
+
+# Document: Testing
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Testing
+
+This page covers the testing strategy and practices used in wexCommerce to ensure code quality, stability, and reliability across all components.
+
+## Integration Tests and Coverage
+
+- wexCommerce uses Jest as the primary testing framework for integration tests across backend.
+- Tests cover critical business logic, API endpoints, and utilities.
+- Backend test coverage is maintained above 80% to ensure robust functionality.
+- Coverage reports are automatically uploaded to **Coveralls** and **Codecov**, providing clear visibility of test quality:
+  - Coveralls: [https://coveralls.io/github/aelassas/wexcommerce?branch=main](https://coveralls.io/github/aelassas/wexcommerce?branch=main)
+  - Codecov: [https://app.codecov.io/gh/aelassas/wexcommerce](https://app.codecov.io/gh/aelassas/wexcommerce)
+
+If coverage upload fails during CI, the workflow still succeeds but the repository owner is notified automatically via email through the creation of a hidden issue on GitHub. This ensures awareness without blocking deployments.
+
+You can find more details about integration tests [here](https://github.com/aelassas/wexcommerce/wiki/Integration-Tests-and-Coverage).
+
+## Manual Tests
+
+- Manual testing procedures are documented and used for complex flows or UI interactions that require human verification.
+- Includes exploratory testing and user acceptance tests before major releases.
+
+You can find more details about manual tests [here](https://github.com/aelassas/wexcommerce/wiki/Manual-Tests).
+
+## Pre-commit Checks with Husky
+
+- To maintain code quality, wexCommerce uses Husky pre-commit hooks that run:
+  - ESLint for code style and syntax
+  - TypeScript type checking to catch type errors early
+  - File size checks to avoid large file commits
+- The pre-commit script is located at `/pre-commit.js` in the root directory.
+- These checks help catch errors before code is committed and pushed.
+
+## Running Tests Locally
+
+To run all tests locally, use:
+```bash
+cd ./backend
+npm run test
+```
+
+## Continuous Integration
+
+- Tests are run automatically on each push via GitHub Actions workflows.
+- The CI system runs tests for backend.
+<!-- - Failures block merging to protect the codebase integrity. -->
+
+For more detailed information and guidelines on writing tests, please refer to the [wexCommerce Contribution Guide](https://github.com/aelassas/wexcommerce/wiki/Contribution-Guide#testing).
+
+
+---
+
+# Document: Why Use wexCommerce
+
+> Source: https://github.com/aelassas/wexcommerce/wiki/Why-Use-wexCommerce
+
+# Why Use wexCommerce for Your ecommerce Business
+
+wexCommerce is a versatile, open-source platform tailored for ecommerce businesses. Here's why it's an excellent choice:
+
+## 1. Comprehensive Functionality
+
+- **Single vendor Support**: Suitable for single vendor marketplace. The supplier can manage products, categories, orders, and pricing independently.
+- **Customer Features**: A user-friendly interface for customers to search, buy, and manage orders seamlessly.
+- **Payment Integration**: Secure payment options via Stripe, supporting multiple methods like credit cards, PayPal, and Google Pay.
+
+## 2. Advanced Technology Stack
+
+- **Modern Frontend**: Built with Next.js and TypeScript for a scalable and responsive web application.
+- **Robust Backend**: Leverages Node.js and MongoDB for efficient and scalable data management.
+
+## 3. Cost-Effectiveness
+
+- **Affordable Hosting**: Runs on lightweight cloud setups, such as a 1GB RAM droplet on platforms like DigitalOcean or Hetzner, costing as little as $5/month.
+- **No Licensing Fees**: As an open-source solution, it eliminates recurring licensing costs, making it budget-friendly.
+
+## 4. Customization and Extensibility
+
+- **Control Over UI/UX**: Fully customizable design and backend to align with business branding and operations.
+- **Scalable Features**: New functionalities, like advanced reports, can be integrated with ease.
+
+## 5. Security and Reliability
+
+- **Advanced Protections**: Guards against common web threats such as DDoS, XSS, CSRF, and MITM attacks.
+- **Data Security**: Ensures secure handling of user data and transactions, vital for payment processing.
+
+## 6. Global Usability
+
+- **Multi-Language Support**: Operates globally with built-in support for languages like English and French.
+- **Responsive Design**: Optimized for both web and mobile devices, ensuring accessibility across platforms.
+
+## 7. Community and Open-Source Benefits
+
+- **Active Development**: Backed by contributors for ongoing updates and improvements.
+- **Transparency**: Full access to source code ensures no hidden fees or licensing traps.
+
+## Conclusion
+
+wexCommerce is a highly customizable, scalable, and cost-efficient solution for ecommerce. Its robust feature set and open-source nature make it a sustainable choice for long-term growth in the ecommerce industry.
+
+---
+
