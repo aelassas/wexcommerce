@@ -1,7 +1,7 @@
 # wexCommerce - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the wexCommerce Wiki.
-> Generated on: 2026-10-11T07:23:42Z
+> Generated on: 2026-10-11T09:06:12Z
 
 ---
 
@@ -530,6 +530,7 @@ Use the sidebar to browse installation guides, configuration options, and more.
 ### Supported Platforms
 * Web
 * Docker
+
 
 ---
 
