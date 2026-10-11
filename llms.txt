@@ -1,0 +1,37 @@
+# wexCommerce
+
+> wexCommerce is an open-source single-vendor e-commerce platform featuring an SEO-optimized web storefront, an admin management panel, and a Node.js REST API backend.
+
+## Overview
+
+wexCommerce provides an end-to-end e-commerce solution for single-vendor stores. Store owners manage products, inventory stock, categories, orders, customers, and fulfillment through an administrative portal. Customers browse products, manage shopping carts, track order status, and complete checkout using multiple payment options including Stripe, PayPal, Cash on Delivery, and Wire Transfer.
+
+- **Repository**: https://github.com/aelassas/wexcommerce
+- **License**: MIT License
+- **Tech Stack**: Node.js, Express, Next.js / React, TypeScript, MongoDB, Docker
+
+## Key Capabilities
+
+- **Catalog & Inventory Management**: Product catalog organization, stock tracking, categories, image management, and localized product details.
+- **Order & Delivery Workflows**: Order processing, status tracking, fulfillment management, home delivery, and store pickup options.
+- **SEO & Storefront Performance**: Server-side rendering (SSR) via Next.js for indexed product pages, search engine discoverability, and fast page loads.
+- **Payments & Checkout**: Stripe (Credit Cards, Apple Pay, Google Pay, Link) and PayPal integrations. Support for Cash on Delivery and Wire Transfer.
+- **Authentication & Security**: Social Sign-In (Google, Facebook, Apple) and traditional email/password credentials with role-based access (Admin, Customer). Secure against XSS, XST, CSRF, MITM, and DDoS attacks.
+- **Localization**: Multi-language support (English, French) and flexible store currency configurations.
+
+## Core Documentation & Wiki
+
+- [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview): High-level platform architecture and functional breakdown.
+- [Software Architecture](https://github.com/aelassas/wexcommerce/wiki/Software-Architecture): Technical architecture covering REST API backend, Next.js web storefront, and admin panel.
+- [Self-Hosted Installation Guide](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted)): Step-by-step setup guide for Node.js environments.
+- [Docker Deployment Guide](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)): Deployment instructions using Docker containers and SSL reverse proxy setup.
+- [Payment Gateways Setup](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways): Configuring Stripe and PayPal API credentials and webhook handlers.
+- [Social Login Setup Guide](https://github.com/aelassas/wexcommerce/wiki/Social-Login-Setup): OAuth provider setup for Google, Facebook, and Apple sign-in.
+- [Language & Currency Configuration](https://github.com/aelassas/wexcommerce/wiki/Change-Language-and-Currency): Instructions for managing store currencies, default languages, and adding custom locales.
+- [Testing & Integration](https://github.com/aelassas/wexcommerce/wiki/Testing): Running automated backend integration tests and checking code coverage.
+
+## Repository Resources
+
+- [Contribution Guide](https://github.com/aelassas/wexcommerce/blob/main/.github/CONTRIBUTING.md): Standards, workflows, and guidelines for contributing code and submitting PRs.
+- [Release Notes](https://github.com/aelassas/wexcommerce/blob/main/.github/RELEASES.md): Version history, updates, and changelogs.
+- [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ): Frequently asked questions and deployment troubleshooting.
