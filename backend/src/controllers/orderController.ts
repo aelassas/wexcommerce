@@ -449,6 +449,8 @@ export const deleteTempOrder = async (req: Request, res: Response) => {
 export const getOrder = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
+    const sessionUserId = req.user?._id
+    const sessionUser = sessionUserId ? await User.findById(sessionUserId) : null
 
     if (!helper.isValidObjectId(id as string)) {
       throw new Error('Order id not valid')
@@ -534,6 +536,17 @@ export const getOrder = async (req: Request, res: Response) => {
     ])
     if (data.length > 0) {
       const order = data[0]
+
+      // Role-Based Authorization Check
+      const isOwner = !!sessionUserId && order.user._id.toString() === sessionUserId
+      const isAdmin = !!sessionUser && sessionUser.type === wexcommerceTypes.UserType.Admin
+
+      if (!isOwner && !isAdmin) {
+        logger.error(`[order.getOrder] Forbidden access to order ${id}`)
+        res.status(403).send('Forbidden: Access denied')
+        return
+      }
+
       const { _id, fullName } = order.user
       order.user = { _id, fullName }
       res.json(order)
