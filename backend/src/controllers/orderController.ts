@@ -227,7 +227,7 @@ export const checkout = async (req: Request, res: Response) => {
           await orderItem!.save()
         }
 
-        _order.sessionId = !payPal ? body.sessionId : undefined
+        _order.sessionId = body.sessionId
         _order.status = wexcommerceTypes.OrderStatus.Pending
         _order.expireAt = expireAt
 

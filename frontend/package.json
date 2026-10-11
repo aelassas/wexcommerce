@@ -33,6 +33,7 @@
     "date-fns": "^4.1.0",
     "github-fork-ribbon-css": "^0.2.3",
     "localized-strings": "^2.0.3",
+    "nanoid": "^6.0.2",
     "next": "16.2.1",
     "next-nprogress-bar": "^2.4.7",
     "react": "19.2.4",

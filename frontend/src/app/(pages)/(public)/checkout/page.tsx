@@ -22,6 +22,7 @@ import {
   LocalShipping as DeliveryIcon,
 } from '@mui/icons-material'
 import validator from 'validator'
+import { nanoid } from 'nanoid'
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
@@ -151,6 +152,12 @@ const Checkout: React.FC = () => {
     }
   }, [cart, deliveryTypes, deliveryType, router])
 
+  useEffect(() => {
+    if (success) {
+      window.scrollTo(0, 0)
+    }
+  }, [success])
+
   const validateEmail = async (_email: string) => {
     if (_email) {
       if (validator.isEmail(_email)) {
@@ -207,7 +214,6 @@ const Checkout: React.FC = () => {
     await CartService.deleteCartId()
     setCartItemCount(0)
     setSuccess(true)
-    window.scrollTo(0, 0)
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -286,6 +292,8 @@ const Checkout: React.FC = () => {
           _customerId = res.customerId
         }
       } else {
+        // Generate a unique session ID for PayPal checkout
+        _sessionId = nanoid()
         setPayPalLoaded(true)
       }
 
