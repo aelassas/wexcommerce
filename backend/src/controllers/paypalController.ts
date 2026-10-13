@@ -24,12 +24,22 @@ import * as ipinfoHelper from '../utils/ipinfoHelper'
 export const createPayPalOrder = async (req: Request, res: Response) => {
   try {
     const paypal = await import('../payment/paypal.js')
-    const { orderId, amount, currency, name, description }: wexcommerceTypes.CreatePayPalOrderPayload = req.body
+    const { orderId, currency, name, description }: wexcommerceTypes.CreatePayPalOrderPayload = req.body
+
+    // 1. Retrieve the authoritative order from database
+    const order = await Order.findById(orderId)
+    if (!order) {
+      const msg = `Order with id ${orderId} not found`
+      logger.info(`[paypal.createPayPalOrder] ${msg}`)
+      res.status(204).send(msg)
+      return
+    }
 
     const clientIp = ipinfoHelper.getClientIp(req)
     const countryCode = await ipinfoHelper.getCountryCode(clientIp)
 
-    const paypalOrderId = await paypal.createOrder(orderId, amount, currency, name, description, countryCode)
+    // 2. Use order.total derived server-side instead of client-supplied amount
+    const paypalOrderId = await paypal.createOrder(orderId, order.total, currency, name, description, countryCode)
 
     res.json(paypalOrderId)
   } catch (err) {
@@ -52,21 +62,17 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     const { orderId, paypalOrderId } = req.params
 
     //
-    // 1. Retrieve Checkout Sesssion and Booking
+    // 1. Retrieve Checkout Session and Order
     //
     const order = await Order
       .findOne({ _id: orderId, expireAt: { $ne: null } })
       .populate<{ orderItems: env.OrderItem[] }>({
         path: 'orderItems',
-        // populate: {
-        //   path: 'product',
-        //   model: 'Product',
-        // },
       })
 
     if (!order) {
       const msg = `Order ${orderId} not found`
-      logger.info(`[paypal.checkCheckoutSession] ${msg}`)
+      logger.info(`[paypal.checkPayPalOrder] ${msg}`)
       res.status(204).send(msg)
       return
     }
@@ -86,8 +92,31 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     }
 
     //
-    // 2. Update Booking if the payment succeeded
-    // (Set BookingStatus to Paid and remove expireAt TTL index)
+    // 2. Reconcile PayPal purchase unit data against database order
+    //
+    const purchaseUnit = paypalOrder.purchase_units?.[0]
+    const paidAmount = Number.parseFloat(purchaseUnit?.amount?.value || '0')
+    const invoiceId = purchaseUnit?.invoice_id
+
+    // Check for invoice / order reference mismatch
+    if (invoiceId && invoiceId !== orderId) {
+      logger.error(`[paypal.checkPayPalOrder] Order ID mismatch. Expected ${orderId}, got ${invoiceId}`)
+      res.status(400).send('Order ID mismatch')
+      return
+    }
+
+    // Round expected total to 2 decimal places for comparison
+    const expectedTotal = Number.parseFloat(order.total.toFixed(2))
+
+    if (paidAmount !== expectedTotal) {
+      logger.error(`[paypal.checkPayPalOrder] Total mismatch. Expected ${expectedTotal}, got ${paidAmount}`)
+      res.status(400).send('Payment amount mismatch')
+      return
+    }
+
+    //
+    // 3. Update Order if the payment succeeded
+    // (Set OrderStatus to Paid and remove expireAt TTL index)
     //
     if (paypalOrder.status === 'COMPLETED') {
       // Check settings
@@ -134,10 +163,6 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
       await orderController.confirm(user, order, order.orderItems, settings, paymentType, deliveryType)
 
       // Notify admin
-      // const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: wexcommerceTypes.UserType.Admin }))
-      // if (admin) {
-      //   await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
-      // }
       await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
 
       res.sendStatus(200)
@@ -145,7 +170,7 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     }
 
     //
-    // 3. Delete Booking if the payment didn't succeed
+    // 4. Delete Order if the payment didn't succeed
     //
     await order.deleteOne()
     res.status(400).send(paypalOrder.status)

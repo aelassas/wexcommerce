@@ -6,15 +6,30 @@ import * as wexcommerceTypes from ':wexcommerce-types'
 import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
 import * as env from '../src/config/env.config'
-import app from '../src/app'
 import Order from '../src/models/Order'
 import OrderItem from '../src/models/OrderItem'
 import Product from '../src/models/Product'
 import User from '../src/models/User'
+import Setting from '../src/models/Setting'
 import DeliveryType from '../src/models/DeliveryType'
 import PaymentType from '../src/models/PaymentType'
 import Notification from '../src/models/Notification'
 import NotificationCounter from '../src/models/NotificationCounter'
+
+//
+// ESM mock setup prior to application import
+//
+const mockGetOrder = jest.fn<(...args: any[]) => Promise<any>>()
+const mockCreateOrder = jest.fn<(...args: any[]) => Promise<any>>()
+
+await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
+  getOrder: mockGetOrder,
+  getToken: jest.fn(() => Promise.resolve('fake-token')),
+  createOrder: mockCreateOrder,
+}))
+
+const { default: app } = await import('../src/app')
+const paypal = await import('../src/payment/paypal.js')
 
 //
 // Connecting and initializing the database before running the test suite
@@ -34,14 +49,8 @@ afterAll(async () => {
 
 describe('POST /api/create-paypal-order', () => {
   it('should create paypal order', async () => {
-    jest.resetModules()
+    mockCreateOrder.mockImplementation(() => Promise.resolve('ORDER-MOCK-123'))
 
-    await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
-      getOrder: jest.fn(),
-      getToken: jest.fn(() => Promise.resolve('mock-token')),
-      createOrder: jest.fn(() => Promise.resolve('ORDER-MOCK-123')),
-    }))
-    let paypal = await import('../src/payment/paypal.js')
     const orderId = await paypal.createOrder('order123', 100, 'USD', 'Test Name', 'Test Description', 'US')
 
     expect(orderId).toBe('ORDER-MOCK-123')
@@ -54,13 +63,23 @@ describe('POST /api/create-paypal-order', () => {
       'US'
     )
 
-    // test success (create paypal order whith non existant user)
+    // Create a real order record to verify server-side price lookup
+    const order = new Order({
+      user: testHelper.GetRandromObjectId(),
+      deliveryType: testHelper.GetRandromObjectId(),
+      paymentType: testHelper.GetRandromObjectId(),
+      total: 234,
+      status: wexcommerceTypes.OrderStatus.Pending,
+    })
+    await order.save()
+
+    // test success (create paypal order)
     const payload: wexcommerceTypes.CreatePayPalOrderPayload = {
-      amount: 234,
+      amount: 1, // Client sends manipulated amount, server uses order.total (234)
       currency: 'USD',
-      name: 'BMW X1',
-      description: 'BMW X1',
-      orderId: testHelper.GetRandromObjectIdAsString(),
+      name: 'Product 1',
+      description: 'Product 1',
+      orderId: order._id.toString(),
     }
     let res = await request(app)
       .post('/api/create-paypal-order')
@@ -68,26 +87,30 @@ describe('POST /api/create-paypal-order', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.length).toBeGreaterThan(0)
 
-    // test failure (create paypal order failure)
-    jest.resetModules()
+    // test failure (create paypal order with non-existent order)
+    payload.orderId = testHelper.GetRandromObjectIdAsString()
+    res = await request(app)
+      .post('/api/create-paypal-order')
+      .send(payload)
+    expect(res.statusCode).toBe(204)
 
-    await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
-      getOrder: jest.fn(),
-      getToken: jest.fn(() => Promise.resolve('mock-token')),
-      createOrder: jest.fn(() => Promise.reject(new Error('Simulated error'))),
-    }))
-    paypal = await import('../src/payment/paypal.js')
+    // test failure (create paypal order failure)
+    mockCreateOrder.mockImplementation(() => Promise.reject(new Error('Simulated error')))
+
     await expect(paypal.createOrder('order123', 100, 'USD', 'Test Name', 'Test Description', 'US')).rejects.toThrow('Simulated error')
 
+    payload.orderId = order._id.toString()
     payload.currency = 'xxxxxxxxxxxxxxx'
     res = await request(app)
       .post('/api/create-paypal-order')
       .send(payload)
     expect(res.statusCode).toBe(400)
+
+    await order.deleteOne()
   })
 })
 
-describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
+describe('POST /api/check-paypal-order/:orderId/:paypalOrderId', () => {
   it('should check paypal order', async () => {
     // test failure (order exists, order exists and payment failed)
     const expireAt = new Date()
@@ -133,25 +156,69 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
     try {
       await order.save()
 
-      const orderId = nanoid()
+      const paypalOrderId = nanoid()
+
+      const mockPayPalOrder = (overrides = {}, unitOverrides = {}) => ({
+        status: 'COMPLETED',
+        purchase_units: [
+          {
+            invoice_id: order._id.toString(),
+            amount: {
+              value: '312.00',
+              currency_code: 'USD',
+            },
+            payments: {
+              captures: [{ id: 'CAPTURE-123' }],
+            },
+            ...unitOverrides,
+          },
+        ],
+        ...overrides,
+      })
 
       // test success
-      jest.resetModules()
-      await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
-        getOrder: jest.fn(() => Promise.resolve({ status: 'COMPLETED' })),
-        getToken: jest.fn(() => Promise.resolve('fake-token')),
-        createOrder: jest.fn(),
-      }))
+      mockGetOrder.mockImplementation(() => Promise.resolve(mockPayPalOrder()))
 
-      let paypal = await import('../src/payment/paypal.js')
-
-      await expect(paypal.getOrder('123')).resolves.toStrictEqual({ status: 'COMPLETED' })
+      await expect(paypal.getOrder('123')).resolves.toStrictEqual(mockPayPalOrder())
       expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       let res = await request(app)
-        .post(`/api/check-paypal-order/${order._id.toString()}/${orderId}`)
+        .post(`/api/check-paypal-order/${order._id.toString()}/${paypalOrderId}`)
       expect(res.statusCode).toBe(200)
       await testHelper.deleteNotifications(order._id.toString())
+
+      // test failure (total mismatch)
+      await order.deleteOne()
+      order = new Order({
+        user: user._id.toString(),
+        deliveryType,
+        paymentType,
+        total: 312,
+        status: wexcommerceTypes.OrderStatus.Pending,
+        orderItems: [orderItem._id.toString()],
+        expireAt,
+      })
+      await order.save()
+
+      mockGetOrder.mockImplementation(() => Promise.resolve(mockPayPalOrder({}, {
+        invoice_id: order._id.toString(),
+        amount: { value: '1.00', currency_code: 'USD' },
+      })))
+
+      res = await request(app)
+        .post(`/api/check-paypal-order/${order._id.toString()}/${paypalOrderId}`)
+      expect(res.statusCode).toBe(400)
+      expect(res.text).toBe('Payment amount mismatch')
+
+      // test failure (invoice id / order id mismatch)
+      mockGetOrder.mockImplementation(() => Promise.resolve(mockPayPalOrder({}, {
+        invoice_id: testHelper.GetRandromObjectIdAsString(),
+      })))
+
+      res = await request(app)
+        .post(`/api/check-paypal-order/${order._id.toString()}/${paypalOrderId}`)
+      expect(res.statusCode).toBe(400)
+      expect(res.text).toBe('Order ID mismatch')
 
       // test failure (settings not found)
       await order.deleteOne()
@@ -166,21 +233,15 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
       })
       await order.save()
 
-      await jest.isolateModulesAsync(async () => {
-        const Setting = (await import('../src/models/Setting.js')).default
-        jest.spyOn(Setting, 'findOne').mockResolvedValue(null)
-        const env = await import('../src/config/env.config.js')
-        const newApp = (await import('../src/app.js')).default
-        const dbh = await import('../src/utils/databaseHelper.js')
-        await dbh.connect(env.DB_URI, false, false)
-        const res = await request(newApp)
-          .post(`/api/check-paypal-order/${order._id.toString()}/${orderId}`)
-        expect(res.statusCode).toBe(400)
-        dbh.close()
-      })
+      mockGetOrder.mockImplementation(() => Promise.resolve(mockPayPalOrder({}, {
+        invoice_id: order._id.toString(),
+      })))
 
-      jest.restoreAllMocks()
-      jest.resetModules()
+      const settingSpy = jest.spyOn(Setting, 'findOne').mockResolvedValueOnce(null)
+      res = await request(app)
+        .post(`/api/check-paypal-order/${order._id.toString()}/${paypalOrderId}`)
+      expect(res.statusCode).toBe(400)
+      settingSpy.mockRestore()
 
       // test failure (paypal order error)
       await order.deleteOne()
@@ -194,24 +255,19 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
         expireAt,
       })
       await order.save()
-      jest.resetModules()
-      await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
-        getOrder: jest.fn(() => Promise.reject(new Error('Simulated error'))),
-        getToken: jest.fn(() => Promise.resolve('fake-token')),
-        createOrder: jest.fn(),
-      }))
 
-      paypal = await import('../src/payment/paypal.js')
+      mockGetOrder.mockImplementation(() => Promise.reject(new Error('Simulated error')))
 
       await expect(paypal.getOrder('123')).rejects.toThrow('Simulated error')
       expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       res = await request(app)
-        .post(`/api/check-paypal-order/${order._id.toString()}/${orderId}`)
+        .post(`/api/check-paypal-order/${order._id.toString()}/${paypalOrderId}`)
       expect(res.statusCode).toBe(204)
-      jest.resetModules()
 
-      // test failure (order exists, order does not exist)
+      // test failure (order exists, paypal order does not exist)
+      mockGetOrder.mockImplementation(() => Promise.resolve(undefined))
+
       res = await request(app)
         .post(`/api/check-paypal-order/${order._id.toString()}/${testHelper.GetRandromObjectIdAsString()}`)
       expect(res.statusCode).toBe(204)
@@ -227,25 +283,18 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
         expireAt,
       })
       await order2.save()
-      jest.resetModules()
-      await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
-        getOrder: jest.fn(() => Promise.resolve({ status: 'EXPIRED' })),
-        getToken: jest.fn(() => Promise.resolve('fake-token')),
-        createOrder: jest.fn(),
-      }))
 
-      paypal = await import('../src/payment/paypal.js')
-
-      await expect(paypal.getOrder('123')).resolves.toStrictEqual({ status: 'EXPIRED' })
-      expect(paypal.getOrder).toHaveBeenCalledWith('123')
+      mockGetOrder.mockImplementation(() => Promise.resolve(mockPayPalOrder(
+        { status: 'EXPIRED' },
+        { invoice_id: order2!._id.toString() }
+      )))
 
       res = await request(app)
-        .post(`/api/check-paypal-order/${order2._id.toString()}/${orderId}`)
+        .post(`/api/check-paypal-order/${order2._id.toString()}/${paypalOrderId}`)
       expect(res.statusCode).toBe(400)
       const b = await Order.findById(order2._id.toString())
       expect(b).toBeFalsy()
       order2 = undefined
-      jest.resetModules()
 
       // test failure (missing members)
       order3 = new Order({
@@ -256,24 +305,20 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
         status: wexcommerceTypes.OrderStatus.Pending,
         orderItems: [orderItemProductMissing._id.toString()],
         expireAt,
-
       })
       await order3.save()
-      jest.resetModules()
-      await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
-        getOrder: jest.fn(() => Promise.resolve({ status: 'COMPLETED' })),
-        getToken: jest.fn(() => Promise.resolve('fake-token')),
-        createOrder: jest.fn(),
-      }))
 
-      paypal = await import('../src/payment/paypal.js')
+      mockGetOrder.mockImplementation(() => Promise.resolve(mockPayPalOrder(
+        {},
+        { invoice_id: order3!._id.toString() }
+      )))
 
-      await expect(paypal.getOrder('123')).resolves.toStrictEqual({ status: 'COMPLETED' })
+      await expect(paypal.getOrder('123')).resolves.toStrictEqual(mockPayPalOrder({}, { invoice_id: order3._id.toString() }))
       expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       // product missing
       res = await request(app)
-        .post(`/api/check-paypal-order/${order3._id.toString()}/${orderId}`)
+        .post(`/api/check-paypal-order/${order3._id.toString()}/${paypalOrderId}`)
       expect(res.statusCode).toBe(400)
 
       // user missing
@@ -288,10 +333,15 @@ describe('POST /api/check-paypal-order/:orderId/:orderId', () => {
         expireAt,
       })
       await order3.save()
+
+      mockGetOrder.mockImplementation(() => Promise.resolve(mockPayPalOrder(
+        {},
+        { invoice_id: order3!._id.toString() }
+      )))
+
       res = await request(app)
-        .post(`/api/check-paypal-order/${order3._id.toString()}/${orderId}`)
+        .post(`/api/check-paypal-order/${order3._id.toString()}/${paypalOrderId}`)
       expect(res.statusCode).toBe(400)
-      jest.resetModules()
     } catch (err) {
       console.error(err)
       throw new Error(`Error during /api/check-paypal-order/: ${err}`)

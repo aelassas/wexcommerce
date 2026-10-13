@@ -97,7 +97,7 @@ export const total = (cartItems: wexcommerceTypes.CartItem[]) => {
       total += item.product.price * item.quantity
     }
   }
-  return total
+  return Number(total.toFixed(2))
 }
 
 /**
