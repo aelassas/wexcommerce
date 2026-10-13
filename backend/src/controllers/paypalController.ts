@@ -95,7 +95,7 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     // 2. Reconcile PayPal purchase unit data against database order
     //
     const purchaseUnit = paypalOrder.purchase_units?.[0]
-    const paidAmount = Number.parseFloat(purchaseUnit?.amount?.value || '0')
+    const paidAmount = Number(Number.parseFloat(purchaseUnit?.amount?.value || '0').toFixed(2))
     const invoiceId = purchaseUnit?.invoice_id
 
     // Check for invoice / order reference mismatch
