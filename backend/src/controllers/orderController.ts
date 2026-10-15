@@ -657,6 +657,12 @@ export const getOrders = async (req: Request, res: Response) => {
                 $expr: { $eq: ['$_id', '$$userId'] },
               },
             },
+            {
+              $project: {
+                password: 0,
+                expireAt: 0,
+              },
+            },
           ],
           as: 'user',
         },
