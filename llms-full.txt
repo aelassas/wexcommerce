@@ -1,7 +1,7 @@
 # wexCommerce - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the wexCommerce Wiki.
-> Generated on: 2026-10-15T13:43:41Z
+> Generated on: 2026-10-15T20:14:46Z
 
 ---
 
@@ -1176,6 +1176,10 @@ WC_DB_DEBUG=false
 
 # Redis
 WC_REDIS_URL=redis://127.0.0.1:6379
+
+# Rate Limiter
+WC_RATE_LIMIT_CAPACITY=10
+WC_RATE_LIMIT_REFILL_RATE_MS=2000
 
 # Auth
 WC_COOKIE_SECRET=COOKIE_SECRET
