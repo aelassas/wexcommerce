@@ -1,7 +1,7 @@
 # wexCommerce - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the wexCommerce Wiki.
-> Generated on: 2026-10-15T13:41:26Z
+> Generated on: 2026-10-15T13:43:41Z
 
 ---
 
@@ -551,10 +551,9 @@ git clone https://github.com/aelassas/wexcommerce.git
 ```
 3. Set your MongoDB password in ./docker-compose.yml:
 ```yaml
-version: "3.8"
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:7.0.12 # Update mongo version if necessary
     command: mongod --quiet --logpath /dev/null
     restart: always
     environment:
@@ -577,7 +576,16 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
 
   wc-backend:
     build:
@@ -587,7 +595,10 @@ services:
     ports:
       - 4005:4005
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     volumes:
       - cdn:/var/www/cdn/wexcommerce
       - backend_logs:/wexcommerce/backend/logs
@@ -642,6 +653,7 @@ volumes:
   mongodb_data:
   mongodb_config:
   backend_logs:
+  redis_data:
 ```
 4. Create `./backend/.env.docker`:
 ```env
@@ -661,6 +673,9 @@ WC_DB_SSL_KEY=/etc/ssl/wexcommerce.key
 WC_DB_SSL_CERT=/etc/ssl/wexcommerce.crt
 WC_DB_SSL_CA=/etc/ssl/wexcommerce.ca.pem
 WC_DB_DEBUG=false
+
+# Redis
+WC_REDIS_URL=redis://redis:6379
 
 # Auth
 WC_COOKIE_SECRET=COOKIE_SECRET
@@ -961,7 +976,16 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
 
   wc-backend:
     build:
@@ -971,7 +995,10 @@ services:
     ports:
       - 4005:4005
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     volumes:
       - cdn:/var/www/cdn/wexcommerce
       - backend_logs:/wexcommerce/backend/logs
@@ -1033,6 +1060,7 @@ volumes:
   mongodb_data:
   mongodb_config:
   backend_logs:
+  redis_data:
 ```
 
 Rebuild and run Docker images:
