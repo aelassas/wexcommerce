@@ -1,7 +1,7 @@
 # wexCommerce - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the wexCommerce Wiki.
-> Generated on: 2026-10-11T09:06:12Z
+> Generated on: 2026-10-15T13:41:26Z
 
 ---
 
@@ -1145,6 +1145,9 @@ WC_DB_SSL_KEY=/etc/ssl/wexcommerce.key
 WC_DB_SSL_CERT=/etc/ssl/wexcommerce.crt
 WC_DB_SSL_CA=/etc/ssl/wexcommerce.ca.pem
 WC_DB_DEBUG=false
+
+# Redis
+WC_REDIS_URL=redis://127.0.0.1:6379
 
 # Auth
 WC_COOKIE_SECRET=COOKIE_SECRET
