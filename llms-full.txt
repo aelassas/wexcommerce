@@ -1,7 +1,7 @@
 # wexCommerce - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the wexCommerce Wiki.
-> Generated on: 2026-10-21T09:47:24Z
+> Generated on: 2026-10-21T09:49:27Z
 
 ---
 
@@ -103,6 +103,13 @@ Configuration is located in `frontend/.env`.
 To change the language and the currency, go to the settings page from the admin dashboard and change the language (English or French), the currency and Stripe currency in Locale settings section.
 
 For Stripe currency, it should be one of the following [supported currencies](https://docs.stripe.com/currencies).
+
+To change the base currency, update the base currency from the settings page in the admin dashboard and update `backend/.env`:
+```text
+WC_BASE_CURRENCY=USD
+```
+Then restart the backend.
+
 
 ---
 
