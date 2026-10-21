@@ -1,7 +1,7 @@
 # wexCommerce - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the wexCommerce Wiki.
-> Generated on: 2026-10-15T20:15:35Z
+> Generated on: 2026-10-21T09:47:07Z
 
 ---
 
@@ -1197,6 +1197,9 @@ WC_APPLE_CLIENT_ID_WEB=APPLE_CLIENT_ID_WEB
 WC_GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID
 WC_FACEBOOK_APP_ID=FACEBOOK_APP_ID
 WC_FACEBOOK_APP_SECRET=FACEBOOK_APP_SECRET
+
+# Currency
+WC_BASE_CURRENCY=USD
 
 # Email (SMTP)
 WC_SMTP_HOST=in-v3iljet.com
