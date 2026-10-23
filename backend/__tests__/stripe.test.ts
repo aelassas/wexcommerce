@@ -76,7 +76,7 @@ describe('POST /api/create-checkout-session', () => {
     let receiptEmail = testHelper.GetRandomEmail()
     let payload: wexcommerceTypes.CreatePaymentPayload = {
       amount: 234,
-      currency: 'usd',
+      currency: env.BASE_CURRENCY.toLowerCase(),
       receiptEmail,
       customerName: 'John Doe',
       locale: 'en',
@@ -199,6 +199,8 @@ describe('POST /api/create-checkout-session', () => {
 
 describe('POST /api/check-checkout-session/:sessionId', () => {
   it('should check checkout session', async () => {
+    const baseCurrency = env.BASE_CURRENCY.toLowerCase()
+
     // test failure (checkout session does not exist)
     let res = await request(app)
       .post('/api/check-checkout-session/xxxxxxxxxx')
@@ -260,7 +262,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         default: {
           checkout: {
             sessions: {
-              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid' })),
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: baseCurrency })),
             },
           },
         },
@@ -268,13 +270,64 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
 
       let stripeAPI = (await import('../src/payment/stripe.js')).default
 
-      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid' })
+      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid', amount_total: 31200, currency: baseCurrency })
       expect(stripeAPI.checkout.sessions.retrieve).toHaveBeenCalledWith('123')
 
       res = await request(app)
         .post(`/api/check-checkout-session/${sessionId}`)
       expect(res.statusCode).toBe(200)
       await testHelper.deleteNotifications(order._id.toString())
+
+      // test failure (amount mismatch)
+      await order.deleteOne()
+      order = new Order({
+        user: user._id.toString(),
+        deliveryType,
+        paymentType,
+        total: 312,
+        status: wexcommerceTypes.OrderStatus.Pending,
+        orderItems: [orderItem._id.toString()],
+        expireAt,
+        sessionId,
+      })
+      await order.save()
+      jest.resetModules()
+      await jest.unstable_mockModule('../src/payment/stripe.js', () => ({
+        default: {
+          checkout: {
+            sessions: {
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 1000, currency: baseCurrency })),
+            },
+          },
+        },
+      }))
+      stripeAPI = (await import('../src/payment/stripe.js')).default
+      res = await request(app)
+        .post(`/api/check-checkout-session/${sessionId}`)
+      expect(res.statusCode).toBe(400)
+      expect(res.text).toContain('Payment amount mismatch')
+      let unconfirmedOrder = await Order.findById(order._id)
+      expect(unconfirmedOrder?.status).not.toBe(wexcommerceTypes.OrderStatus.Paid)
+
+      // test failure (currency mismatch)
+      const invalidCurrency = baseCurrency === 'usd' ? 'eur' : 'usd'
+      jest.resetModules()
+      await jest.unstable_mockModule('../src/payment/stripe.js', () => ({
+        default: {
+          checkout: {
+            sessions: {
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: invalidCurrency })),
+            },
+          },
+        },
+      }))
+      stripeAPI = (await import('../src/payment/stripe.js')).default
+      res = await request(app)
+        .post(`/api/check-checkout-session/${sessionId}`)
+      expect(res.statusCode).toBe(400)
+      expect(res.text).toContain('Payment currency mismatch')
+      unconfirmedOrder = await Order.findById(order._id)
+      expect(unconfirmedOrder?.status).not.toBe(wexcommerceTypes.OrderStatus.Paid)
 
       // test failure (settings not found)
       await order.deleteOne()
@@ -398,7 +451,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         default: {
           checkout: {
             sessions: {
-              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid' })),
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: baseCurrency })),
             },
           },
         },
@@ -406,7 +459,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
 
       stripeAPI = (await import('../src/payment/stripe.js')).default
 
-      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid' })
+      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid', amount_total: 31200, currency: baseCurrency })
       expect(stripeAPI.checkout.sessions.retrieve).toHaveBeenCalledWith('123')
 
       // product missing
@@ -524,7 +577,7 @@ describe('POST /api/create-payment-intent', () => {
     //
     const payload: wexcommerceTypes.CreatePaymentPayload = {
       amount: 234,
-      currency: 'usd',
+      currency: env.BASE_CURRENCY.toLowerCase(),
       receiptEmail,
       customerName: 'John Doe',
       locale: 'en',
