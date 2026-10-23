@@ -1,5 +1,19 @@
 # Releases
 
+## [wexCommerce 4.5](https://github.com/aelassas/wexcommerce/releases/tag/v4.5) – 2026-10-21
+
+* fix(security): add distributed Redis Token Bucket rate limiting on authentication routes
+* fix(backend): high - PayPal checkout trusts client-supplied amount and does not reconcile it with the order total price
+
+**Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v4.4...v4.5
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v4.5/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v4.5)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v4.5)
+
 ## [wexCommerce 4.4](https://github.com/aelassas/wexcommerce/releases/tag/v4.4) – 2026-10-11
 
 * fix(backend): prevent IDOR on order details
