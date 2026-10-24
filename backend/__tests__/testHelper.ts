@@ -94,6 +94,8 @@ export const getToken = (cookie: string) => {
   return token
 }
 
+export const generateToken = (userId: string) => authHelper.encryptJWT({ id: userId })
+
 const signin = async (appType: wexcommerceTypes.AppType, email: string) => {
   const payload: wexcommerceTypes.SignInPayload = {
     email,
