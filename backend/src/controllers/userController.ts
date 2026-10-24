@@ -824,7 +824,29 @@ export const update = async (req: Request, res: Response) => {
       return
     }
 
-    const { fullName, phone, address } = req.body
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = await User.findById(sessionUserId)
+    const isSelf = !!sessionUser && sessionUser._id.equals(user._id)
+    const isAuthorizedSupplierUser = !!sessionUser
+      && user.type === wexcommerceTypes.UserType.User
+    if (!sessionUser
+      || (sessionUser.type === wexcommerceTypes.UserType.User && !isSelf)
+      || (
+        !isSelf
+        && !isAuthorizedSupplierUser)
+      || (
+        sessionUser.type !== wexcommerceTypes.UserType.Admin
+        && sessionUser.type !== wexcommerceTypes.UserType.User
+      )
+    ) {
+      logger.error(`[user.update] Unauthorized attempt to update user ${_id} by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot update user information')
+      return
+    }
+    // end of security check
+
+    const { fullName, phone, address } = body
 
     if (fullName) {
       user.fullName = fullName
@@ -948,19 +970,25 @@ export const changePassword = async (req: Request, res: Response) => {
       return
     }
 
-    // begin of security check
+   // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
-    if (!sessionUser
-      || (sessionUser.type === wexcommerceTypes.UserType.User && sessionUserId !== user._id.toString())
-    ) {
+
+    const isSelf = !!sessionUser && sessionUser._id.equals(user._id)
+    const isAdmin = !!sessionUser && sessionUser.type === wexcommerceTypes.UserType.Admin
+
+    const isAuthorized = isAdmin || isSelf
+
+    if (!sessionUser || !isAuthorized) {
       logger.error(`[user.changePassword] Unauthorized attempt to change user password ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot change user password')
       return
     }
     // end of security check
 
-    if (strict && !user.password) {
+    // Social accounts do not require current password
+    const requireCurrentPassword = strict
+    if (requireCurrentPassword && !user.password) {
       logger.error('[user.changePassword] User.password not found:', _id)
       res.sendStatus(204)
       return
@@ -974,10 +1002,10 @@ export const changePassword = async (req: Request, res: Response) => {
       res.sendStatus(200)
     }
 
-    if (strict) {
+    if (requireCurrentPassword) {
       const passwordMatch = await bcrypt.compare(currentPassword, user.password!)
       if (passwordMatch) {
-        _changePassword()
+        await _changePassword()
         return
       }
 
@@ -985,7 +1013,7 @@ export const changePassword = async (req: Request, res: Response) => {
       return
     }
 
-    _changePassword()
+    await _changePassword()
   } catch (err) {
     logger.error(`[user.changePassword] ${i18n.t('DB_ERROR')} ${_id}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
