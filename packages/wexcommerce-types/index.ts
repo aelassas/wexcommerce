@@ -106,6 +106,7 @@ export interface User {
   checked?: boolean
   customerId?: string
   createdAt?: Date
+  isSocial?: boolean
 }
 
 export interface UpdateUserPayload {

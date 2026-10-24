@@ -527,6 +527,7 @@ export interface User extends Document {
   customerId?: string
   avatar?: string
   expireAt?: Date
+  isSocial?: boolean
 }
 
 /**
