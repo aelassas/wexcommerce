@@ -96,12 +96,21 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     //
     const purchaseUnit = paypalOrder.purchase_units?.[0]
     const paidAmount = Number(Number.parseFloat(purchaseUnit?.amount?.value || '0').toFixed(2))
+    const paidCurrency = purchaseUnit?.amount?.currency_code
     const invoiceId = purchaseUnit?.invoice_id
 
     // Check for invoice / order reference mismatch
     if (invoiceId && invoiceId !== orderId) {
       logger.error(`[paypal.checkPayPalOrder] Order ID mismatch. Expected ${orderId}, got ${invoiceId}`)
       res.status(400).send('Order ID mismatch')
+      return
+    }
+
+    // Currency Reconciliation
+    const expectedCurrency = env.BASE_CURRENCY
+    if (!paidCurrency || paidCurrency.toUpperCase() !== expectedCurrency.toUpperCase()) {
+      logger.error(`[paypal.checkPayPalOrder] Currency mismatch. Expected ${expectedCurrency}, got ${paidCurrency}`)
+      res.status(400).send('Payment currency mismatch')
       return
     }
 

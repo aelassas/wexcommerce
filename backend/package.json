@@ -2,7 +2,7 @@
   "name": "wexcommerce-backend",
   "description": "Backend server for wexCommerce",
   "type": "module",
-  "version": "4.5.0",
+  "version": "4.6.0",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon",
@@ -31,6 +31,7 @@
     "google-auth-library": "^10.6.2",
     "helmet": "^8.1.0",
     "i18n-js": "^4.5.3",
+    "ioredis": "^6.0.0",
     "jose": "^6.2.2",
     "mongoose": "^9.3.1",
     "multer": "^2.1.1",

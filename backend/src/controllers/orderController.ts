@@ -141,10 +141,15 @@ export const checkout = async (req: Request, res: Response) => {
     i18n.locale = settings.language
 
     if (user) {
-      user.verified = false
-      user.blacklisted = false
-
-      _user = new User(user)
+      _user = new User({
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+        language: user.language,
+        type: wexcommerceTypes.UserType.User,
+        verified: false,
+        blacklisted: false,
+      })
       await _user.save()
 
       const token = new Token({ user: _user._id.toString(), token: helper.generateToken() })
@@ -655,6 +660,12 @@ export const getOrders = async (req: Request, res: Response) => {
             {
               $match: {
                 $expr: { $eq: ['$_id', '$$userId'] },
+              },
+            },
+            {
+              $project: {
+                password: 0,
+                expireAt: 0,
               },
             },
           ],

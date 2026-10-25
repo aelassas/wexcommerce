@@ -51,6 +51,13 @@ export const expireAt = 'expireAt'
 export const WEBSITE_NAME = __env__('WC_WEBSITE_NAME', false, 'wexCommerce')
 
 /**
+ * Base currency. Default is USD.
+ *
+ * @type {string}
+ */
+export const BASE_CURRENCY = __env__('WC_BASE_CURRENCY', false, 'USD')
+
+/**
  * Indicate whether we are in CI environment or not.
  *
  * @type {boolean}
@@ -128,6 +135,27 @@ export const DB_SSL_CA = __env__('WC_DB_SSL_CA', DB_SSL)
  * @type {boolean}
  */
 export const DB_DEBUG = helper.StringToBoolean(__env__('WC_DB_DEBUG', false, 'false'))
+
+/**
+ * Redis server connection URI.
+ *
+ * @type {string}
+ */
+export const REDIS_URL = __env__('WC_REDIS_URL', false, 'redis://127.0.0.1:6379')
+
+/**
+ * Rate Limiter Capacity (maximum token bucket size). Default is 10.
+ *
+ * @type {number}
+ */
+export const RATE_LIMIT_CAPACITY = Number.parseInt(__env__('WC_RATE_LIMIT_CAPACITY', false, '10'), 10)
+
+/**
+ * Rate Limiter Refill Rate in milliseconds per token. Default is 2000ms.
+ *
+ * @type {number}
+ */
+export const RATE_LIMIT_REFILL_RATE_MS = Number.parseInt(__env__('WC_RATE_LIMIT_REFILL_RATE_MS', false, '2000'), 10)
 
 /**
  * Cookie secret. It should at least be 32 characters long, but the longer the better.
@@ -233,6 +261,14 @@ export const SMTP_PASS = __env__('WC_SMTP_PASS', true)
  * @type {string}
  */
 export const SMTP_FROM = __env__('WC_SMTP_FROM', true)
+
+/**
+ * Indicate whether user accounts should be automatically verified upon signup.
+ * This is useful for local development and testing purposes.
+ *
+ * @type {boolean}
+ */
+export const AUTO_VERIFY_ON_SIGNUP = helper.StringToBoolean(__env__('WC_AUTO_VERIFY_ON_SIGNUP', false, 'false'))
 
 /**
  * CDN root folder path.
@@ -491,6 +527,7 @@ export interface User extends Document {
   customerId?: string
   avatar?: string
   expireAt?: Date
+  isSocial?: boolean
 }
 
 /**

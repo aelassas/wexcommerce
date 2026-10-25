@@ -1,7 +1,7 @@
 # wexCommerce - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the wexCommerce Wiki.
-> Generated on: 2026-10-11T09:06:12Z
+> Generated on: 2026-10-21T09:49:27Z
 
 ---
 
@@ -103,6 +103,13 @@ Configuration is located in `frontend/.env`.
 To change the language and the currency, go to the settings page from the admin dashboard and change the language (English or French), the currency and Stripe currency in Locale settings section.
 
 For Stripe currency, it should be one of the following [supported currencies](https://docs.stripe.com/currencies).
+
+To change the base currency, update the base currency from the settings page in the admin dashboard and update `backend/.env`:
+```text
+WC_BASE_CURRENCY=USD
+```
+Then restart the backend.
+
 
 ---
 
@@ -551,10 +558,9 @@ git clone https://github.com/aelassas/wexcommerce.git
 ```
 3. Set your MongoDB password in ./docker-compose.yml:
 ```yaml
-version: "3.8"
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:7.0.12 # Update mongo version if necessary
     command: mongod --quiet --logpath /dev/null
     restart: always
     environment:
@@ -577,7 +583,16 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
 
   wc-backend:
     build:
@@ -587,7 +602,10 @@ services:
     ports:
       - 4005:4005
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     volumes:
       - cdn:/var/www/cdn/wexcommerce
       - backend_logs:/wexcommerce/backend/logs
@@ -642,6 +660,7 @@ volumes:
   mongodb_data:
   mongodb_config:
   backend_logs:
+  redis_data:
 ```
 4. Create `./backend/.env.docker`:
 ```env
@@ -662,6 +681,13 @@ WC_DB_SSL_CERT=/etc/ssl/wexcommerce.crt
 WC_DB_SSL_CA=/etc/ssl/wexcommerce.ca.pem
 WC_DB_DEBUG=false
 
+# Redis
+WC_REDIS_URL=redis://redis:6379
+
+# Rate Limiter
+WC_RATE_LIMIT_CAPACITY=10
+WC_RATE_LIMIT_REFILL_RATE_MS=2000
+
 # Auth
 WC_COOKIE_SECRET=COOKIE_SECRET
 WC_AUTH_COOKIE_DOMAIN=localhost
@@ -674,6 +700,9 @@ WC_APPLE_CLIENT_ID_WEB=APPLE_CLIENT_ID_WEB
 WC_GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID
 WC_FACEBOOK_APP_ID=FACEBOOK_APP_ID
 WC_FACEBOOK_APP_SECRET=FACEBOOK_APP_SECRET
+
+# Currency
+WC_BASE_CURRENCY=USD
 
 # Email (SMTP)
 WC_SMTP_HOST=in-v3iljet.com
@@ -961,7 +990,16 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
 
   wc-backend:
     build:
@@ -971,7 +1009,10 @@ services:
     ports:
       - 4005:4005
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     volumes:
       - cdn:/var/www/cdn/wexcommerce
       - backend_logs:/wexcommerce/backend/logs
@@ -1033,6 +1074,7 @@ volumes:
   mongodb_data:
   mongodb_config:
   backend_logs:
+  redis_data:
 ```
 
 Rebuild and run Docker images:
@@ -1146,6 +1188,13 @@ WC_DB_SSL_CERT=/etc/ssl/wexcommerce.crt
 WC_DB_SSL_CA=/etc/ssl/wexcommerce.ca.pem
 WC_DB_DEBUG=false
 
+# Redis
+WC_REDIS_URL=redis://127.0.0.1:6379
+
+# Rate Limiter
+WC_RATE_LIMIT_CAPACITY=10
+WC_RATE_LIMIT_REFILL_RATE_MS=2000
+
 # Auth
 WC_COOKIE_SECRET=COOKIE_SECRET
 WC_AUTH_COOKIE_DOMAIN=localhost
@@ -1158,6 +1207,9 @@ WC_APPLE_CLIENT_ID_WEB=APPLE_CLIENT_ID_WEB
 WC_GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID
 WC_FACEBOOK_APP_ID=FACEBOOK_APP_ID
 WC_FACEBOOK_APP_SECRET=FACEBOOK_APP_SECRET
+
+# Currency
+WC_BASE_CURRENCY=USD
 
 # Email (SMTP)
 WC_SMTP_HOST=in-v3iljet.com

@@ -12,6 +12,11 @@ services:
     volumes:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --username admin --password admin --authenticationDatabase admin --eval \"try { rs.status().ok } catch (error) { db.runCommand({ ping: 1 }).ok }\" | grep -q 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
 
   mongo-express:
     image: mongo-express:latest
@@ -23,7 +28,21 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   wc-backend:
     build:
@@ -33,7 +52,10 @@ services:
     ports:
       - 4005:4005
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - cdn:/var/www/cdn/wexcommerce
       - backend_logs:/wexcommerce/backend/logs
@@ -88,3 +110,4 @@ volumes:
   mongodb_data:
   mongodb_config:
   backend_logs:
+  redis_data:
