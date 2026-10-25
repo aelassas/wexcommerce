@@ -1,5 +1,22 @@
 # Releases
 
+## [wexCommerce 4.6](https://github.com/aelassas/wexcommerce/releases/tag/v4.6) – 2026-10-25
+
+#### What's Changed
+* fix(backend): verify Stripe Checkout Session paid amount and currency
+* fix(backend): remediate notification IDOR and broken access control vulnerabilities
+* fix(backend): fix checkout privilege escalation and user authorization vulnerabilities
+* ci: fix releases.yml workflow
+
+**Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v4.4...v4.6
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v4.6/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v4.6)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v4.6)
+
 ## [wexCommerce 4.5](https://github.com/aelassas/wexcommerce/releases/tag/v4.5) – 2026-10-21
 
 * fix(security): add distributed Redis Token Bucket rate limiting on authentication routes
