@@ -3,7 +3,7 @@
 ## [wexCommerce 4.6](https://github.com/aelassas/wexcommerce/releases/tag/v4.6) – 2026-10-25
 
 #### What's Changed
-* fix(backend): verify stripe checkout Session paid amount and currency
+* fix(backend): verify Stripe checkout session paid amount and currency
 * fix(backend): remediate notification IDOR and broken access control vulnerabilities
 * fix(backend): fix checkout privilege escalation and user authorization vulnerabilities
 * ci: fix releases.yml workflow
