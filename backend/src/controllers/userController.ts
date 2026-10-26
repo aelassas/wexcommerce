@@ -775,6 +775,20 @@ export const getUser = async (req: Request, res: Response) => {
       throw new Error('User id is not valid')
     }
 
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUserType = req.user?.type
+    const isSelf = sessionUserId === id
+
+    if (
+      sessionUserType === wexcommerceTypes.UserType.User && !isSelf
+    ) {
+      logger.error(`[user.getUser] Forbidden: user ${sessionUserId} tried to read user ${id}`)
+      res.status(403).send('Forbidden')
+      return
+    }
+    // end of security check
+
     const user = await User.findById(id, {
       email: 1,
       fullName: 1,
@@ -971,7 +985,7 @@ export const changePassword = async (req: Request, res: Response) => {
       return
     }
 
-   // begin of security check
+    // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
 
