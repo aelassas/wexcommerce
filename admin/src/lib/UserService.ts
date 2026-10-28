@@ -354,16 +354,16 @@ export const updateUser = async (data: wexcommerceTypes.UpdateUserPayload): Prom
     .then((res) => res.status)
 
 /**
- * Check password.
+ * Check Password.
  *
- * @param {string} id
- * @param {string} password
+ * @param {wexcommerceTypes.CheckPasswordPayload} data
  * @returns {Promise<number>}
  */
-export const checkPassword = async (id: string, password: string): Promise<number> =>
+export const checkPassword = async (data: wexcommerceTypes.CheckPasswordPayload): Promise<number> =>
   fetchInstance
-    .GET(
-      `/api/check-password/${encodeURIComponent(id)}/${encodeURIComponent(password)}`,
+    .POST(
+      '/api/check-password',
+      data,
       [await authHeader()],
       true
     )

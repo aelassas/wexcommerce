@@ -25,7 +25,7 @@ routes.route(routeNames.validateAccessToken).post(authJwt.verifyToken, userContr
 routes.route(routeNames.getUser).get(authJwt.verifyToken, userController.getUser)
 routes.route(routeNames.update).post(authJwt.verifyToken, userController.update)
 routes.route(routeNames.updateLanguage).post(authJwt.verifyToken, userController.updateLanguage)
-routes.route(routeNames.checkPassword).get(authJwt.verifyToken, userController.checkPassword)
+routes.route(routeNames.checkPassword).post(authJwt.verifyToken, rateLimiter, userController.checkPassword)
 routes.route(routeNames.changePassword).post(rateLimiter, authJwt.verifyToken, userController.changePassword)
 routes.route(routeNames.getUsers).get(authJwt.verifyToken, authJwt.authAdmin, userController.getUsers)
 routes.route(routeNames.delete).post(authJwt.verifyToken, authJwt.authAdmin, userController.deleteUsers)

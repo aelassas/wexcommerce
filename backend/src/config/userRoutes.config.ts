@@ -19,7 +19,7 @@ export default {
   changePassword: '/api/change-password',
   getUsers: '/api/users/:page/:size',
   delete: '/api/delete-users',
-  checkPassword: '/api/check-password/:id/:password',
+  checkPassword: '/api/check-password',
   verifyRecaptcha: '/api/verify-recaptcha/:token/:ip',
   sendEmail: '/api/send-email',
   hasPassword: '/api/has-password/:id',

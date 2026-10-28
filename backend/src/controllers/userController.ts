@@ -921,12 +921,26 @@ export const updateLanguage = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const checkPassword = async (req: Request, res: Response) => {
-  const { id, password } = req.params
+  const { _id: id, password }: wexcommerceTypes.CheckPasswordPayload = req.body
 
   try {
-    if (!helper.isValidObjectId(id as string)) {
+    if (!helper.isValidObjectId(id)) {
       throw new Error('User id is not valid')
     }
+
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUserType = req.user?.type
+
+    const isSelf = sessionUserId === id
+    const isAdmin = sessionUserType === wexcommerceTypes.UserType.Admin
+
+    if (!isSelf && !isAdmin) {
+      logger.error(`[user.checkPassword] Forbidden: user ${sessionUserId} tried to check password of user ${id}`)
+      res.status(403).send('Forbidden')
+      return
+    }
+    // end of security check
 
     const user = await User.findById(id)
 

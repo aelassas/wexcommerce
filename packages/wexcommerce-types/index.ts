@@ -121,6 +121,11 @@ export interface UpdateLanguagePayload {
   language: string
 }
 
+export interface CheckPasswordPayload {
+  _id: string
+  password: string
+}
+
 export interface ChangePasswordPayload {
   _id: string
   password: string

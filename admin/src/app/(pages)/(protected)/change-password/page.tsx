@@ -35,7 +35,11 @@ const ChangePassword: React.FC = () => {
         return
       }
 
-      let status = await UserService.checkPassword(user._id!, currentPassword)
+      const checkPasswordPayload: wexcommerceTypes.CheckPasswordPayload = {
+        _id: user._id!,
+        password: currentPassword
+      }
+      let status = await UserService.checkPassword(checkPasswordPayload)
 
       if (status !== 200) {
         setPasswordLengthError(false)
