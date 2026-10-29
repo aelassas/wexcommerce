@@ -130,7 +130,7 @@ const SignIn: React.FC = () => {
             onChange={handleOnChangePassword}
             onKeyDown={handleOnPasswordKeyDown}
             required
-            autoComplete="password"
+            autoComplete="current-password"
             size="small"
           />
 
