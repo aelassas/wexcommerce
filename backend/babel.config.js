@@ -7,6 +7,7 @@ const babel = (api) => {
       {
         alias: {
           ':wexcommerce-types': '../packages/wexcommerce-types',
+          ':wexcommerce-helper': '../packages/wexcommerce-helper',
         },
       },
     ],
