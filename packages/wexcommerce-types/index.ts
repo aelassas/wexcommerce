@@ -136,10 +136,10 @@ export interface ChangePasswordPayload {
 
 export interface SendEmailPayload {
   from: string
-  to: string
   subject: string
   message: string
   isContactForm: boolean
+  recaptchaToken?: string
 }
 
 export interface DeliveryTypeInfo {
