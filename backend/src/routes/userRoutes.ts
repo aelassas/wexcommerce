@@ -3,7 +3,7 @@ import multer from 'multer'
 import routeNames from '../config/userRoutes.config'
 import authJwt from '../middlewares/authJwt'
 import * as userController from '../controllers/userController'
-import rateLimiter from '../middlewares/rateLimiter'
+import rateLimiter, { createRateLimiter } from '../middlewares/rateLimiter'
 
 const routes = express.Router()
 
@@ -30,7 +30,8 @@ routes.route(routeNames.changePassword).post(rateLimiter, authJwt.verifyToken, u
 routes.route(routeNames.getUsers).get(authJwt.verifyToken, authJwt.authAdmin, userController.getUsers)
 routes.route(routeNames.delete).post(authJwt.verifyToken, authJwt.authAdmin, userController.deleteUsers)
 routes.route(routeNames.verifyRecaptcha).post(userController.verifyRecaptcha)
-routes.route(routeNames.sendEmail).post(userController.sendEmail)
+// Fail-closed in production to prevent spam/abuse if Redis goes down; fail-open in dev/testing so emails work without Redis
+routes.route(routeNames.sendEmail).post(createRateLimiter('send-email', () => process.env.NODE_ENV === 'production'), userController.sendEmail)
 routes.route(routeNames.hasPassword).get(authJwt.verifyToken, userController.hasPassword)
 routes.route(routeNames.createAvatar).post([authJwt.verifyToken, multer({ storage: multer.memoryStorage() }).single('image')], userController.createAvatar)
 routes.route(routeNames.updateAvatar).post([authJwt.verifyToken, multer({ storage: multer.memoryStorage() }).single('image')], userController.updateAvatar)
