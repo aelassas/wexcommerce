@@ -51,47 +51,7 @@ Next.js stands out as an excellent choice for marketplace development due to its
 * [Overview](https://github.com/aelassas/wexcommerce/wiki/Overview)
 * [Install Guide (Self-hosted)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Self%E2%80%90hosted))
 * [Install Guide (Docker)](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker))
-* [Payment Gateways](https://github.com/aelassas/wexcommerce/wiki/Payment-Gateways)
-* [Change Language and Currency](https://github.com/aelassas/wexcommerce/wiki/Change-Language-and-Currency)
-* [FAQ](https://github.com/aelassas/wexcommerce/wiki/FAQ)
 * [Full Documentation](https://github.com/aelassas/wexcommerce/wiki)
-
-## Features
-
-**Commerce Management**
-
-* Stock management
-* Order management
-* Payment management
-* Customer management
-
-**Flexible Payments**
-
-* Multiple payment gateways supported: Stripe, PayPal
-* Multiple payment methods: Credit Card, Cash on Delivery, Wire Transfer, PayPal, Google Pay, Apple Pay, Link
-
-**Delivery Options**
-
-* Home delivery
-* Store withdrawal
-
-**Internationalization & Access**
-
-* Multiple language support: English, French
-* Multiple login options: Google, Facebook, Apple, Email
-
-**Security & Performance**
-
-* Secure against XSS, XST, CSRF, MITM, and DDoS attacks
-* Responsive admin panel and frontend
-* SEO-compliant: product pages are indexable by search engines for better visibility
-* Docker support for easy deployment and better developer experience
-* Error monitoring and performance tracing
-
-**Supported Platforms**
-
-* Web
-* Docker
 
 ## Stats for Nerds
 
@@ -101,11 +61,15 @@ Next.js stands out as an excellent choice for marketplace development due to its
 -->
 [![LoC Total](https://raw.githubusercontent.com/aelassas/wexcommerce/refs/heads/loc/loc-total.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/loc.yml)
 
-## Support & Contributing
+## Support
 
+wexCommerce is free and open source. If it helped you, saved you time, or powered your production workflows, consider supporting the project via [PayPal](https://www.paypal.me/aelassaspp), [GitHub Sponsors](https://github.com/sponsors/aelassas), [Liberapay](https://liberapay.com/aelassas/), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas) to keep it active, independent, and free for everyone.
+
+<!--
 If this project helped you, saved you time, or inspired you, consider supporting its future growth and maintenance. You can show your support by starring the repository, sharing the project, or via [PayPal](https://www.paypal.me/aelassaspp), [GitHub Sponsors](https://github.com/sponsors/aelassas), [Liberapay](https://liberapay.com/aelassas/), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas).
 
 Open-source software requires time, effort, and resources to maintain. Your support helps keep this project alive, up-to-date, and accessible to everyone. Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
+-->
 
 <!--<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
