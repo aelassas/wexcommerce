@@ -114,6 +114,7 @@ export interface UpdateUserPayload {
   fullName: string
   phone: string
   address: string
+  blacklisted?: boolean
 }
 
 export interface UpdateLanguagePayload {

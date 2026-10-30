@@ -842,19 +842,10 @@ export const update = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
+    const isAdmin = !!sessionUser && sessionUser.type === wexcommerceTypes.UserType.Admin
     const isSelf = !!sessionUser && sessionUser._id.equals(user._id)
-    const isAuthorizedSupplierUser = !!sessionUser
-      && user.type === wexcommerceTypes.UserType.User
-    if (!sessionUser
-      || (sessionUser.type === wexcommerceTypes.UserType.User && !isSelf)
-      || (
-        !isSelf
-        && !isAuthorizedSupplierUser)
-      || (
-        sessionUser.type !== wexcommerceTypes.UserType.Admin
-        && sessionUser.type !== wexcommerceTypes.UserType.User
-      )
-    ) {
+    const isAuthorized = !!sessionUser && (isAdmin || isSelf)
+    if (!isAuthorized) {
       logger.error(`[user.update] Unauthorized attempt to update user ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot update user information')
       return
@@ -868,6 +859,10 @@ export const update = async (req: Request, res: Response) => {
     }
     user.phone = phone
     user.address = address
+
+    if (isAdmin) {
+      user.blacklisted = !!body.blacklisted
+    }
 
     await user.save()
     res.sendStatus(200)
@@ -1338,34 +1333,50 @@ export const updateAvatar = async (req: Request, res: Response) => {
 
     const user = await User.findById(userId)
 
-    if (user) {
-      if (user.avatar && !user.avatar.startsWith('http')) {
-        const avatar = path.join(env.CDN_USERS, user.avatar)
-
-        if (await helper.pathExists(avatar)) {
-          await asyncFs.unlink(avatar)
-        }
-      }
-
-      const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
-      const filepath = path.join(env.CDN_USERS, filename)
-
-      // security check: restrict allowed extensions
-      const ext = path.extname(filename)
-      if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
-        res.status(400).send('Invalid avatar file type')
-        return
-      }
-
-      await asyncFs.writeFile(filepath, req.file.buffer)
-      user.avatar = filename
-      await user.save()
-      res.json(filename)
+    if (!user) {
+      logger.error('[user.updateAvatar] User not found:', userId)
+      res.sendStatus(204)
       return
     }
 
-    logger.error('[user.updateAvatar] User not found:', userId)
-    res.sendStatus(204)
+    const sessionUserId = req.user?._id
+    const sessionUser = await User.findById(sessionUserId)
+    const isSelf = !!sessionUser && sessionUser._id.equals(user._id)
+    const isAdmin = !!sessionUser && sessionUser.type === wexcommerceTypes.UserType.Admin
+
+    const isAuthorized = !!sessionUser && (
+      isAdmin
+      || (sessionUser.type === wexcommerceTypes.UserType.User && isSelf)
+    )
+
+    if (!isAuthorized) {
+      logger.error(`[user.updateAvatar] Unauthorized attempt to update avatar for user ${userId} by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot update this user avatar')
+      return
+    }
+
+    const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
+    const filepath = path.join(env.CDN_USERS, filename)
+
+    // security check: restrict allowed extensions
+    const ext = path.extname(filename)
+    if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+      res.status(400).send('Invalid avatar file type')
+      return
+    }
+
+    if (user.avatar && !user.avatar.startsWith('http')) {
+      const avatar = path.join(env.CDN_USERS, user.avatar)
+
+      if (await helper.pathExists(avatar)) {
+        await asyncFs.unlink(avatar)
+      }
+    }
+
+    await asyncFs.writeFile(filepath, req.file.buffer)
+    user.avatar = filename
+    await user.save()
+    res.json(filename)
   } catch (err) {
     logger.error(`[user.updateAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
@@ -1388,6 +1399,21 @@ export const deleteAvatar = async (req: Request, res: Response) => {
     const user = await User.findById(userId)
 
     if (user) {
+      const sessionUserId = req.user?._id
+      const sessionUser = await User.findById(sessionUserId)
+      const isSelf = !!sessionUser && sessionUser._id.equals(user._id)
+      const isAdmin = !!sessionUser && sessionUser.type === wexcommerceTypes.UserType.Admin
+      const isAuthorized = !!sessionUser && (
+        isAdmin
+        || (sessionUser.type === wexcommerceTypes.UserType.User && isSelf)
+      )
+
+      if (!isAuthorized) {
+        logger.error(`[user.deleteAvatar] Unauthorized attempt to delete avatar for user ${userId} by user ${sessionUserId}`)
+        res.status(403).send('Forbidden: You cannot delete this user avatar')
+        return
+      }
+
       if (user.avatar && !user.avatar.startsWith('http')) {
         const avatar = path.join(env.CDN_USERS, user.avatar)
         if (await helper.pathExists(avatar)) {
