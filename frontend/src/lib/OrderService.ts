@@ -16,7 +16,7 @@ export const checkout = async (data: wexcommerceTypes.CheckoutPayload): Promise<
     .POST(
       '/api/checkout',
       data,
-      [],
+      [await UserService.authHeader()]
     )
     .then((res) => ({ status: res.status, orderId: res.data.orderId }))
 )

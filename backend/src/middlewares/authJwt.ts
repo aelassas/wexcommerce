@@ -56,6 +56,39 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 /**
+ * Optional authentication token verification middleware.
+ * Attaches req.user if a valid token is present, but allows unauthenticated requests to proceed.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
+const verifyTokenOptional = async (req: Request, res: Response, next: NextFunction) => {
+  const token = req.headers[env.X_ACCESS_TOKEN] as string
+
+  if (!token) {
+    next()
+    return
+  }
+
+  try {
+    const sessionData = await authHelper.decryptJWT(token)
+
+    if (sessionData && helper.isValidObjectId(sessionData.id)) {
+      const user = await User.findById(sessionData.id)
+
+      if (user && !user.blacklisted) {
+        req.user = { _id: user._id.toString(), type: user.type as wexcommerceTypes.UserType }
+      }
+    }
+  } catch (err) {
+    logger.info('Optional token verification failed', err)
+  }
+
+  next()
+}
+
+/**
  * Auth for Admin only.
  *
  * @param {Request} req 
@@ -71,4 +104,4 @@ const authAdmin = (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-export default { verifyToken, authAdmin }
+export default { verifyToken, verifyTokenOptional, authAdmin }

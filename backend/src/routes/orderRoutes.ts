@@ -1,11 +1,12 @@
 import express from 'express'
 import routeNames from '../config/orderRoutes.config'
 import authJwt from '../middlewares/authJwt'
+import rateLimiter from '../middlewares/rateLimiter'
 import * as orderController from '../controllers/orderController'
 
 const routes = express.Router()
 
-routes.route(routeNames.checkout).post(orderController.checkout)
+routes.route(routeNames.checkout).post(rateLimiter, authJwt.verifyTokenOptional, orderController.checkout)
 routes.route(routeNames.update).put(authJwt.verifyToken, authJwt.authAdmin, orderController.update)
 routes.route(routeNames.delete).delete(authJwt.verifyToken, authJwt.authAdmin, orderController.deleteOrder)
 routes.route(routeNames.deleteTempOrder).delete(orderController.deleteTempOrder)

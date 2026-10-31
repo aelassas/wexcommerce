@@ -294,7 +294,6 @@ const Checkout: React.FC = () => {
       } else {
         // Generate a unique session ID for PayPal checkout
         _sessionId = nanoid()
-        setPayPalLoaded(true)
       }
 
       // order
@@ -328,6 +327,9 @@ const Checkout: React.FC = () => {
         if (paymentType === wexcommerceTypes.PaymentType.CreditCard) {
           setOrderId(_orderId)
           setSessionId(_sessionId)
+          if (env.PAYMENT_GATEWAY === wexcommerceTypes.PaymentGateway.PayPal) {
+            setPayPalLoaded(true)
+          }
         } else {
           const _status = await CartService.clearCart(cart!._id)
 
