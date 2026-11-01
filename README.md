@@ -1,6 +1,7 @@
 [![build](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/build.yml) 
 [![test](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/wexcommerce/actions/workflows/test.yml) 
 [![codecov](https://img.shields.io/codecov/c/github/aelassas/wexcommerce?label=coverage)](https://codecov.io/gh/aelassas/wexcommerce)
+[![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://wexcommerce.dynv6.net/)
 [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/wexcommerce/wiki)
 
 <!--
@@ -80,13 +81,11 @@ To contribute code or report issues, please read the [Contribution Guide](https:
 If you want to customize wexCommerce while keeping your fork up to date with the latest changes, check out the [Fork, Customize, and Sync](https://github.com/aelassas/wexcommerce/wiki/Fork,-Customize,-and-Sync) guide in the Wiki.
 -->
 
-<!--
 ## Live Demo
 
 * URL: https://wexcommerce.dynv6.net/
 * Login: jdoe@wexcommerce.com
 * Password: sh0ppingC4rt
--->
 
 ## License
 
