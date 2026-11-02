@@ -31,7 +31,7 @@ export const error = (err?: unknown, message?: string) => {
   }
 }
 
-export const setLanguage = (strings: LocalizedStrings, language: string) => {
+export const setLanguage = (strings: InstanceType<typeof LocalizedStrings>, language: string) => {
   strings.setLanguage(language)
 }
 

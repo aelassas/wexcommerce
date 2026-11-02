@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
-import nodemailer from 'nodemailer'
+import { SendMailOptions } from 'nodemailer'
 import path from 'node:path'
 import asyncFs from 'node:fs/promises'
 import escapeStringRegexp from 'escape-string-regexp'
@@ -137,7 +137,7 @@ const _signup = async (req: Request, res: Response, userType: wexcommerceTypes.U
     i18n.locale = user.language
 
     // req.headers.host is not working with docker
-    const mailOptions: nodemailer.SendMailOptions = {
+    const mailOptions: SendMailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
       subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
@@ -295,7 +295,7 @@ export const resendLink = async (req: Request, res: Response) => {
     // Send email
     // req.headers.host is not working with docker
     i18n.locale = user.language
-    const mailOptions: nodemailer.SendMailOptions = {
+    const mailOptions: SendMailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
       subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
@@ -446,7 +446,7 @@ export const resend = async (req: Request, res: Response) => {
 
       const reset = req.params.reset === 'true'
 
-      const mailOptions: nodemailer.SendMailOptions = {
+      const mailOptions: SendMailOptions = {
         from: env.SMTP_FROM,
         to: user.email,
         subject: reset ? i18n.t('PASSWORD_RESET_SUBJECT') : i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
@@ -1317,7 +1317,7 @@ export const sendEmail = async (req: Request, res: Response) => {
     ...(message ? [`${i18n.t('MESSAGE')}:\n${message}`] : []),
   ].join('\n\n')
 
-  const mailOptions: nodemailer.SendMailOptions = {
+  const mailOptions: SendMailOptions = {
     from: env.SMTP_FROM,
     to: env.CONTACT_EMAIL,
     subject: isContactForm ? i18n.t('CONTACT_SUBJECT') : 'New Newsletter Subscription',

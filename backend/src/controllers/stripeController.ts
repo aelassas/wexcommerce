@@ -56,7 +56,7 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
     const expireAt = Math.floor((Date.now() / 1000) + env.STRIPE_SESSION_EXPIRE_AT)
 
     const session = await stripeAPI.checkout.sessions.create({
-      ui_mode: 'embedded',
+      ui_mode: 'embedded_page',
       line_items: [
         {
           price_data: {

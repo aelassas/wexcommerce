@@ -17,13 +17,11 @@
     
     "typeRoots": ["./node_modules/@types", "./types", "./src/types"],
 
-    "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
       ":wexcommerce-types": ["../packages/wexcommerce-types"],
       ":wexcommerce-helper": ["../packages/wexcommerce-helper"]
     },
-    "downlevelIteration": true,
     "target": "ESNext"
   },
   "include": [
