@@ -1,5 +1,26 @@
 # Releases
 
+## [wexCommerce 4.7](https://github.com/aelassas/wexcommerce/releases/tag/v4.7) – 2026-11-03
+
+* feat(admin,frontend): upgrade to React 19.3.1
+* fix(backend): add object-level authorization to GET /api/user/:id
+* fix(backend): add object-level authorization to POST /api/check-password
+* fix(backend): fix authorize avatar update and deletion
+* fix(backend): secure booking checkout flow
+* fix(backend): enable tsc incremental build to prevent build OOM
+* fix(admin,frontend): autocomplete current password
+* test(helper): add unit tests for wexcommerce-helper utilities
+* chore(deps): update dependencies
+
+**Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v4.6...v4.7
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v4.7/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v4.7)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v4.7)
+
 ## [wexCommerce 4.6](https://github.com/aelassas/wexcommerce/releases/tag/v4.6) – 2026-10-25
 
 #### What's Changed
