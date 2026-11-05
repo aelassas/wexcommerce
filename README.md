@@ -26,13 +26,15 @@ https://github.com/user-attachments/assets/1a4841cb-8e70-4ac2-974e-64774eb17371
 
 ## wexCommerce
  
-wexCommerce is a single-vendor marketplace offering an SEO-optimized web storefront and a powerful admin panel for managing your online store.
+wexCommerce is a single-vendor marketplace offering an SEO-optimized web storefront and a powerful admin panel for managing your online store. It is built with TypeScript, Next.js, Express, and MongoDB, and runs on Docker or on a plain Node.js host.
 
 It integrates Stripe and PayPal payment gateways, allowing you to choose the most suitable option for your region. If Stripe isn't available in your country, PayPal offers a reliable alternative for smooth transactions.
 
-From the frontend, customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
+From the frontend, customers can browse products by category, search the catalog, and view product pages with image galleries and featured items. They can fill a cart without signing in, check out as a guest or as a registered user, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, confirm their email address, reset a forgotten password, update their profile and avatar, keep a wishlist, receive notifications, view their order history, and track their deliveries.
 
-From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
+From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings. Products can be marked as featured, hidden, or sold out, and stock quantities are tracked. Settings cover the default language, currency, delivery and shipping options, accepted payment methods, and the bank details shown to customers who pay by wire transfer. Admins are also notified when new orders arrive.
+
+The platform is protected by JWT authentication, Redis-backed rate limiting, Google reCAPTCHA on public forms, and request validation. Sentry provides error monitoring and performance tracing, the interface is available in English and French, and the storefront includes cookie policy, privacy policy, and terms of service pages.
 
 <!--
 ## Why Next.js?
