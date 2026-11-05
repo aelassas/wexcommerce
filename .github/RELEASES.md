@@ -1,5 +1,19 @@
 # Releases
 
+## [wexCommerce 4.8](https://github.com/aelassas/wexcommerce/releases/tag/v4.8) – 2026-11-05
+
+* fix(backend): round amounts to cents instead of flooring them
+* test(backend): add rateLimiter.test.ts
+* test(backend): add Redis integration tests and configure CI service container
+* chore(deps): update dependencies
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v4.8/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v4.8)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v4.8)
+
 ## [wexCommerce 4.7](https://github.com/aelassas/wexcommerce/releases/tag/v4.7) – 2026-11-03
 
 * feat(admin,frontend): upgrade to React 19.3.1
