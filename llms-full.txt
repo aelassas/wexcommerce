@@ -1,7 +1,7 @@
 # wexCommerce - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the wexCommerce Wiki.
-> Generated on: 2026-10-30T09:12:47Z
+> Generated on: 2026-11-05T06:53:49Z
 
 ---
 
@@ -491,7 +491,7 @@ Your wexCommerce platform is now secured with HTTPS and automatically renews cer
 
 > Source: https://github.com/aelassas/wexcommerce/wiki/Home
 
-wexCommerce is an open-source and cross-platform single-vendor marketplace offering an SEO-optimized web storefront and a powerful admin panel for managing your online store.
+wexCommerce is an open-source and cross-platform single-vendor marketplace offering an SEO-optimized web storefront and a powerful admin panel for managing your online store. It is built with TypeScript, Next.js, Express, and MongoDB, and runs on Docker or on a plain Node.js host.
 
 <!--
 wexCommerce is designed for startups looking to launch a single-vendor marketplace, developers who want to study a full-stack codebase for learning, and anyone looking for a solid foundation to build a custom single-vendor marketplace.
@@ -501,9 +501,11 @@ It integrates [Stripe](https://stripe.com/global) and [PayPal](https://www.paypa
 You can deploy your own marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/wexcommerce/wiki/Installing-(Docker)). Optimized for SEO and efficient performance, wexCommerce can run on a lightweight 1GB RAM droplet—ideal for cost-conscious businesses. Hosting can cost around $5/month with cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 -->
 
-From the frontend, customers can browse products, add them to their cart, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, and view their order history and track their deliveries.
+From the frontend, customers can browse products by category, search the catalog, and view product pages with image galleries and featured items. They can fill a cart without signing in, check out as a guest or as a registered user, and complete purchases with various payment methods including Credit Card, PayPal, Google Pay, Apple Pay, Link, Cash on Delivery, and Wire Transfer. They can register or log in using Google, Facebook, Apple, or Email, confirm their email address, reset a forgotten password, update their profile and avatar, keep a wishlist, receive notifications, view their order history, and track their deliveries.
 
-From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
+From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings. Products can be marked as featured, hidden, or sold out, and stock quantities are tracked. Settings cover the default language, currency, delivery and shipping options, accepted payment methods, and the bank details shown to customers who pay by wire transfer. Admins are also notified when new orders arrive.
+
+The platform is protected by JWT authentication, Redis-backed rate limiting, Google reCAPTCHA on public forms, and request validation. Sentry provides error monitoring and performance tracing, the interface is available in English and French, and the storefront includes cookie policy, privacy policy, and terms of service pages.
 
 > [!TIP]
 > Use the sidebar to browse installation guides, configuration options, and more.
