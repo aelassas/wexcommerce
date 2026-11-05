@@ -1,7 +1,7 @@
 # wexCommerce - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the wexCommerce Wiki.
-> Generated on: 2026-11-05T06:53:49Z
+> Generated on: 2026-11-05T06:54:05Z
 
 ---
 
@@ -1667,7 +1667,7 @@ From the frontend, customers can browse products, add them to their cart, and co
 
 ## Admin Panel
 
-From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings such as default language, currency, delivery and shipping options, and accepted payment methods.
+From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings. Products can be marked as featured, hidden, or sold out, and stock quantities are tracked. Settings cover the default language, currency, delivery and shipping options, accepted payment methods, and the bank details shown to customers who pay by wire transfer. Admins are also notified when new orders arrive.
 
 ![Backend](https://wexcommerce.github.io/content/backend-1.png)
 ![Backend](https://wexcommerce.github.io/content/backend-2.png)
