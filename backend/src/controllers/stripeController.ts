@@ -63,7 +63,7 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
             product_data: {
               name,
             },
-            unit_amount: Math.floor(amount * 100),
+            unit_amount: helper.toCents(amount),
             currency: currency.toLowerCase(),
           },
           quantity: 1,
@@ -143,7 +143,7 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
     // (Set OrderStatus to Paid and remove expireAt TTL index)
     //
     if (session.payment_status === 'paid') {
-      const expectedAmountCents = Math.floor(order.total * 100)
+      const expectedAmountCents = helper.toCents(order.total)
 
       if (session.currency?.toLowerCase() !== env.BASE_CURRENCY.toLowerCase()) {
         const message = `Payment currency mismatch: expected ${env.BASE_CURRENCY}, got ${session.currency}`
@@ -267,7 +267,7 @@ export const createPaymentIntent = async (req: Request, res: Response) => {
       // All API requests expect amounts to be provided in a currency’s smallest unit.
       // For example, to charge 10 USD, provide an amount value of 1000 (that is, 1000 cents).
       //
-      amount: Math.floor(amount * 100),
+      amount: helper.toCents(amount),
       currency: currency.toLowerCase(),
       receipt_email: receiptEmail,
       description,
