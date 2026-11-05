@@ -34,7 +34,7 @@ From the frontend, customers can browse products by category, search the catalog
 
 From the admin panel, admins can manage products, categories, orders, payments, customers, and general store settings. Products can be marked as featured, hidden, or sold out, and stock quantities are tracked. Settings cover the default language, currency, delivery and shipping options, accepted payment methods, and the bank details shown to customers who pay by wire transfer. Admins are also notified when new orders arrive.
 
-The platform is protected by JWT authentication, Redis-backed rate limiting, Google reCAPTCHA on public forms, and request validation. Sentry provides error monitoring and performance tracing, the interface is available in English and French, and the storefront includes cookie policy, privacy policy, and terms of service pages.
+The platform is protected by JWT authentication, HttpOnly cookies, TLS encryption, Redis-backed rate limiting, Google reCAPTCHA on public forms, and request validation against common web attacks (XSS, CSRF, MITM, and DDoS). Sentry provides error monitoring and performance tracing, the interface is available in English and French, and the storefront includes cookie policy, privacy policy, and terms of service pages.
 
 <!--
 ## Why Next.js?
