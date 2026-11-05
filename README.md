@@ -85,9 +85,10 @@ If you want to customize wexCommerce while keeping your fork up to date with the
 
 ## Live Demo
 
-* URL: https://wexcommerce.dynv6.net/
-* Login: jdoe@wexcommerce.com
-* Password: sh0ppingC4rt
+| App | URL | Login | Password |
+|-----|-----|-------|----------|
+| Frontend | https://wexcommerce.wexdev.com/ | `jdoe@wexcommerce.com` | `sh0ppingC4rt` |
+| Admin Panel | https://wexcommerce.wexdev.com:8001/ | `admin@wexcommerce.com` | Contact the maintainer for password |
 
 ## License
 
