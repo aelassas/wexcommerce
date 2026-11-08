@@ -190,7 +190,6 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
         orderItem.product = product
       }
 
-      // Send confirmation email
       const user = await User.findById(order.user)
       if (!user) {
         throw new Error(`User ${order.user} not found`)
@@ -199,16 +198,23 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
       user.expireAt = undefined
       await user.save()
 
-      const paymentType = (await PaymentType.findById(order.paymentType))!.name
-      const deliveryType = (await DeliveryType.findById(order.deliveryType))!.name
-      await orderController.confirm(user, order, order.orderItems, settings, paymentType, deliveryType)
+      // The session is paid and the order is saved as paid: a failing email or
+      // notification is logged and does not turn the paid session into an error
+      try {
+        // Send confirmation email
+        const paymentType = (await PaymentType.findById(order.paymentType))!.name
+        const deliveryType = (await DeliveryType.findById(order.deliveryType))!.name
+        await orderController.confirm(user, order, order.orderItems, settings, paymentType, deliveryType)
 
-      // Notify admin
-      // const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: wexcommerceTypes.UserType.Admin }))
-      // if (admin) {
-      //   await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
-      // }
-      await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
+        // Notify admin
+        // const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: wexcommerceTypes.UserType.Admin }))
+        // if (admin) {
+        //   await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
+        // }
+        await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
+      } catch (notifyErr) {
+        logger.error(`[stripe.checkCheckoutSession] Order ${order._id.toString()} paid, but sending emails or notifications failed`, notifyErr)
+      }
 
       res.sendStatus(200)
       return
