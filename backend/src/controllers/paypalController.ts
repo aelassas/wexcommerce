@@ -35,6 +35,15 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
       return
     }
 
+    // An order that is no longer awaiting its payment (already paid, for example)
+    // must not get a new order, otherwise the customer can be charged twice
+    if (order.status !== wexcommerceTypes.OrderStatus.Pending) {
+      const msg = `Order ${orderId} is not awaiting payment`
+      logger.info(`[paypal.createPayPalOrder] ${msg}`)
+      res.status(400).send(msg)
+      return
+    }
+
     const clientIp = ipinfoHelper.getClientIp(req)
     const countryCode = await ipinfoHelper.getCountryCode(clientIp)
 
@@ -167,13 +176,19 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
       user.expireAt = undefined
       await user.save()
 
-      const paymentType = (await PaymentType.findById(order.paymentType))!.name
-      const deliveryType = (await DeliveryType.findById(order.deliveryType))!.name
-      await orderController.confirm(user, order, order.orderItems, settings, paymentType, deliveryType)
+      // The order is paid and the order is saved as paid: a failing email or
+      // notification is logged and does not turn the paid order into an error
+      try {
+        const paymentType = (await PaymentType.findById(order.paymentType))!.name
+        const deliveryType = (await DeliveryType.findById(order.deliveryType))!.name
+        await orderController.confirm(user, order, order.orderItems, settings, paymentType, deliveryType)
 
-      // Notify admin
-      await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
-
+        // Notify admin
+        await orderController.notify(env.ADMIN_EMAIL, order, user, settings)
+      } catch (notifyErr) {
+        logger.error(`[paypal.checkPayPalOrder] Order ${order._id.toString()} paid, but sending emails or notifications failed`, notifyErr)
+      }
+      
       res.sendStatus(200)
       return
     }
