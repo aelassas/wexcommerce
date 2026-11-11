@@ -1,5 +1,19 @@
 # Releases
 
+## [wexCommerce 4.9](https://github.com/aelassas/wexcommerce/releases/tag/v4.9) – 2026-11-11
+
+* feat(backend): export `WC_RECAPTCHA_MIN_SCORE` in env config
+* fix(backend): adjust reCAPTCHA score threshold for non-production environments
+
+**Full Changelog**: https://github.com/aelassas/wexcommerce/compare/v4.8...v4.9
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v4.9/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v4.9)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v4.9)
+
 ## [wexCommerce 4.8](https://github.com/aelassas/wexcommerce/releases/tag/v4.8) – 2026-11-05
 
 * fix(backend): round amounts to cents instead of flooring them
