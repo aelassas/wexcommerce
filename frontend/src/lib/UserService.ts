@@ -241,7 +241,7 @@ export const deleteTokens = async (userId: string): Promise<number> => (
   fetchInstance
     .DELETE(
       `/api/delete-tokens/${encodeURIComponent(userId)}`,
-      [],
+      [await authHeader()],
       true
     )
     .then((res) => res.status)
