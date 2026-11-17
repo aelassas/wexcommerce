@@ -2,7 +2,7 @@
   "name": "wexcommerce-backend",
   "description": "Backend server for wexCommerce",
   "type": "module",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "main": "app.js",
   "scripts": {
     "build:packages": "cd ../packages/wexcommerce-types && npm i && npm run build && cd ../wexcommerce-helper && npm i && npm run build && cd ../../backend",
