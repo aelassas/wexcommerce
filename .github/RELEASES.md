@@ -1,5 +1,17 @@
 # Releases
 
+## [wexCommerce 5.0](https://github.com/aelassas/wexcommerce/releases/tag/v5.0) – 2026-11-17
+
+* fix(security): prevent NoSQL operator injection in /api/activate
+* ci(loc.yml): replace apt-get with npm for cloc installation
+
+### Assets
+- [wexcommerce-db.zip](https://github.com/aelassas/wexcommerce/releases/download/v5.0/wexcommerce-db.zip) (5.84 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/wexcommerce/zipball/v5.0)
+- [Source code (tar)](https://api.github.com/repos/aelassas/wexcommerce/tarball/v5.0)
+
 ## [wexCommerce 4.9](https://github.com/aelassas/wexcommerce/releases/tag/v4.9) – 2026-11-11
 
 * feat(backend): export `WC_RECAPTCHA_MIN_SCORE` in env config
